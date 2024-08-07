@@ -1,5 +1,7 @@
-package com.example.mixin;
+package org.ginafro.notenoughfakepixel.mixin;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiMainMenu;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -9,8 +11,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(GuiMainMenu.class)
 public class MixinGuiMainMenu {
 
-    @Inject(method = "initGui", at = @At("HEAD"))
+    @Inject(method = "drawScreen", at = @At("RETURN"))
     public void onInitGui(CallbackInfo ci) {
-        System.out.println("Hello from Main Menu!");
+        FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
+        fr.drawString(Minecraft.getMinecraft().getSession().getUsername() , 15 , 15 , -1);
     }
 }
