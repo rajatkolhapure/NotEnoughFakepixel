@@ -29,6 +29,7 @@ loom {
             // If you don't want mixins, remove these lines
             property("mixin.debug", "true")
             arg("--tweakClass", "org.spongepowered.asm.launch.MixinTweaker")
+            arg("--tweakClass", "cc.polyfrost.oneconfig.loader.stage0.LaunchWrapperTweaker")
         }
     }
     runConfigs {
@@ -60,6 +61,7 @@ sourceSets.main {
 repositories {
     mavenCentral()
     maven("https://repo.spongepowered.org/maven/")
+    maven("https://repo.polyfrost.cc/releases")
     // If you don't want to log in with your real minecraft account, remove this line
     maven("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1")
 }
@@ -73,14 +75,17 @@ dependencies {
     mappings("de.oceanlabs.mcp:mcp_stable:22-1.8.9")
     forge("net.minecraftforge:forge:1.8.9-11.15.1.2318-1.8.9")
 
+    // Basic OneConfig dependencies for legacy versions. See OneConfig example mod for more info
+    compileOnly("cc.polyfrost:oneconfig-1.8.9-forge:0.2.2-alpha+") // Should not be included in jar
+    // include should be replaced with a configuration that includes this in the jar
+    runtimeOnly("cc.polyfrost:oneconfig-wrapper-launchwrapper:1.0.0-beta+") // Should be included in jar
+
     // If you don't want mixins, remove these lines
     shadowImpl("org.spongepowered:mixin:0.7.11-SNAPSHOT") {
         isTransitive = false
     }
     annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT")
 
-    // If you don't want to log in with your real minecraft account, remove this line
-    runtimeOnly("me.djtheredstoner:DevAuth-forge-legacy:1.2.1")
 
 }
 
@@ -125,6 +130,12 @@ val remapJar by tasks.named<net.fabricmc.loom.task.RemapJarTask>("remapJar") {
 tasks.jar {
     archiveClassifier.set("without-deps")
     destinationDirectory.set(layout.buildDirectory.dir("intermediates"))
+    manifest.attributes += mapOf(
+        "ModSide" to "CLIENT",
+        "TweakOrder" to 0,
+        "ForceLoadAsMod" to true,
+        "TweakClass" to "cc.polyfrost.oneconfig.loader.stage0.LaunchWrapperTweaker"
+    )
 }
 
 tasks.shadowJar {

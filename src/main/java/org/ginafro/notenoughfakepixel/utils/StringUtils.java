@@ -6,6 +6,8 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 public class StringUtils {
+
+
     private final static DecimalFormat TENTHS_DECIMAL_FORMAT = new DecimalFormat("#.#");
     public static final NumberFormat NUMBER_FORMAT = NumberFormat.getInstance(Locale.US);
 
