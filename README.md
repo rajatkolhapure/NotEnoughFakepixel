@@ -4,6 +4,6 @@
         <img alt="Discord" src="https://img.shields.io/discord/1272087961499865138?style=for-the-badge&color=008b8b">
     </a>
     <a href="https://github.com/GinaFro/NotEnoughFakepixel/releases" target="_blank">
-       <img alt="GitHub Downloads (all assets, all releases)" src="https://img.shields.io/github/downloads/:user/:repo/total">
+       <img alt="GitHub Downloads (all assets, all releases)" src="https://img.shields.io/github/downloads/:user/:repo/total?style=for-the-badge&color=008b8b">
     </a>
 </div>
