@@ -12,19 +12,28 @@
     <a 
 </div>
 
+<div align="left">
 <details>
 <summary>Feature List</summary>
 
-<details>
-    <summary>Dungeons</summary>
-    ## Solvers
-    - Click In Order Terminal Solver
-    - Starts With Solver
-    - Select All Color Solver
-    ## Puzzle Solvers
-    - Creeper Puzzle Solver
-    - Tic Tac Toe Puzzle Solver
-    - Three Wierdos Puzzle Solver
-    - Silverfish Solver
+## Dungeons
+- Terminal Solvers
+     - Click In Order Terminal Solver
+     - Starts With Solver
+     - Select All Color Solver
+ - Dungeon Puzzle Solvers
+     - Creeper Puzzle Solver
+     - Tic Tac Toe Puzzle Solver
+     - Three Wierdos Puzzle Solver
+     - Silverfish Solver
+## Slayers
+- Loot Info
+    - Revenant Loot Info
+    - Spider Loot Info
+    - Wolf Loot Info
+    - Enderman Loot Info
+    - Blaze Loot Info
+- Click To Open Maddox Batphone
 </details>
-</details>
+
+</div>
