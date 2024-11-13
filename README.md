@@ -11,3 +11,20 @@
     </a>
     <a 
 </div>
+
+<details>
+<summary>Feature List</summary>
+
+<details>
+    <summary>Dungeons</summary>
+    ## Solvers
+    - Click In Order Terminal Solver
+    - Starts With Solver
+    - Select All Color Solver
+    ## Puzzle Solvers
+    - Creeper Puzzle Solver
+    - Tic Tac Toe Puzzle Solver
+    - Three Wierdos Puzzle Solver
+    - Silverfish Solver
+</details>
+</details>
