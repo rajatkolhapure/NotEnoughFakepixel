@@ -40,7 +40,11 @@ public class Configuration extends Config {
     // Quality Of Life
 
     @Header(text = "Quality of Life" , category = "Quality of Life", size = 2)
-    public boolean qol = true;
+    public boolean _qol = true;
+    @Switch(name = "Disable Hyperion Explosion" , category = "Quality of Life")
+    public static boolean disableHyperionExplosions = true;
+    @Switch(name = "Disable Thunderlord Bolt" , category = "Quality of Life")
+    public static boolean disableThunderlordBolt = true;
     @Switch(name = "Fullbright" , category = "Quality of Life")
     public static boolean fullbright = true;
     @Slider(name = "Brightness" , category = "Quality of Life", min = 0f, max = 10f)
