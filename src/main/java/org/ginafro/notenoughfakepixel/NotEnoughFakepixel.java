@@ -3,26 +3,19 @@ package org.ginafro.notenoughfakepixel;
 import cc.polyfrost.oneconfig.events.EventManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.scoreboard.ScoreObjective;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IChatComponent;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StringUtils;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.EventBus;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.ginafro.notenoughfakepixel.commands.TestCommand;
 import org.ginafro.notenoughfakepixel.features.duels.KDCounter;
 import org.ginafro.notenoughfakepixel.features.mlf.Info;
-import org.ginafro.notenoughfakepixel.features.mlf.Map;
 import org.ginafro.notenoughfakepixel.features.other.Fullbright;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.DungeonsMap;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.StarredMobDisplay;
@@ -33,16 +26,12 @@ import org.ginafro.notenoughfakepixel.features.skyblock.qol.SlotLocking;
 import org.ginafro.notenoughfakepixel.features.skyblock.slayers.SlayerInfoCommand;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 import org.ginafro.notenoughfakepixel.variables.Gamemode;
-import org.ginafro.notenoughfakepixel.variables.Location;
 import org.lwjgl.input.Keyboard;
 
 @Mod(modid = "notenoughfakepixel", useMetadata=true)
 public class NotEnoughFakepixel {
 
-    public static Gamemode currentGamemode;
-    public static Location sbLocation;
     public static Configuration config;
-    public static boolean inDungeons = false;
     public static KeyBinding slotLocking = new KeyBinding("Slot Locking" , Keyboard.KEY_L , "NotEnoughFakepixel");
 
     @Mod.EventHandler
@@ -54,7 +43,6 @@ public class NotEnoughFakepixel {
         System.out.println("Command Registered");
         MinecraftForge.EVENT_BUS.register(this);
         registerModEvents();
-        sbLocation = null;
     }
 
     @Mod.EventHandler
