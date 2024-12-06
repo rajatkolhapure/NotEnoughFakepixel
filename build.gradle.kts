@@ -16,6 +16,13 @@ val version: String by project
 val mixinGroup = "$baseGroup.mixin"
 val modid: String by project
 
+val devEnv: Configuration by configurations.creating {
+    configurations.runtimeClasspath.get().extendsFrom(this)
+    isCanBeResolved = false
+    isCanBeConsumed = false
+    isVisible = false
+}
+
 // Toolchains:
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(8))
@@ -85,8 +92,8 @@ dependencies {
         isTransitive = false
     }
     annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT")
-
-
+    // If you want to disable devAuth comment line below
+    devEnv("me.djtheredstoner:DevAuth-forge-legacy:1.2.1")
 }
 
 // Tasks:
