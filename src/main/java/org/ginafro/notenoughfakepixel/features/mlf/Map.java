@@ -20,19 +20,17 @@ public class Map extends BasicHud {
 
     @Override
     protected void draw(UMatrixStack matrices, float x, float y, float s, boolean example) {
-        if(Configuration.mlf && Configuration.map.isEnabled()){
-            if(ScoreboardUtils.currentGamemode == Gamemode.MLF){
-                Minecraft mc = Minecraft.getMinecraft();
-                mc.getTextureManager().bindTexture(new ResourceLocation("notenoughfakepixel:mlf/map.png"));
-                float scale = 64 * s;
-                Gui.drawScaledCustomSizeModalRect((int)x , (int)y, 0F,0F,(int)scale,(int)scale,(int)scale,(int)scale,scale,scale );
-            }
+        if(ScoreboardUtils.currentGamemode == Gamemode.MLF){
+            Minecraft mc = Minecraft.getMinecraft();
+            mc.getTextureManager().bindTexture(new ResourceLocation("notenoughfakepixel:mlf/map.png"));
+            float scale = 64 * s;
+            Gui.drawScaledCustomSizeModalRect((int)x , (int)y, 0F,0F,(int)scale,(int)scale,(int)scale,(int)scale,scale,scale );
         }
     }
 
     @Override
     protected boolean shouldDrawBackground() {
-        if(Configuration.mlf && Configuration.map.isEnabled() && ScoreboardUtils.currentGamemode == Gamemode.MLF){
+        if(ScoreboardUtils.currentGamemode == Gamemode.MLF){
             return true;
         }
         return false;

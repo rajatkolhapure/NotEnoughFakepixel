@@ -21,7 +21,7 @@ public class StartingWithSolver {
 
     @SubscribeEvent
     public void onOpen(GuiScreenEvent.BackgroundDrawnEvent e){
-        if(!Configuration.sb && !Configuration.startsWith && ScoreboardUtils.currentGamemode != Gamemode.SKYBLOCK) return;
+        if(!Configuration.startsWith && ScoreboardUtils.currentGamemode != Gamemode.SKYBLOCK) return;
         if(e.gui instanceof GuiChest){
             GuiChest chest = (GuiChest) e.gui;
             Container container = chest.inventorySlots;

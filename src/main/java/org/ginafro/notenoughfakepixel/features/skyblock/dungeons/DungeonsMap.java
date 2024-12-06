@@ -21,7 +21,7 @@ public class DungeonsMap {
 
     @Subscribe
     public void onRender(HudRenderEvent e){
-        if(Configuration.sb && Configuration.dungeonsMap){
+        if(Configuration.dungeonsMap){
             if(ScoreboardUtils.inDungeons){
                 ItemStack map = Minecraft.getMinecraft().thePlayer.inventory.getStackInSlot(8);
                 if(map.getItem() instanceof ItemMap){

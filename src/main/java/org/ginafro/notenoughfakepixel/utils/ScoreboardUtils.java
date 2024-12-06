@@ -26,35 +26,27 @@ public class ScoreboardUtils {
     public static boolean inDungeons = false;
 
     public static void parseScoreboard(){
-        if(!Minecraft.getMinecraft().isSingleplayer()){
-            if(Minecraft.getMinecraft().getCurrentServerData().serverIP.contains("fakepixel")) {
-                ScoreObjective objective = Minecraft.getMinecraft().theWorld.getScoreboard().getObjectiveInDisplaySlot(1);
-                if (objective != null) {
-                    String objName = ScoreboardUtils.cleanSB(objective.getDisplayName());
-                    {
-                        currentGamemode = Gamemode.getGamemode(objName);
-                    }
-                }
+        Minecraft mc = Minecraft.getMinecraft();
+
+        if (!mc.isSingleplayer() && mc.getCurrentServerData().serverIP.contains("fakepixel")) {
+            ScoreObjective objective = mc.theWorld.getScoreboard().getObjectiveInDisplaySlot(1);
+            if (objective != null) {
+                String objName = ScoreboardUtils.cleanSB(objective.getDisplayName());
+                currentGamemode = Gamemode.getGamemode(objName);
             }
         }
 
-        if(currentGamemode == Gamemode.SKYBLOCK){
-            if (!Minecraft.getMinecraft().isSingleplayer() && Minecraft.getMinecraft().getNetHandler() != null) {
-                for(NetworkPlayerInfo playerInfo : Minecraft.getMinecraft().getNetHandler().getPlayerInfoMap()){
-                    IChatComponent s1 = playerInfo.getDisplayName();
-                    String name = "";
-                    if(s1 != null){
-                        name = StringUtils.stripControlCodes(s1.getUnformattedText());
-                        if(name != null) {
-                            if (name.contains("Area")) {
-                                currentGamemode = Gamemode.SKYBLOCK;
-                                currentLocation = Location.getLocation(name.replace("Area: ", ""));
-                            }
-                            if (name.contains("Dungeon")){
-                                currentGamemode = Gamemode.SKYBLOCK;
-                                inDungeons = true;
-                            }
-                        }
+        if (currentGamemode == Gamemode.SKYBLOCK && !mc.isSingleplayer() && mc.getNetHandler() != null) {
+            for (NetworkPlayerInfo playerInfo : mc.getNetHandler().getPlayerInfoMap()) {
+                IChatComponent s1 = playerInfo.getDisplayName();
+                if (s1 != null) {
+                    String name = StringUtils.stripControlCodes(s1.getUnformattedText());
+                    if (name.contains("Area")) {
+                        currentGamemode = Gamemode.SKYBLOCK;
+                        currentLocation = Location.getLocation(name.replace("Area: ", ""));
+                    } else if (name.contains("Dungeon")) {
+                        currentGamemode = Gamemode.SKYBLOCK;
+                        inDungeons = true;
                     }
                 }
             }

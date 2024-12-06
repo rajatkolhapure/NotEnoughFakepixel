@@ -24,7 +24,7 @@ public class ClickInOrderSolver {
 
     @SubscribeEvent
     public void onOpen(GuiScreenEvent.BackgroundDrawnEvent e){
-        if(!Configuration.sb && !Configuration.clickInOrder && ScoreboardUtils.currentGamemode != Gamemode.SKYBLOCK) return;
+        if(!Configuration.clickInOrder && ScoreboardUtils.currentGamemode != Gamemode.SKYBLOCK) return;
         if(e.gui instanceof GuiChest){
             GuiChest chest = (GuiChest) e.gui;
             Container container = chest.inventorySlots;

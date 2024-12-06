@@ -25,7 +25,6 @@ import org.ginafro.notenoughfakepixel.features.skyblock.overlays.StorageOverlay;
 import org.ginafro.notenoughfakepixel.features.skyblock.qol.SlotLocking;
 import org.ginafro.notenoughfakepixel.features.skyblock.slayers.SlayerInfoCommand;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
-import org.ginafro.notenoughfakepixel.variables.Gamemode;
 import org.lwjgl.input.Keyboard;
 
 @Mod(modid = "notenoughfakepixel", useMetadata=true)

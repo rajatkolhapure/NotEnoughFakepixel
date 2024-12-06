@@ -19,18 +19,16 @@ public class Info {
     String inc, bal , e1 = "", e2 = "";
     @Subscribe
     public void onRender(HudRenderEvent e){
-        if(Configuration.mlf && Configuration.INFO){
-            if(ScoreboardUtils.currentGamemode == Gamemode.MLF){
-                Gui.drawRect(5 , Minecraft.getMinecraft().displayHeight / 2 - 30, 40 , Minecraft.getMinecraft().displayHeight / 2 + 30 , new OneColor(0,0,0,102).getRGB());
-                List<String> sideBarLines = ScoreboardUtils.getSidebarLines();
-                a(sideBarLines);
-                Minecraft.getMinecraft().fontRendererObj.drawString("Income: " + inc , 7 , Minecraft.getMinecraft().displayHeight / 2 - 22 , -1);
-                Minecraft.getMinecraft().fontRendererObj.drawString("Balance: " + bal , 7 , Minecraft.getMinecraft().displayHeight / 2 - 13 , -1);
-                Minecraft.getMinecraft().fontRendererObj.drawString("Events: ", 7 , Minecraft.getMinecraft().displayHeight / 2 - 5 , -1);
-                Minecraft.getMinecraft().fontRendererObj.drawString("- " + e1, 7 , Minecraft.getMinecraft().displayHeight / 2 + 3 , -1);
-                Minecraft.getMinecraft().fontRendererObj.drawString("- " + e1, 7 , Minecraft.getMinecraft().displayHeight / 2 + 11 , -1);
+        if(ScoreboardUtils.currentGamemode == Gamemode.MLF){
+            Gui.drawRect(5 , Minecraft.getMinecraft().displayHeight / 2 - 30, 40 , Minecraft.getMinecraft().displayHeight / 2 + 30 , new OneColor(0,0,0,102).getRGB());
+            List<String> sideBarLines = ScoreboardUtils.getSidebarLines();
+            a(sideBarLines);
+            Minecraft.getMinecraft().fontRendererObj.drawString("Income: " + inc , 7 , Minecraft.getMinecraft().displayHeight / 2 - 22 , -1);
+            Minecraft.getMinecraft().fontRendererObj.drawString("Balance: " + bal , 7 , Minecraft.getMinecraft().displayHeight / 2 - 13 , -1);
+            Minecraft.getMinecraft().fontRendererObj.drawString("Events: ", 7 , Minecraft.getMinecraft().displayHeight / 2 - 5 , -1);
+            Minecraft.getMinecraft().fontRendererObj.drawString("- " + e1, 7 , Minecraft.getMinecraft().displayHeight / 2 + 3 , -1);
+            Minecraft.getMinecraft().fontRendererObj.drawString("- " + e1, 7 , Minecraft.getMinecraft().displayHeight / 2 + 11 , -1);
 
-            }
         }
     }
 
