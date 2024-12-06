@@ -1,6 +1,5 @@
 package org.ginafro.notenoughfakepixel.features.skyblock.dungeons;
 
-import jdk.nashorn.internal.ir.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
@@ -8,7 +7,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.ginafro.notenoughfakepixel.Configuration;
 import org.ginafro.notenoughfakepixel.NotEnoughFakepixel;
+import org.ginafro.notenoughfakepixel.init.RegisterEvents;
 import org.ginafro.notenoughfakepixel.utils.RenderUtils;
+import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 
 import java.awt.*;
 
@@ -22,7 +23,7 @@ public class StarredMobDisplay {
             System.out.println("");
             return;
         }
-        if(!NotEnoughFakepixel.inDungeons) return;
+        if(!ScoreboardUtils.inDungeons) return;
         for(Entity e : ev.world.loadedEntityList){
             if(e.getDisplayName().getUnformattedText().startsWith("✮")){
                 BlockPos bp = e.getPosition();

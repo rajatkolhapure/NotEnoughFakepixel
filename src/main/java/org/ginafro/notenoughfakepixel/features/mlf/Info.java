@@ -20,7 +20,7 @@ public class Info {
     @Subscribe
     public void onRender(HudRenderEvent e){
         if(Configuration.mlf && Configuration.INFO){
-            if(NotEnoughFakepixel.currentGamemode == Gamemode.MLF){
+            if(ScoreboardUtils.currentGamemode == Gamemode.MLF){
                 Gui.drawRect(5 , Minecraft.getMinecraft().displayHeight / 2 - 30, 40 , Minecraft.getMinecraft().displayHeight / 2 + 30 , new OneColor(0,0,0,102).getRGB());
                 List<String> sideBarLines = ScoreboardUtils.getSidebarLines();
                 a(sideBarLines);

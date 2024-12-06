@@ -3,11 +3,15 @@ package org.ginafro.notenoughfakepixel.utils;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.scoreboard.Score;
 import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.scoreboard.Scoreboard;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StringUtils;
+import org.ginafro.notenoughfakepixel.variables.Gamemode;
+import org.ginafro.notenoughfakepixel.variables.Location;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,6 +20,47 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ScoreboardUtils {
+
+    public static Location currentLocation = Location.NONE;
+    public static Gamemode currentGamemode = Gamemode.LOBBY;
+    public static boolean inDungeons = false;
+
+    public static void parseScoreboard(){
+        if(!Minecraft.getMinecraft().isSingleplayer()){
+            if(Minecraft.getMinecraft().getCurrentServerData().serverIP.contains("fakepixel")) {
+                ScoreObjective objective = Minecraft.getMinecraft().theWorld.getScoreboard().getObjectiveInDisplaySlot(1);
+                if (objective != null) {
+                    String objName = ScoreboardUtils.cleanSB(objective.getDisplayName());
+                    {
+                        currentGamemode = Gamemode.getGamemode(objName);
+                    }
+                }
+            }
+        }
+
+        if(currentGamemode == Gamemode.SKYBLOCK){
+            if (!Minecraft.getMinecraft().isSingleplayer() && Minecraft.getMinecraft().getNetHandler() != null) {
+                for(NetworkPlayerInfo playerInfo : Minecraft.getMinecraft().getNetHandler().getPlayerInfoMap()){
+                    IChatComponent s1 = playerInfo.getDisplayName();
+                    String name = "";
+                    if(s1 != null){
+                        name = StringUtils.stripControlCodes(s1.getUnformattedText());
+                        if(name != null) {
+                            if (name.contains("Area")) {
+                                currentGamemode = Gamemode.SKYBLOCK;
+                                currentLocation = Location.getLocation(name.replace("Area: ", ""));
+                            }
+                            if (name.contains("Dungeon")){
+                                currentGamemode = Gamemode.SKYBLOCK;
+                                inDungeons = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 
 
     public static String cleanSB(String scoreboard) {

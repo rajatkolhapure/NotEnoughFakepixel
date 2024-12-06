@@ -14,6 +14,7 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.ginafro.notenoughfakepixel.Configuration;
 import org.ginafro.notenoughfakepixel.NotEnoughFakepixel;
+import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 import org.ginafro.notenoughfakepixel.variables.Gamemode;
 
 public class KDCounter extends BasicHud {
@@ -25,7 +26,7 @@ public class KDCounter extends BasicHud {
 
     @SubscribeEvent
     public void onChat(ClientChatReceivedEvent e){
-        if(!Configuration.duels && !Configuration.counter.isEnabled() && NotEnoughFakepixel.currentGamemode != Gamemode.DUELS) return;
+        if(!Configuration.duels && !Configuration.counter.isEnabled() && ScoreboardUtils.currentGamemode != Gamemode.DUELS) return;
         String opponent = "";
         if(e.message.getUnformattedText().contains("Opponents")){
             opponent = e.message.getUnformattedText().replace("Opponents: ", "");
@@ -45,7 +46,7 @@ public class KDCounter extends BasicHud {
 
     @Override
     protected void draw(UMatrixStack matrices, float x, float y, float scale, boolean example) {
-        if(!Configuration.duels && !Configuration.counter.isEnabled() && NotEnoughFakepixel.currentGamemode != Gamemode.DUELS) return;
+        if(!Configuration.duels && !Configuration.counter.isEnabled() && ScoreboardUtils.currentGamemode != Gamemode.DUELS) return;
         GlStateManager.scale(scale,scale,scale);
         Minecraft.getMinecraft().fontRendererObj.drawString("K/D: " + kill + "/" + deaths , (int) x, (int) y,-1);
     }

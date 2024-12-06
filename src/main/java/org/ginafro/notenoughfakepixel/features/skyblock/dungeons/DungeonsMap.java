@@ -14,6 +14,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.MapData;
 import org.ginafro.notenoughfakepixel.Configuration;
 import org.ginafro.notenoughfakepixel.NotEnoughFakepixel;
+import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 import org.ginafro.notenoughfakepixel.variables.Gamemode;
 
 public class DungeonsMap {
@@ -21,7 +22,7 @@ public class DungeonsMap {
     @Subscribe
     public void onRender(HudRenderEvent e){
         if(Configuration.sb && Configuration.dungeonsMap){
-            if(NotEnoughFakepixel.inDungeons){
+            if(ScoreboardUtils.inDungeons){
                 ItemStack map = Minecraft.getMinecraft().thePlayer.inventory.getStackInSlot(8);
                 if(map.getItem() instanceof ItemMap){
                     ItemMap map1 = (ItemMap) map.getItem();

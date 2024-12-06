@@ -6,6 +6,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import org.ginafro.notenoughfakepixel.Configuration;
 import org.ginafro.notenoughfakepixel.NotEnoughFakepixel;
+import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 import org.ginafro.notenoughfakepixel.utils.StringUtils;
 import org.ginafro.notenoughfakepixel.utils.Utils;
 import org.ginafro.notenoughfakepixel.variables.Gamemode;
@@ -39,7 +40,7 @@ public class DamageCommas {
 
         IChatComponent name = entity.getDisplayName();
         if(!Configuration.dmgCommas)return name;
-        if(NotEnoughFakepixel.currentGamemode != Gamemode.SKYBLOCK) return name;
+        if(ScoreboardUtils.currentGamemode != Gamemode.SKYBLOCK) return name;
 
         if (replacementMap.containsKey(entity)) {
             ChatComponentText component = replacementMap.get(entity);

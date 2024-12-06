@@ -5,6 +5,7 @@ import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.ginafro.notenoughfakepixel.Configuration;
 import org.ginafro.notenoughfakepixel.NotEnoughFakepixel;
+import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 import org.ginafro.notenoughfakepixel.variables.Location;
 
 import java.util.Objects;
@@ -15,11 +16,11 @@ public class TrophyFishNotifier {
     public void onChatRecieve(ClientChatReceivedEvent e){
         if(e.type != 1) return;
         if(Configuration.trophyFish){
-            if(NotEnoughFakepixel.sbLocation != Location.CRIMSON) {
-                if(NotEnoughFakepixel.sbLocation != Location.CRIMSON_FIELDS){
-                    if(NotEnoughFakepixel.sbLocation != Location.SCARELTON){
-                        if(NotEnoughFakepixel.sbLocation != Location.ASHFANG){
-                            if(NotEnoughFakepixel.sbLocation != Location.VOLCANO){
+            if(ScoreboardUtils.currentLocation != Location.CRIMSON) {
+                if(ScoreboardUtils.currentLocation != Location.CRIMSON_FIELDS){
+                    if(ScoreboardUtils.currentLocation != Location.SCARELTON){
+                        if(ScoreboardUtils.currentLocation != Location.ASHFANG){
+                            if(ScoreboardUtils.currentLocation != Location.VOLCANO){
                                 return;
                             }
                         }

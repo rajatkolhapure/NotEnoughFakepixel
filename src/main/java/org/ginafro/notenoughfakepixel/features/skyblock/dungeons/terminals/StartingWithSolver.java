@@ -14,13 +14,14 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.ginafro.notenoughfakepixel.Configuration;
 import org.ginafro.notenoughfakepixel.NotEnoughFakepixel;
 import org.ginafro.notenoughfakepixel.utils.RenderUtils;
+import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 import org.ginafro.notenoughfakepixel.variables.Gamemode;
 
 public class StartingWithSolver {
 
     @SubscribeEvent
     public void onOpen(GuiScreenEvent.BackgroundDrawnEvent e){
-        if(!Configuration.sb && !Configuration.startsWith && NotEnoughFakepixel.currentGamemode != Gamemode.SKYBLOCK) return;
+        if(!Configuration.sb && !Configuration.startsWith && ScoreboardUtils.currentGamemode != Gamemode.SKYBLOCK) return;
         if(e.gui instanceof GuiChest){
             GuiChest chest = (GuiChest) e.gui;
             Container container = chest.inventorySlots;
