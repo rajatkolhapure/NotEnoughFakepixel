@@ -1,4 +1,4 @@
-package org.ginafro.notenoughfakepixel.features.skyblock.slayers.slayerinfo;
+package org.ginafro.notenoughfakepixel.features.skyblock.slayers;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;

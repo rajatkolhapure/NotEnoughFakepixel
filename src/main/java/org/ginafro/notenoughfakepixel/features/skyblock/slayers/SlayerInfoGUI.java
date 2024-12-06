@@ -1,4 +1,4 @@
-package org.ginafro.notenoughfakepixel.features.skyblock.slayers.slayerinfo;
+package org.ginafro.notenoughfakepixel.features.skyblock.slayers;
 
 import cc.polyfrost.oneconfig.renderer.NanoVGHelper;
 import cc.polyfrost.oneconfig.renderer.font.Fonts;

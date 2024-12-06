@@ -30,7 +30,7 @@ import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.terminals.Start
 import org.ginafro.notenoughfakepixel.features.skyblock.fishing.GreatCatchNotifier;
 import org.ginafro.notenoughfakepixel.features.skyblock.overlays.StorageOverlay;
 import org.ginafro.notenoughfakepixel.features.skyblock.qol.SlotLocking;
-import org.ginafro.notenoughfakepixel.features.skyblock.slayers.slayerinfo.SlayerInfoCommand;
+import org.ginafro.notenoughfakepixel.features.skyblock.slayers.SlayerInfoCommand;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 import org.ginafro.notenoughfakepixel.variables.Gamemode;
 import org.ginafro.notenoughfakepixel.variables.Location;
