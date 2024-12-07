@@ -11,6 +11,7 @@ import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StringUtils;
 import org.ginafro.notenoughfakepixel.variables.Gamemode;
+import org.ginafro.notenoughfakepixel.variables.Area;
 import org.ginafro.notenoughfakepixel.variables.Location;
 
 import java.util.ArrayList;
@@ -21,11 +22,12 @@ import java.util.stream.Collectors;
 
 public class ScoreboardUtils {
 
-    public static Location currentLocation = Location.NONE;
+    public static Area currentArea = Area.NONE;
     public static Gamemode currentGamemode = Gamemode.LOBBY;
+    public static Location currentLocation = Location.NONE;
     public static boolean inDungeons = false;
 
-    public static void parseScoreboard(){
+    public static void parseScoreboard() {
         Minecraft mc = Minecraft.getMinecraft();
 
         if (!mc.isSingleplayer() && mc.getCurrentServerData().serverIP.contains("fakepixel")) {
@@ -41,11 +43,19 @@ public class ScoreboardUtils {
                 IChatComponent s1 = playerInfo.getDisplayName();
                 if (s1 != null) {
                     String name = StringUtils.stripControlCodes(s1.getUnformattedText());
+                    if (name.contains("Server: ")) {
+                        currentLocation = Location.getLocation(
+                                name.replace("Server: ", "")
+                                        .replaceFirst("-\\d+", "-")
+                                        .replaceAll("\\s+","")
+                        );
+                    }
                     if (name.contains("Area")) {
                         currentGamemode = Gamemode.SKYBLOCK;
-                        currentLocation = Location.getLocation(name.replace("Area: ", ""));
+                        currentArea = Area.getArea(name.replace("Area: ", ""));
                     } else if (name.contains("Dungeon")) {
                         currentGamemode = Gamemode.SKYBLOCK;
+                        currentLocation = Location.DUNGEON;
                         inDungeons = true;
                     }
                 }

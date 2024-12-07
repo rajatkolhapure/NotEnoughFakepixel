@@ -26,6 +26,7 @@ import org.ginafro.notenoughfakepixel.features.skyblock.overlays.StorageOverlay;
 import org.ginafro.notenoughfakepixel.features.skyblock.qol.SlotLocking;
 import org.ginafro.notenoughfakepixel.features.skyblock.slayers.SlayerInfoCommand;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
+import org.ginafro.notenoughfakepixel.utils.TablistParser;
 import org.lwjgl.input.Keyboard;
 
 @Mod(modid = "notenoughfakepixel", useMetadata=true)
@@ -65,6 +66,8 @@ public class NotEnoughFakepixel {
         EventManager.INSTANCE.register(new Info());
         EventManager.INSTANCE.register(new Fullbright());
         MinecraftForge.EVENT_BUS.register(new KDCounter());
+        // Parsers
+        MinecraftForge.EVENT_BUS.register(new TablistParser());
 
     }
 
