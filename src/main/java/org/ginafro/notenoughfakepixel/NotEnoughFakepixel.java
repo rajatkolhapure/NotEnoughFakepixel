@@ -57,6 +57,7 @@ public class NotEnoughFakepixel {
         MinecraftForge.EVENT_BUS.register(new StarredMobDisplay());
         EventManager.INSTANCE.register(new DungeonsMap());
         // Mining
+        MinecraftForge.EVENT_BUS.register(new MiningOverlay());
         // Fishing
         MinecraftForge.EVENT_BUS.register(new GreatCatchNotifier());
         // QOL
@@ -109,7 +110,5 @@ public class NotEnoughFakepixel {
         }
 
         ScoreboardUtils.parseScoreboard();
-
     }
-
 }

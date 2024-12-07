@@ -5,6 +5,7 @@ import cc.polyfrost.oneconfig.config.annotations.*;
 import cc.polyfrost.oneconfig.config.core.OneColor;
 import cc.polyfrost.oneconfig.config.data.*;
 import org.ginafro.notenoughfakepixel.features.duels.KDCounter;
+import org.ginafro.notenoughfakepixel.features.skyblock.mining.MiningOverlay;
 
 public class Configuration extends Config {
 
@@ -95,8 +96,8 @@ public class Configuration extends Config {
 
     @Header(text = "Mining" , category = "Mining" , size = 2)
     public boolean _mining = true;
-    @Switch(name = "Commision overlay" , category = "Mining")
-    public static boolean miningOverlay = true;
+    @HUD(name = "Commision overlay" , category = "Mining")
+    public static MiningOverlay miningOverlay = new MiningOverlay();
 
     // SKYBLOCK
 

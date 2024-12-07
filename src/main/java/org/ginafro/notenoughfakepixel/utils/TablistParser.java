@@ -127,9 +127,11 @@ public class TablistParser {
         }
 
         // FOOTER (COOKIE & BOOSTER)
-        String[] footer = ((AccessorGuiPlayerTabOverlay) Minecraft.getMinecraft().ingameGUI.getTabList())
-                .getFooter().getFormattedText()
-                .split("\n");
+        try {
+            String[] footer = ((AccessorGuiPlayerTabOverlay) Minecraft.getMinecraft().ingameGUI.getTabList())
+                    .getFooter().getFormattedText()
+                    .split("\n");
+        } catch (Exception ignored) {}
 
         lastTime = 0;
     }
