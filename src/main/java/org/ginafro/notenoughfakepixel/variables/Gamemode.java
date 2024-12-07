@@ -29,4 +29,8 @@ public enum Gamemode {
         return null;
     }
 
+    public boolean isSkyblock(){
+        return this.equals(SKYBLOCK);
+    }
+
 }

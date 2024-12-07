@@ -21,6 +21,7 @@ import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.DungeonsMap;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.StarredMobDisplay;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.terminals.StartingWithSolver;
 import org.ginafro.notenoughfakepixel.features.skyblock.fishing.GreatCatchNotifier;
+import org.ginafro.notenoughfakepixel.features.skyblock.mining.MiningOverlay;
 import org.ginafro.notenoughfakepixel.features.skyblock.overlays.StorageOverlay;
 import org.ginafro.notenoughfakepixel.features.skyblock.qol.SlotLocking;
 import org.ginafro.notenoughfakepixel.features.skyblock.slayers.SlayerInfoCommand;
@@ -50,16 +51,21 @@ public class NotEnoughFakepixel {
     }
 
     private void registerModEvents() {
+        // Dungeons
         MinecraftForge.EVENT_BUS.register(new StartingWithSolver());
-        MinecraftForge.EVENT_BUS.register(new KDCounter());
+        MinecraftForge.EVENT_BUS.register(new StarredMobDisplay());
+        EventManager.INSTANCE.register(new DungeonsMap());
+        // Mining
+        // Fishing
         MinecraftForge.EVENT_BUS.register(new GreatCatchNotifier());
+        // QOL
         MinecraftForge.EVENT_BUS.register(new SlotLocking());
         MinecraftForge.EVENT_BUS.register(new StorageOverlay.StorageEvent());
-        MinecraftForge.EVENT_BUS.register(new StarredMobDisplay());
         MinecraftForge.EVENT_BUS.register(this);
         EventManager.INSTANCE.register(new Info());
         EventManager.INSTANCE.register(new Fullbright());
-        EventManager.INSTANCE.register(new DungeonsMap());
+        MinecraftForge.EVENT_BUS.register(new KDCounter());
+
     }
 
     public static GuiScreen openGui;
