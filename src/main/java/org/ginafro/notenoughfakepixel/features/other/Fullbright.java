@@ -19,7 +19,7 @@ public class Fullbright {
         if(!Configuration.fullbright){
             return;
         }
-        Minecraft.getMinecraft().gameSettings.gammaSetting = Configuration.gamma;
+        Minecraft.getMinecraft().gameSettings.gammaSetting = 10000;
     }
 
 }

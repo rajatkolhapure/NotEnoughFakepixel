@@ -21,12 +21,20 @@ public class Utils {
     }
 
     public static String shortNumberFormat(double n, int iteration) {
+        // This function will convert a number into a short number format.
+        // For example, 1231 -> 1.2k, 1233000 -> 1.2m, 1323000000 -> 1.3b, 1000000000000 -> 1t
+
         double d = ((long) n / 100) / 10.0;
         boolean isRound = (d * 10) % 10 == 0;
-        return (d < 1000 ?
-                ((d > 99.9 || isRound || (!isRound && d > 9.99) ?
-                        (int) d * 10 / 10 : d + ""
-                ) + "" + c[iteration])
-                : shortNumberFormat(d, iteration + 1));
+        return (d < 1000 ? //this determines the class, i.e. 'k', 'm' etc
+                ((d > 99.9 || isRound || (!isRound && d > 9.99) ? //this decides whether to trim the decimals
+                        (int) d * 10 / 10 : d + "") // (int) d * 10 / 10 drops the decimal
+                        + "" + c[iteration]) : shortNumberFormat(d, iteration + 1));
+
+    }
+
+    public static String commaFormat(double n) {
+        // This function will only apply commas to a number.
+        return String.format("%,d", (long) n);
     }
 }

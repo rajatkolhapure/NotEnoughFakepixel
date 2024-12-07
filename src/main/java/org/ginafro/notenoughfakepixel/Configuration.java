@@ -3,16 +3,20 @@ package org.ginafro.notenoughfakepixel;
 import cc.polyfrost.oneconfig.config.Config;
 import cc.polyfrost.oneconfig.config.annotations.*;
 import cc.polyfrost.oneconfig.config.core.OneColor;
-import cc.polyfrost.oneconfig.config.data.Mod;
-import cc.polyfrost.oneconfig.config.data.ModType;
+import cc.polyfrost.oneconfig.config.data.*;
 import org.ginafro.notenoughfakepixel.features.duels.KDCounter;
-import org.ginafro.notenoughfakepixel.features.mlf.Map;
 
 public class Configuration extends Config {
 
     public Configuration(){
         super(new Mod("NotEnoughFakepixel", ModType.UTIL_QOL, "assets/notenoughfakepixel/logo.png"), "config.json");
         initialize();
+
+        //this.addDependency("debug", "Cant be enabled with debug2", () -> !debug2);
+        //this.addDependency("debug2", "Cant be enabled with debug", () -> !debug);
+
+        this.addListener("debug", () -> debug2 = false);
+        this.addListener("debug2", () -> debug = false);
     }
 
     @Override
@@ -28,7 +32,7 @@ public class Configuration extends Config {
 
     // Quality Of Life
 
-    @Header(text = "Quality of Life" , category = "Quality of Life", size = 2)
+    @Header(text = "General" , category = "Quality of Life", size = 2)
     public boolean _qol = true;
     @Switch(name = "Disable Hyperion Explosion" , category = "Quality of Life")
     public static boolean disableHyperionExplosions = true;
@@ -36,17 +40,17 @@ public class Configuration extends Config {
     public static boolean disableThunderlordBolt = true;
     @Switch(name = "Fullbright" , category = "Quality of Life")
     public static boolean fullbright = true;
-    @Slider(name = "Brightness" , category = "Quality of Life", min = 0f, max = 10f, step = 1 , instant = true)
-    public static float gamma = 1f;
-    @Switch(name = "Damage Commas" , category = "Quality of Life")
+    @Switch(name = "Damage Commas" , category = "Quality of Life", subcategory = "Damage Formatter")
     public static boolean dmgCommas = true;
+    @Switch(name = "Damage Formatter" , category = "Quality of Life", subcategory = "Damage Formatter" , description = "Formats the damage. (ie. 167k instead of 167000)")
+    public static boolean dmgFormatter = true;
 
     // Dungeons
 
     @Header(text = "Dungeons", category = "Dungeons", size = 2)
     public boolean _dungeons = true;
 
-    @Switch(name = "Starred Mobs Helper" , category = "Dungeons" , subcategory = "Quality of Life")
+    @Switch(name = "Starred Mobs Helper" , category = "Dungeons")
     public static boolean starredMobs = true;
 
     @Switch(name = "Dungeon Map" , category = "Dungeons", subcategory = "Dungeon Map")
@@ -67,8 +71,8 @@ public class Configuration extends Config {
 
     @Header(text = "Fishing" , category = "Fishing" , size = 2)
     public boolean _fishing = true;
-    @HUD(name = "Kill Death Counter" , category = "Fishing")
-    public static KDCounter counter = new KDCounter();
+    //@HUD(name = "Kill Death Counter" , category = "Fishing")
+    //public static KDCounter counter = new KDCounter();
     @Switch(name = "Notify on Great Catch" , category = "Fishing")
     public static boolean greatCatch = true;
     @Switch(name = "Notify on Trophy Fish" , category = "Fishing")
@@ -84,20 +88,33 @@ public class Configuration extends Config {
     @Header(text = "Enchanting" , category = "Enchanting" , size = 2)
     public boolean _enchanting = true;
 
-    @Switch(name = "UltraSequencer Solver" , category = "Enchanting" , subcategory = "Enchanting")
+    @Switch(name = "UltraSequencer Solver" , category = "Enchanting")
     public static boolean ultraSequencer = true;
 
+    // Mining
+
+    @Header(text = "Mining" , category = "Mining" , size = 2)
+    public boolean _mining = true;
+    @Switch(name = "Commision overlay" , category = "Mining")
+    public static boolean miningOverlay = true;
+
     // SKYBLOCK
+
     @Header(text = "Skyblock" , category = "Skyblock" , size = 2)
     public boolean skyblock = true;
-    @Switch(name = "Map " , category = "Skyblock" , subcategory = "Quality Of Life" )
-    public static boolean sb_map = true;
-
-    @Switch(name = "Jacob/Auction Timer" , category = "Skyblock" , subcategory = "Quality Of Life")
+    @Switch(name = "Jacob/Auction Timer" , category = "Skyblock")
     public static boolean jATimer = true;
 
     @Switch(name = "Storage GUI Overlay" , category = "Skyblock" , subcategory = "GUI Overlays")
     public static boolean storageOverlay = false;
 
+    // DEBUG
+
+    @Header(text = "Debug" , category = "Debug" , size = 2)
+    public boolean _debug = false;
+    @Switch(name = "one" , category = "Debug")
+    public static boolean debug = false;
+    @Switch(name = "two" , category = "Debug")
+    public static boolean debug2 = false;
 
 }

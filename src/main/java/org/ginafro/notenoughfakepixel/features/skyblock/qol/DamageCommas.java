@@ -5,7 +5,6 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import org.ginafro.notenoughfakepixel.Configuration;
-import org.ginafro.notenoughfakepixel.NotEnoughFakepixel;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 import org.ginafro.notenoughfakepixel.utils.StringUtils;
 import org.ginafro.notenoughfakepixel.utils.Utils;
@@ -36,12 +35,17 @@ public class DamageCommas {
     private static final Pattern OVERLOAD_PATTERN = Pattern.compile("(§.)" + OVERLOAD_STAR + "((?:§.[\\d,])+)(§.)" + OVERLOAD_STAR + "§r");
 
     public static IChatComponent replaceName(EntityLivingBase entity) {
-        if (!entity.hasCustomName()) return entity.getDisplayName();
-
         IChatComponent name = entity.getDisplayName();
-        if(!Configuration.dmgCommas)return name;
+
+        if (!entity.hasCustomName()) return name;
         if(ScoreboardUtils.currentGamemode != Gamemode.SKYBLOCK) return name;
 
+        if(Configuration.dmgCommas) return replaceForCommas(entity, name);
+        else return name;
+    }
+
+    public static IChatComponent replaceForCommas(EntityLivingBase entity, IChatComponent name) {
+        // This will replace for an abbreviation of the number.
         if (replacementMap.containsKey(entity)) {
             ChatComponentText component = replacementMap.get(entity);
             if (component == null) return name;
@@ -85,7 +89,7 @@ public class DamageCommas {
             int number = Integer.parseInt(numbers);
 
             if (number > 999) {
-                newFormatted.append(Utils.shortNumberFormat(number, 0));
+                newFormatted.append(formatNumber(number));
             } else {
                 return name;
             }
@@ -114,6 +118,14 @@ public class DamageCommas {
 
         replacementMap.put(entity, finalComponent);
         return finalComponent;
+    }
+
+    private static String formatNumber(int number) {
+        if(Configuration.dmgFormatter){
+            return Utils.shortNumberFormat(number, 0);
+        } else {
+            return Utils.commaFormat(number);
+        }
     }
 
 }
