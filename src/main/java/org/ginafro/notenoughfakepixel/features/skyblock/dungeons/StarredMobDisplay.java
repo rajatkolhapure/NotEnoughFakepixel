@@ -6,8 +6,6 @@ import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.ginafro.notenoughfakepixel.Configuration;
-import org.ginafro.notenoughfakepixel.NotEnoughFakepixel;
-import org.ginafro.notenoughfakepixel.init.RegisterEvents;
 import org.ginafro.notenoughfakepixel.utils.RenderUtils;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 

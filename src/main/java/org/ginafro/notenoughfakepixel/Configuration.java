@@ -41,6 +41,8 @@ public class Configuration extends Config {
     public static boolean disableThunderlordBolt = true;
     @Switch(name = "Fullbright" , category = "Quality of Life")
     public static boolean fullbright = true;
+    @Switch(name = "No Hurt Camera" , category = "Quality of Life")
+    public static boolean noHurtCam = true;
     @Switch(name = "Damage Commas" , category = "Quality of Life", subcategory = "Damage Formatter")
     public static boolean dmgCommas = true;
     @Switch(name = "Damage Formatter" , category = "Quality of Life", subcategory = "Damage Formatter" , description = "Formats the damage. (ie. 167k instead of 167000)")
