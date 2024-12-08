@@ -56,8 +56,6 @@ public class TablistParser {
         if(Minecraft.getMinecraft().thePlayer == null) return;
         if(!ScoreboardUtils.currentGamemode.isSkyblock()) return;
 
-        if(Minecraft.getSystemTime() - lastTime < 20) return;
-
         List<NetworkPlayerInfo> players =
                 playerOrdering.sortedCopy(Minecraft.getMinecraft().thePlayer.sendQueue.getPlayerInfoMap());
 

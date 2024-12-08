@@ -96,7 +96,12 @@ public class Configuration extends Config {
 
     @Header(text = "Mining" , category = "Mining" , size = 2)
     public boolean _mining = true;
-    @HUD(name = "Commision overlay" , category = "Mining")
+    @Switch(name = "Drill Fuel Overlay" , category = "Mining", subcategory = "Mining Overlay" )
+    public static boolean drillFuel = true;
+    @Switch(name = "Mithril Powder Overlay" , category = "Mining", subcategory = "Mining Overlay" )
+    public static boolean mithrilPowder = true;
+
+    @HUD(name = "Commision overlay" , category = "Mining", subcategory = "Mining Overlay")
     public static MiningOverlay miningOverlay = new MiningOverlay();
 
     // SKYBLOCK

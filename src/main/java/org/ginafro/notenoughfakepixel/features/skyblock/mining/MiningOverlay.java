@@ -1,6 +1,7 @@
 package org.ginafro.notenoughfakepixel.features.skyblock.mining;
 
 import cc.polyfrost.oneconfig.hud.TextHud;
+import org.ginafro.notenoughfakepixel.Configuration;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 import org.ginafro.notenoughfakepixel.utils.TablistParser;
 import org.ginafro.notenoughfakepixel.variables.Location;
@@ -8,6 +9,8 @@ import org.ginafro.notenoughfakepixel.variables.Location;
 import java.util.List;
 
 public class MiningOverlay extends TextHud {
+
+    private static int LINE_HEIGHT = 9;
 
     public MiningOverlay() {
         super(true);
@@ -17,8 +20,9 @@ public class MiningOverlay extends TextHud {
     protected void getLines(List<String> lines, boolean example) {
         if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
         if (!ScoreboardUtils.currentLocation.equals(Location.DWARVEN)) return;
-        lines.add(formatMithrilPowder(TablistParser.mithilPowder));
-        lines.add("");
+
+        if (Configuration.mithrilPowder) {lines.add(formatMithrilPowder(TablistParser.mithilPowder));}
+        if (Configuration.drillFuel) {lines.add(DrillFuelParsing.getString());}
         for(String commission : TablistParser.commissions){
             lines.add(formatCommission(commission));
         }
@@ -31,7 +35,9 @@ public class MiningOverlay extends TextHud {
 
     @Override
     protected float getHeight(float scale, boolean example) {
-        return (24 + (TablistParser.commissions.size()*10)) * scale;
+        int variable = Configuration.drillFuel ? LINE_HEIGHT : 0;
+        variable = Configuration.mithrilPowder ? variable + LINE_HEIGHT : variable;
+        return (LINE_HEIGHT + variable + (TablistParser.commissions.size()*LINE_HEIGHT)) * scale;
     }
 
     private String formatMithrilPowder(long mithrilPowder) {

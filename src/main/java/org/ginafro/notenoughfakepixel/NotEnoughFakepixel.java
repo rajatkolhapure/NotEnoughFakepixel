@@ -21,8 +21,10 @@ import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.DungeonsMap;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.StarredMobDisplay;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.terminals.StartingWithSolver;
 import org.ginafro.notenoughfakepixel.features.skyblock.fishing.GreatCatchNotifier;
+import org.ginafro.notenoughfakepixel.features.skyblock.mining.DrillFuelParsing;
 import org.ginafro.notenoughfakepixel.features.skyblock.mining.MiningOverlay;
 import org.ginafro.notenoughfakepixel.features.skyblock.overlays.StorageOverlay;
+import org.ginafro.notenoughfakepixel.features.skyblock.qol.Fullbright;
 import org.ginafro.notenoughfakepixel.features.skyblock.qol.SlotLocking;
 import org.ginafro.notenoughfakepixel.features.skyblock.slayers.SlayerInfoCommand;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
@@ -58,6 +60,7 @@ public class NotEnoughFakepixel {
         EventManager.INSTANCE.register(new DungeonsMap());
         // Mining
         MinecraftForge.EVENT_BUS.register(new MiningOverlay());
+        MinecraftForge.EVENT_BUS.register(new DrillFuelParsing());
         // Fishing
         MinecraftForge.EVENT_BUS.register(new GreatCatchNotifier());
         // QOL
