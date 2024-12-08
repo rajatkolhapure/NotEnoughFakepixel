@@ -72,8 +72,8 @@ public class Configuration extends Config {
 
     @Header(text = "Fishing" , category = "Fishing" , size = 2)
     public boolean _fishing = true;
-    //@HUD(name = "Kill Death Counter" , category = "Fishing")
-    //public static KDCounter counter = new KDCounter();
+    @Switch(name = "Notify Legendary Creatures" , category = "Fishing")
+    public static boolean legendaryCreatures = true;
     @Switch(name = "Notify on Great Catch" , category = "Fishing")
     public static boolean greatCatch = true;
     @Switch(name = "Notify on Trophy Fish" , category = "Fishing")
