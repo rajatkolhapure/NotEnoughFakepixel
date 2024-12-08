@@ -16,7 +16,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.ginafro.notenoughfakepixel.commands.TestCommand;
 import org.ginafro.notenoughfakepixel.features.duels.KDCounter;
 import org.ginafro.notenoughfakepixel.features.mlf.Info;
-import org.ginafro.notenoughfakepixel.features.other.Fullbright;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.DungeonsMap;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.StarredMobDisplay;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.terminals.StartingWithSolver;
@@ -67,8 +66,8 @@ public class NotEnoughFakepixel {
         MinecraftForge.EVENT_BUS.register(new SlotLocking());
         MinecraftForge.EVENT_BUS.register(new StorageOverlay.StorageEvent());
         MinecraftForge.EVENT_BUS.register(this);
-        EventManager.INSTANCE.register(new Info());
-        EventManager.INSTANCE.register(new Fullbright());
+
+        MinecraftForge.EVENT_BUS.register(new Fullbright());
         MinecraftForge.EVENT_BUS.register(new KDCounter());
         // Parsers
         MinecraftForge.EVENT_BUS.register(new TablistParser());
