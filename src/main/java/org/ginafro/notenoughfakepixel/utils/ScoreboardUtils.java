@@ -10,6 +10,8 @@ import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StringUtils;
+import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.ginafro.notenoughfakepixel.variables.Gamemode;
 import org.ginafro.notenoughfakepixel.variables.Area;
 import org.ginafro.notenoughfakepixel.variables.Location;
@@ -112,6 +114,13 @@ public class ScoreboardUtils {
         }
 
         return lines;
+    }
+
+    @SubscribeEvent
+    public void onWorldUnload(WorldEvent.Unload event) {
+        this.currentLocation = Location.NONE;
+        this.currentGamemode = Gamemode.LOBBY;
+        this.currentArea = Area.NONE;
     }
 
 }

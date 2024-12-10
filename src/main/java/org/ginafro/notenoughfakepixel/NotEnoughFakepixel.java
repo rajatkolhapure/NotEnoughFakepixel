@@ -71,6 +71,7 @@ public class NotEnoughFakepixel {
         MinecraftForge.EVENT_BUS.register(new KDCounter());
         // Parsers
         MinecraftForge.EVENT_BUS.register(new TablistParser());
+        MinecraftForge.EVENT_BUS.register(new ScoreboardUtils());
 
     }
 
