@@ -43,6 +43,8 @@ public class Configuration extends Config {
     public static boolean fullbright = true;
     @Switch(name = "No Hurt Camera" , category = "Quality of Life")
     public static boolean noHurtCam = true;
+    @Switch(name = "1.12 Crops height" , category = "Quality of Life")
+    public static boolean cropsHeight = false;
     @Switch(name = "Damage Commas" , category = "Quality of Life", subcategory = "Damage Formatter")
     public static boolean dmgCommas = true;
     @Switch(name = "Damage Formatter" , category = "Quality of Life", subcategory = "Damage Formatter" , description = "Formats the damage. (ie. 167k instead of 167000)")
@@ -106,7 +108,6 @@ public class Configuration extends Config {
     public static boolean drillFuel = true;
     @Switch(name = "Mithril Powder Overlay" , category = "Mining", subcategory = "Mining Overlay" )
     public static boolean mithrilPowder = true;
-
     @Switch(name = "Ability Cooldown Overlay" , category = "Mining", subcategory = "Mining Overlay")
     public static boolean abilityCooldown = true;
     @HUD(name = "Commision overlay" , category = "Mining", subcategory = "Mining Overlay")
