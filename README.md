@@ -1,39 +1,55 @@
 # NotEnoughFakepixel
+
+This is a fork and remaster of official NotEnoughFakepixel mod from GinaFro.
+
 <div align="center">
     <a href="https://discord.gg/https://discord.gg/8s2B722JY7" target="_blank">
-        <img alt="Discord" src="https://img.shields.io/discord/1272087961499865138?style=for-the-badge&color=008b8b">
+        <img alt="Discord" src="https://img.shields.io/discord/1272087961499865138?style=for-the-badge&color=008b8b&logo=discord&logoColor=white">
     </a>
-     <a href="https://github.com/GinaFro/NotEnoughFakepixel/graphs/contributors" target="_blank">
-        <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/GinaFro/NotEnoughFakepixel?style=for-the-badge&color=008b8b">
+     <a href="https://github.com/davidbelesp/NotEnoughFakepixel/graphs/contributors" target="_blank">
+        <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/GinaFro/NotEnoughFakepixel?style=for-the-badge&color=008b8b&logo=github&logoColor=white">
     </a>
-    <a href="https://github.com/GinaFro/NotEnoughFakepixel/releases" target="_blank">
-       <img alt="GitHub Downloads (all assets, all releases)" src="https://img.shields.io/github/downloads/:user/:repo/total?style=for-the-badge&color=008b8b">
+    <a href="https://github.com/davidbelesp/NotEnoughFakepixel/releases" target="_blank">
+       <img alt="GitHub Downloads (all assets, latest release)" src="https://img.shields.io/github/downloads/davidbelesp/NotEnoughFakepixel/latest/total?style=for-the-badge&color=008b8b">
     </a>
-    <a 
 </div>
 
 <div align="left">
-<details>
-<summary>Feature List</summary>
 
-## Dungeons
-- Terminal Solvers
-     - Click In Order Terminal Solver
-     - Starts With Solver
-     - Select All Color Solver
- - Dungeon Puzzle Solvers
-     - Creeper Puzzle Solver
-     - Tic Tac Toe Puzzle Solver
-     - Three Wierdos Puzzle Solver
-     - Silverfish Solver
-## Slayers
-- Loot Info
-    - Revenant Loot Info
-    - Spider Loot Info
-    - Wolf Loot Info
-    - Enderman Loot Info
-    - Blaze Loot Info
-- Click To Open Maddox Batphone
-</details>
+# Features
+
+### Quality of life
+- General
+  - Disable Hyperion Explosions
+  - Disable Thunderlord enchantment bolts
+  - No Hurt camera animation
+  - Fullbright
+- Damage Formatters
+  - Damage Commas (1,314,353)
+  - Damage Formatter (1.3m)
+
+### Farming
+- 1.12 Crop height (for better farming)
+
+### Fishing
+- Fishing notifier for Legendary Sea Creatures
+- Notifier for Trophy Fishing
+
+### Dungeons
+- General
+  - Dungeon Map
+  - Three Weirdos Solver
+- Floor 7
+  - Terminal solvers
+
+### Mining
+
+- Mining Ability ready notifier
+- Mining Overlay
+  - Drill Fuel Overlay
+  - Mining Ability cooldown Overlay
+  - Commissions Overlay
+  - Mithril Powder Overlay
+
 
 </div>
