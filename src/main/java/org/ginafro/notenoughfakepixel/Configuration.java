@@ -98,11 +98,17 @@ public class Configuration extends Config {
 
     @Header(text = "Mining" , category = "Mining" , size = 2)
     public boolean _mining = true;
+    @Switch(name = "Enable mining ability Notifier" , category = "Mining", subcategory = "")
+    public static boolean miningAbilityNotifier = true;
+
+
     @Switch(name = "Drill Fuel Overlay" , category = "Mining", subcategory = "Mining Overlay" )
     public static boolean drillFuel = true;
     @Switch(name = "Mithril Powder Overlay" , category = "Mining", subcategory = "Mining Overlay" )
     public static boolean mithrilPowder = true;
 
+    @Switch(name = "Ability Cooldown Overlay" , category = "Mining", subcategory = "Mining Overlay")
+    public static boolean abilityCooldown = true;
     @HUD(name = "Commision overlay" , category = "Mining", subcategory = "Mining Overlay")
     public static MiningOverlay miningOverlay = new MiningOverlay();
 

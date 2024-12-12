@@ -8,11 +8,11 @@ import org.jetbrains.annotations.NotNull;
 public class ItemUtils {
 
     public static String getInternalName(ItemStack item){
-        if(!item.hasTagCompound()) return null;
-        if(!item.getTagCompound().hasKey("ExtraAttributes")) return null;
+        if(!item.hasTagCompound()) return "";
+        if(!item.getTagCompound().hasKey("ExtraAttributes")) return "";
 
         NBTTagCompound extraAttributes = item.getTagCompound().getCompoundTag("ExtraAttributes");
-        if(!extraAttributes.hasKey("id")) return null;
+        if(!extraAttributes.hasKey("id")) return "";
 
         return extraAttributes.getString("id");
     }
@@ -32,7 +32,7 @@ public class ItemUtils {
 
     public static String getExtraAttributesStringTag(ItemStack item, String tag){
         NBTTagCompound extraAttributes = getExtraAttributes(item);
-        if(!extraAttributes.hasKey(tag)) return null;
+        if(!extraAttributes.hasKey(tag)) return "";
         return extraAttributes.getString(tag);
     }
 

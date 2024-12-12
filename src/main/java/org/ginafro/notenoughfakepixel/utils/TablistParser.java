@@ -10,9 +10,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.fml.relauncher.Side;
-import org.ginafro.notenoughfakepixel.mixin.AccessorGuiPlayerTabOverlay;
-import org.ginafro.notenoughfakepixel.variables.Area;
-import org.ginafro.notenoughfakepixel.variables.Location;
+import org.ginafro.notenoughfakepixel.mixin.Accesors.AccessorGuiPlayerTabOverlay;
 
 import java.util.ArrayList;
 import java.util.Comparator;

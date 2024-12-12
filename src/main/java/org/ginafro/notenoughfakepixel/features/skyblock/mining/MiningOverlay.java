@@ -10,7 +10,7 @@ import java.util.List;
 
 public class MiningOverlay extends TextHud {
 
-    private static int LINE_HEIGHT = 9;
+    private static int LINE_HEIGHT = 14;
 
     public MiningOverlay() {
         super(true);
@@ -21,6 +21,7 @@ public class MiningOverlay extends TextHud {
         if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
         if (!ScoreboardUtils.currentLocation.equals(Location.DWARVEN)) return;
 
+        if (Configuration.abilityCooldown) {lines.add("\u00a77Ability Cooldown: \u00a7r" + AbilityNotifier.cdSecondsRemaining());}
         if (Configuration.mithrilPowder) {lines.add(formatMithrilPowder(TablistParser.mithilPowder));}
         if (Configuration.drillFuel) {lines.add(DrillFuelParsing.getString());}
         for(String commission : TablistParser.commissions){
@@ -35,9 +36,11 @@ public class MiningOverlay extends TextHud {
 
     @Override
     protected float getHeight(float scale, boolean example) {
+        int LINE_HEIGHT = 11;
         int variable = Configuration.drillFuel ? LINE_HEIGHT : 0;
         variable = Configuration.mithrilPowder ? variable + LINE_HEIGHT : variable;
-        return (LINE_HEIGHT + variable + (TablistParser.commissions.size()*LINE_HEIGHT)) * scale;
+        variable = Configuration.abilityCooldown ? variable + LINE_HEIGHT : variable;
+        return ( variable + (TablistParser.commissions.size()*LINE_HEIGHT)) * scale;
     }
 
     private String formatMithrilPowder(long mithrilPowder) {
