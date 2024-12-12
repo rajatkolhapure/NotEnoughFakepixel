@@ -5,8 +5,12 @@
   "minVersion": "0.7",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "AccessorGuiPlayerTabOverlay",
+    "Accesors.AccessorGuiPlayerTabOverlay",
+    "Accesors.BlockAccessor",
 
+    "BlockWartMixinHeight",
+    "BlockCropsMixinHeight",
+    "BlockMixinHitbox",
     "MixinEntityRenderer",
     "MixinRendererLivingEntity",
     "MixinGuiMainMenu",
