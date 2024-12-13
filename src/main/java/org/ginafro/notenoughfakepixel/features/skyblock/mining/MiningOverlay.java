@@ -10,7 +10,8 @@ import java.util.List;
 
 public class MiningOverlay extends TextHud {
 
-    private static int LINE_HEIGHT = 14;
+    private static int LINE_HEIGHT = 11;
+    private static float MINIMUM_WIDTH = 20;
 
     public MiningOverlay() {
         super(true);
@@ -31,7 +32,8 @@ public class MiningOverlay extends TextHud {
 
     @Override
     protected float getWidth(float scale, boolean example) {
-        return (getLongestCommision()*6) * scale;
+        float var = Math.max(getLongestCommision()*6, MINIMUM_WIDTH);
+        return var * scale;
     }
 
     @Override
