@@ -18,6 +18,8 @@ public class Configuration extends Config {
 
         this.addListener("debug", () -> debug2 = false);
         this.addListener("debug2", () -> debug = false);
+        this.addListener("debug", () -> _debug2 = false);
+        this.addListener("debug2", () -> _debug = false);
     }
 
     @Override
@@ -78,7 +80,7 @@ public class Configuration extends Config {
     public boolean _fishing = true;
     @Switch(name = "Notify Legendary Creatures" , category = "Fishing")
     public static boolean legendaryCreatures = true;
-    @Switch(name = "Notify on Great Catch" , category = "Fishing")
+    //@Switch(name = "Notify on Great Catch (not working?)" , category = "Fishing")
     public static boolean greatCatch = true;
     @Switch(name = "Notify on Trophy Fish" , category = "Fishing")
     public static boolean trophyFish = true;
@@ -88,12 +90,15 @@ public class Configuration extends Config {
     @Header(text = "Slayer" , category = "Slayer" , size = 2)
     public boolean _slayer = true;
 
+    @Header(text = "Coming soon..." , category = "Slayer" , size = 1)
+    public static boolean slayerplaceholder = true;
+
     // Enchanting
 
     @Header(text = "Enchanting" , category = "Enchanting" , size = 2)
     public boolean _enchanting = true;
 
-    @Switch(name = "UltraSequencer Solver" , category = "Enchanting")
+    @Header(text = "Coming soon..." , category = "Enchanting" , size = 1)
     public static boolean ultraSequencer = true;
 
     // Mining
@@ -115,21 +120,30 @@ public class Configuration extends Config {
 
     // SKYBLOCK
 
-    @Header(text = "Skyblock" , category = "Skyblock" , size = 2)
-    public boolean skyblock = true;
-    @Switch(name = "Jacob/Auction Timer" , category = "Skyblock")
+//    @Header(text = "Skyblock" , category = "Skyblock" , size = 2)
+//    public boolean skyblock = true;
+//    @Switch(name = "Jacob/Auction Timer" , category = "Skyblock")
     public static boolean jATimer = true;
-
-    @Switch(name = "Storage GUI Overlay" , category = "Skyblock" , subcategory = "GUI Overlays")
+//
+//    @Switch(name = "Storage GUI Overlay" , category = "Skyblock" , subcategory = "GUI Overlays")
     public static boolean storageOverlay = false;
 
     // DEBUG
 
     @Header(text = "Debug" , category = "Debug" , size = 2)
-    public boolean _debug = false;
+    public boolean _debugHead = false;
+    @Info(text = "Ignore this if you don't know what you are doing." , type = InfoType.WARNING , category = "Debug")
+    public boolean _debugInfo = false;
+
     @Switch(name = "one" , category = "Debug")
-    public static boolean debug = false;
+    public static boolean _debug = false;
     @Switch(name = "two" , category = "Debug")
-    public static boolean debug2 = false;
+    public static boolean _debug2 = false;
+    @Info(text = "info test \u00a7cTEST", type = InfoType.INFO, category = "Debug", subcategory = "Info")
+    public static boolean _info = true;
+    @Info(text = "info test \u00a7eTEST", type = InfoType.WARNING, category = "Debug", subcategory = "Info")
+    public static boolean _info2 = true;
+    @Info(text = "info test \u00a7cTEST", type = InfoType.ERROR, category = "Debug", subcategory = "Info")
+    public static boolean _info3 = true;
 
 }
