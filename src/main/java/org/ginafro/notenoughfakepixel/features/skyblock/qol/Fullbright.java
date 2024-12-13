@@ -1,10 +1,6 @@
 package org.ginafro.notenoughfakepixel.features.skyblock.qol;
 
-import cc.polyfrost.oneconfig.libs.eventbus.Subscribe;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.BlockPos;
-import net.minecraft.world.EnumSkyBlock;
-import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.ginafro.notenoughfakepixel.Configuration;
@@ -25,7 +21,6 @@ public class Fullbright {
     private void changeBrightness(float toLevel) {
         float moveBy = toLevel - mc.gameSettings.gammaSetting;
         if (moveBy == 0) return;
-        System.out.println("changing light level");
         mc.gameSettings.gammaSetting += moveBy;
         mc.gameSettings.saveOptions();
     }
