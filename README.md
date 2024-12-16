@@ -24,6 +24,7 @@ This is a fork and remaster of official NotEnoughFakepixel mod from GinaFro.
   - Disable Thunderlord enchantment bolts
   - No Hurt camera animation
   - Fullbright
+  - Disable Info & Watchdog messages
 - Damage Formatters
   - Damage Commas (1,314,353)
   - Damage Formatter (1.3m)
@@ -37,6 +38,7 @@ This is a fork and remaster of official NotEnoughFakepixel mod from GinaFro.
 
 ### Dungeons
 - General
+  - Show Starred mobs
   - Dungeon Map
   - Three Weirdos Solver
 - Floor 7
