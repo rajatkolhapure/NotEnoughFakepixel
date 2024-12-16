@@ -159,6 +159,10 @@ public class RenderUtils {
                 (float) entity.posZ - 0.5f);
 
         GlStateManager.disableDepth();
+        GlStateManager.disableLighting();
+        GlStateManager.disableCull();
+        GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
+        GlStateManager.disableTexture2D();
 
         Entity player = mc.getRenderViewEntity();
         double playerX = player.lastTickPosX + (player.posX - player.lastTickPosX) * partialTicks;
@@ -206,5 +210,9 @@ public class RenderUtils {
 
         tessellator.draw();
         GlStateManager.enableDepth();
+        GlStateManager.enableLighting();
+        GlStateManager.enableCull();
+        GlStateManager.enableTexture2D();
+
     }
 }

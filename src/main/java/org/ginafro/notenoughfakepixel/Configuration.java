@@ -59,8 +59,11 @@ public class Configuration extends Config {
     @Header(text = "Dungeons", category = "Dungeons", size = 2)
     public boolean _dungeons = true;
 
-    @Switch(name = "Starred Mobs Helper" , category = "Dungeons")
+    @Switch(name = "Starred Mobs Helper" , category = "Dungeons", subcategory = "Starred Mobs")
     public static boolean starredMobs = true;
+    @Color(name = "Starred Mobs Color", category = "Dungeons", subcategory = "Starred Mobs")
+    public static OneColor starredBoxColor = new OneColor(92, 154, 255);
+
     @Switch(name = "Three Weirdos Solver" , category = "Dungeons")
     public static boolean threeWeirdos = true;
 
