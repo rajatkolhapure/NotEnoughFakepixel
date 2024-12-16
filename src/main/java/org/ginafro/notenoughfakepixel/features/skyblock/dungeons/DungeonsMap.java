@@ -18,6 +18,7 @@ public class DungeonsMap {
         if(Configuration.dungeonsMap){
             if(ScoreboardUtils.inDungeons){
                 ItemStack map = Minecraft.getMinecraft().thePlayer.inventory.getStackInSlot(8);
+                if(map == null && map.getItem() == null) return;
                 if(map.getItem() instanceof ItemMap){
                     ItemMap map1 = (ItemMap) map.getItem();
                     MapData data = map1.getMapData(map , Minecraft.getMinecraft().theWorld);

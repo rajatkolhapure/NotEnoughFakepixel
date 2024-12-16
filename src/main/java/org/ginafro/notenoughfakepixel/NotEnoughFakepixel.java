@@ -18,10 +18,12 @@ import org.ginafro.notenoughfakepixel.features.duels.KDCounter;
 import org.ginafro.notenoughfakepixel.features.mlf.Info;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.DungeonsMap;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.StarredMobDisplay;
+import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.ThreeWeirdos;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.terminals.StartingWithSolver;
 import org.ginafro.notenoughfakepixel.features.skyblock.fishing.GreatCatchNotifier;
 import org.ginafro.notenoughfakepixel.features.skyblock.mining.AbilityNotifier;
 import org.ginafro.notenoughfakepixel.features.skyblock.mining.DrillFuelParsing;
+import org.ginafro.notenoughfakepixel.features.skyblock.mining.EventsMsgSupressor;
 import org.ginafro.notenoughfakepixel.features.skyblock.mining.MiningOverlay;
 import org.ginafro.notenoughfakepixel.features.skyblock.overlays.StorageOverlay;
 import org.ginafro.notenoughfakepixel.features.skyblock.qol.Fullbright;
@@ -57,11 +59,13 @@ public class NotEnoughFakepixel {
         // Dungeons
         MinecraftForge.EVENT_BUS.register(new StartingWithSolver());
         MinecraftForge.EVENT_BUS.register(new StarredMobDisplay());
+        MinecraftForge.EVENT_BUS.register(new ThreeWeirdos());
         EventManager.INSTANCE.register(new DungeonsMap());
         // Mining
         MinecraftForge.EVENT_BUS.register(new MiningOverlay());
         MinecraftForge.EVENT_BUS.register(new DrillFuelParsing());
         MinecraftForge.EVENT_BUS.register(new AbilityNotifier());
+        MinecraftForge.EVENT_BUS.register(new EventsMsgSupressor());
         // Fishing
         MinecraftForge.EVENT_BUS.register(new GreatCatchNotifier());
         // QOL

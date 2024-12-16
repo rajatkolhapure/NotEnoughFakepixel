@@ -33,4 +33,8 @@ public enum Location {
         return NONE;
     }
 
+    public boolean isDungeon(){
+        return this == DUNGEON;
+    }
+
 }

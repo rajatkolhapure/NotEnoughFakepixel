@@ -16,10 +16,8 @@ public class Configuration extends Config {
         //this.addDependency("debug", "Cant be enabled with debug2", () -> !debug2);
         //this.addDependency("debug2", "Cant be enabled with debug", () -> !debug);
 
-        this.addListener("debug", () -> debug2 = false);
-        this.addListener("debug2", () -> debug = false);
-        this.addListener("debug", () -> _debug2 = false);
-        this.addListener("debug2", () -> _debug = false);
+        this.addListener("_debug", () -> _debug2 = false);
+        this.addListener("_debug2", () -> _debug = false);
     }
 
     @Override
@@ -47,6 +45,10 @@ public class Configuration extends Config {
     public static boolean noHurtCam = true;
     @Switch(name = "1.12 Crops height" , category = "Quality of Life")
     public static boolean cropsHeight = false;
+    @Switch(name = "Disable Watchdog & Info message" , category = "Quality of Life", subcategory = "Chat")
+    public static boolean disableWatchdogInfo = false;
+    @Switch(name = "Disable Friend > joined/left message" , category = "Quality of Life", subcategory = "Chat")
+    public static boolean disableFriendJoin = false;
     @Switch(name = "Damage Commas" , category = "Quality of Life", subcategory = "Damage Formatter")
     public static boolean dmgCommas = true;
     @Switch(name = "Damage Formatter" , category = "Quality of Life", subcategory = "Damage Formatter" , description = "Formats the damage. (ie. 167k instead of 167000)")
@@ -59,6 +61,8 @@ public class Configuration extends Config {
 
     @Switch(name = "Starred Mobs Helper" , category = "Dungeons")
     public static boolean starredMobs = true;
+    @Switch(name = "Three Weirdos Solver" , category = "Dungeons")
+    public static boolean threeWeirdos = true;
 
     @Switch(name = "Dungeon Map" , category = "Dungeons", subcategory = "Dungeon Map")
     public static boolean dungeonMap = true;
@@ -107,6 +111,8 @@ public class Configuration extends Config {
     public boolean _mining = true;
     @Switch(name = "Enable mining ability Notifier" , category = "Mining", subcategory = "")
     public static boolean miningAbilityNotifier = true;
+    @Switch(name = "Disable Don Espresso messages" , category = "Mining", subcategory = "")
+    public static boolean disableDonEspresso = true;
 
 
     @Switch(name = "Drill Fuel Overlay" , category = "Mining", subcategory = "Mining Overlay" )
