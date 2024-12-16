@@ -9,14 +9,15 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.vector.Vector3f;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class RenderUtils {
+
+    private static final Minecraft mc = Minecraft.getMinecraft();
 
     public static void drawOnSlot(int size, int xSlotPos, int ySlotPos, int colour) {
         int guiLeft = (UResolution.getScaledWidth() - 176) / 2;
@@ -151,4 +152,59 @@ public class RenderUtils {
     }
 
 
+    public static void renderEntityHitbox(Entity entity, float partialTicks, Color color) {
+        Vector3f loc = new Vector3f(
+                (float) entity.posX - 0.5f,
+                (float) entity.posY - 0.5f,
+                (float) entity.posZ - 0.5f);
+
+        GlStateManager.disableDepth();
+
+        Entity player = mc.getRenderViewEntity();
+        double playerX = player.lastTickPosX + (player.posX - player.lastTickPosX) * partialTicks;
+        double playerY = player.lastTickPosY + (player.posY - player.lastTickPosY) * partialTicks;
+        double playerZ = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * partialTicks;
+
+        double x = loc.x - playerX + 0.5;
+        double y = loc.y - playerY - 0.5;
+        double z = loc.z - playerZ + 0.5;
+
+        double x1 = x - 0.5;
+        double x2 = x + 0.5;
+        double y1 = y - 1;
+        double y2 = y + 1;
+        double z1 = z - 0.5;
+        double z2 = z + 0.5;
+
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldRenderer = tessellator.getWorldRenderer();
+        worldRenderer.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
+        GL11.glLineWidth(3.0f);
+
+        int red = color.getRed();
+        int green = color.getGreen();
+        int blue = color.getBlue();
+        int alpha = color.getAlpha();
+
+        double[][] vertices = {
+                {x1, y1, z1}, {x2, y1, z1}, {x2, y2, z1}, {x1, y2, z1},
+                {x1, y1, z2}, {x2, y1, z2}, {x2, y2, z2}, {x1, y2, z2}
+        };
+
+        int[][] edges = {
+                {0, 1}, {1, 2}, {2, 3}, {3, 0},
+                {4, 5}, {5, 6}, {6, 7}, {7, 4},
+                {0, 4}, {1, 5}, {2, 6}, {3, 7}
+        };
+
+        for (int[] edge : edges) {
+            worldRenderer.pos(vertices[edge[0]][0], vertices[edge[0]][1], vertices[edge[0]][2])
+                    .color(red, green, blue, alpha).endVertex();
+            worldRenderer.pos(vertices[edge[1]][0], vertices[edge[1]][1], vertices[edge[1]][2])
+                    .color(red, green, blue, alpha).endVertex();
+        }
+
+        tessellator.draw();
+        GlStateManager.enableDepth();
+    }
 }
