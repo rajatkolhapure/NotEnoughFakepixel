@@ -63,12 +63,14 @@ public class Configuration extends Config {
     public static boolean starredMobs = true;
     @Color(name = "Starred Mobs Color", category = "Dungeons", subcategory = "Starred Mobs")
     public static OneColor starredBoxColor = new OneColor(92, 154, 255);
+    @Switch(name = "Bat Mobs Display" , category = "Dungeons", subcategory = "Starred Mobs")
+    public static boolean batMobs = true;
+    @Color(name = "Starred Mobs Color", category = "Dungeons", subcategory = "Starred Mobs")
+    public static OneColor batColor = new OneColor(92, 154, 255);
 
     @Switch(name = "Three Weirdos Solver" , category = "Dungeons")
     public static boolean threeWeirdos = true;
 
-    @Switch(name = "Dungeon Map" , category = "Dungeons", subcategory = "Dungeon Map")
-    public static boolean dungeonMap = true;
     @Switch(name = "Dungeons Map" , category = "Dungeons", subcategory = "Dungeon Map")
     public static boolean dungeonsMap = true;
     @Slider(name = "Dungeons Map Scale" ,category = "Dungeons" , subcategory = "Dungeon Map" , min = 0.1f,max=10f)

@@ -9,6 +9,8 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.passive.EntityBat;
+import net.minecraft.inventory.Slot;
 import net.minecraft.util.*;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
@@ -171,14 +173,29 @@ public class RenderUtils {
 
         double x = loc.x - playerX + 0.5;
         double y = loc.y - playerY - 0.5;
+        if (entity instanceof EntityBat){
+            y = (loc.y - playerY) + 1;
+        }
         double z = loc.z - playerZ + 0.5;
 
-        double x1 = x - 0.5;
-        double x2 = x + 0.5;
-        double y1 = y - 1;
-        double y2 = y + 1;
-        double z1 = z - 0.5;
-        double z2 = z + 0.5;
+        // IF the mob is a bat make the hitbox smaller
+        double y1, y2, x1, x2, z1, z2;
+
+        if (entity instanceof EntityBat) {
+            y1 = y - 0.3;
+            y2 = y + 0.3;
+            x1 = x - 0.3;
+            x2 = x + 0.3;
+            z1 = z - 0.3;
+            z2 = z + 0.3;
+        } else {
+            y1 = y - 1;
+            y2 = y + 1;
+            x1 = x - 0.5;
+            x2 = x + 0.5;
+            z1 = z - 0.5;
+            z2 = z + 0.5;
+        }
 
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldRenderer = tessellator.getWorldRenderer();
@@ -215,4 +232,28 @@ public class RenderUtils {
         GlStateManager.enableTexture2D();
 
     }
+
+    public static void highlightSlot(Slot slot, Color color){
+        boolean lightingState = GL11.glIsEnabled(GL11.GL_LIGHTING);
+
+        GlStateManager.disableLighting();
+        GlStateManager.color(1f, 1f, 1f, 1f);
+
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(0f, 0f, 110f + Minecraft.getMinecraft().getRenderItem().zLevel);
+        Gui.drawRect(
+                slot.xDisplayPosition,
+                slot.yDisplayPosition,
+                slot.xDisplayPosition + 16,
+                slot.yDisplayPosition + 16,
+                color.getRGB()
+        );
+
+        GlStateManager.popMatrix();
+
+        if (lightingState) {
+            GlStateManager.enableLighting();
+        }
+    }
+
 }
