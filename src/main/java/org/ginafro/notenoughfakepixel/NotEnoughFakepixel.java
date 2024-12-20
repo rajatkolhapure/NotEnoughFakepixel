@@ -15,25 +15,14 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.ginafro.notenoughfakepixel.commands.TestCommand;
 import org.ginafro.notenoughfakepixel.features.duels.KDCounter;
-import org.ginafro.notenoughfakepixel.features.mlf.Info;
-import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.BatMobDisplay;
-import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.DungeonsMap;
-import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.StarredMobDisplay;
-import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.ThreeWeirdos;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.terminals.StartingWithSolver;
-import org.ginafro.notenoughfakepixel.features.skyblock.enchanting.EnchantingSolvers;
 import org.ginafro.notenoughfakepixel.features.skyblock.fishing.GreatCatchNotifier;
-import org.ginafro.notenoughfakepixel.features.skyblock.mining.AbilityNotifier;
-import org.ginafro.notenoughfakepixel.features.skyblock.mining.DrillFuelParsing;
-import org.ginafro.notenoughfakepixel.features.skyblock.mining.EventsMsgSupressor;
-import org.ginafro.notenoughfakepixel.features.skyblock.mining.MiningOverlay;
+import org.ginafro.notenoughfakepixel.features.skyblock.mining.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.overlays.StorageOverlay;
-import org.ginafro.notenoughfakepixel.features.skyblock.qol.Fullbright;
-import org.ginafro.notenoughfakepixel.features.skyblock.qol.SlotLocking;
+import org.ginafro.notenoughfakepixel.features.skyblock.qol.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.slayers.SlayerInfoCommand;
-import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
-import org.ginafro.notenoughfakepixel.utils.TablistParser;
+import org.ginafro.notenoughfakepixel.utils.*;
 import org.lwjgl.input.Keyboard;
 
 @Mod(modid = "notenoughfakepixel", useMetadata=true)

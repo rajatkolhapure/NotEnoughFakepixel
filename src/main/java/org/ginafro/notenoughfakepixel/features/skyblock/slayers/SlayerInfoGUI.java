@@ -1,9 +1,5 @@
 package org.ginafro.notenoughfakepixel.features.skyblock.slayers;
 
-import cc.polyfrost.oneconfig.renderer.NanoVGHelper;
-import cc.polyfrost.oneconfig.renderer.font.Fonts;
-import net.minecraft.block.state.BlockState;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.inventory.GuiInventory;
@@ -17,7 +13,6 @@ import net.minecraft.entity.passive.EntityWolf;
 import org.ginafro.notenoughfakepixel.NotEnoughFakepixel;
 import org.ginafro.notenoughfakepixel.gui.ModGUI;
 
-import java.io.IOException;
 import java.util.Objects;
 
 public class SlayerInfoGUI extends ModGUI {

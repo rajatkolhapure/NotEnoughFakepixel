@@ -9,7 +9,6 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.inventory.Slot;
 import net.minecraft.util.*;
 import org.ginafro.notenoughfakepixel.variables.MobDisplayTypes;
