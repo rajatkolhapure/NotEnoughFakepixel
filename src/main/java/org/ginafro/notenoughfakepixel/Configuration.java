@@ -65,8 +65,13 @@ public class Configuration extends Config {
     public static OneColor starredBoxColor = new OneColor(92, 154, 255);
     @Switch(name = "Bat Mobs Display" , category = "Dungeons", subcategory = "Starred Mobs")
     public static boolean batMobs = true;
-    @Color(name = "Starred Mobs Color", category = "Dungeons", subcategory = "Starred Mobs")
+    @Color(name = "Bat Mob Color", category = "Dungeons", subcategory = "Starred Mobs")
     public static OneColor batColor = new OneColor(92, 154, 255);
+    @Switch(name = "Fel Mobs Display" , category = "Dungeons", subcategory = "Starred Mobs")
+    public static boolean felMob = true;
+    @Color(name = "Fel Mob Color", category = "Dungeons", subcategory = "Starred Mobs")
+    public static OneColor felColor = new OneColor(92, 154, 255);
+
 
     @Switch(name = "Three Weirdos Solver" , category = "Dungeons")
     public static boolean threeWeirdos = true;

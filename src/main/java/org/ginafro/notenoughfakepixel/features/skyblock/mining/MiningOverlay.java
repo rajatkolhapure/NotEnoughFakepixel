@@ -65,6 +65,6 @@ public class MiningOverlay extends TextHud {
                 longest = commission.length();
             }
         }
-        return longest;
+        return longest < 20 ? 20 : longest;
     }
 }

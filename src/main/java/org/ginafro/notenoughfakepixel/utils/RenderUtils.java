@@ -12,6 +12,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.inventory.Slot;
 import net.minecraft.util.*;
+import org.ginafro.notenoughfakepixel.variables.MobDisplayTypes;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -154,13 +155,14 @@ public class RenderUtils {
     }
 
 
-    public static void renderEntityHitbox(Entity entity, float partialTicks, Color color) {
+    public static void renderEntityHitbox(Entity entity, float partialTicks, Color color, MobDisplayTypes type) {
+
         Vector3f loc = new Vector3f(
                 (float) entity.posX - 0.5f,
                 (float) entity.posY - 0.5f,
                 (float) entity.posZ - 0.5f);
 
-        GlStateManager.disableDepth();
+        //GlStateManager.disableDepth();
         GlStateManager.disableLighting();
         GlStateManager.disableCull();
         GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
@@ -173,21 +175,30 @@ public class RenderUtils {
 
         double x = loc.x - playerX + 0.5;
         double y = loc.y - playerY - 0.5;
-        if (entity instanceof EntityBat){
+        if (type == MobDisplayTypes.BAT){
             y = (loc.y - playerY) + 1;
+        } else if (type == MobDisplayTypes.ENDERMAN){
+            y = loc.y - playerY + 2.3;
         }
         double z = loc.z - playerZ + 0.5;
 
         // IF the mob is a bat make the hitbox smaller
         double y1, y2, x1, x2, z1, z2;
 
-        if (entity instanceof EntityBat) {
+        if (type == MobDisplayTypes.BAT) {
             y1 = y - 0.3;
             y2 = y + 0.3;
             x1 = x - 0.3;
             x2 = x + 0.3;
             z1 = z - 0.3;
             z2 = z + 0.3;
+        }else if (type == MobDisplayTypes.ENDERMAN){
+            y1 = y - 0.5;
+            y2 = y + 3.0;
+            x1 = x - 0.5;
+            x2 = x + 0.5;
+            z1 = z - 0.5;
+            z2 = z + 0.5;
         } else {
             y1 = y - 1;
             y2 = y + 1;

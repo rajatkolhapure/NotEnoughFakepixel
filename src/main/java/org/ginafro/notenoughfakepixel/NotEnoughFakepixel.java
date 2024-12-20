@@ -20,7 +20,9 @@ import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.BatMobDisplay;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.DungeonsMap;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.StarredMobDisplay;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.ThreeWeirdos;
+import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.terminals.StartingWithSolver;
+import org.ginafro.notenoughfakepixel.features.skyblock.enchanting.EnchantingSolvers;
 import org.ginafro.notenoughfakepixel.features.skyblock.fishing.GreatCatchNotifier;
 import org.ginafro.notenoughfakepixel.features.skyblock.mining.AbilityNotifier;
 import org.ginafro.notenoughfakepixel.features.skyblock.mining.DrillFuelParsing;
@@ -61,6 +63,7 @@ public class NotEnoughFakepixel {
         MinecraftForge.EVENT_BUS.register(new StartingWithSolver());
         MinecraftForge.EVENT_BUS.register(new StarredMobDisplay());
         MinecraftForge.EVENT_BUS.register(new BatMobDisplay());
+        MinecraftForge.EVENT_BUS.register(new FelMobDisplay());
         MinecraftForge.EVENT_BUS.register(new ThreeWeirdos());
         EventManager.INSTANCE.register(new DungeonsMap());
         // Mining

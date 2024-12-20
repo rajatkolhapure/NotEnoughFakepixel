@@ -3,9 +3,13 @@ package org.ginafro.notenoughfakepixel.utils;
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Ordering;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.inventory.GuiChest;
 import net.minecraft.client.network.NetworkPlayerInfo;
+import net.minecraft.inventory.ContainerChest;
 import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.world.WorldSettings;
+import net.minecraftforge.client.event.GuiOpenEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -25,6 +29,9 @@ public class TablistParser {
     public static int mithilPowder = 0;
     public static List<String> commissions = new ArrayList<>();
 
+    public static String currentOpenChestName = "";
+    public static String lastOpenChestName = "";
+
     @SideOnly(Side.CLIENT)
     static class PlayerComparator implements Comparator<NetworkPlayerInfo> {
         private PlayerComparator() {}
@@ -41,6 +48,22 @@ public class TablistParser {
                     team2 != null ? team2.getRegisteredName() : ""
             )
             .compare(o1.getGameProfile().getName(), o2.getGameProfile().getName()).result();
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public void onGuiOpen(GuiOpenEvent event) {
+        if(!ScoreboardUtils.currentGamemode.isSkyblock()) return;
+        if(event.gui == null) return;
+
+        if(event.gui instanceof GuiChest){
+            GuiChest chest = (GuiChest) event.gui;
+            ContainerChest container = (ContainerChest) chest.inventorySlots;
+
+            currentOpenChestName = container.getLowerChestInventory().getDisplayName().getUnformattedText();
+            lastOpenChestName = currentOpenChestName;
+        } else {
+            currentOpenChestName = "";
         }
     }
 

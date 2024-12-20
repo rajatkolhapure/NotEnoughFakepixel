@@ -26,10 +26,11 @@ public enum Gamemode {
                 return gm;
             }
         }
-        return null;
+        return LOBBY;
     }
 
     public boolean isSkyblock(){
+
         return this.equals(SKYBLOCK);
     }
 

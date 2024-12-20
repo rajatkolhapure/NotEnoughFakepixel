@@ -8,6 +8,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.ginafro.notenoughfakepixel.Configuration;
 import org.ginafro.notenoughfakepixel.utils.RenderUtils;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
+import org.ginafro.notenoughfakepixel.variables.MobDisplayTypes;
 
 import java.awt.*;
 
@@ -36,7 +37,8 @@ public class BatMobDisplay {
                 RenderUtils.renderEntityHitbox(
                         entity,
                         event.partialTicks,
-                        color
+                        color,
+                        MobDisplayTypes.BAT
                 );
             }
         });

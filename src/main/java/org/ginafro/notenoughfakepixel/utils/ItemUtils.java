@@ -58,4 +58,20 @@ public class ItemUtils {
 
         return null;
     }
+
+    public static boolean hasSkinValue(String value, ItemStack item){
+        if (item == null) return false;
+        if (!item.hasTagCompound()) return false;
+        if (!item.getTagCompound().hasKey("SkullOwner")) return false;
+        NBTTagCompound skullOwner = item.getTagCompound().getCompoundTag("SkullOwner");
+        if (!skullOwner.hasKey("Properties")) return false;
+        NBTTagCompound properties = skullOwner.getCompoundTag("Properties");
+        if (!properties.hasKey("textures")) return false;
+        NBTTagList textures = properties.getTagList("textures", 10);
+        for (int i = 0; i < textures.tagCount(); i++) {
+            NBTTagCompound texture = textures.getCompoundTagAt(i);
+            if (texture.hasKey("Value") && texture.getString("Value").equals(value)) return true;
+        }
+        return false;
+    }
 }

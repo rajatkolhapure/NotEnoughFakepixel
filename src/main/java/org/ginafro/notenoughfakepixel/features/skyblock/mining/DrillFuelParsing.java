@@ -32,8 +32,9 @@ public class DrillFuelParsing {
         }
         if(!Configuration.miningOverlay.isEnabled()) return;
         if(Minecraft.getMinecraft().thePlayer == null) return;
-        if(!ScoreboardUtils.currentGamemode.isSkyblock()) return;
         if(ScoreboardUtils.currentLocation != Location.DWARVEN) return;
+
+        if(!ScoreboardUtils.currentGamemode.isSkyblock()) return;
 
         ItemStack heldItem = Minecraft.getMinecraft().thePlayer.getHeldItem();
         if (heldItem == null) return;
