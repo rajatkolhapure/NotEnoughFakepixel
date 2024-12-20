@@ -11,7 +11,7 @@ import java.util.List;
 public class MiningOverlay extends TextHud {
 
     private static int LINE_HEIGHT = 11;
-    private static float MINIMUM_WIDTH = 20;
+    private static int MINIMUM_WIDTH = 20;
 
     public MiningOverlay() {
         super(true);
@@ -65,6 +65,6 @@ public class MiningOverlay extends TextHud {
                 longest = commission.length();
             }
         }
-        return longest < 20 ? 20 : longest;
+        return longest < MINIMUM_WIDTH ? MINIMUM_WIDTH : longest;
     }
 }
