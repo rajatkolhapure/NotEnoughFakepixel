@@ -1,5 +1,8 @@
 # NotEnoughFakepixel
 
+![nef-full-white](https://github.com/user-attachments/assets/5997fc2c-2e36-4fec-b0b2-2827cf06d21c)
+
+
 This is a fork and remaster of official NotEnoughFakepixel mod from GinaFro.
 
 <div align="center">
