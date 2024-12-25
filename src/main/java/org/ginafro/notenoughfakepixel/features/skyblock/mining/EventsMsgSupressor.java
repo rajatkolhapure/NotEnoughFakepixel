@@ -51,7 +51,6 @@ public class EventsMsgSupressor {
         //System.out.println("Checking message " + e.message.getFormattedText());
         if (watchdogPattern.matcher(e.message.getFormattedText()).find() ||
             infoPattern.matcher(e.message.getFormattedText()).find()) {
-            System.out.println("Cancelling message " + e.message.getFormattedText());
             e.setCanceled(true);
         }
     }
@@ -59,7 +58,6 @@ public class EventsMsgSupressor {
     private void checkFriendJoinMessage(ClientChatReceivedEvent e) {
         if (!Configuration.disableFriendJoin) return;
         if (friendJoinPattern.matcher(e.message.getFormattedText()).find()) {
-            System.out.println("Cancelling message " + e.message.getFormattedText());
             e.setCanceled(true);
         }
     }

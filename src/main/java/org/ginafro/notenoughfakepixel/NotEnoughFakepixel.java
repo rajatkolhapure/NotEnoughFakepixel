@@ -36,8 +36,7 @@ public class NotEnoughFakepixel {
         config = new Configuration();
         ClientCommandHandler.instance.registerCommand(new TestCommand());
         ClientCommandHandler.instance.registerCommand(new SlayerInfoCommand());
-        ClientRegistry.registerKeyBinding(slotLocking);
-        System.out.println("Command Registered");
+        //ClientRegistry.registerKeyBinding(slotLocking);
         MinecraftForge.EVENT_BUS.register(this);
         registerModEvents();
     }
@@ -63,7 +62,7 @@ public class NotEnoughFakepixel {
         // Fishing
         MinecraftForge.EVENT_BUS.register(new GreatCatchNotifier());
         // QOL
-        MinecraftForge.EVENT_BUS.register(new SlotLocking());
+        //MinecraftForge.EVENT_BUS.register(new SlotLocking());
         MinecraftForge.EVENT_BUS.register(new StorageOverlay.StorageEvent());
         MinecraftForge.EVENT_BUS.register(this);
 

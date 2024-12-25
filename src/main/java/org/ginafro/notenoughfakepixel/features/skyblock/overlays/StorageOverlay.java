@@ -160,7 +160,6 @@ public class StorageOverlay extends GuiScreen {
             if(b.id == button.id){
                 if(b instanceof InvisibleButton){
                     InvisibleButton ib = (InvisibleButton) b;
-                    System.out.println("ID: " + b.id);
                     ib.process(gc);
                 }
                 else if(b instanceof SwitchButton){

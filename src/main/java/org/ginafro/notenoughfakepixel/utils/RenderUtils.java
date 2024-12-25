@@ -161,7 +161,10 @@ public class RenderUtils {
                 (float) entity.posY - 0.5f,
                 (float) entity.posZ - 0.5f);
 
-        //GlStateManager.disableDepth();
+        if (type == MobDisplayTypes.BAT){
+            GlStateManager.disableDepth();
+        }
+
         GlStateManager.disableLighting();
         GlStateManager.disableCull();
         GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);

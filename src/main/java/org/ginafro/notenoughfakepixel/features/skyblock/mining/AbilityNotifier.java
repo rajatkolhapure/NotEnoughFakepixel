@@ -31,7 +31,6 @@ public class AbilityNotifier {
             lastUsed = System.currentTimeMillis();
             canUse = lastUsed + 120000;
             notifyScheduled = true;
-            System.out.println("Ability used in " + lastUsed + " and can be used in " + canUse);
         }
     }
 
