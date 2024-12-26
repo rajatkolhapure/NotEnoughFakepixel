@@ -6,14 +6,14 @@
 This is a fork and remaster of official NotEnoughFakepixel mod from GinaFro.
 
 <div align="center">
-    <a href="https://discord.gg/https://discord.gg/8s2B722JY7" target="_blank">
-        <img alt="Discord" src="https://img.shields.io/discord/1272087961499865138?style=for-the-badge&color=008b8b&logo=discord&logoColor=white">
+    <a href="[https://discord.gg/https://discord.gg/8s2B722JY7](https://discord.gg/BJMUHGwqQu)" target="_blank">
+        <img alt="Discord" src="https://img.shields.io/discord/1318248790452342784?style=for-the-badge&logo=github&logoColor=white&color=008b8b">
     </a>
      <a href="https://github.com/davidbelesp/NotEnoughFakepixel/graphs/contributors" target="_blank">
-        <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/GinaFro/NotEnoughFakepixel?style=for-the-badge&color=008b8b&logo=github&logoColor=white">
+        <img alt="GitHub contributors" src="https://img.shields.io/github/contributors-anon/davidbelesp/NotEnoughFakepixel?style=for-the-badge&color=008b8b">
     </a>
     <a href="https://github.com/davidbelesp/NotEnoughFakepixel/releases" target="_blank">
-       <img alt="GitHub Downloads (all assets, latest release)" src="https://img.shields.io/github/downloads/davidbelesp/NotEnoughFakepixel/latest/total?style=for-the-badge&color=008b8b">
+       <img alt="GitHub Downloads (all assets, all releases)" src="https://img.shields.io/github/downloads/davidbelesp/NotEnoughFakepixel/total?style=for-the-badge&color=008b8b">
     </a>
 </div>
 
