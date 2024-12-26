@@ -23,13 +23,11 @@ import org.ginafro.notenoughfakepixel.features.skyblock.overlays.StorageOverlay;
 import org.ginafro.notenoughfakepixel.features.skyblock.qol.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.slayers.SlayerInfoCommand;
 import org.ginafro.notenoughfakepixel.utils.*;
-import org.lwjgl.input.Keyboard;
 
 @Mod(modid = "notenoughfakepixel", useMetadata=true)
 public class NotEnoughFakepixel {
 
     public static Configuration config;
-    public static KeyBinding slotLocking = new KeyBinding("Slot Locking" , Keyboard.KEY_L , "NotEnoughFakepixel");
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
