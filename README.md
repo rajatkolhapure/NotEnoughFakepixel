@@ -6,7 +6,7 @@
 This is a fork and remaster of official NotEnoughFakepixel mod from GinaFro.
 
 <div align="center">
-    <a href="[https://discord.gg/https://discord.gg/8s2B722JY7](https://discord.gg/BJMUHGwqQu)" target="_blank">
+    <a href="https://discord.gg/BJMUHGwqQu" target="_blank">
         <img alt="Discord" src="https://img.shields.io/discord/1318248790452342784?style=for-the-badge&logo=github&logoColor=white&color=008b8b">
     </a>
      <a href="https://github.com/davidbelesp/NotEnoughFakepixel/graphs/contributors" target="_blank">
