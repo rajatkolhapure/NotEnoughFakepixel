@@ -48,7 +48,7 @@ public class FelMobDisplay {
                             entity,
                             event.partialTicks,
                             color,
-                            MobDisplayTypes.ENDERMAN
+                            MobDisplayTypes.FEL
                     );
                 }
 
