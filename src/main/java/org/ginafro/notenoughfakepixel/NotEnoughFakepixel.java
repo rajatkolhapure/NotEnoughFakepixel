@@ -16,6 +16,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.ginafro.notenoughfakepixel.commands.TestCommand;
 import org.ginafro.notenoughfakepixel.features.duels.KDCounter;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.*;
+import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.terminals.ClickOnColorsSolver;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.terminals.StartingWithSolver;
 import org.ginafro.notenoughfakepixel.features.skyblock.fishing.GreatCatchNotifier;
 import org.ginafro.notenoughfakepixel.features.skyblock.mining.*;
@@ -48,6 +49,8 @@ public class NotEnoughFakepixel {
     private void registerModEvents() {
         // Dungeons
         MinecraftForge.EVENT_BUS.register(new StartingWithSolver());
+        MinecraftForge.EVENT_BUS.register(new ClickOnColorsSolver());
+
         MinecraftForge.EVENT_BUS.register(new StarredMobDisplay());
         MinecraftForge.EVENT_BUS.register(new BatMobDisplay());
         MinecraftForge.EVENT_BUS.register(new FelMobDisplay());

@@ -20,29 +20,36 @@ public class StartingWithSolver {
 
     @SubscribeEvent
     public void onOpen(GuiScreenEvent.BackgroundDrawnEvent e){
-        if(!Configuration.startsWith && ScoreboardUtils.currentGamemode != Gamemode.SKYBLOCK) return;
-        if(e.gui instanceof GuiChest){
-            GuiChest chest = (GuiChest) e.gui;
-            Container container = chest.inventorySlots;
-            if(container instanceof ContainerChest){
-                ContainerChest containerChest = (ContainerChest) container;
-                String name = containerChest.getLowerChestInventory().getDisplayName().getUnformattedText();
-                if(name.toLowerCase().contains("what starts with")){
-                    char letter = name.charAt(name.indexOf("'   ") + 1);
-                    for(Slot slot : containerChest.inventorySlots){
-                        if(slot.inventory == Minecraft.getMinecraft().thePlayer.inventory) continue;;
-                        ItemStack item = slot.getStack();
-                        if(item == null)continue;
-                        if(item.isItemEnchanted())continue;
-                        if(StringUtils.stripControlCodes(item.getDisplayName()).charAt(0) == letter) {
-                            OneColor color = Configuration.terminalColor;
-                            color.setAlpha(102);
-                            RenderUtils.drawOnSlot(chest.inventorySlots.inventorySlots.size(), slot.xDisplayPosition , slot.yDisplayPosition , color.getRGB());
-                        }
+        if(ScoreboardUtils.currentGamemode != Gamemode.SKYBLOCK) return;
+        if(!ScoreboardUtils.currentLocation.isDungeon()) return;
+        if(!Configuration.startsWith) return;
+        if(!(e.gui instanceof GuiChest)) return;
 
-                    }
+        GuiChest chest = (GuiChest) e.gui;
+        Container container = chest.inventorySlots;
+
+        if(!(container instanceof ContainerChest)) return;
+
+        ContainerChest containerChest = (ContainerChest) container;
+        String name = containerChest.getLowerChestInventory().getDisplayName().getUnformattedText();
+        if(name.toLowerCase().contains("what starts with")){
+            char letter = name.charAt(name.length() - 2);
+
+            for(Slot slot : containerChest.inventorySlots){
+                if(slot.inventory == Minecraft.getMinecraft().thePlayer.inventory) continue;
+
+                ItemStack item = slot.getStack();
+                if(item == null) continue;
+                if(item.isItemEnchanted()) continue;
+
+                if(StringUtils.stripControlCodes(item.getDisplayName()).charAt(0) == letter) {
+                    OneColor color = Configuration.terminalColor;
+                    color.setAlpha(102);
+                    RenderUtils.drawOnSlot(chest.inventorySlots.inventorySlots.size(), slot.xDisplayPosition , slot.yDisplayPosition , color.getRGB());
                 }
+
             }
         }
+
     }
 }

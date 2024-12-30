@@ -87,6 +87,9 @@ public class Configuration extends Config {
     public static boolean startsWith = true;
     @Switch(name = "Click In Order Solver" , category = "Dungeons" , subcategory = "Floor 7")
     public static boolean clickInOrder = true;
+    @Switch(name = "Select colors Solver" , category = "Dungeons" , subcategory = "Floor 7")
+    public static boolean selectColors = true;
+
     @Color(name = "Terminal Overlay Color", category = "Dungeons" , subcategory = "Floor 7")
     public static OneColor terminalColor = new OneColor(0,255,0);
 
