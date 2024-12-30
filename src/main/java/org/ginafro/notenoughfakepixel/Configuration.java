@@ -106,8 +106,16 @@ public class Configuration extends Config {
     @Header(text = "Slayer" , category = "Slayer" , size = 2)
     public boolean _slayer = true;
 
-    @Header(text = "Coming soon..." , category = "Slayer" , size = 1)
-    public static boolean slayerplaceholder = true;
+    @Switch(name = "Slayer Minibosses Display" , category = "Slayer" , subcategory = "Slayer Mobs")
+    public static boolean slayerMinibosses = true;
+    @Color(name = "Slayer Mobs Color", category = "Slayer" , subcategory = "Slayer Mobs")
+    public static OneColor slayerColor = new OneColor(92, 154, 255);
+    @Switch(name = "Slayer Bosses Display" , category = "Slayer" , subcategory = "Slayer Mobs")
+    public static boolean slayerBosses = true;
+    @Color(name = "Slayer Bosses Color", category = "Slayer" , subcategory = "Slayer Mobs")
+    public static OneColor slayerBossColor = new OneColor(92, 154, 255);
+
+
 
     // Enchanting
 

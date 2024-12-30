@@ -4,6 +4,7 @@ public enum Location {
 
     DWARVEN("sbm-"),
     HUB("skyblock-"),
+    PRIVATE_HUB("skyblock_private-"),
     DUNGEON_HUB("sbdh-"),
     BARN("sbfarms-"),
     PARK("sbpark-"),
@@ -35,6 +36,10 @@ public enum Location {
 
     public boolean isDungeon(){
         return this == DUNGEON;
+    }
+
+    public boolean isHub(){
+        return this == HUB || this == PRIVATE_HUB;
     }
 
 }

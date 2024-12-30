@@ -12,4 +12,46 @@ public class Constants {
         "overlays",
     };
 
+    public static final String[] REVENANT_SLAYER_MINIBOSSES = {
+        "Deformed Revenant",
+        "Revenant Champion",
+        "Revenant Sycophant",
+        "Atoned Revenant",
+        "Atoned Champion",
+    };
+
+    public static final String[] SVEN_SLAYER_MINIBOSSES = {
+        "Pack enforcer",
+        "Sven Alpha",
+        "Sven Follower",
+        "Sven Champion",
+    };
+
+    public static final String[] TARANTULA_SLAYER_MINIBOSSES = {
+        "Tarantula Vermin",
+        "Tarantula Beast",
+        "Mutant Tarantula",
+    };
+
+    public static final String[] VOIDGLOOM_SLAYER_MINIBOSSES = {
+        "Voidling Devotee",
+        "Voidling Radical",
+        "Voidcrazed Maniac",
+    };
+
+    public static final String[] BLAZE_SLAYER_MINIBOSSES = {
+        "Flare Demon",
+        "Kindleheart demon",
+        "Burningsoul Demon"
+    };
+
+    public static final String[] SLAYER_BOSSES = {
+        "Revenant Horror",
+        "Atoned Horror",
+        "Sven Packmaster",
+        "Tarantula Broodfather",
+        "Voidgloom Seraph",
+        "Inferno Demonlord",
+    };
+
 }
