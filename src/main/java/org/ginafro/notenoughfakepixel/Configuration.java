@@ -43,6 +43,8 @@ public class Configuration extends Config {
     public static boolean fullbright = true;
     @Switch(name = "No Hurt Camera" , category = "Quality of Life")
     public static boolean noHurtCam = true;
+    @Switch(name = "No Nausea Effect" , category = "Quality of Life")
+    public static boolean noNausea = true;
     @Switch(name = "1.12 Crops height" , category = "Quality of Life")
     public static boolean cropsHeight = false;
     @Switch(name = "Disable Watchdog & Info message" , category = "Quality of Life", subcategory = "Chat")
@@ -85,6 +87,9 @@ public class Configuration extends Config {
     public static boolean startsWith = true;
     @Switch(name = "Click In Order Solver" , category = "Dungeons" , subcategory = "Floor 7")
     public static boolean clickInOrder = true;
+    @Switch(name = "Select colors Solver" , category = "Dungeons" , subcategory = "Floor 7")
+    public static boolean selectColors = true;
+
     @Color(name = "Terminal Overlay Color", category = "Dungeons" , subcategory = "Floor 7")
     public static OneColor terminalColor = new OneColor(0,255,0);
 
@@ -104,8 +109,16 @@ public class Configuration extends Config {
     @Header(text = "Slayer" , category = "Slayer" , size = 2)
     public boolean _slayer = true;
 
-    @Header(text = "Coming soon..." , category = "Slayer" , size = 1)
-    public static boolean slayerplaceholder = true;
+    @Switch(name = "Slayer Minibosses Display" , category = "Slayer" , subcategory = "Slayer Mobs")
+    public static boolean slayerMinibosses = true;
+    @Color(name = "Slayer Mobs Color", category = "Slayer" , subcategory = "Slayer Mobs")
+    public static OneColor slayerColor = new OneColor(92, 154, 255);
+    @Switch(name = "Slayer Bosses Display" , category = "Slayer" , subcategory = "Slayer Mobs")
+    public static boolean slayerBosses = true;
+    @Color(name = "Slayer Bosses Color", category = "Slayer" , subcategory = "Slayer Mobs")
+    public static OneColor slayerBossColor = new OneColor(92, 154, 255);
+
+
 
     // Enchanting
 

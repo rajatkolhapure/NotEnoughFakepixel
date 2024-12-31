@@ -8,6 +8,8 @@
     "Accesors.AccessorGuiPlayerTabOverlay",
     "Accesors.BlockAccessor",
 
+    "EntityPlayerSPMixinNausea",
+
     "BlockWartMixinHeight",
     "BlockCropsMixinHeight",
     "BlockMixinHitbox",

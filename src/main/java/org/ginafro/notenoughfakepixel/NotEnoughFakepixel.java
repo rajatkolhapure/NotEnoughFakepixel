@@ -25,14 +25,11 @@ import org.ginafro.notenoughfakepixel.features.skyblock.slayers.SlayerInfoComman
 import org.ginafro.notenoughfakepixel.utils.*;
 import org.lwjgl.input.Keyboard;
 
-import java.awt.*;
-
 @Mod(modid = "notenoughfakepixel", useMetadata=true)
 public class NotEnoughFakepixel {
 
     public static Configuration config;
     public static KeyBinding slotLocking = new KeyBinding("Slot Locking" , Keyboard.KEY_L , "NotEnoughFakepixel");
-    public static UnicodeFontRenderer fontRenderer = UnicodeFontRenderer.getFontOnPC("Arial",40, Font.PLAIN);
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
