@@ -69,6 +69,7 @@ repositories {
     mavenCentral()
     maven("https://repo.spongepowered.org/maven/")
     maven("https://repo.polyfrost.cc/releases")
+    maven("https://mvnrepository.com/repos/central")
     // If you don't want to log in with your real minecraft account, remove this line
     maven("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1")
 }
@@ -90,6 +91,7 @@ dependencies {
     runtimeOnly("cc.polyfrost:oneconfig-wrapper-launchwrapper:1.0.0-beta+") // Should be included in jar
 
     // If you don't want mixins, remove these lines
+    implementation("org.slick2d:slick2d-core:1.0.1")
     shadowImpl("org.spongepowered:mixin:0.7.11-SNAPSHOT") {
         isTransitive = false
     }

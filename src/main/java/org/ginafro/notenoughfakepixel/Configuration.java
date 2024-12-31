@@ -141,8 +141,8 @@ public class Configuration extends Config {
 //    @Switch(name = "Jacob/Auction Timer" , category = "Skyblock")
     public static boolean jATimer = true;
 //
-//    @Switch(name = "Storage GUI Overlay" , category = "Skyblock" , subcategory = "GUI Overlays")
-    public static boolean storageOverlay = false;
+    @Switch(name = "Storage GUI Overlay" , category = "Skyblock" , subcategory = "GUI Overlays")
+    public static boolean storageOverlay = true;
 
     // DEBUG
 

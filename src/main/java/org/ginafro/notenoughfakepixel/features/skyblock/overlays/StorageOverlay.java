@@ -1,174 +1,179 @@
 package org.ginafro.notenoughfakepixel.features.skyblock.overlays;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.init.Blocks;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.Container;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.ginafro.notenoughfakepixel.Configuration;
-import org.ginafro.notenoughfakepixel.NotEnoughFakepixel;
+import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
+import java.util.List;
 
 public class StorageOverlay extends GuiScreen {
-    int unlockedEnders = 0;
-    int unlockedBags = 0;
-    public GuiContainer gc;
-    public GuiScreen gui;
-    public SwitchButton switchButton;
-    public static boolean echest = true;
+    public final static int maxButtons = 18;
+    public final static int minButtons = 1;
+    public static int buttonCount = 0;
+    public static int enderChests = 0;
+    public final GuiScreen g;
+    public final GuiContainer gc;
+    public int boxWidth,boxHeight,xPos,yPos;
+    public int buttonWidth,buttonHeight;
+    public int buttonListHeight;
+    public float scale;
+    private int scrollOffset = 0; // Tracks scrolling
+    private final int ROWS_VISIBLE = 3;
+    private final int BUTTONS_PER_ROW = 3;
 
-    public StorageOverlay(GuiScreen g){
-    gc = (GuiContainer) g;
-    gui = g;
+    public StorageOverlay(GuiScreen gs){
+        g = gs;
+        gc = (GuiContainer) gs;
     }
-
 
     @Override
     public void initGui() {
-        GlStateManager.scale(1.0f,1.0f,1.0f);
-        this.buttonList.add(switchButton = new SwitchButton(312, this.width / 2 - 100 , 10 ));
-        for(int i =9; i <17; i++){
-            Container c = gc.inventorySlots;
-            if(c.getSlot(i).getStack().getDisplayName().contains("Ender")){
-                unlockedEnders++;
-            }
-        }
-        for(int i = 27; i < 45; i++){
-            Container c = gc.inventorySlots;
-            if(!c.getSlot(i).getStack().getDisplayName().contains("Empty")){
-                unlockedBags++;
-            }
-        }
-        GlStateManager.scale(1.0f,1.0f,1.0f);
-        if(echest){
-            int yIndex = 0;
-            int xIndex = 0;
-        for(int i = 0; i < unlockedEnders; i++){
-            if(xIndex == 3){
-                yIndex++;
-                xIndex = 0;
-            }
-            int xPos = (gui.width / 2 - 275) + (186 * xIndex);
-            int yPos = 35 + (100 * yIndex);
-            this.buttonList.add(new InvisibleButton(i-1 , xPos,yPos,176,95,true));
-            xIndex++;
-            }
-        }else {
-            int yIndex = 0;
-            int xIndex = 0;
-            for(int i = 0; i < unlockedBags; i++){
-                if(xIndex == 5){
-                    yIndex++;
-                    xIndex = 0;
-                }
-                int xPos = (gui.width / 2 - 280) + (120 * xIndex);
-                int yPos = 35 + (57 * yIndex);
-                this.buttonList.add(new InvisibleButton(27 + i , xPos,yPos,116, 52,false));
-                xIndex++;
-            }
+        this.buttonList.clear();
+        buttonCount = 0;
+        enderChests = 0;
+        ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
+        scale = (float) Minecraft.getMinecraft().displayWidth/width;
+        boxWidth = (sr.getScaledWidth() / 8) * 6;
+        boxHeight = (sr.getScaledHeight() / 8) * 5;
+        xPos = sr.getScaledWidth() / 8;
+        yPos = sr.getScaledHeight() / 16;
+        buttonListHeight = boxHeight - sr.getScaledHeight() / 16;
+        buttonWidth = 110;
+        buttonHeight = 60;
+    for(int i = 0;i < 9;i++){
+        if(gc.inventorySlots.getSlot(9 + i).getStack().getDisplayName().toLowerCase().contains("ender")){
+            buttonCount++;
+            enderChests++;
         }
     }
-
-
-    @Override
-    public void updateScreen() {
-        this.buttonList.clear();
-        GlStateManager.scale(1.0f,1.0f,1.0f);
-        this.buttonList.add(switchButton = new SwitchButton(312, this.width / 2 - 100 , 10 ));
-        if(echest){
-            int yIndex = 0;
-            int xIndex = 0;
-            for(int i = 0; i < unlockedEnders; i++){
-                if(xIndex == 3){
-                    yIndex++;
-                    xIndex = 0;
-                }
-                int xPos = (gui.width / 2 - 275) + (186 * xIndex);
-                int yPos = 35 + (100 * yIndex);
-                this.buttonList.add(new InvisibleButton(i+1 , xPos,yPos,176,95,true));
-                xIndex++;
-            }
-        }else {
-            int yIndex = 0;
-            int xIndex = 0;
-            for(int i = 0; i < unlockedBags; i++){
-                if(xIndex == 5){
-                    yIndex++;
-                    xIndex = 0;
-                }
-                int xPos = (gui.width / 2 - 280) + (120 * xIndex);
-                int yPos = 35 + (57 * yIndex);
-                this.buttonList.add(new InvisibleButton(27 + i , xPos,yPos,116, 52,false));
-                xIndex++;
-            }
+    if(enderChests > 9){
+        System.out.println(enderChests);
+        enderChests = 9;
+    }
+    for(int i = 0;i < 18;i++){
+        if(!gc.inventorySlots.getSlot(27 + i).getStack().getDisplayName().toLowerCase().contains("empty")){
+            buttonCount++;
         }
+    }
+    int xIndex = 0;
+    int yIndex = 0;
+    int minus = 0;
+    for(int i = 0; i < buttonCount;i++){
+        ResourceLocation rl = new ResourceLocation("notenoughfakepixel","skyblock/storage/enderchest/enderchest_size_1.png");
+        if(i+1 > enderChests){
+            minus = enderChests;
+            rl = new ResourceLocation("notenoughfakepixel","skyblock/storage/backpacks/backpack_size_5.png");
+        }
+
+        this.buttonList.add(new StorageButton(i, 0, 0, buttonWidth, buttonHeight, rl,(i+1)-minus));
+        xIndex++;
+        if(xIndex > 2){
+            yIndex += 1;
+            xIndex = 0;
+        }
+    }
+        updateVisibleButtons();
     }
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        GlStateManager.scale(1.0f,1.0f,1.0f);
-        if(echest) {
-            int yIndex = 0;
-            int xIndex = 0;
-            for (int i = 0; i < unlockedEnders; i++) {
-                if (xIndex == 3) {
-                    yIndex++;
-                    xIndex = 0;
-                }
-                ResourceLocation r = new ResourceLocation("notenoughfakepixel:skyblock/overlay_echest.png");
-                Minecraft.getMinecraft().getTextureManager().bindTexture(r);
-                int xPos = (gui.width / 2 - 275) + (186 * xIndex);
-                int yPos = 35 + (100 * yIndex);
-                GuiScreen.drawScaledCustomSizeModalRect(xPos, yPos, 0f, 0f, 176, 95, 176, 95, 176, 95);
-                int a = i + 1;
-                this.drawString(fontRendererObj , "Ender Chest " + a    ,xPos + 88 , yPos + fontRendererObj.FONT_HEIGHT / 2 , -1);
-                xIndex++;
+        ResourceLocation bg = new ResourceLocation("notenoughfakepixel","backgrounds/dark/background.png");
+        Minecraft.getMinecraft().getTextureManager().bindTexture(bg);
+        GuiScreen.drawModalRectWithCustomSizedTexture(xPos,yPos,0f,0f,boxWidth,buttonListHeight,boxWidth,buttonListHeight);
+        ResourceLocation inv = new ResourceLocation("notenoughfakepixel","skyblock/storage/inventory.png");
+        Minecraft.getMinecraft().getTextureManager().bindTexture(inv);
+        GuiScreen.drawModalRectWithCustomSizedTexture(this.width/2 - 87,yPos + buttonListHeight + 5,0f,0f,174,105,174,105);
+        GL11.glEnable(GL11.GL_SCISSOR_TEST);
+        int scaleFactor = new ScaledResolution(mc).getScaleFactor();
+        GL11.glScissor(xPos * scaleFactor, (mc.displayHeight - (yPos + buttonListHeight) * scaleFactor), boxWidth * scaleFactor, buttonListHeight * scaleFactor);
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        GL11.glDisable(GL11.GL_SCISSOR_TEST);
+        int xIndex = 0;
+        int yIndex = 0;
+        for(int i = 0; i < Minecraft.getMinecraft().thePlayer.inventoryContainer.inventorySlots.size();i++){
+            Slot slot = Minecraft.getMinecraft().thePlayer.inventoryContainer.getSlot(i);
+            ItemStack stack = slot.getStack();
+            if(stack != null && stack.stackSize > 0) {
+                int y = yPos + buttonListHeight + 8 + (yIndex * 20);
+                int x = this.width / 2 - 83 + (xIndex * 20);
+                GlStateManager.color(1.0f,1.0f,1.0f);
+                    Minecraft.getMinecraft().getRenderItem().renderItemAndEffectIntoGUI(stack, x, y );
+                    if(stack.stackSize > 1) {
+                        fontRendererObj.drawString(String.valueOf(stack.stackSize), x + 14, y + 14, -1);
+                    }
+                    if(mouseX > x && mouseX < x + 16 && mouseY > y && mouseY < y + 16){
+                        this.renderToolTip(stack,mouseX,mouseY);
+                    }
             }
-        }else {
-            int yIndex = 0;
-            int xIndex = 0;
-            for(int i = 0; i < unlockedBags; i++){
-                if(xIndex == 5){
-                    yIndex++;
-                    xIndex = 0;
-                }
-                ResourceLocation r = new ResourceLocation("notenoughfakepixel:skyblock/overlay_bag.png");
-                Minecraft.getMinecraft().getTextureManager().bindTexture(r);
-                int xPos = (gui.width / 2 - 280) + (120 * xIndex);
-                int yPos = 35 + (57 * yIndex);
-                GuiScreen.drawScaledCustomSizeModalRect(xPos, yPos, 0f, 0f, 116, 52, 116, 52, 116, 52);
-                int a = i + 1;
-                this.drawString(fontRendererObj , "Backpack " + a,xPos + 10 , yPos + fontRendererObj.FONT_HEIGHT / 2 , -1);
-                xIndex++;
+            xIndex++;
+            if (xIndex > 8) {
+                xIndex = 0;
+                yIndex++;
             }
         }
-        super.drawScreen(mouseX, mouseY, partialTicks);
+
+    }
+
+    private void updateVisibleButtons() {
+        int startIndex = scrollOffset * BUTTONS_PER_ROW;
+        int endIndex = Math.min(startIndex + ROWS_VISIBLE * BUTTONS_PER_ROW, buttonList.size());
+
+        int xIndex = 0;
+        int yIndex = 0;
+        for (int i = 0; i < buttonList.size(); i++) {
+            GuiButton button = buttonList.get(i);
+            if (i >= startIndex && i < endIndex) {
+                button.visible = true;
+                button.xPosition = xPos + 35 + xIndex * (buttonWidth + 5);
+                button.yPosition = yPos + 5 + yIndex * (buttonHeight + 5);
+                xIndex++;
+                if (xIndex >= BUTTONS_PER_ROW) {
+                    xIndex = 0;
+                    yIndex++;
+                }
+            } else {
+                button.visible = false;
+            }
+        }
+        for(GuiButton button : buttonList){
+            if(button instanceof StorageButton){
+                if(button.yPosition + button.height > yPos + buttonListHeight){
+                    button.visible = false;
+                }else{
+                    button.visible = true;
+                }
+            }
+        }
     }
 
     @Override
-    protected void actionPerformed(GuiButton button) throws IOException {
-        for(GuiButton b : buttonList){
-            if(b.id == button.id){
-                if(b instanceof InvisibleButton){
-                    InvisibleButton ib = (InvisibleButton) b;
-                    ib.process(gc);
-                }
-                else if(b instanceof SwitchButton){
-                    SwitchButton sb = (SwitchButton) b;
-                    sb.Switch();
-                }
-            }
+    public void handleMouseInput() throws IOException {
+        super.handleMouseInput();
+        int wheel = Mouse.getEventDWheel();
+        if (wheel != 0) {
+            int maxScrollOffset = Math.max(0, (buttonCount + BUTTONS_PER_ROW) / BUTTONS_PER_ROW - ROWS_VISIBLE);
+            scrollOffset = Math.max(0, Math.min(scrollOffset - wheel / 120, maxScrollOffset));
+            updateVisibleButtons();
         }
     }
+
 
     public static class StorageEvent {
 
