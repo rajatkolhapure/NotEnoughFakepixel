@@ -164,6 +164,14 @@ public class StorageOverlay extends GuiScreen {
     }
 
     @Override
+    protected void actionPerformed(GuiButton button) throws IOException {
+        if(button instanceof StorageButton){
+            StorageButton b = (StorageButton) button;
+            b.process(this.gc);
+        }
+    }
+
+    @Override
     public void handleMouseInput() throws IOException {
         super.handleMouseInput();
         int wheel = Mouse.getEventDWheel();

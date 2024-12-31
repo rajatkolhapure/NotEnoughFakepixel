@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import org.ginafro.notenoughfakepixel.NotEnoughFakepixel;
@@ -42,5 +43,12 @@ public class StorageButton extends GuiButton {
         }
     }
 
+    public void process(GuiContainer c){
+        if(id > n) {
+            Minecraft.getMinecraft().playerController.windowClick(c.inventorySlots.windowId, 9 + n, 0, 1, Minecraft.getMinecraft().thePlayer);
+        }else {
+            Minecraft.getMinecraft().playerController.windowClick(c.inventorySlots.windowId, 27 + n, 0, 1, Minecraft.getMinecraft().thePlayer);
+        }
+    }
 
 }
