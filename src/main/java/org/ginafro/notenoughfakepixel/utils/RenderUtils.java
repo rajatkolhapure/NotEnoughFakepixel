@@ -165,9 +165,9 @@ public class RenderUtils {
                 (float) entity.posZ - 0.5f);
 
         if (type == MobDisplayTypes.BAT || isBoss){
-
+            GlStateManager.disableDepth();
         }
-        GlStateManager.disableDepth();
+
 
         GlStateManager.disableLighting();
         GlStateManager.disableCull();
