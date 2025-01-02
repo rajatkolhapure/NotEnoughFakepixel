@@ -17,26 +17,25 @@ import org.ginafro.notenoughfakepixel.commands.TestCommand;
 import org.ginafro.notenoughfakepixel.features.duels.KDCounter;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.terminals.StartingWithSolver;
+import org.ginafro.notenoughfakepixel.features.skyblock.enchanting.EnchantingSolvers;
 import org.ginafro.notenoughfakepixel.features.skyblock.fishing.GreatCatchNotifier;
 import org.ginafro.notenoughfakepixel.features.skyblock.mining.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.overlays.StorageOverlay;
 import org.ginafro.notenoughfakepixel.features.skyblock.qol.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.slayers.SlayerInfoCommand;
 import org.ginafro.notenoughfakepixel.utils.*;
-import org.lwjgl.input.Keyboard;
 
 @Mod(modid = "notenoughfakepixel", useMetadata=true)
 public class NotEnoughFakepixel {
 
     public static Configuration config;
-    public static KeyBinding slotLocking = new KeyBinding("Slot Locking" , Keyboard.KEY_L , "NotEnoughFakepixel");
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         config = new Configuration();
         ClientCommandHandler.instance.registerCommand(new TestCommand());
         ClientCommandHandler.instance.registerCommand(new SlayerInfoCommand());
-        //ClientRegistry.registerKeyBinding(slotLocking);
+
         MinecraftForge.EVENT_BUS.register(this);
         registerModEvents();
     }
@@ -49,6 +48,10 @@ public class NotEnoughFakepixel {
     private void registerModEvents() {
         // Dungeons
         MinecraftForge.EVENT_BUS.register(new StartingWithSolver());
+        //MinecraftForge.EVENT_BUS.register(new ClickOnColorsSolver());
+
+        MinecraftForge.EVENT_BUS.register(new AutoReadyDungeon());
+
         MinecraftForge.EVENT_BUS.register(new StarredMobDisplay());
         MinecraftForge.EVENT_BUS.register(new BatMobDisplay());
         MinecraftForge.EVENT_BUS.register(new FelMobDisplay());
@@ -61,6 +64,8 @@ public class NotEnoughFakepixel {
         MinecraftForge.EVENT_BUS.register(new EventsMsgSupressor());
         // Fishing
         MinecraftForge.EVENT_BUS.register(new GreatCatchNotifier());
+        // Enchanting
+        //MinecraftForge.EVENT_BUS.register(new EnchantingSolvers());
         // QOL
         //MinecraftForge.EVENT_BUS.register(new SlotLocking());
         MinecraftForge.EVENT_BUS.register(new StorageOverlay.StorageEvent());

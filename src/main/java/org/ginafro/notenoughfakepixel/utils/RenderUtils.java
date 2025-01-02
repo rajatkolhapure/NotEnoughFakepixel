@@ -165,8 +165,9 @@ public class RenderUtils {
                 (float) entity.posZ - 0.5f);
 
         if (type == MobDisplayTypes.BAT || isBoss){
-            GlStateManager.disableDepth();
+
         }
+        GlStateManager.disableDepth();
 
         GlStateManager.disableLighting();
         GlStateManager.disableCull();
@@ -226,8 +227,8 @@ public class RenderUtils {
             z1 = z - 0.75;
             z2 = z + 0.75;
         } else if (type == MobDisplayTypes.ENDERMAN){
-            y1 = y - 3;
-            y2 = y + 0;
+            y1 = y - 2;
+            y2 = y + 1;
             x1 = x - 0.5;
             x2 = x + 0.5;
             z1 = z - 0.5;

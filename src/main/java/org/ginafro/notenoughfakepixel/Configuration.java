@@ -3,8 +3,9 @@ package org.ginafro.notenoughfakepixel;
 import cc.polyfrost.oneconfig.config.Config;
 import cc.polyfrost.oneconfig.config.annotations.*;
 import cc.polyfrost.oneconfig.config.core.OneColor;
+import cc.polyfrost.oneconfig.config.core.OneKeyBind;
 import cc.polyfrost.oneconfig.config.data.*;
-import org.ginafro.notenoughfakepixel.features.duels.KDCounter;
+import cc.polyfrost.oneconfig.libs.universal.UKeyboard;
 import org.ginafro.notenoughfakepixel.features.skyblock.mining.MiningOverlay;
 
 public class Configuration extends Config {
@@ -61,6 +62,9 @@ public class Configuration extends Config {
     @Header(text = "Dungeons", category = "Dungeons", size = 2)
     public boolean _dungeons = true;
 
+    @Switch(name = "Auto Ready Dungeon" , category = "Dungeons", subcategory = "QOL", description = "Automatically ready up in dungeons.")
+    public static boolean autoReadyDungeon = true;
+
     @Switch(name = "Starred Mobs Helper" , category = "Dungeons", subcategory = "Starred Mobs")
     public static boolean starredMobs = true;
     @Color(name = "Starred Mobs Color", category = "Dungeons", subcategory = "Starred Mobs")
@@ -74,8 +78,7 @@ public class Configuration extends Config {
     @Color(name = "Fel Mob Color", category = "Dungeons", subcategory = "Starred Mobs")
     public static OneColor felColor = new OneColor(92, 154, 255);
 
-
-    @Switch(name = "Three Weirdos Solver" , category = "Dungeons")
+    @Switch(name = "Three Weirdos Solver" , category = "Dungeons", subcategory = "Puzzles")
     public static boolean threeWeirdos = true;
 
     @Switch(name = "Dungeons Map" , category = "Dungeons", subcategory = "Dungeon Map")
@@ -85,7 +88,7 @@ public class Configuration extends Config {
 
     @Switch(name = "Starts With Solver" , category = "Dungeons" , subcategory = "Floor 7")
     public static boolean startsWith = true;
-    @Switch(name = "Click In Order Solver" , category = "Dungeons" , subcategory = "Floor 7")
+    //@Switch(name = "Click In Order Solver" , category = "Dungeons" , subcategory = "Floor 7")
     public static boolean clickInOrder = true;
     @Switch(name = "Select colors Solver" , category = "Dungeons" , subcategory = "Floor 7")
     public static boolean selectColors = true;

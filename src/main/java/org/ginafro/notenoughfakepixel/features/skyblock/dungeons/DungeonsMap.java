@@ -16,7 +16,7 @@ public class DungeonsMap {
     @Subscribe
     public void onRender(HudRenderEvent e){
         if(Configuration.dungeonsMap){
-            if(ScoreboardUtils.inDungeons){
+            if(ScoreboardUtils.currentLocation.isDungeon()){
                 ItemStack map = Minecraft.getMinecraft().thePlayer.inventory.getStackInSlot(8);
                 if(map == null && map.getItem() == null) return;
                 if(map.getItem() instanceof ItemMap){
@@ -27,6 +27,7 @@ public class DungeonsMap {
                         drawMap(data,false,Configuration.dungeonMapScale);
                         GlStateManager.popMatrix();
                     }
+
                 }
             }
         }
