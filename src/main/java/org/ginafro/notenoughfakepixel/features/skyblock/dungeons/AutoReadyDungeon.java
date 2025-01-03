@@ -1,5 +1,6 @@
 package org.ginafro.notenoughfakepixel.features.skyblock.dungeons;
 
+import jdk.nashorn.internal.runtime.regexp.joni.Config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiChest;
 import net.minecraft.inventory.Container;
@@ -7,16 +8,26 @@ import net.minecraft.inventory.ContainerChest;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemSkull;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentText;
+import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.ginafro.notenoughfakepixel.Configuration;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 import org.ginafro.notenoughfakepixel.utils.TablistParser;
+import org.ginafro.notenoughfakepixel.variables.Location;
+import org.lwjgl.Sys;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class AutoReadyDungeon {
 
     private static boolean clicked = false;
+    private static boolean found = false;
+
+    private static Pattern nickedNamePattern = Pattern.compile("§r§aYou have successfully changed your nickname to (?<rank>(.+) |§r§7)(?<name>(.+))§r§a!§r");
 
     @SubscribeEvent()
     public void onGuiOpen(GuiScreenEvent.BackgroundDrawnEvent event) {
@@ -41,11 +52,18 @@ public class AutoReadyDungeon {
                 ItemStack item = slot.getStack();
                 if (item == null) continue;
                 if (item.getItem() instanceof ItemSkull) {
+                    String itemName = item.getDisplayName();
+                    System.out.println();
 
-                    Minecraft.getMinecraft().playerController.windowClick(chest.inventorySlots.windowId, slot.getSlotIndex() + 9, 0, 0, Minecraft.getMinecraft().thePlayer);
-                    clicked = true;
+                    if (itemName.contains(Minecraft.getMinecraft().thePlayer.getName()) || itemName.contains(Configuration.autoReadyName)){
+                        Minecraft.getMinecraft().playerController.windowClick(chest.inventorySlots.windowId, slot.getSlotIndex() + 9, 0, 0, Minecraft.getMinecraft().thePlayer);
+                        clicked = true;
+                        found = true;
+                    }
                 }
-
+            }
+            if (!found){
+                Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("\u00a79[NEF AutoReady] \u00a7cCould not find your head, Perhaps are you nicked?"));
             }
         }
     }
@@ -53,6 +71,23 @@ public class AutoReadyDungeon {
     @SubscribeEvent()
     public void onWorldUnload(WorldEvent.Unload event) {
         clicked = false;
+    }
+
+    @SubscribeEvent
+    public void onChatRecieve(ClientChatReceivedEvent e){
+        if(Minecraft.getMinecraft().thePlayer == null) return;
+        if (Minecraft.getMinecraft().theWorld == null) return;
+        if (ScoreboardUtils.currentLocation != Location.NONE) return;
+        // messages are like this
+        // §r§aYou have successfully changed your nickname to §r§7StoryUnknown§r§a!§r
+        Matcher matcher = nickedNamePattern.matcher(e.message.getFormattedText());
+        if (matcher.matches()) {
+            Configuration.autoReadyName = matcher.group("name");
+        }
+
+        if (e.message.getFormattedText().startsWith("§r§aYou have successfully reset your nickname!")){
+            Configuration.autoReadyName = "example name";
+        }
     }
 
 }

@@ -64,6 +64,8 @@ public class Configuration extends Config {
 
     @Switch(name = "Auto Ready Dungeon" , category = "Dungeons", subcategory = "QOL", description = "Automatically ready up in dungeons.")
     public static boolean autoReadyDungeon = true;
+    @Text(name = "Auto Ready Name (if nicked)" , category = "Dungeons", subcategory = "QOL", description = "The name this will search for when you are nicked")
+    public static String autoReadyName = "your nicked name";
 
     @Switch(name = "Starred Mobs Helper" , category = "Dungeons", subcategory = "Starred Mobs")
     public static boolean starredMobs = true;
