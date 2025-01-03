@@ -68,6 +68,7 @@ public class NotEnoughFakepixel {
         // Enchanting
         //MinecraftForge.EVENT_BUS.register(new EnchantingSolvers());
         // QOL
+        MinecraftForge.EVENT_BUS.register(new ChatCleaner());
         //MinecraftForge.EVENT_BUS.register(new SlotLocking());
         MinecraftForge.EVENT_BUS.register(new StorageOverlay.StorageEvent());
         MinecraftForge.EVENT_BUS.register(this);

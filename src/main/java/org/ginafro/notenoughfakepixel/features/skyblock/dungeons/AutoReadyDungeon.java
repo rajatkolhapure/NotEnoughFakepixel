@@ -1,6 +1,5 @@
 package org.ginafro.notenoughfakepixel.features.skyblock.dungeons;
 
-import jdk.nashorn.internal.runtime.regexp.joni.Config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiChest;
 import net.minecraft.inventory.Container;
@@ -8,7 +7,6 @@ import net.minecraft.inventory.ContainerChest;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemSkull;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.event.world.WorldEvent;
@@ -17,7 +15,6 @@ import org.ginafro.notenoughfakepixel.Configuration;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 import org.ginafro.notenoughfakepixel.utils.TablistParser;
 import org.ginafro.notenoughfakepixel.variables.Location;
-import org.lwjgl.Sys;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -53,8 +50,6 @@ public class AutoReadyDungeon {
                 if (item == null) continue;
                 if (item.getItem() instanceof ItemSkull) {
                     String itemName = item.getDisplayName();
-                    System.out.println();
-
                     if (itemName.contains(Minecraft.getMinecraft().thePlayer.getName()) || itemName.contains(Configuration.autoReadyName)){
                         Minecraft.getMinecraft().playerController.windowClick(chest.inventorySlots.windowId, slot.getSlotIndex() + 9, 0, 0, Minecraft.getMinecraft().thePlayer);
                         clicked = true;
@@ -62,9 +57,9 @@ public class AutoReadyDungeon {
                     }
                 }
             }
-            if (!found){
-                Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("\u00a79[NEF AutoReady] \u00a7cCould not find your head, Perhaps are you nicked?"));
-            }
+//            if (!found){
+//                Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("\u00a79[NEF AutoReady] \u00a7cCould not find your head, Perhaps are you nicked?"));
+//            }
         }
     }
 
@@ -78,8 +73,7 @@ public class AutoReadyDungeon {
         if(Minecraft.getMinecraft().thePlayer == null) return;
         if (Minecraft.getMinecraft().theWorld == null) return;
         if (ScoreboardUtils.currentLocation != Location.NONE) return;
-        // messages are like this
-        // §r§aYou have successfully changed your nickname to §r§7StoryUnknown§r§a!§r
+
         Matcher matcher = nickedNamePattern.matcher(e.message.getFormattedText());
         if (matcher.matches()) {
             Configuration.autoReadyName = matcher.group("name");

@@ -53,9 +53,9 @@ public class Configuration extends Config {
     @Switch(name = "Disable Friend > joined/left message" , category = "Quality of Life", subcategory = "Chat")
     public static boolean disableFriendJoin = false;
     @Switch(name = "Damage Commas" , category = "Quality of Life", subcategory = "Damage Formatter")
-    public static boolean dmgCommas = true;
+    public static boolean dmgCommas = false;
     @Switch(name = "Damage Formatter" , category = "Quality of Life", subcategory = "Damage Formatter" , description = "Formats the damage. (ie. 167k instead of 167000)")
-    public static boolean dmgFormatter = true;
+    public static boolean dmgFormatter = false;
 
     // Dungeons
 
@@ -141,7 +141,8 @@ public class Configuration extends Config {
     public static boolean miningAbilityNotifier = true;
     @Switch(name = "Disable Don Espresso messages" , category = "Mining", subcategory = "")
     public static boolean disableDonEspresso = true;
-
+    @Switch(name = "Fix Drill Animation Reset" , category = "Mining", subcategory = "" , description = "Fixes drill animation resetting when the fuel updates.")
+    public static boolean drillFix = true;
 
     @Switch(name = "Drill Fuel Overlay" , category = "Mining", subcategory = "Mining Overlay" )
     public static boolean drillFuel = true;
