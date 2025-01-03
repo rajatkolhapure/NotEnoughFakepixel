@@ -3,27 +3,26 @@ package org.ginafro.notenoughfakepixel;
 import cc.polyfrost.oneconfig.events.EventManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import org.ginafro.notenoughfakepixel.commands.TestCommand;
 import org.ginafro.notenoughfakepixel.features.duels.KDCounter;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.terminals.StartingWithSolver;
-import org.ginafro.notenoughfakepixel.features.skyblock.enchanting.EnchantingSolvers;
 import org.ginafro.notenoughfakepixel.features.skyblock.fishing.GreatCatchNotifier;
 import org.ginafro.notenoughfakepixel.features.skyblock.mining.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.overlays.StorageOverlay;
 import org.ginafro.notenoughfakepixel.features.skyblock.qol.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.slayers.SlayerInfoCommand;
 import org.ginafro.notenoughfakepixel.features.skyblock.slayers.SlayerMobsDisplay;
+import org.ginafro.notenoughfakepixel.events.Handlers.PacketHandler;
 import org.ginafro.notenoughfakepixel.utils.*;
 
 @Mod(modid = "notenoughfakepixel", useMetadata=true)
@@ -63,6 +62,7 @@ public class NotEnoughFakepixel {
         MinecraftForge.EVENT_BUS.register(new DrillFuelParsing());
         MinecraftForge.EVENT_BUS.register(new AbilityNotifier());
         MinecraftForge.EVENT_BUS.register(new EventsMsgSupressor());
+        MinecraftForge.EVENT_BUS.register(new DrillFix());
         // Fishing
         MinecraftForge.EVENT_BUS.register(new GreatCatchNotifier());
         // Enchanting
@@ -120,5 +120,11 @@ public class NotEnoughFakepixel {
         }
 
         ScoreboardUtils.parseScoreboard();
+    }
+
+    @SubscribeEvent
+    public void onServerConnect(FMLNetworkEvent.ClientConnectedToServerEvent event) {
+        event.manager.channel().pipeline().addBefore("packet_handler", "nef_packet_handler", new PacketHandler());
+        System.out.println("Added packet handler to channel pipeline.");
     }
 }
