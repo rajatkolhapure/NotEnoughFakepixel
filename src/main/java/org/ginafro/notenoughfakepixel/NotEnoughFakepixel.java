@@ -23,6 +23,7 @@ import org.ginafro.notenoughfakepixel.features.skyblock.mining.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.overlays.StorageOverlay;
 import org.ginafro.notenoughfakepixel.features.skyblock.qol.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.slayers.SlayerInfoCommand;
+import org.ginafro.notenoughfakepixel.features.skyblock.slayers.SlayerMobsDisplay;
 import org.ginafro.notenoughfakepixel.utils.*;
 
 @Mod(modid = "notenoughfakepixel", useMetadata=true)
@@ -73,6 +74,8 @@ public class NotEnoughFakepixel {
 
         MinecraftForge.EVENT_BUS.register(new Fullbright());
         MinecraftForge.EVENT_BUS.register(new KDCounter());
+        // Slayer
+        MinecraftForge.EVENT_BUS.register(new SlayerMobsDisplay());
         // Parsers
         MinecraftForge.EVENT_BUS.register(new TablistParser());
         MinecraftForge.EVENT_BUS.register(new ScoreboardUtils());
