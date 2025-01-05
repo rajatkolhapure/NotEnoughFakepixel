@@ -22,9 +22,8 @@ import java.util.regex.Pattern;
 public class AutoReadyDungeon {
 
     private static boolean clicked = false;
-    private static boolean found = false;
 
-    private static Pattern nickedNamePattern = Pattern.compile("§r§aYou have successfully changed your nickname to (?<rank>(.+) |§r§7)(?<name>(.+))§r§a!§r");
+    private static final Pattern nickedNamePattern = Pattern.compile("§r§aYou have successfully changed your nickname to (?<rank>(.+) |§r§7)(?<name>(.+))§r§a!§r");
 
     @SubscribeEvent()
     public void onGuiOpen(GuiScreenEvent.BackgroundDrawnEvent event) {
@@ -42,24 +41,40 @@ public class AutoReadyDungeon {
 
         if (chestName.startsWith("Catacombs -")) {
             ContainerChest containerChest = (ContainerChest) container;
-
+            // Cheking all slots searching for a skull
             for(Slot slot : containerChest.inventorySlots) {
-
+                // Skip player inventory
                 if (slot.inventory == Minecraft.getMinecraft().thePlayer.inventory) continue;
                 ItemStack item = slot.getStack();
+                // Skip empty slots
                 if (item == null) continue;
+                // Check if the item is a skull
                 if (item.getItem() instanceof ItemSkull) {
                     String itemName = item.getDisplayName();
-                    if (itemName.contains(Minecraft.getMinecraft().thePlayer.getName()) || itemName.contains(Configuration.autoReadyName)){
-                        Minecraft.getMinecraft().playerController.windowClick(chest.inventorySlots.windowId, slot.getSlotIndex() + 9, 0, 0, Minecraft.getMinecraft().thePlayer);
-                        clicked = true;
-                        found = true;
+                    // Checking if the skull is the player's name / nicked name
+                    if (itemName.contains(Minecraft.getMinecraft().thePlayer.getName()) ||
+                            itemName.contains(Configuration.autoReadyName)) {
+
+                        // Checking if the glass pane below the skull exists
+                        ItemStack itemReady = containerChest.getSlot(slot.getSlotIndex() + 9).getStack();
+                        // Skip if the glass pane is missing
+                        if (itemReady == null) continue;
+                        // Checking if the glass pane below is green, if it is, skip
+                        if (itemReady.getMetadata() == 13) {
+                            clicked = true;
+                            return;
+                        }
+                        // Checking if the glass pane below is red
+                        boolean isNotReady = (itemReady.getMetadata() == 14);
+                        // If it is click on it twice (grab item and put it back)
+                        if (isNotReady) {
+                            Minecraft.getMinecraft().playerController.windowClick(chest.inventorySlots.windowId, slot.getSlotIndex() + 9, 0, 0, Minecraft.getMinecraft().thePlayer);
+                            Minecraft.getMinecraft().playerController.windowClick(chest.inventorySlots.windowId, slot.getSlotIndex() + 9, 0, 0, Minecraft.getMinecraft().thePlayer);
+                        }
                     }
                 }
+
             }
-//            if (!found){
-//                Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("\u00a79[NEF AutoReady] \u00a7cCould not find your head, Perhaps are you nicked?"));
-//            }
         }
     }
 
