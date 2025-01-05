@@ -3,9 +3,7 @@ package org.ginafro.notenoughfakepixel;
 import cc.polyfrost.oneconfig.config.Config;
 import cc.polyfrost.oneconfig.config.annotations.*;
 import cc.polyfrost.oneconfig.config.core.OneColor;
-import cc.polyfrost.oneconfig.config.core.OneKeyBind;
 import cc.polyfrost.oneconfig.config.data.*;
-import cc.polyfrost.oneconfig.libs.universal.UKeyboard;
 import org.ginafro.notenoughfakepixel.features.skyblock.mining.MiningOverlay;
 
 public class Configuration extends Config {
@@ -17,6 +15,12 @@ public class Configuration extends Config {
         //this.addDependency("debug", "Cant be enabled with debug2", () -> !debug2);
         //this.addDependency("debug2", "Cant be enabled with debug", () -> !debug);
 
+        this.addListener("dmgFormatter", () -> {
+            if (dmgFormatter) {
+                dmgCommas = true;
+            }
+        });
+
         this.addListener("_debug", () -> _debug2 = false);
         this.addListener("_debug2", () -> _debug = false);
     }
@@ -25,7 +29,6 @@ public class Configuration extends Config {
     public boolean supportsProfiles() {
         return true;
     }
-
 
     @Header(text = "General" , size = 2)
     public boolean _general = true;
@@ -48,10 +51,16 @@ public class Configuration extends Config {
     public static boolean noNausea = true;
     @Switch(name = "1.12 Crops height" , category = "Quality of Life")
     public static boolean cropsHeight = false;
+    @Switch(name = "Disable Potion Effects in Inventory" , category = "Quality of Life")
+    public static boolean disablePotionEffects = true;
     @Switch(name = "Disable Watchdog & Info message" , category = "Quality of Life", subcategory = "Chat")
     public static boolean disableWatchdogInfo = false;
     @Switch(name = "Disable Friend > joined/left message" , category = "Quality of Life", subcategory = "Chat")
     public static boolean disableFriendJoin = false;
+    //@Switch(name = "Chat Cleaner" , category = "Quality of Life", subcategory = "Chat")
+    public static boolean chatCleaner = false;
+
+
     @Switch(name = "Damage Commas" , category = "Quality of Life", subcategory = "Damage Formatter")
     public static boolean dmgCommas = false;
     @Switch(name = "Damage Formatter" , category = "Quality of Life", subcategory = "Damage Formatter" , description = "Formats the damage. (ie. 167k instead of 167000)")
@@ -123,15 +132,17 @@ public class Configuration extends Config {
     @Color(name = "Slayer Bosses Color", category = "Slayer" , subcategory = "Slayer Mobs")
     public static OneColor slayerBossColor = new OneColor(92, 154, 255);
 
-
-
     // Enchanting
 
     @Header(text = "Enchanting" , category = "Enchanting" , size = 2)
     public boolean _enchanting = true;
 
-    @Header(text = "Coming soon..." , category = "Enchanting" , size = 1)
-    public static boolean ultraSequencer = true;
+    @Header(text = "Coming soon..." , category = "Enchanting" , size = 2, subcategory = "")
+
+    //@Switch(name = "Ultra Sequencer" , category = "Enchanting" , subcategory = "Enchanting")
+    public static boolean ultraSequencerSolver = true;
+    //@Switch(name = "Chronomatron Solver" , category = "Enchanting" , subcategory = "Enchanting")
+    public static boolean chronomatronSolver = true;
 
     // Mining
 
@@ -150,7 +161,7 @@ public class Configuration extends Config {
     public static boolean mithrilPowder = true;
     @Switch(name = "Ability Cooldown Overlay" , category = "Mining", subcategory = "Mining Overlay")
     public static boolean abilityCooldown = true;
-    @HUD(name = "Commision overlay" , category = "Mining", subcategory = "Mining Overlay")
+    @HUD(name = "Commission overlay" , category = "Mining", subcategory = "Mining Overlay")
     public static MiningOverlay miningOverlay = new MiningOverlay();
 
     // SKYBLOCK
@@ -159,9 +170,9 @@ public class Configuration extends Config {
 //    public boolean skyblock = true;
 //    @Switch(name = "Jacob/Auction Timer" , category = "Skyblock")
     public static boolean jATimer = true;
-//
-    @Switch(name = "Storage GUI Overlay" , category = "Skyblock" , subcategory = "GUI Overlays")
-    public static boolean storageOverlay = true;
+
+    //@Switch(name = "Storage GUI Overlay" , category = "Skyblock" , subcategory = "GUI Overlays")
+    public static boolean storageOverlay = false;
 
     // DEBUG
 
@@ -176,9 +187,7 @@ public class Configuration extends Config {
     public static boolean _debug2 = false;
     @Info(text = "info test \u00a7cTEST", type = InfoType.INFO, category = "Debug", subcategory = "Info")
     public static boolean _info = true;
-    @Info(text = "info test \u00a7eTEST", type = InfoType.WARNING, category = "Debug", subcategory = "Info")
-    public static boolean _info2 = true;
-    @Info(text = "info test \u00a7cTEST", type = InfoType.ERROR, category = "Debug", subcategory = "Info")
-    public static boolean _info3 = true;
+    @Switch(name = "Enable logs" , category = "Debug", subcategory = "Logs")
+    public static boolean logs = false;
 
 }

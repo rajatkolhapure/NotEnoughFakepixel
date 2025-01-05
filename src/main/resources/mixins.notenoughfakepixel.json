@@ -9,6 +9,7 @@
     "Accesors.BlockAccessor",
 
     "EntityPlayerSPMixinNausea",
+    "MixinInventoryEffectRenderer",
 
     "BlockWartMixinHeight",
     "BlockCropsMixinHeight",
