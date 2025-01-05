@@ -27,13 +27,16 @@ This is a fork and remaster of official NotEnoughFakepixel mod from GinaFro.
   - Disable Thunderlord enchantment bolts
   - No Hurt camera animation
   - Fullbright
+  - Disable Potion Effects in inventory (NEW)
+- Chat
+  - Disable Friend > joined messages (NEW)
   - Disable Info & Watchdog messages
 - Damage Formatters
   - Damage Commas (1,314,353)
   - Damage Formatter (1.3m)
 
 ### Farming
-- 1.12 Crop height (for better farming)
+- 1.12 Crop height
 
 ### Fishing
 - Fishing notifier for Legendary Sea Creatures
@@ -43,13 +46,20 @@ This is a fork and remaster of official NotEnoughFakepixel mod from GinaFro.
 - General
   - Show Starred mobs
   - Dungeon Map
-  - Three Weirdos Solver
+  - Three Weirdos Solver (IMPROVED)
+  - Auto Ready (NEW)
+- Starred mobs
+  - Starred mob display (NEW)
+  - Fel position display (NEW)
+  - Bat position display (NEW)
 - Floor 7
-  - Terminal solvers
+  - Terminal "colors" solver (NEW)
+  - Terminal "Starts with" solver (NEW)
 
 ### Mining
-
-- Mining Ability ready notifier
+- General
+  - Drill Animation Reset FIX (NEW)
+  - Mining Ability ready notifier
 - Mining Overlay
   - Drill Fuel Overlay
   - Mining Ability cooldown Overlay
