@@ -165,13 +165,10 @@ public class RenderUtils {
                 (float) entity.posZ - 0.5f);
 
         if (type == MobDisplayTypes.BAT || isBoss){
-
+            GlStateManager.disableDepth();
         }
-        GlStateManager.disableDepth();
-
 
         GlStateManager.disableLighting();
-        GlStateManager.disableCull();
         GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
         GlStateManager.disableTexture2D();
 
@@ -227,9 +224,16 @@ public class RenderUtils {
             x2 = x + 0.75;
             z1 = z - 0.75;
             z2 = z + 0.75;
+        }else if (type == MobDisplayTypes.ENDERMAN && Boolean.TRUE == isBoss){
+            y1 = y - 2.75;
+            y2 = y + 0.0;
+            x1 = x - 0.5;
+            x2 = x + 0.5;
+            z1 = z - 0.5;
+            z2 = z + 0.5;
         } else if (type == MobDisplayTypes.ENDERMAN){
-            y1 = y - 2;
-            y2 = y + 1;
+            y1 = y - 2.0;
+            y2 = y + 1.0;
             x1 = x - 0.5;
             x2 = x + 0.5;
             z1 = z - 0.5;
