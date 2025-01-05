@@ -1,17 +1,19 @@
 [
   {
     "modid": "${modid}",
-    "name": "Not Enough Fakepixel",
+    "name": "NotEnoughFakepixel",
     "description": "A utility mod for Fakepixel Skyblock",
     "version": "${version}",
     "mcversion": "${mcversion}",
-    "url": "https://github.com/GinaFro/Forge1.8.9Template/",
-    "updateUrl": "",
+    "url": "https://github.com/davidbelesp/NotEnoughFakepixel",
+    "updateUrl": "https://github.com/davidbelesp/NotEnoughFakepixel/releases",
     "authorList": [
+      "2pb",
+      "davidbelesp",
       "_Whispering"
     ],
     "credits": "",
-    "logoFile": "",
+    "logoFile": "src/main/resources/assets/notenoughfakepixel/logo.png",
     "screenshots": [],
     "dependencies": []
   }
