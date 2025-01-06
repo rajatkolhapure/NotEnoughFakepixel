@@ -64,11 +64,13 @@ public class NotEnoughFakepixel {
         MinecraftForge.EVENT_BUS.register(new AbilityNotifier());
         MinecraftForge.EVENT_BUS.register(new EventsMsgSupressor());
         MinecraftForge.EVENT_BUS.register(new DrillFix());
+        MinecraftForge.EVENT_BUS.register(new PuzzlerSolver());
         // Fishing
         MinecraftForge.EVENT_BUS.register(new GreatCatchNotifier());
         // Enchanting
         //MinecraftForge.EVENT_BUS.register(new EnchantingSolvers());
         // QOL
+        MinecraftForge.EVENT_BUS.register(new ShowCurrentPet());
         MinecraftForge.EVENT_BUS.register(new ChatCleaner());
         //MinecraftForge.EVENT_BUS.register(new SlotLocking());
         MinecraftForge.EVENT_BUS.register(new StorageOverlay.StorageEvent());

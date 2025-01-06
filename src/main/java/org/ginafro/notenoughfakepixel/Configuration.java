@@ -160,6 +160,8 @@ public class Configuration extends Config {
     public static boolean disableDonEspresso = true;
     @Switch(name = "Fix Drill Animation Reset" , category = "Mining", subcategory = "" , description = "Fixes drill animation resetting when the fuel updates.")
     public static boolean drillFix = true;
+    @Switch(name = "Puzzler solver" , category = "Mining", subcategory = "" , description = "Solves the Puzzler block.")
+    public static boolean puzzlerSolver = true;
 
     @Switch(name = "Drill Fuel Overlay" , category = "Mining", subcategory = "Mining Overlay" )
     public static boolean drillFuel = true;
