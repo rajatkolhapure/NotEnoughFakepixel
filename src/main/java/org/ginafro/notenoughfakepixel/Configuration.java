@@ -53,6 +53,12 @@ public class Configuration extends Config {
     public static boolean cropsHeight = false;
     @Switch(name = "Disable Potion Effects in Inventory" , category = "Quality of Life")
     public static boolean disablePotionEffects = true;
+
+    @Switch(name = "Show pet equipped" , category = "Quality of Life", subcategory = "Pets")
+    public static boolean showPetEquipped = true;
+    @Color(name = "Pet Equipped Color", category = "Quality of Life", subcategory = "Pets")
+    public static OneColor petEquippedColor = new OneColor(190, 255, 190);
+
     @Switch(name = "Disable Watchdog & Info message" , category = "Quality of Life", subcategory = "Chat")
     public static boolean disableWatchdogInfo = false;
     @Switch(name = "Disable Friend > joined/left message" , category = "Quality of Life", subcategory = "Chat")
