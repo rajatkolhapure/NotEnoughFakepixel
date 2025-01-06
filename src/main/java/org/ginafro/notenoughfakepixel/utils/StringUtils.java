@@ -11,10 +11,6 @@ public class StringUtils {
     private final static DecimalFormat TENTHS_DECIMAL_FORMAT = new DecimalFormat("#.#");
     public static final NumberFormat NUMBER_FORMAT = NumberFormat.getInstance(Locale.US);
 
-    public static String cleanColour(String in) {
-        return in.replaceAll("(?i)\\u00A7.", "");
-    }
-
     public static String cleanColourNotModifiers(String in) {
         return in.replaceAll("(?i)\\u00A7[0-9a-f]", "\u00A7r");
     }
@@ -24,7 +20,7 @@ public class StringUtils {
     }
 
     public static int cleanAndParseInt(String str) {
-        str = cleanColour(str);
+        str = cleanColor(str);
         str = str.replace(",", "");
         return Integer.parseInt(str);
     }
@@ -47,6 +43,10 @@ public class StringUtils {
             i++;
         }
         return bigInteger.toString() + (i == -1 ? "" : sizeSuffix[i]);
+    }
+
+    public static String cleanColor(String in) {
+        return in.replaceAll("(?i)\\u00A7.", "");
     }
 
     public static String shortNumberFormat(double n, int iteration) {

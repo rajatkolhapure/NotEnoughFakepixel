@@ -63,12 +63,12 @@ public class DamageCommas {
         Matcher matcherOverload = OVERLOAD_PATTERN.matcher(formatted);
         if (matcherCrit.matches()) {
             crit = true;
-            numbers = StringUtils.cleanColour(matcherCrit.group(1)).replace(",", "");
+            numbers = StringUtils.cleanColor(matcherCrit.group(1)).replace(",", "");
             prefix = "§f" + STAR;
             suffix = "§f" + STAR + matcherCrit.group(2);
         } else if (matcherOverload.matches()) {
             crit = true;
-            numbers = StringUtils.cleanColour(matcherOverload.group(2)).replace(",", "");
+            numbers = StringUtils.cleanColor(matcherOverload.group(2)).replace(",", "");
             prefix = matcherOverload.group(1) + OVERLOAD_STAR;
             suffix = matcherOverload.group(3) + OVERLOAD_STAR + "§r";
         } else {
