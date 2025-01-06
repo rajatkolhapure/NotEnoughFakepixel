@@ -2,34 +2,41 @@ package org.ginafro.notenoughfakepixel.variables;
 
 public enum Location {
 
-    DWARVEN("sbm-"),
-    HUB("skyblock-"),
-    PRIVATE_HUB("skyblock_private-"),
-    DUNGEON_HUB("sbdh-"),
-    BARN("sbfarms-"),
-    PARK("sbpark-"),
-    GOLD_MINE("sbmines-"),
-    PRIVATE_ISLAND("sbi-"),
-    JERRY("sbj-"),
-    SPIDERS_DEN("sbspiders-"),
-    THE_END("sbend-"),
-    CRIMSON_ISLE("sbcris-"),
-    DUNGEON("sbdungeon-"),
-    NONE("");
+    DWARVEN("sbm-", "sbm_sandbox-"),
+    HUB("skyblock-", "skyblock_sandbox-"),
+    PRIVATE_HUB("skyblock_private-", "none"),
+    DUNGEON_HUB("sbdh-", "sbdh_sandbox-"),
+    BARN("sbfarms-" , "sbfarms_sandbox-"),
+    PARK("sbpark-" , "sbpark_sandbox-"),
+    GOLD_MINE("sbmines-" , "sbmines_sandbox-"),
+    PRIVATE_ISLAND("sbi-", "sbi_sandbox-"),
+    JERRY("sbj-", "sbj_sandbox-"),
+    SPIDERS_DEN("sbspiders-" , "sbspiders_sandbox-"),
+    THE_END("sbend-", "sbend_sandbox-"),
+    CRIMSON_ISLE("sbcris-" , "sbcris_sandbox-"),
+    DUNGEON("sbdungeon-" , "sbdungeon_sandbox-"),
+    NONE("", "");
 
-    private String s;
+    private String location;
+    private String sandbox;
 
-    Location(String s){
-        this.s = s;
+    Location(String location, String sandbox){
+        this.location = location;
+        this.sandbox = sandbox;
+
     }
 
     public String getLocation() {
-        return this.s;
+        return this.location;
+    }
+
+    public String getSandbox() {
+        return this.sandbox;
     }
 
     public static Location getLocation(String s){
         for(Location l : Location.values()){
-            if(l.getLocation().equals(s)) return l;
+            if(l.getLocation().equals(s) || l.getSandbox().equals(s)) return l;
         }
         return NONE;
     }

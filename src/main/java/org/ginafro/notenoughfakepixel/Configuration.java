@@ -117,7 +117,7 @@ public class Configuration extends Config {
 
     @Header(text = "Fishing" , category = "Fishing" , size = 2)
     public boolean _fishing = true;
-    @Switch(name = "Notify Legendary Creatures" , category = "Fishing")
+    @Switch(name = "Notify Legendary Creatures" , category = "Fishing", description = "Notifies you when a legendary creature is catched.")
     public static boolean legendaryCreatures = true;
     //@Switch(name = "Notify on Great Catch (not working?)" , category = "Fishing")
     public static boolean greatCatch = true;
@@ -129,13 +129,13 @@ public class Configuration extends Config {
     @Header(text = "Slayer" , category = "Slayer" , size = 2)
     public boolean _slayer = true;
 
-    @Switch(name = "Slayer Minibosses Display" , category = "Slayer" , subcategory = "Slayer Mobs")
+    @Switch(name = "Slayer Minibosses Display" , category = "Slayer" , subcategory = "Slayer Mobs", description = "Draws a box around slayer minibosses.")
     public static boolean slayerMinibosses = true;
-    @Color(name = "Slayer Mobs Color", category = "Slayer" , subcategory = "Slayer Mobs")
+    @Color(name = "Slayer Minibosses Color", category = "Slayer" , subcategory = "Slayer Mobs", description = "Color of the slayer minibosses.")
     public static OneColor slayerColor = new OneColor(92, 154, 255);
-    @Switch(name = "Slayer Bosses Display" , category = "Slayer" , subcategory = "Slayer Mobs")
+    @Switch(name = "Slayer Bosses Display" , category = "Slayer" , subcategory = "Slayer Mobs", description = "Draws a box around slayer bosses.")
     public static boolean slayerBosses = true;
-    @Color(name = "Slayer Bosses Color", category = "Slayer" , subcategory = "Slayer Mobs")
+    @Color(name = "Slayer Bosses Color", category = "Slayer" , subcategory = "Slayer Mobs", description = "Color of the slayer bosses.")
     public static OneColor slayerBossColor = new OneColor(92, 154, 255);
 
     // Enchanting
@@ -154,20 +154,20 @@ public class Configuration extends Config {
 
     @Header(text = "Mining" , category = "Mining" , size = 2)
     public boolean _mining = true;
-    @Switch(name = "Enable mining ability Notifier" , category = "Mining", subcategory = "")
+    @Switch(name = "Enable mining ability Notifier" , category = "Mining", subcategory = "", description = "Notifies you when your mining ability is ready.")
     public static boolean miningAbilityNotifier = true;
-    @Switch(name = "Disable Don Espresso messages" , category = "Mining", subcategory = "")
+    @Switch(name = "Disable Don Espresso messages" , category = "Mining", subcategory = "", description = "Disables Don Espresso event messages.")
     public static boolean disableDonEspresso = true;
     @Switch(name = "Fix Drill Animation Reset" , category = "Mining", subcategory = "" , description = "Fixes drill animation resetting when the fuel updates.")
     public static boolean drillFix = true;
     @Switch(name = "Puzzler solver" , category = "Mining", subcategory = "" , description = "Solves the Puzzler block.")
     public static boolean puzzlerSolver = true;
 
-    @Switch(name = "Drill Fuel Overlay" , category = "Mining", subcategory = "Mining Overlay" )
+    @Switch(name = "Drill Fuel Overlay" , category = "Mining", subcategory = "Mining Overlay", description = "Shows the drill fuel in overlay.")
     public static boolean drillFuel = true;
-    @Switch(name = "Mithril Powder Overlay" , category = "Mining", subcategory = "Mining Overlay" )
+    @Switch(name = "Mithril Powder Overlay" , category = "Mining", subcategory = "Mining Overlay", description = "Shows the mithril powder in overlay.")
     public static boolean mithrilPowder = true;
-    @Switch(name = "Ability Cooldown Overlay" , category = "Mining", subcategory = "Mining Overlay")
+    @Switch(name = "Ability Cooldown Overlay" , category = "Mining", subcategory = "Mining Overlay", description = "Shows the ability cooldown in overlay.")
     public static boolean abilityCooldown = true;
     @HUD(name = "Commission overlay" , category = "Mining", subcategory = "Mining Overlay")
     public static MiningOverlay miningOverlay = new MiningOverlay();
