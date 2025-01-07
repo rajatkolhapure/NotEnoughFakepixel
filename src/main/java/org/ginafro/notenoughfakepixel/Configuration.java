@@ -62,6 +62,9 @@ public class Configuration extends Config {
     public static boolean cropsHeight = false;
     @Switch(name = "Disable Potion Effects in Inventory" , category = "Quality of Life")
     public static boolean disablePotionEffects = true;
+    @Switch(name = "Middle click on Menus" , category = "Quality of Life", description = "Middle clicks on menus, enchanting and f7 terminals")
+    public static boolean middleClickChests = true;
+
     @Switch(name = "Show best upgrade" , category = "Quality of Life", subcategory = "Chocolate Factory")
     public static boolean showBestUpgrade = true;
 

@@ -17,6 +17,7 @@ import org.ginafro.notenoughfakepixel.features.duels.KDCounter;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.terminals.ClickOnColorsSolver;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.terminals.StartingWithSolver;
+import org.ginafro.notenoughfakepixel.features.skyblock.enchanting.EnchantingSolvers;
 import org.ginafro.notenoughfakepixel.features.skyblock.fishing.GreatCatchNotifier;
 import org.ginafro.notenoughfakepixel.features.skyblock.mining.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.overlays.StorageOverlay;
@@ -71,6 +72,8 @@ public class NotEnoughFakepixel {
         MinecraftForge.EVENT_BUS.register(new GreatCatchNotifier());
         // Enchanting
         //MinecraftForge.EVENT_BUS.register(new EnchantingSolvers());
+        MinecraftForge.EVENT_BUS.register(new EnchantingSolvers());
+        // Chocolate Factory
         MinecraftForge.EVENT_BUS.register(new ChocolateFactory());
         // QOL
         MinecraftForge.EVENT_BUS.register(new ShowCurrentPet());
