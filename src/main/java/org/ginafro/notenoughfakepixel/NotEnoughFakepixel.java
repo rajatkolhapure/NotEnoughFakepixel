@@ -65,6 +65,7 @@ public class NotEnoughFakepixel {
         MinecraftForge.EVENT_BUS.register(new EventsMsgSupressor());
         MinecraftForge.EVENT_BUS.register(new DrillFix());
         MinecraftForge.EVENT_BUS.register(new PuzzlerSolver());
+        MinecraftForge.EVENT_BUS.register(new RemoveGhostInvis());
         // Fishing
         MinecraftForge.EVENT_BUS.register(new GreatCatchNotifier());
         // Enchanting

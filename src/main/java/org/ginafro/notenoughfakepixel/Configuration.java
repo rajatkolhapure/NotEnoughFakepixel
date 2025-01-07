@@ -5,6 +5,7 @@ import cc.polyfrost.oneconfig.config.annotations.*;
 import cc.polyfrost.oneconfig.config.core.OneColor;
 import cc.polyfrost.oneconfig.config.data.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.mining.MiningOverlay;
+import org.ginafro.notenoughfakepixel.features.skyblock.mining.RemoveGhostInvis;
 
 public class Configuration extends Config {
 
@@ -21,8 +22,16 @@ public class Configuration extends Config {
             }
         });
 
+        this.addListener("showGhosts", () -> {
+            if (!showGhosts) {
+                RemoveGhostInvis.resetGhostInvis();
+            }
+        });
+
         this.addListener("_debug", () -> _debug2 = false);
         this.addListener("_debug2", () -> _debug = false);
+
+        save();
     }
 
     @Override
@@ -162,6 +171,8 @@ public class Configuration extends Config {
     public static boolean drillFix = true;
     @Switch(name = "Puzzler solver" , category = "Mining", subcategory = "" , description = "Solves the Puzzler block.")
     public static boolean puzzlerSolver = true;
+    @Switch(name = "Remove Ghosts invisibility" , category = "Mining", subcategory = "" , description = "Removes the invisibility of the ghosts")
+    public static boolean showGhosts = true;
 
     @Switch(name = "Drill Fuel Overlay" , category = "Mining", subcategory = "Mining Overlay", description = "Shows the drill fuel in overlay.")
     public static boolean drillFuel = true;
