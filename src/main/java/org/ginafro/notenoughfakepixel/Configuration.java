@@ -62,6 +62,8 @@ public class Configuration extends Config {
     public static boolean cropsHeight = false;
     @Switch(name = "Disable Potion Effects in Inventory" , category = "Quality of Life")
     public static boolean disablePotionEffects = true;
+    @Switch(name = "Show best upgrade" , category = "Quality of Life", subcategory = "Chocolate Factory")
+    public static boolean showBestUpgrade = true;
 
     @Switch(name = "Show pet equipped" , category = "Quality of Life", subcategory = "Pets")
     public static boolean showPetEquipped = true;
