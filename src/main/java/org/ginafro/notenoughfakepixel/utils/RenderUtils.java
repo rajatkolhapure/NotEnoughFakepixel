@@ -22,16 +22,41 @@ public class RenderUtils {
     private static final Minecraft mc = Minecraft.getMinecraft();
 
     public static void drawOnSlot(int size, int xSlotPos, int ySlotPos, int colour) {
+        drawOnSlot(size, xSlotPos, ySlotPos, colour, -1);
+    }
+
+    public static void drawOnSlot(int size, int xSlotPos, int ySlotPos, int colour, int number) {
         int guiLeft = (UResolution.getScaledWidth() - 176) / 2;
         int guiTop = (UResolution.getScaledHeight() - 222) / 2;
         int x = guiLeft + xSlotPos;
         int y = guiTop + ySlotPos;
+
         // Move down when chest isn't 6 rows
         if (size != 90) y += (6 - (size - 36) / 9) * 9;
 
         GL11.glTranslated(0, 0, 1);
         Gui.drawRect(x, y, x + 16, y + 16, colour);
         GL11.glTranslated(0, 0, -1);
+
+        if (number != -1){
+            String text = String.valueOf(number);
+            int textWidth = mc.fontRendererObj.getStringWidth(text);
+
+            // Push OpenGL states
+            GlStateManager.pushMatrix();
+            GlStateManager.translate(0, 0, 300); // Bring the text to the foreground
+            GlStateManager.enableBlend();
+            GlStateManager.disableDepth();
+
+            // Render the string
+            mc.fontRendererObj.drawStringWithShadow(text, x + 8 - textWidth / 2, y + 8 - 4, 0xFFFFFF);
+
+            // Restore OpenGL states
+            GlStateManager.enableDepth();
+            GlStateManager.disableBlend();
+            GlStateManager.popMatrix();
+        }
+
     }
 
     private static final ResourceLocation beaconBeam = new ResourceLocation("textures/entity/beacon_beam.png");

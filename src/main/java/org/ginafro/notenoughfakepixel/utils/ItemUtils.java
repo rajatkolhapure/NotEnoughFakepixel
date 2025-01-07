@@ -4,6 +4,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import org.jetbrains.annotations.NotNull;
+import java.util.regex.Pattern;
 
 public class ItemUtils {
 
@@ -54,6 +55,23 @@ public class ItemUtils {
         for(int i = 0;i < lore.tagCount(); i++){
             String line = lore.getStringTagAt(i);
             if(line.contains(matcher)) return line;
+        }
+
+        return null;
+    }
+
+    public static String getLoreLine(ItemStack item, Pattern matcher){
+        if(!item.hasTagCompound()) return null;
+        if(!item.getTagCompound().hasKey("display")) return null;
+        if(!item.getTagCompound().getCompoundTag("display").hasKey("Lore")) return null;
+
+        NBTTagCompound displayTag = item.getTagCompound().getCompoundTag("display");
+        NBTTagList lore = displayTag.getTagList("Lore", 8);
+
+        for(int i = 0;i < lore.tagCount(); i++){
+            String line = lore.getStringTagAt(i);
+            if (matcher.matcher(line).matches()) return line;
+
         }
 
         return null;

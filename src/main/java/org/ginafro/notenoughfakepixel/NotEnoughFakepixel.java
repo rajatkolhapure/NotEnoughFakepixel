@@ -52,6 +52,7 @@ public class NotEnoughFakepixel {
         MinecraftForge.EVENT_BUS.register(new ClickOnColorsSolver());
 
         MinecraftForge.EVENT_BUS.register(new AutoReadyDungeon());
+        MinecraftForge.EVENT_BUS.register(new AutoCloseChests());
 
         MinecraftForge.EVENT_BUS.register(new StarredMobDisplay());
         MinecraftForge.EVENT_BUS.register(new BatMobDisplay());
@@ -70,9 +71,11 @@ public class NotEnoughFakepixel {
         MinecraftForge.EVENT_BUS.register(new GreatCatchNotifier());
         // Enchanting
         //MinecraftForge.EVENT_BUS.register(new EnchantingSolvers());
+        MinecraftForge.EVENT_BUS.register(new ChocolateFactory());
         // QOL
         MinecraftForge.EVENT_BUS.register(new ShowCurrentPet());
         MinecraftForge.EVENT_BUS.register(new ChatCleaner());
+        MinecraftForge.EVENT_BUS.register(new MiddleClickEvent());
         //MinecraftForge.EVENT_BUS.register(new SlotLocking());
         MinecraftForge.EVENT_BUS.register(new StorageOverlay.StorageEvent());
         MinecraftForge.EVENT_BUS.register(this);
