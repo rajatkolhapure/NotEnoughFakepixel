@@ -91,6 +91,8 @@ public class Configuration extends Config {
     @Text(name = "Auto Ready Name (if nicked)" , category = "Dungeons", subcategory = "QOL", description = "The name this will search for when you are nicked")
     public static String autoReadyName = "your nicked name";
 
+    @Switch(name = "Auto close chests", category = "Dungeons", subcategory = "QOL", description = "Automatically closes chests in dungeons.")
+    public static boolean autoCloseChests = true;
     @Switch(name = "Starred Mobs Helper" , category = "Dungeons", subcategory = "Starred Mobs")
     public static boolean starredMobs = true;
     @Color(name = "Starred Mobs Color", category = "Dungeons", subcategory = "Starred Mobs")
