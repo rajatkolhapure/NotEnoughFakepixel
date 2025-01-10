@@ -20,7 +20,6 @@ public class NetHandlerPlayClientMixin {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/entity/EntityPlayerSP;addChatMessage(Lnet/minecraft/util/IChatComponent;)V", ordinal = 0)
     )
     private void removeSignDebugMessage(EntityPlayerSP instance, IChatComponent component) {
-        System.out.println("Unable to locate sign at " + component.getUnformattedText());
         // No-op
     }
     //#endif
