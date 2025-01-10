@@ -73,10 +73,12 @@ public class Configuration extends Config {
     @Color(name = "Pet Equipped Color", category = "Quality of Life", subcategory = "Pets")
     public static OneColor petEquippedColor = new OneColor(190, 255, 190);
 
-    @Switch(name = "Disable Watchdog & Info message" , category = "Quality of Life", subcategory = "Chat")
+    @Switch(name = "Disable Watchdog & Info messages" , category = "Quality of Life", subcategory = "Chat")
     public static boolean disableWatchdogInfo = false;
     @Switch(name = "Disable Friend > joined/left message" , category = "Quality of Life", subcategory = "Chat")
     public static boolean disableFriendJoin = false;
+    @Switch(name = "Disable 'Selling ranks' messages" , category = "Quality of Life", subcategory = "Chat")
+    public static boolean disableSellingRanks = false;
     //@Switch(name = "Chat Cleaner" , category = "Quality of Life", subcategory = "Chat")
     public static boolean chatCleaner = false;
     @Switch(name = "Scrollable tooltips" , category = "Quality of Life", subcategory = "Items", description = "Scroll through the item lore")
