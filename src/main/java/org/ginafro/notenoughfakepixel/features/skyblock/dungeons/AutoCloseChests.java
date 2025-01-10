@@ -22,17 +22,10 @@ public class AutoCloseChests {
         if (event.gui instanceof GuiChest) {
             GuiChest chestGui = (GuiChest) event.gui;
             ContainerChest chestContainer = (ContainerChest) chestGui.inventorySlots;
-
             // Get the name of the chest
             String chestName = chestContainer.getLowerChestInventory().getDisplayName().getUnformattedText();
-            System.out.println(chestName);
-            System.out.println(TARGET_CHEST_NAME.equals(chestName));
-
             // Check if the chest name matches the target and cancel the event
             if (TARGET_CHEST_NAME.equals(chestName)) {
-
-
-                //event.setCanceled(true); // Prevent the chest GUI from opening
                 Minecraft.getMinecraft().thePlayer.closeScreen(); // Close the chest
             }
         }
