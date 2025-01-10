@@ -12,6 +12,7 @@
     "InGameHudMixin",
     "MixinEntityRenderer",
     "MixinGuiMainMenu",
+    "MixinGuiUtils",
     "MixinInventoryEffectRenderer",
     "MixinRendererLivingEntity",
     "MixinRenderLightningBolt",

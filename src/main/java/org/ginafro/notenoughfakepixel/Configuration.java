@@ -79,6 +79,8 @@ public class Configuration extends Config {
     public static boolean disableFriendJoin = false;
     //@Switch(name = "Chat Cleaner" , category = "Quality of Life", subcategory = "Chat")
     public static boolean chatCleaner = false;
+    @Switch(name = "Scrollable tooltips" , category = "Quality of Life", subcategory = "Items", description = "Scroll through the item lore")
+    public static boolean scrollableTooltips = true;
 
 
     @Switch(name = "Damage Commas" , category = "Quality of Life", subcategory = "Damage Formatter")
