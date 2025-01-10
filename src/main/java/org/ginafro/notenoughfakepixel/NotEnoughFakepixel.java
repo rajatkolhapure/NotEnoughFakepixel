@@ -71,7 +71,6 @@ public class NotEnoughFakepixel {
         // Fishing
         MinecraftForge.EVENT_BUS.register(new GreatCatchNotifier());
         // Enchanting
-        //MinecraftForge.EVENT_BUS.register(new EnchantingSolvers());
         MinecraftForge.EVENT_BUS.register(new EnchantingSolvers());
         // Chocolate Factory
         MinecraftForge.EVENT_BUS.register(new ChocolateFactory());
