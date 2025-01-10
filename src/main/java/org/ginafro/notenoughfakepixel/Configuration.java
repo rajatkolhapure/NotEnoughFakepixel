@@ -66,8 +66,6 @@ public class Configuration extends Config {
     public static boolean fullbright = true;
     @Switch(name = "No Hurt Camera" , category = "Quality of Life")
     public static boolean noHurtCam = true;
-    @Switch(name = "No Nausea Effect" , category = "Quality of Life")
-    public static boolean noNausea = true;
     @Switch(name = "1.12 Crops height" , category = "Quality of Life")
     public static boolean cropsHeight = false;
     @Switch(name = "Disable Potion Effects in Inventory" , category = "Quality of Life")
