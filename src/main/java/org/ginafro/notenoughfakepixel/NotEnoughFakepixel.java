@@ -54,6 +54,7 @@ public class NotEnoughFakepixel {
 
         MinecraftForge.EVENT_BUS.register(new AutoReadyDungeon());
         MinecraftForge.EVENT_BUS.register(new AutoCloseChests());
+        MinecraftForge.EVENT_BUS.register(new AutoDropItems());
 
         MinecraftForge.EVENT_BUS.register(new StarredMobDisplay());
         MinecraftForge.EVENT_BUS.register(new BatMobDisplay());
