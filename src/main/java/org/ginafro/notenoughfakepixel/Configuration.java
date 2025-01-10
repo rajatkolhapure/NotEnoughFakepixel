@@ -4,6 +4,8 @@ import cc.polyfrost.oneconfig.config.Config;
 import cc.polyfrost.oneconfig.config.annotations.*;
 import cc.polyfrost.oneconfig.config.core.OneColor;
 import cc.polyfrost.oneconfig.config.data.*;
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.ChatComponentText;
 import org.ginafro.notenoughfakepixel.features.skyblock.mining.MiningOverlay;
 import org.ginafro.notenoughfakepixel.features.skyblock.mining.RemoveGhostInvis;
 
@@ -25,6 +27,14 @@ public class Configuration extends Config {
         this.addListener("showGhosts", () -> {
             if (!showGhosts) {
                 RemoveGhostInvis.resetGhostInvis();
+            }
+        });
+
+        this.addListener("disableRain", () -> {
+            if (disableRain) {
+                Minecraft.getMinecraft().thePlayer.addChatMessage(
+                        new ChatComponentText("[\u00a7eNEF\u00a7r]\u00a7c You might need to change lobby for the rain to disappear.")
+                );
             }
         });
 
@@ -62,8 +72,8 @@ public class Configuration extends Config {
     public static boolean cropsHeight = false;
     @Switch(name = "Disable Potion Effects in Inventory" , category = "Quality of Life")
     public static boolean disablePotionEffects = true;
-    @Switch(name = "Middle click on Menus" , category = "Quality of Life", description = "Middle clicks on menus, enchanting and f7 terminals")
-    public static boolean middleClickChests = true;
+    @Switch(name = "Disable rain" , category = "Quality of Life", description = "Disables rain rendering")
+    public static boolean disableRain = true;
 
     @Switch(name = "Show best upgrade" , category = "Quality of Life", subcategory = "Chocolate Factory")
     public static boolean showBestUpgrade = true;
@@ -129,6 +139,8 @@ public class Configuration extends Config {
     public static boolean clickInOrder = true;
     @Switch(name = "Select colors Solver" , category = "Dungeons" , subcategory = "Floor 7")
     public static boolean selectColors = true;
+    @Switch(name = "Middle click on terminals" , category = "Quality of Life", description = "Middle clicks on terminals")
+    public static boolean middleClickChests = true;
 
     @Color(name = "Terminal Overlay Color", category = "Dungeons" , subcategory = "Floor 7")
     public static OneColor terminalColor = new OneColor(0,255,0);
