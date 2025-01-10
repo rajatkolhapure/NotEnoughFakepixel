@@ -21,17 +21,22 @@ public class ChatCleaner {
         if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
 
         cancelMessage(Configuration.disableSellingRanks, event, sellingRankPattern);
-        cancelMessage(Configuration.disableWatchdogInfo, event, watchdogPattern);
-        cancelMessage(Configuration.disableWatchdogInfo, event, infoPattern);
-        cancelMessage(Configuration.disableFriendJoin, event, friendJoinPattern);
+        cancelMessage(Configuration.disableWatchdogInfo, event, watchdogPattern, true);
+        cancelMessage(Configuration.disableWatchdogInfo, event, infoPattern, true);
+        cancelMessage(Configuration.disableFriendJoin, event, friendJoinPattern, true);
     }
 
-    private void cancelMessage(boolean option, ClientChatReceivedEvent e, Pattern pattern){
+    private void cancelMessage(boolean option, ClientChatReceivedEvent e, Pattern pattern, boolean formatted){
         if (!option) return;
         String message = e.message.getUnformattedText();
+        if (formatted) message = e.message.getFormattedText();
         if (pattern.matcher(message).matches()){
             e.setCanceled(true);
         }
+    }
+
+    private void cancelMessage(boolean option, ClientChatReceivedEvent e, Pattern pattern){
+        cancelMessage(option, e, pattern, false);
     }
 
 }
