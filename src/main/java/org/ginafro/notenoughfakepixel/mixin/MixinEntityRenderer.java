@@ -22,11 +22,4 @@ public abstract class MixinEntityRenderer implements IResourceManagerReloadListe
         if (Configuration.disableRain) { ci.cancel(); }
     }
 
-    @Inject(method = "updateCameraAndRender", at = @At("HEAD"), cancellable = true)
-    private void disablePortalEffect(float partialTicks, long nanoTime, CallbackInfo ci) {
-        if (Configuration.noNausea) {
-            ci.cancel();
-        }
-    }
-
 }

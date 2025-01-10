@@ -14,11 +14,13 @@ public class ChatCleaner {
     private Pattern watchdogPattern = Pattern.compile("§4\\[WATCHDOG ANNOUNCEMENT]\n");
     private Pattern infoPattern = Pattern.compile("§b\\[PLAYER INFORMATION]\n");
     private Pattern friendJoinPattern = Pattern.compile("§aFriend > ");
+    private Pattern middleBar = Pattern.compile("(§6|§c)[0-9]+/[0-9]+❤(.)+");
 
     @SubscribeEvent
     public void onChatRecieve(ClientChatReceivedEvent event){
         if (Minecraft.getMinecraft().thePlayer == null) return;
         if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
+        if (middleBar.matcher(event.message.getFormattedText()).matches()) return;
 
         cancelMessage(Configuration.disableSellingRanks, event, sellingRankPattern);
         cancelMessage(Configuration.disableWatchdogInfo, event, watchdogPattern, true);
@@ -30,7 +32,7 @@ public class ChatCleaner {
         if (!option) return;
         String message = e.message.getUnformattedText();
         if (formatted) message = e.message.getFormattedText();
-        if (pattern.matcher(message).matches()){
+        if (pattern.matcher(message).find() || pattern.matcher(message).matches()){
             e.setCanceled(true);
         }
     }
