@@ -78,6 +78,7 @@ public class NotEnoughFakepixel {
         MinecraftForge.EVENT_BUS.register(new ShowCurrentPet());
         MinecraftForge.EVENT_BUS.register(new ChatCleaner());
         MinecraftForge.EVENT_BUS.register(new MiddleClickEvent());
+        MinecraftForge.EVENT_BUS.register(new ScrollableTooltips());
         //MinecraftForge.EVENT_BUS.register(new SlotLocking());
         MinecraftForge.EVENT_BUS.register(new StorageOverlay.StorageEvent());
         MinecraftForge.EVENT_BUS.register(this);
