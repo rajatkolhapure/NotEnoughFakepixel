@@ -110,6 +110,8 @@ public class Configuration extends Config {
 
     @Switch(name = "Auto close chests", category = "Dungeons", subcategory = "QOL", description = "Automatically closes chests in dungeons.")
     public static boolean autoCloseChests = true;
+    @Switch(name = "Auto drop useless items", category = "Dungeons", subcategory = "QOL", description = "Automatically drop training weights and defuse kits from dungeon secrets.")
+    public static boolean autoDropItems = true;
     @Switch(name = "Starred Mobs Helper" , category = "Dungeons", subcategory = "Starred Mobs")
     public static boolean starredMobs = true;
     @Color(name = "Starred Mobs Color", category = "Dungeons", subcategory = "Starred Mobs")

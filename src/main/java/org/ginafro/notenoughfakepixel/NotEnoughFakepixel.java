@@ -22,6 +22,7 @@ import org.ginafro.notenoughfakepixel.features.skyblock.fishing.GreatCatchNotifi
 import org.ginafro.notenoughfakepixel.features.skyblock.mining.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.overlays.StorageOverlay;
 import org.ginafro.notenoughfakepixel.features.skyblock.qol.*;
+import org.ginafro.notenoughfakepixel.features.skyblock.diana.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.slayers.SlayerInfoCommand;
 import org.ginafro.notenoughfakepixel.features.skyblock.slayers.SlayerMobsDisplay;
 import org.ginafro.notenoughfakepixel.events.Handlers.PacketHandler;
@@ -54,6 +55,7 @@ public class NotEnoughFakepixel {
 
         MinecraftForge.EVENT_BUS.register(new AutoReadyDungeon());
         MinecraftForge.EVENT_BUS.register(new AutoCloseChests());
+        MinecraftForge.EVENT_BUS.register(new AutoDropItems());
 
         MinecraftForge.EVENT_BUS.register(new StarredMobDisplay());
         MinecraftForge.EVENT_BUS.register(new BatMobDisplay());
@@ -85,6 +87,8 @@ public class NotEnoughFakepixel {
 
         MinecraftForge.EVENT_BUS.register(new Fullbright());
         MinecraftForge.EVENT_BUS.register(new KDCounter());
+        // Diana
+        MinecraftForge.EVENT_BUS.register(new Diana());
         // Slayer
         MinecraftForge.EVENT_BUS.register(new SlayerMobsDisplay());
         // Parsers
