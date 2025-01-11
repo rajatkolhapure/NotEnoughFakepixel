@@ -38,17 +38,17 @@ public class Diana {
                      particles.getParticleType().getParticleName().equals("dripLava") ||
                      particles.getParticleType().getParticleName().equals("enchantmenttable") ||
                      particles.getParticleType().getParticleName().equals("footstep")) {
-                 double x = particles.getXCoordinate();
+                 /*double x = particles.getXCoordinate();
                  double y = particles.getYCoordinate();
-                 double z = particles.getZCoordinate();
-                 if (particles.getParticleType().getParticleName().equals("dripLava")) {
+                 double z = particles.getZCoordinate();*/
+                 /*if (particles.getParticleType().getParticleName().equals("dripLava")) {
                     System.out.println(particles.getParticleType().getParticleName());
                     System.out.println(particles.getParticleCount());
                      System.out.println(particles.getXOffset());
                      System.out.println(particles.getYOffset());
                      System.out.println(particles.getZOffset());
                      //System.out.println(String.valueOf(x) + ", " + String.valueOf(y) + ", " + String.valueOf(z));
-                 }
+                 }*/
 
 
                  //if (particles.getParticleType().getParticleName().equals("dripLava") && ) {}
@@ -91,9 +91,9 @@ public class Diana {
         }
     }
 
-    @SubscribeEvent
+    /*@SubscribeEvent
     public void onGuiBackgroundRender(GuiScreenEvent.BackgroundDrawnEvent event) {
         if (!ScoreboardUtils.currentLocation.isHub()) return; // Check if the player is in a hub
         processor.clearProcessedGroups();
-    }
+    }*/
 }

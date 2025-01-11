@@ -1,6 +1,8 @@
 package org.ginafro.notenoughfakepixel.features.skyblock.diana;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.play.server.S2APacketParticles;
@@ -9,8 +11,10 @@ import org.ginafro.notenoughfakepixel.utils.RenderUtils;
 
 public class ParticleProcessor {
 
+    private final float distanceThreshold = 4.0f;
     private final Queue<S2APacketParticles> particleQueue = new ConcurrentLinkedQueue<>();
     private final Set<ClassificationResult> processedGroups = new HashSet<>(); // To track already classified groups
+    private int delaySWaypointRemove = 20;
 
     public void addParticle(S2APacketParticles particle) {
         particleQueue.add(particle);
@@ -18,7 +22,7 @@ public class ParticleProcessor {
             System.out.println(p.getParticleType().getParticleName());
         }*/
         //System.out.println(processedGroups.toString());
-        if (particleQueue.size() > 1) {
+        if (particleQueue.size() > 30) {
             // Procesar partículas acumuladas
             List<ParticleProcessor.ClassificationResult> results = processParticles();
             /*for (ParticleProcessor.ClassificationResult result : results) {
@@ -40,13 +44,15 @@ public class ParticleProcessor {
                 currentGroup.add(currentParticle);
             } else {
                 if (!currentGroup.isEmpty()) {
+                    System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                    for (S2APacketParticles p : currentGroup) {
+                        System.out.println(p);
+                    }
+                    System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
                     ClassificationResult result = classifyGroup(currentGroup);
                     if (result != null && !isDuplicate(result)) {
                         results.add(result);
                         markAsProcessed(result);
-                        //Waypoint waypoint = new Waypoint(result.getCoordinates()[0], result.getCoordinates()[1], result.getCoordinates()[2], Minecraft.getMinecraft().theWorld);
-
-
                     }
                 }
                 currentGroup.clear();
@@ -74,24 +80,25 @@ public class ParticleProcessor {
                         Math.pow(p1.getYCoordinate() - p2.getYCoordinate(), 2) +
                         Math.pow(p1.getZCoordinate() - p2.getZCoordinate(), 2)
         );
-        return distance < 4.0;
+        return distance < distanceThreshold;
     }
 
     private ClassificationResult classifyGroup(List<S2APacketParticles> group) {
         Set<String> groupTypes = new HashSet<>();
         double sumX = 0, sumY = 0, sumZ = 0;
-
+        int cont = 0;
         for (S2APacketParticles particle : group) {
             groupTypes.add(particle.getParticleType().getParticleName());
-            sumX += particle.getXCoordinate();
-            sumY += particle.getYCoordinate();
-            sumZ += particle.getZCoordinate();
+            if (particle.getParticleType().getParticleName().equals("enchantmenttable")) {
+                cont++;
+                sumX += particle.getXCoordinate();
+                sumY += particle.getYCoordinate();
+                sumZ += particle.getZCoordinate();
+            }
         }
-
-        int size = group.size();
-        double avgX = sumX / size;
-        double avgY = sumY / size;
-        double avgZ = sumZ / size;
+        double avgX = sumX / cont;
+        double avgY = sumY / cont;
+        double avgZ = sumZ / cont;
 
         int[] roundedCoordinates = new int[]{
                 (int) Math.round(avgX),
@@ -99,7 +106,7 @@ public class ParticleProcessor {
                 (int) Math.round(avgZ)
         };
 
-        if (groupTypes.contains("magicCrit") && groupTypes.contains("enchantmenttable") && groupTypes.contains("footstep")) {
+        if (groupTypes.contains("magicCrit") && groupTypes.contains("enchantmenttable")) {
             return new ClassificationResult("EMPTY", roundedCoordinates);
         }
         if (groupTypes.contains("crit") && groupTypes.contains("enchantmenttable")) {
@@ -136,11 +143,17 @@ public class ParticleProcessor {
                         Math.pow(coords1[1] - coords2[1], 2) +
                         Math.pow(coords1[2] - coords2[2], 2)
         );
-        return distance < 2.0; // Adjust threshold as needed
+        return distance < distanceThreshold; // Adjust threshold as needed
     }
 
     private void markAsProcessed(ClassificationResult result) {
         processedGroups.add(result);
+        ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(1);
+        exec.schedule(new Runnable() {
+            public void run() {
+                processedGroups.remove(result);
+            }
+        }, delaySWaypointRemove, TimeUnit.SECONDS);
     }
 
     public Set<ClassificationResult> getProcessedGroups() {
