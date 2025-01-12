@@ -2,10 +2,11 @@ package org.ginafro.notenoughfakepixel.features.skyblock.dungeons;
 
 import cc.polyfrost.oneconfig.config.core.OneColor;
 import cc.polyfrost.oneconfig.hud.TextHud;
-import net.minecraft.client.Minecraft;
 import net.minecraft.util.EnumChatFormatting;
 import org.ginafro.notenoughfakepixel.Configuration;
+import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 import org.ginafro.notenoughfakepixel.utils.TablistParser;
+import org.ginafro.notenoughfakepixel.variables.DungeonFloor;
 
 import java.util.List;
 
@@ -46,16 +47,34 @@ public class SecretOverlay extends TextHud {
 
     @Override
     protected boolean shouldShow() {
-        if (!super.shouldShow()) {
-            return false;
-        }
+        if (!super.shouldShow()) return false;
+        if (!ScoreboardUtils.currentLocation.isDungeon()) return false;
+
         return Configuration.secretOverlay;
     }
 
     @Override
     protected void getLines(List<String> lines, boolean example) {
         String line = EnumChatFormatting.GRAY + "Secrets: " + EnumChatFormatting.WHITE + TablistParser.secretPercentage + "%";
-        lines.add(centerText(line, getWidth(lines)));
+        lines.add(centerText(getSecretDisplay(), getWidth(lines)));
     }
+
+    private String getSecretDisplay() {
+        String returnString = "\u00a77Secrets: ";
+        int secretPercentage = TablistParser.secretPercentage;
+        int secretNeeded = DungeonFloor.getFloor(ScoreboardUtils.currentFloor.name()).getSecretPercentage();
+        if (secretPercentage == -1) returnString = returnString + "\u00a7cN/A";
+        else returnString = returnString + (
+                secretPercentage > secretNeeded ? "\u00a7a" : "\u00a7c"
+        ) + secretPercentage + "%";
+
+        if (secretPercentage >= secretNeeded && ScoreboardUtils.clearedPercentage >= 100) {
+            returnString = returnString + " \u00a76(S+)";
+        }
+
+        return returnString;
+    }
+
+
 
 }

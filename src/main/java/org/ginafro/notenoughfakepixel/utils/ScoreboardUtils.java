@@ -12,6 +12,8 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StringUtils;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.SecretOverlay;
+import org.ginafro.notenoughfakepixel.variables.DungeonFloor;
 import org.ginafro.notenoughfakepixel.variables.Gamemode;
 import org.ginafro.notenoughfakepixel.variables.Area;
 import org.ginafro.notenoughfakepixel.variables.Location;
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.ConcurrentModificationException;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class ScoreboardUtils {
@@ -27,16 +30,51 @@ public class ScoreboardUtils {
     public static Area currentArea = Area.NONE;
     public static Gamemode currentGamemode = Gamemode.LOBBY;
     public static Location currentLocation = Location.NONE;
+
     public static boolean inDungeons = false;
+    public static DungeonFloor currentFloor = DungeonFloor.NONE;
+    public static int clearedPercentage = -1;
+
+    private static Pattern floorPattern = Pattern.compile(" §7⏣ §cThe Catacombs §7\\(<?floor>.{2}\\)");
 
     public static void parseScoreboard() {
         Minecraft mc = Minecraft.getMinecraft();
 
         if (!mc.isSingleplayer() && mc.getCurrentServerData().serverIP.contains("fakepixel")) {
-            ScoreObjective objective = mc.theWorld.getScoreboard().getObjectiveInDisplaySlot(1);
+            Scoreboard scoreboard = mc.theWorld.getScoreboard();
+
+            ScoreObjective objective = scoreboard.getObjectiveInDisplaySlot(1);
             if (objective != null) {
                 String objName = ScoreboardUtils.cleanSB(objective.getDisplayName());
                 currentGamemode = Gamemode.getGamemode(objName);
+
+                // getting player names for that objective
+                Collection<Score> scoreCollection = scoreboard.getSortedScores(objective);
+                List<Score> scoreList = scoreCollection.stream()
+                        .filter(input -> input != null && input.getPlayerName() != null && !input.getPlayerName().startsWith("#"))
+                        .collect(Collectors.toList());
+
+                for (Score score : scoreList) {
+                    String playerName = score.getPlayerName();
+                    if (playerName.startsWith(" §7⏣ §cThe Catacombs §7")) {
+                        String floor = score.getPlayerName()
+                                .replaceAll(" §7⏣ §cThe Catacombs §7\\(", "")
+                                .replaceAll("\\)", "");
+
+                        currentFloor = DungeonFloor.getFloor(floor);
+                    }
+
+
+                    if (playerName.startsWith("§fDungeon Cleared: ")){
+                        String cleanString = StringUtils.stripControlCodes(playerName);
+
+                        String percentage = cleanString
+                                .replaceAll("Dungeon Cleared: ", "")
+                                .replaceAll("%", "");
+
+                        clearedPercentage = Integer.parseInt(percentage);
+                    }
+                }
             }
         }
 
@@ -121,6 +159,8 @@ public class ScoreboardUtils {
         this.currentLocation = Location.NONE;
         this.currentGamemode = Gamemode.LOBBY;
         this.currentArea = Area.NONE;
+        this.currentFloor = DungeonFloor.NONE;
+        this.clearedPercentage = -1;
     }
 
 }

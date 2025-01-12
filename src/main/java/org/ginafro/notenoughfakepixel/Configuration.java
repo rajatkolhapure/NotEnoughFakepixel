@@ -153,8 +153,10 @@ public class Configuration extends Config {
     @Color(name = "Terminal Overlay Color", category = DUNGEONS , subcategory = "Floor 7")
     public static OneColor terminalColor = new OneColor(0,255,0);
 
-    @Switch(name = "Secret Overlay" , category = DUNGEONS, subcategory = "Secrets")
+    @Switch(name = "Secret % Overlay" , category = DUNGEONS, subcategory = "Secrets")
     public static boolean secretOverlay = true;
+    @Switch(name = "S+ Reminder" , category = DUNGEONS, subcategory = "Secrets", description = "Shows an S+ in screen when you have 100% secrets and 100% cleared.")
+    public static boolean sPlusReminder = true;
     @Page(name = "Secret Overlay Options" , category = DUNGEONS, subcategory = "Secrets", location = PageLocation.BOTTOM)
     public static SecretOverlayPage secretOverlayPage = new SecretOverlayPage();
 
