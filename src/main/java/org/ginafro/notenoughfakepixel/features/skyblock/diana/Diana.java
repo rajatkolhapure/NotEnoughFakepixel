@@ -8,6 +8,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import org.ginafro.notenoughfakepixel.Configuration;
 import org.ginafro.notenoughfakepixel.events.PacketReadEvent;
 import net.minecraft.util.EnumParticleTypes;
 import org.ginafro.notenoughfakepixel.gui.impl.Waypoint;
@@ -16,19 +17,22 @@ import net.minecraft.world.World;
 import net.minecraft.client.Minecraft;
 import org.ginafro.notenoughfakepixel.utils.RenderUtils;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
-
+import net.minecraftforge.event.entity.player.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
+import static org.ginafro.notenoughfakepixel.Configuration.*;
 
 public class Diana {
     private static BlockPos overlayLoc = null;
     ParticleProcessor processor = new ParticleProcessor();
-    Color red = new Color(255, 0, 0, 100);
-    Color green = new Color(0, 255, 0, 100);
     Color white = new Color(255, 255, 255, 100);
-    Color blue = new Color(0, 0, 255, 100);
     @SubscribeEvent
     public void onPacketReceive(PacketReadEvent event) {
+        if (!Configuration.dianaGeneral) return; // Check if the feature is enabled
         if (!ScoreboardUtils.currentLocation.isHub()) return; // Check if the player is in a hub
         Packet packet = event.packet;
          if (packet instanceof S2APacketParticles) {
@@ -64,18 +68,29 @@ public class Diana {
 
     @SubscribeEvent
     public void onRenderLast(RenderWorldLastEvent event) {
+        if (!Configuration.dianaGeneral) return; // Check if the feature is enabled
         if (!ScoreboardUtils.currentLocation.isHub()) return; // Check if the player is in a hub
-        Entity viewer = Minecraft.getMinecraft().getRenderViewEntity();
-        double viewerX = viewer.lastTickPosX + (viewer.posX - viewer.lastTickPosX) * event.partialTicks;
-        double viewerY = viewer.lastTickPosY + (viewer.posY - viewer.lastTickPosY) * event.partialTicks;
-        double viewerZ = viewer.lastTickPosZ + (viewer.posZ - viewer.lastTickPosZ) * event.partialTicks;
+        drawWaypoints(event.partialTicks); // Draw waypoints
+    }
 
-        for (ParticleProcessor.ClassificationResult result : processor.getProcessedGroups()) {
+    private void drawWaypoints(float partialTicks) {
+        Entity viewer = Minecraft.getMinecraft().getRenderViewEntity();
+        double viewerX = viewer.lastTickPosX + (viewer.posX - viewer.lastTickPosX) * partialTicks;
+        double viewerY = viewer.lastTickPosY + (viewer.posY - viewer.lastTickPosY) * partialTicks;
+        double viewerZ = viewer.lastTickPosZ + (viewer.posZ - viewer.lastTickPosZ) * partialTicks;
+
+        List<ParticleProcessor.ClassificationResult> safeResults;
+        synchronized (processor.getProcessedGroups()) {
+            safeResults = new ArrayList<>(processor.getProcessedGroups());
+        }
+        for (ParticleProcessor.ClassificationResult result : safeResults) {
+            if (result.isHidden()) continue;
             //RenderUtils.renderBeaconBeam(result.getCoordinates()[0], result.getCoordinates()[1], result.getCoordinates()[2], 0x1fd8f1, 1.0f, event.partialTicks, true);
             Color newColor = white;
-            if (result.getType().equals("EMPTY")) newColor = blue;
-            if (result.getType().equals("MOB")) newColor = white;
-            if (result.getType().equals("TREASURE")) newColor = red;
+            if (result.getType().equals("EMPTY")) newColor = emptyBurrowColor.toJavaColor();
+            if (result.getType().equals("MOB")) newColor = mobBurrowColor.toJavaColor();
+            if (result.getType().equals("TREASURE")) newColor = treasureBurrowColor.toJavaColor();
+            newColor = new Color(newColor.getRed(), newColor.getGreen(), newColor.getBlue(), 100);
             AxisAlignedBB bb = new AxisAlignedBB(
                     result.getCoordinates()[0] - viewerX,
                     result.getCoordinates()[1] - viewerY,
@@ -91,9 +106,40 @@ public class Diana {
         }
     }
 
-    /*@SubscribeEvent
-    public void onGuiBackgroundRender(GuiScreenEvent.BackgroundDrawnEvent event) {
+    @SubscribeEvent
+    public void handleClick(PlayerInteractEvent event) {
+        if (!Configuration.dianaGeneral) return; // Check if the feature is enabled
         if (!ScoreboardUtils.currentLocation.isHub()) return; // Check if the player is in a hub
-        processor.clearProcessedGroups();
-    }*/
+        if (event.action == PlayerInteractEvent.Action.RIGHT_CLICK_AIR) return; // Check if right click on air
+        //System.out.println(Minecraft.getMinecraft().thePlayer.getHeldItem().getDisplayName());
+        deleteClosestWaypoint();
+    }
+
+    private void deleteClosestWaypoint() {
+        int[] playerCoords = new int[] {(int)Minecraft.getMinecraft().thePlayer.posX, (int)Minecraft.getMinecraft().thePlayer.posY, (int)Minecraft.getMinecraft().thePlayer.posZ};
+        ParticleProcessor.ClassificationResult res = processor.getClosestResult(playerCoords);
+        if (res == null) return;
+        if (Minecraft.getMinecraft().thePlayer.getHeldItem().getDisplayName().contains("Ancestral Spade") && processor.areCoordinatesClose(playerCoords, res.getCoordinates())) {
+            ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(1);
+            if (res.getType().equals("EMPTY") || res.getType().equals("TREASURE")) {
+                res.setHidden(true);
+                exec.schedule(new Runnable() {
+                    public void run() {
+                        processor.deleteProcessedGroup(res);
+                    }
+                }, 20000, TimeUnit.MILLISECONDS);
+
+            } else if (res.getType().equals("MOB")) {
+                if (res.getState() == 0) res.setState(1);
+                else if (res.getState() == 1) {
+                    res.setHidden(true);
+                    exec.schedule(new Runnable() {
+                        public void run() {
+                            processor.deleteProcessedGroup(res);
+                        }
+                    }, 20000, TimeUnit.MILLISECONDS);
+                }
+            }
+        }
+    }
 }

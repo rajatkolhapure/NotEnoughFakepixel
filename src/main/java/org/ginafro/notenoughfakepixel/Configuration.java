@@ -142,6 +142,21 @@ public class Configuration extends Config {
     @Switch(name = "Notify on Trophy Fish" , category = "Fishing")
     public static boolean trophyFish = true;
 
+    // Diana
+    @Header(text = "Diana" , category = "Diana" , size = 2)
+    public boolean _diana = true;
+    @Switch(name = "Diana general" , category = "Diana", subcategory = "General")
+    public static boolean dianaGeneral = true;
+    @Switch(name = "Waypoint sounds" , category = "Diana", subcategory = "Sounds", description = "Turn off/on waypoints creation sounds.")
+    public static boolean dianaSounds = true;
+    @Color(name = "Empty burrow color", category = "Diana" , subcategory = "Waypoint colors")
+    public static OneColor emptyBurrowColor = new OneColor(0, 0, 255);
+    @Color(name = "Mob burrow color", category = "Diana" , subcategory = "Waypoint colors")
+    public static OneColor mobBurrowColor = new OneColor(255, 255, 255);
+    @Color(name = "Treasure burrow color", category = "Diana" , subcategory = "Waypoint colors")
+    public static OneColor treasureBurrowColor = new OneColor(255, 0, 0);
+
+
     // Slayer
 
     @Header(text = "Slayer" , category = "Slayer" , size = 2)
