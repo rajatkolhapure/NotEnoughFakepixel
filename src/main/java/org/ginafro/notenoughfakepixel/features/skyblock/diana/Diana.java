@@ -28,8 +28,9 @@ import static org.ginafro.notenoughfakepixel.Configuration.*;
 
 public class Diana {
     private static BlockPos overlayLoc = null;
-    ParticleProcessor processor = new ParticleProcessor();
+    private static ParticleProcessor processor = new ParticleProcessor();
     Color white = new Color(255, 255, 255, 100);
+
     @SubscribeEvent
     public void onPacketReceive(PacketReadEvent event) {
         if (!Configuration.dianaGeneral) return; // Check if the feature is enabled
@@ -42,27 +43,8 @@ public class Diana {
                      particles.getParticleType().getParticleName().equals("dripLava") ||
                      particles.getParticleType().getParticleName().equals("enchantmenttable") ||
                      particles.getParticleType().getParticleName().equals("footstep")) {
-                 /*double x = particles.getXCoordinate();
-                 double y = particles.getYCoordinate();
-                 double z = particles.getZCoordinate();*/
-                 /*if (particles.getParticleType().getParticleName().equals("dripLava")) {
-                    System.out.println(particles.getParticleType().getParticleName());
-                    System.out.println(particles.getParticleCount());
-                     System.out.println(particles.getXOffset());
-                     System.out.println(particles.getYOffset());
-                     System.out.println(particles.getZOffset());
-                     //System.out.println(String.valueOf(x) + ", " + String.valueOf(y) + ", " + String.valueOf(z));
-                 }*/
-
-
-                 //if (particles.getParticleType().getParticleName().equals("dripLava") && ) {}
                  processor.addParticle(particles);
-
-                 // magicCrit enchantmenttable footstep -> empty (blue)
-                 // crit enchantmenttable -> mob (white)
-                 // dripLava enchantmenttable -> treasure (brown)
              }
-
          }
     }
 
@@ -79,9 +61,12 @@ public class Diana {
         double viewerY = viewer.lastTickPosY + (viewer.posY - viewer.lastTickPosY) * partialTicks;
         double viewerZ = viewer.lastTickPosZ + (viewer.posZ - viewer.lastTickPosZ) * partialTicks;
 
-        List<ParticleProcessor.ClassificationResult> safeResults;
+        List<ParticleProcessor.ClassificationResult> safeResults = new ArrayList<>();
         synchronized (processor.getProcessedGroups()) {
-            safeResults = new ArrayList<>(processor.getProcessedGroups());
+            // THIS CAN CONTAIN CONCURRENT MODIFICATION EXCEPTIONS
+            try {
+                safeResults = new ArrayList<>(processor.getProcessedGroups());
+            } catch (Exception ignored){}
         }
         for (ParticleProcessor.ClassificationResult result : safeResults) {
             if (result.isHidden()) continue;
@@ -111,7 +96,6 @@ public class Diana {
         if (!Configuration.dianaGeneral) return; // Check if the feature is enabled
         if (!ScoreboardUtils.currentLocation.isHub()) return; // Check if the player is in a hub
         if (event.action == PlayerInteractEvent.Action.RIGHT_CLICK_AIR) return; // Check if right click on air
-        //System.out.println(Minecraft.getMinecraft().thePlayer.getHeldItem().getDisplayName());
         deleteClosestWaypoint();
     }
 

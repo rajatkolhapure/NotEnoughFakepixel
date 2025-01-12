@@ -128,7 +128,6 @@ public class TablistParser {
                 // Parsing secrets percentage
                 // line is "Secrets Found: 0%"
                 if (cleanLine.contains("Secrets Found: ")) {
-                    System.out.println(Integer.parseInt(cleanLine.split(" ")[2].replace("%", "")));
                     secretPercentage = Integer.parseInt(cleanLine.split(" ")[2].replace("%", ""));
                 }
 
