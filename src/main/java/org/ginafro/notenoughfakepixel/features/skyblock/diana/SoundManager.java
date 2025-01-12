@@ -11,8 +11,8 @@ public class SoundManager {
 
     String waypointSound = "random.pop";
     String waypointTreasureSound = "random.pop";
-    float volumeWaypointSound = 3.0f;
-    float volumeWaypointTreasureSound = 4.0f;
+    float volumeWaypointSound = 4.0f;
+    float volumeWaypointTreasureSound = 3.0f;
 
     public void playSound(int[] coords, String sound, float volume, float pitch) {
         playSound(coords, sound, volume, pitch, 1);
@@ -35,10 +35,10 @@ public class SoundManager {
     }
 
     public void playWaypointSound(int[] coords) {
-        playSound(coords, waypointSound, volumeWaypointSound, 0.5f);
+        playSound(coords, waypointSound, volumeWaypointSound, 2.0f);
     }
 
     public void playTreasureSound(int[] coords) {
-        playSound(coords, waypointTreasureSound, volumeWaypointTreasureSound, 2.0f);
+        playSound(coords, waypointTreasureSound, volumeWaypointTreasureSound, 0.5f);
     }
 }

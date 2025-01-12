@@ -12,15 +12,19 @@ import org.ginafro.notenoughfakepixel.utils.RenderUtils;
 
 public class ParticleProcessor {
 
-    private final float distanceThreshold = 4.0f; // Distance (in blocks) to distinguish if its same burrow
-    private final int particleThreshold = 5; // Number of particles needed to be considered as a burrow
+    private final float distanceThreshold = 3.0f; // Distance (in blocks) to distinguish if its same burrow
+    private final int particleThreshold = 6; // Number of particles needed to be considered as a burrow
     private int delaySWaypointRemove = 60; // Time to remove a waypoint after generated
-    private int windowQueue = 10; // Process this number of particles each time
+    private int windowQueue = 6; // Process this number of particles each time
     private final Queue<S2APacketParticles> particleQueue = new ConcurrentLinkedQueue<>(); // Particle concurrent queue
     private final Set<ClassificationResult> processedGroups = new HashSet<>(); // To track already classified groups
     private SoundManager soundManager = new SoundManager();
 
     public void addParticle(S2APacketParticles particle) {
+        if (!(particle.getParticleType().getParticleName().equals("magicCrit")
+                || particle.getParticleType().getParticleName().equals("enchantmenttable")
+                || particle.getParticleType().getParticleName().equals("crit")
+                || particle.getParticleType().getParticleName().equals("dripLava"))) return;
         particleQueue.add(particle);
         /*for(S2APacketParticles p : particleQueue) {
             System.out.println(p.getParticleType().getParticleName());
@@ -49,7 +53,10 @@ public class ParticleProcessor {
         while (!particleQueue.isEmpty()) {
             S2APacketParticles currentParticle = particleQueue.poll();
 
-            if (previousParticle != null && isClose(previousParticle, currentParticle)) {
+            if (previousParticle != null
+                    && !(previousParticle.getParticleType().getParticleName().equals("dripLava")
+                    && currentParticle.getParticleType().getParticleName().equals("dripLava"))
+                    && isClose(previousParticle, currentParticle, particleThreshold)) {
                 currentGroup.add(currentParticle);
             } else {
                 if (!currentGroup.isEmpty() && currentGroup.size() > particleThreshold) {
@@ -58,7 +65,7 @@ public class ParticleProcessor {
                         System.out.println(p.getParticleType().getParticleName() + "  " + p.getXCoordinate() + "," + p.getYCoordinate() + "," + p.getZCoordinate());
                     }*/
                     ClassificationResult result = classifyGroup(currentGroup);
-                    if (result != null && !isDuplicate(result)) {
+                    if (result != null && !isDuplicateResult(result)) {
                         results.add(result);
                         markAsProcessed(result);
                         //System.out.println("\n\n\nNew result\n");
@@ -76,11 +83,12 @@ public class ParticleProcessor {
         // Process the last group
         if (!currentGroup.isEmpty() && currentGroup.size() > particleThreshold) {
             ClassificationResult result = classifyGroup(currentGroup);
-            if (result != null && !isDuplicate(result)) {
+            if (result != null && !isDuplicateResult(result)) {
                 results.add(result);
                 markAsProcessed(result);
-                //System.out.println("\n\n\nLast group formed\n");
-                /*for (S2APacketParticles p : currentGroup) {
+                //System.out.println(result.getType()+" BURROW WAYPOINT ADDED IN "+result.getCoordinates()[0] + ", " + result.getCoordinates()[1] + ", " + result.getCoordinates()[2]);
+                /*System.out.println("\n\n\nLast group formed\n");
+                for (S2APacketParticles p : currentGroup) {
                     System.out.println(p.getParticleType().getParticleName() + "  " + p.getXCoordinate() + "," + p.getYCoordinate() + "," + p.getZCoordinate());
                 }*/
                 //Waypoint waypoint = new Waypoint(result.getCoordinates()[0], result.getCoordinates()[1], result.getCoordinates()[2], Minecraft.getMinecraft().theWorld);
@@ -90,13 +98,13 @@ public class ParticleProcessor {
         return results;
     }
 
-    private boolean isClose(S2APacketParticles p1, S2APacketParticles p2) {
+    private boolean isClose(S2APacketParticles p1, S2APacketParticles p2, float threshold) {
         double distance = Math.sqrt(
                 Math.pow(p1.getXCoordinate() - p2.getXCoordinate(), 2) +
                         Math.pow(p1.getYCoordinate() - p2.getYCoordinate(), 2) +
                         Math.pow(p1.getZCoordinate() - p2.getZCoordinate(), 2)
         );
-        return distance < distanceThreshold;
+        return distance < threshold;
     }
 
     private ClassificationResult classifyGroup(List<S2APacketParticles> group) {
@@ -105,7 +113,9 @@ public class ParticleProcessor {
         int cont = 0;
         //double minX = 500, minY = 500, minZ = 500;
         //double maxX = -500, maxY = 0, maxZ = -500;
+        //System.out.println("\n\n\nClassifying group\n");
         for (S2APacketParticles particle : group) {
+            //System.out.println(particle.getParticleType().getParticleName() + "  " + particle.getXCoordinate() + "," + particle.getYCoordinate() + "," + particle.getZCoordinate());
             groupTypes.add(particle.getParticleType().getParticleName());
             if (!particle.getParticleType().getParticleName().equals("dripLava")) {
                 sumX += particle.getXCoordinate();
@@ -153,12 +163,15 @@ public class ParticleProcessor {
         };
 
         if (groupTypes.contains("magicCrit") && groupTypes.contains("enchantmenttable")) {
+            //System.out.println("EMPTY BURROW WAYPOINT ADDED IN "+roundedCoordinates[0] + ", " + roundedCoordinates[1] + ", " + roundedCoordinates[2]);
             return new ClassificationResult("EMPTY", roundedCoordinates);
         }
         if (groupTypes.contains("crit") && groupTypes.contains("enchantmenttable")) {
+            //System.out.println("MOB WAYPOINT ADDED IN "+roundedCoordinates[0] + ", " + roundedCoordinates[1] + ", " + roundedCoordinates[2]);
             return new ClassificationResult("MOB", roundedCoordinates);
         }
         if (groupTypes.contains("dripLava") && groupTypes.contains("enchantmenttable")) {
+            //System.out.println("TREASURE BURROW WAYPOINT ADDED IN "+roundedCoordinates[0] + ", " + roundedCoordinates[1] + ", " + roundedCoordinates[2]);
             return new ClassificationResult("TREASURE", roundedCoordinates);
         }
         /* Segun un mod de ref -> no funciona esto
@@ -174,9 +187,9 @@ public class ParticleProcessor {
         return null;
     }
 
-    private boolean isDuplicate(ClassificationResult result) {
+    private boolean isDuplicateResult(ClassificationResult result) {
         for (ClassificationResult processedResult : processedGroups) {
-            if (areCoordinatesClose(processedResult.getCoordinates(), result.getCoordinates())) {
+            if (areCoordinatesClose(processedResult.getCoordinates(), result.getCoordinates(), distanceThreshold)) {
                 return true;
             }
         }
@@ -191,9 +204,9 @@ public class ParticleProcessor {
         );
     }
 
-    public boolean areCoordinatesClose(int[] coords1, int[] coords2) {
+    public boolean areCoordinatesClose(int[] coords1, int[] coords2, float threshold) {
         double distance = getDistance(coords1, coords2);
-        return distance < distanceThreshold; // Adjust threshold as needed
+        return distance < threshold; // Adjust threshold as needed
     }
 
     private void markAsProcessed(ClassificationResult result) {

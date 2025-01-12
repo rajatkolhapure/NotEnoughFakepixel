@@ -1,4 +1,5 @@
 package org.ginafro.notenoughfakepixel.features.skyblock.diana;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.Packet;
@@ -7,6 +8,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.ginafro.notenoughfakepixel.Configuration;
 import org.ginafro.notenoughfakepixel.events.PacketReadEvent;
@@ -20,6 +22,7 @@ import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 import net.minecraftforge.event.entity.player.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -111,15 +114,21 @@ public class Diana {
         if (!Configuration.dianaGeneral) return; // Check if the feature is enabled
         if (!ScoreboardUtils.currentLocation.isHub()) return; // Check if the player is in a hub
         if (event.action == PlayerInteractEvent.Action.RIGHT_CLICK_AIR) return; // Check if right click on air
+        //System.out.println(event.face + ", "+event.pos);
+
+        deleteClosestWaypoint(event.face.getName(),event.pos.getX(),event.pos.getY(),event.pos.getZ());
+        autoEquipShovel(event.face.getName(),event.pos.getX(),event.pos.getY(),event.pos.getZ());
         //System.out.println(Minecraft.getMinecraft().thePlayer.getHeldItem().getDisplayName());
-        deleteClosestWaypoint();
     }
 
-    private void deleteClosestWaypoint() {
+    private void deleteClosestWaypoint(String face, int x, int y, int z) {
+        if (!face.equals("up")) return;
         int[] playerCoords = new int[] {(int)Minecraft.getMinecraft().thePlayer.posX, (int)Minecraft.getMinecraft().thePlayer.posY, (int)Minecraft.getMinecraft().thePlayer.posZ};
         ParticleProcessor.ClassificationResult res = processor.getClosestResult(playerCoords);
         if (res == null) return;
-        if (Minecraft.getMinecraft().thePlayer.getHeldItem().getDisplayName().contains("Ancestral Spade") && processor.areCoordinatesClose(playerCoords, res.getCoordinates())) {
+        int[] coordsBurrowClicked = new int[]{x, y+1, z};
+        if (!Arrays.equals(res.getCoordinates(), coordsBurrowClicked)) return;
+        if (Minecraft.getMinecraft().thePlayer.getHeldItem().getDisplayName().contains("Ancestral Spade") && processor.areCoordinatesClose(playerCoords, res.getCoordinates(), 4.0f)) {
             ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(1);
             if (res.getType().equals("EMPTY") || res.getType().equals("TREASURE")) {
                 res.setHidden(true);
@@ -141,5 +150,17 @@ public class Diana {
                 }
             }
         }
+    }
+
+    private void autoEquipShovel(String face, int x, int y, int z) {
+        if (!face.equals("up")) return;
+        EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
+        int[] playerCoords = new int[] {(int)player.posX, (int)player.posY, (int)player.posZ};
+        ParticleProcessor.ClassificationResult res = processor.getClosestResult(playerCoords);
+        if (res == null) return;
+        int[] coordsBurrowClicked = new int[]{x, y+1, z};
+        if (!Arrays.equals(res.getCoordinates(), coordsBurrowClicked)) return;
+
+        //player.inventory.currentItem
     }
 }
