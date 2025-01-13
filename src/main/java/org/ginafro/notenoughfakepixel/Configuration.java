@@ -147,14 +147,20 @@ public class Configuration extends Config {
     public boolean _diana = true;
     @Switch(name = "Diana general" , category = "Diana", subcategory = "General")
     public static boolean dianaGeneral = true;
-    @Switch(name = "Waypoint sounds" , category = "Diana", subcategory = "Sounds", description = "Turn off/on waypoints creation sounds.")
+    @Switch(name = "Waypoint sounds" , category = "Diana", subcategory = "Waypoints", description = "Turn off/on waypoints creation sounds.")
     public static boolean dianaSounds = true;
-    @Color(name = "Empty burrow color", category = "Diana" , subcategory = "Waypoint colors")
+    @Color(name = "Empty burrow color", category = "Diana" , subcategory = "Waypoints")
     public static OneColor emptyBurrowColor = new OneColor(0, 0, 255);
-    @Color(name = "Mob burrow color", category = "Diana" , subcategory = "Waypoint colors")
+    @Color(name = "Mob burrow color", category = "Diana" , subcategory = "Waypoints")
     public static OneColor mobBurrowColor = new OneColor(255, 255, 255);
-    @Color(name = "Treasure burrow color", category = "Diana" , subcategory = "Waypoint colors")
+    @Color(name = "Treasure burrow color", category = "Diana" , subcategory = "Waypoints")
     public static OneColor treasureBurrowColor = new OneColor(255, 0, 0);
+    @Switch(name = "Track Gaia hits" , category = "Diana", subcategory = "Gaia Construct", description = "Turn off/on hitbox that represents when Gaia Constructs can be damaged.")
+    public static boolean dianaGaiaConstruct = true;
+    @Color(name = "Gaia hittable color", category = "Diana" , subcategory = "Gaia Construct")
+    public static OneColor gaiaHittableColor = new OneColor(0, 255, 0);
+    @Color(name = "Gaia un-hittable color", category = "Diana" , subcategory = "Gaia Construct")
+    public static OneColor gaiaUnhittableColor = new OneColor(255, 0, 0);
 
 
     // Slayer

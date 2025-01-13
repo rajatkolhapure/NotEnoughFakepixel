@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.play.server.S2APacketParticles;
+import net.minecraft.util.BlockPos;
 import org.ginafro.notenoughfakepixel.Configuration;
 import org.ginafro.notenoughfakepixel.gui.impl.Waypoint;
 import org.ginafro.notenoughfakepixel.utils.RenderUtils;
@@ -25,6 +26,12 @@ public class ParticleProcessor {
                 || particle.getParticleType().getParticleName().equals("enchantmenttable")
                 || particle.getParticleType().getParticleName().equals("crit")
                 || particle.getParticleType().getParticleName().equals("dripLava"))) return;
+        int[] playerCoords = new int[] {(int)Minecraft.getMinecraft().thePlayer.posX, (int)Minecraft.getMinecraft().thePlayer.posY, (int)Minecraft.getMinecraft().thePlayer.posZ};
+        ParticleProcessor.ClassificationResult closestResult = getClosestResult(playerCoords);
+        if (closestResult != null) {
+            int[] particleCoords = new int[]{(int) Math.floor(particle.getXCoordinate()), (int) Math.floor(particle.getYCoordinate()), (int) Math.floor(particle.getZCoordinate())};
+            if (areCoordinatesClose(closestResult.getCoordinates(), particleCoords, distanceThreshold)) return;
+        }
         particleQueue.add(particle);
         /*for(S2APacketParticles p : particleQueue) {
             System.out.println(p.getParticleType().getParticleName());
@@ -37,7 +44,7 @@ public class ParticleProcessor {
                 System.out.println(p.getXCoordinate() + ", " + p.getYCoordinate() + ", " + p.getZCoordinate());
             }*/
             // Procesar partículas acumuladas
-            List<ParticleProcessor.ClassificationResult> results = processParticles();
+            processParticles();
             /*for (ParticleProcessor.ClassificationResult result : results) {
                 System.out.println(Arrays.toString(result.getCoordinates()));
             }*/
@@ -66,6 +73,10 @@ public class ParticleProcessor {
                     }*/
                     ClassificationResult result = classifyGroup(currentGroup);
                     if (result != null && !isDuplicateResult(result)) {
+                        BlockPos block = new BlockPos(result.getCoordinates()[0], result.getCoordinates()[1]-1, result.getCoordinates()[2]);
+                        System.out.println(block.getX() + ", " + block.getY() + ", " + block.getZ());
+                        System.out.println(Minecraft.getMinecraft().theWorld.isAirBlock(block));
+                        if (Minecraft.getMinecraft().theWorld.isAirBlock(block)) return null;
                         results.add(result);
                         markAsProcessed(result);
                         //System.out.println("\n\n\nNew result\n");
@@ -84,6 +95,10 @@ public class ParticleProcessor {
         if (!currentGroup.isEmpty() && currentGroup.size() > particleThreshold) {
             ClassificationResult result = classifyGroup(currentGroup);
             if (result != null && !isDuplicateResult(result)) {
+                BlockPos block = new BlockPos(result.getCoordinates()[0], result.getCoordinates()[1]-1, result.getCoordinates()[2]);
+                //System.out.println(block.getX() + ", " + block.getY() + ", " + block.getZ());
+                //System.out.println(Minecraft.getMinecraft().theWorld.isAirBlock(block));
+                if (Minecraft.getMinecraft().theWorld.isAirBlock(block)) return null;
                 results.add(result);
                 markAsProcessed(result);
                 //System.out.println(result.getType()+" BURROW WAYPOINT ADDED IN "+result.getCoordinates()[0] + ", " + result.getCoordinates()[1] + ", " + result.getCoordinates()[2]);
@@ -196,7 +211,7 @@ public class ParticleProcessor {
         return false;
     }
 
-    private float getDistance(int[] coords1, int[] coords2) {
+    public float getDistance(int[] coords1, int[] coords2) {
         return (float) Math.sqrt(
                 Math.pow(coords1[0] - coords2[0], 2) +
                         Math.pow(coords1[1] - coords2[1], 2) +
@@ -243,6 +258,7 @@ public class ParticleProcessor {
     public ClassificationResult getClosestResult(int[] coords) {
         ClassificationResult result = null;
         float distance = 9999;
+        if (processedGroups.isEmpty()) return null;
         for (ClassificationResult res : processedGroups) {
             float dist = getDistance(coords, res.getCoordinates());
             if (dist < distance) {
@@ -251,6 +267,10 @@ public class ParticleProcessor {
             }
         }
         return result;
+    }
+
+    public float getDistanceThreshold() {
+        return distanceThreshold;
     }
 
     public static class ClassificationResult {
