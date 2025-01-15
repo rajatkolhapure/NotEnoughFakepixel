@@ -8,24 +8,32 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.play.server.S2APacketParticles;
 import net.minecraft.util.BlockPos;
 import org.ginafro.notenoughfakepixel.Configuration;
-import org.ginafro.notenoughfakepixel.gui.impl.Waypoint;
-import org.ginafro.notenoughfakepixel.utils.RenderUtils;
+import org.ginafro.notenoughfakepixel.utils.SoundUtils;
 
 public class ParticleProcessor {
 
-    private final float distanceThreshold = 3.0f; // Distance (in blocks) to distinguish if its same burrow
+    private final float distanceThreshold = 2f; // Distance (in blocks) to distinguish if its same burrow
     private final int particleThreshold = 6; // Number of particles needed to be considered as a burrow
     private int delaySWaypointRemove = 60; // Time to remove a waypoint after generated
     private int windowQueue = 6; // Process this number of particles each time
     private final Queue<S2APacketParticles> particleQueue = new ConcurrentLinkedQueue<>(); // Particle concurrent queue
+    private final Queue<S2APacketParticles> particleMagicCritQueue = new ConcurrentLinkedQueue<>(); // Particle concurrent queue
+    private final Queue<S2APacketParticles> particleEnchantmentTableQueue = new ConcurrentLinkedQueue<>(); // Particle concurrent queue
+    private final Queue<S2APacketParticles> particleDripLavaQueue = new ConcurrentLinkedQueue<>(); // Particle concurrent queue
+
     private final Set<ClassificationResult> processedGroups = new HashSet<>(); // To track already classified groups
-    private SoundManager soundManager = new SoundManager();
+    private SoundUtils soundUtils = new SoundUtils();
+    String waypointSound = "random.pop";
+    String waypointTreasureSound = "random.pop";
+    float volumeWaypointSound = 4.0f;
+    float volumeWaypointTreasureSound = 3.0f;
 
     public void addParticle(S2APacketParticles particle) {
         if (!(particle.getParticleType().getParticleName().equals("magicCrit")
                 || particle.getParticleType().getParticleName().equals("enchantmenttable")
                 || particle.getParticleType().getParticleName().equals("crit")
                 || particle.getParticleType().getParticleName().equals("dripLava"))) return;
+        //System.out.println(particle.getParticleType().getParticleName());
         int[] playerCoords = new int[] {(int)Minecraft.getMinecraft().thePlayer.posX, (int)Minecraft.getMinecraft().thePlayer.posY, (int)Minecraft.getMinecraft().thePlayer.posZ};
         ParticleProcessor.ClassificationResult closestResult = getClosestResult(playerCoords);
         if (closestResult != null) {
@@ -226,13 +234,11 @@ public class ParticleProcessor {
 
     private void markAsProcessed(ClassificationResult result) {
         processedGroups.add(result);
-        if (Configuration.dianaSounds) {
-            if (result.getType().equals("EMPTY")) {
-                soundManager.playWaypointSound(result.getCoordinates());
-            } else if (result.getType().equals("MOB")) {
-                soundManager.playWaypointSound(result.getCoordinates());
+        if (Configuration.dianaWaypointSounds) {
+            if (result.getType().equals("EMPTY") || result.getType().equals("MOB")) {
+                SoundUtils.playSound(result.getCoordinates(), waypointSound, volumeWaypointSound, 2.0f);
             } else if (result.getType().equals("TREASURE")) {
-                soundManager.playTreasureSound(result.getCoordinates());
+                SoundUtils.playSound(result.getCoordinates(), waypointTreasureSound, volumeWaypointTreasureSound, 0.5f);
             }
         }
         ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(1);

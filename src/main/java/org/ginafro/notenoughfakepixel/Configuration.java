@@ -77,6 +77,10 @@ public class Configuration extends Config {
     public static boolean disableWatchdogInfo = false;
     @Switch(name = "Disable Friend > joined/left message" , category = "Quality of Life", subcategory = "Chat")
     public static boolean disableFriendJoin = false;
+    @Switch(name = "Disable Jerry-chine Gun sounds" , category = "Quality of Life", subcategory = "Sounds", description = "Disable Jerry-chine gun sounds.")
+    public static boolean disableJerryChineGunSounds = true;
+    @Switch(name = "Disable AOTE teleport sounds" , category = "Quality of Life", subcategory = "Sounds", description = "Disable Aspect of the End teleport sounds.")
+    public static boolean disableAoteSounds = false;
     //@Switch(name = "Chat Cleaner" , category = "Quality of Life", subcategory = "Chat")
     public static boolean chatCleaner = false;
 
@@ -147,20 +151,31 @@ public class Configuration extends Config {
     public boolean _diana = true;
     @Switch(name = "Diana general" , category = "Diana", subcategory = "General")
     public static boolean dianaGeneral = true;
-    @Switch(name = "Waypoint sounds" , category = "Diana", subcategory = "Waypoints", description = "Turn off/on waypoints creation sounds.")
-    public static boolean dianaSounds = true;
+    @Switch(name = "Auto-equip Ancestral Spade" , category = "Diana", subcategory = "General", description = "When clicking burrow, equips Ancestral Shovel automatically if its in hotbar")
+    public static boolean dianaAutoEquipAncestralSpade = true;
+    @Switch(name = "Waypoint sounds" , category = "Diana", subcategory = "Sounds", description = "Turn off/on waypoints creation sounds.")
+    public static boolean dianaWaypointSounds = true;
+    @Switch(name = "Disable explosion sounds" , category = "Diana", subcategory = "Sounds", description = "Disable explosion sounds.")
+    public static boolean disableDianaExplosionSounds = false;
+    //@Switch(name = "Disable harp sounds" , category = "Diana", subcategory = "Sounds", description = "Turn off/on harp sounds.")
+    //public static boolean disableDianaHarpSounds = true;
     @Color(name = "Empty burrow color", category = "Diana" , subcategory = "Waypoints")
     public static OneColor emptyBurrowColor = new OneColor(0, 0, 255);
     @Color(name = "Mob burrow color", category = "Diana" , subcategory = "Waypoints")
     public static OneColor mobBurrowColor = new OneColor(255, 255, 255);
     @Color(name = "Treasure burrow color", category = "Diana" , subcategory = "Waypoints")
     public static OneColor treasureBurrowColor = new OneColor(255, 0, 0);
-    @Switch(name = "Track Gaia hits" , category = "Diana", subcategory = "Gaia Construct", description = "Turn off/on hitbox that represents when Gaia Constructs can be damaged.")
+    @Switch(name = "Track Gaia hits" , category = "Diana", subcategory = "Mobs", description = "Turn off/on hitbox that represents when Gaia Construct can be damaged.")
     public static boolean dianaGaiaConstruct = true;
-    @Color(name = "Gaia hittable color", category = "Diana" , subcategory = "Gaia Construct")
+    @Color(name = "Gaia hittable color", category = "Diana" , subcategory = "Mobs")
     public static OneColor gaiaHittableColor = new OneColor(0, 255, 0);
-    @Color(name = "Gaia un-hittable color", category = "Diana" , subcategory = "Gaia Construct")
+    @Color(name = "Gaia un-hittable color", category = "Diana" , subcategory = "Mobs")
     public static OneColor gaiaUnhittableColor = new OneColor(255, 0, 0);
+    @Switch(name = "Show hittable siamese" , category = "Diana", subcategory = "Mobs", description = "Turn off/on hitbox that represents which siamese can be damaged.")
+    public static boolean dianaSiamese = true;
+    @Color(name = "Siamese hittable color", category = "Diana" , subcategory = "Mobs")
+    public static OneColor siameseHittableColor = new OneColor(0, 255, 0);
+
 
 
     // Slayer

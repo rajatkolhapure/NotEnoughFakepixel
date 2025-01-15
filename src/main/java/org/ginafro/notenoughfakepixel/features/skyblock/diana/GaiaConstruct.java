@@ -3,8 +3,6 @@ package org.ginafro.notenoughfakepixel.features.skyblock.diana;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 
-import java.awt.*;
-
 public class GaiaConstruct {
     private Entity entity;
     private EntityLivingBase entityLivingBase;
@@ -22,7 +20,7 @@ public class GaiaConstruct {
         this.state = 0;
         this.canBeHit = false;
         this.hits = 0;
-        this.hitsNeeded = new int[] {6,7,8};
+        this.hitsNeeded = new int[] {7,8,9};
         float hp = entityLivingBase.getHealth();
         float diffTo140 = Math.abs(hp - hpGaiaConstruct140);
         float diffTo260 = Math.abs(hp - hpGaiaConstruct260);
@@ -60,14 +58,14 @@ public class GaiaConstruct {
     }
 
     public void addHit() {
+        setStateFromHp();
         hits++;
         if (hits == hitsNeeded[state]-1) {
             canBeHit = true;
-        } else if (hits == hitsNeeded[state]) {
+        } else if (hits >= hitsNeeded[state]) {
             canBeHit = false;
             hits = 0;
         }
-        setStateFromHp();
     }
 
     public void setHits(int hits) {
