@@ -45,7 +45,7 @@ public class Diana {
 
     @SubscribeEvent
     public void onPacketReceive(PacketReadEvent event) {
-        if (!Configuration.showWaypointsBurrows) return; // Check if the feature is enabled
+        if (!Configuration.dianaShowWaypointsBurrows) return; // Check if the feature is enabled
         if (!ScoreboardUtils.currentLocation.isHub()) return; // Check if the player is in a hub
         Packet packet = event.packet;
          if (packet instanceof S2APacketParticles) {
@@ -68,11 +68,11 @@ public class Diana {
                  if (closestSiamese != null) {
                      for (SiameseLynx siamese : listSiameseAlive) {
                          if (siamese.getEntity1().getUniqueID() == closestSiamese.getUniqueID()) {
-                             System.out.println("Siamese1 hittable");
+                             //System.out.println("Siamese1 hittable");
                              siamese.setHittable(closestSiamese);
                              break;
                          } else if (siamese.getEntity2().getUniqueID() == closestSiamese.getUniqueID()) {
-                             System.out.println("Siamese2 hittable");
+                             //System.out.println("Siamese2 hittable");
                              siamese.setHittable(closestSiamese);
                              break;
                          }
@@ -187,7 +187,7 @@ public class Diana {
                 }
                 // If this point reached, no occurrences, so new gaia added
                 listGaiaAlive.add(new GaiaConstruct(entity));
-                System.out.println("Gaia added, "+listGaiaAlive.size());
+                //System.out.println("Gaia added, "+listGaiaAlive.size());
             } else if (entity instanceof EntityOcelot){
                 for (SiameseLynx siamese : listSiameseAlive) {
 
@@ -195,13 +195,13 @@ public class Diana {
                     if (siamese.getEntity1().getUniqueID() == entity.getUniqueID()) return;
                     if (siamese.getEntity2() == null) {
                         siamese.setEntity2(entity);
-                        System.out.println("Ocelot2 added, "+listSiameseAlive.size());
+                        //System.out.println("Ocelot2 added, "+listSiameseAlive.size());
                     }
                     if (siamese.getEntity2().getUniqueID() == entity.getUniqueID()) return;
                 }
                 // If this point reached, no occurrences, so new siamese added
                 listSiameseAlive.add(new SiameseLynx(entity));
-                System.out.println("Siamese added, "+listSiameseAlive.size());
+                //System.out.println("Siamese added, "+listSiameseAlive.size());
             }
         });
     }
@@ -212,14 +212,14 @@ public class Diana {
             int[] gaiaCoords = new int[]{gaia.getEntity().getPosition().getX(), gaia.getEntity().getPosition().getY(), gaia.getEntity().getPosition().getZ()};
             if (!processor.areCoordinatesClose(playerCoords,gaiaCoords,distanceRenderHitbox)) {
                 listGaiaAlive.remove(gaia);
-                System.out.println("Gaia removed for distance, "+listGaiaAlive.size());
+                //System.out.println("Gaia removed for distance, "+listGaiaAlive.size());
             }
         }
         for (SiameseLynx siamese : listSiameseAlive) {
             // If both null = death, remove from list of siameses
             if (siamese.getEntity1() == null && siamese.getEntity2() == null) {
                 listSiameseAlive.remove(siamese);
-                System.out.println("Siamese removed, "+listSiameseAlive.size());
+                //System.out.println("Siamese removed, "+listSiameseAlive.size());
                 return;
             }
             if (siamese.getEntity1() != null) {
@@ -285,7 +285,7 @@ public class Diana {
                         exec.schedule(new Runnable() {
                             public void run() {
                                 listGaiaAlive.remove(closestGaia);
-                                System.out.println("Gaia removed, " + listGaiaAlive.size());
+                                //System.out.println("Gaia removed, " + listGaiaAlive.size());
                             }
                         }, 1, TimeUnit.SECONDS);
                     }

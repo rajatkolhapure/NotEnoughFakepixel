@@ -82,8 +82,8 @@ public class ParticleProcessor {
                     ClassificationResult result = classifyGroup(currentGroup);
                     if (result != null && !isDuplicateResult(result)) {
                         BlockPos block = new BlockPos(result.getCoordinates()[0], result.getCoordinates()[1]-1, result.getCoordinates()[2]);
-                        System.out.println(block.getX() + ", " + block.getY() + ", " + block.getZ());
-                        System.out.println(Minecraft.getMinecraft().theWorld.isAirBlock(block));
+                        //System.out.println(block.getX() + ", " + block.getY() + ", " + block.getZ());
+                        //System.out.println(Minecraft.getMinecraft().theWorld.isAirBlock(block));
                         if (Minecraft.getMinecraft().theWorld.isAirBlock(block)) return null;
                         results.add(result);
                         markAsProcessed(result);
