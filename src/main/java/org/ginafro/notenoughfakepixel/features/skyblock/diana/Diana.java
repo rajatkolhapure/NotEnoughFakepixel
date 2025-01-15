@@ -45,7 +45,7 @@ public class Diana {
 
     @SubscribeEvent
     public void onPacketReceive(PacketReadEvent event) {
-        if (!Configuration.dianaGeneral) return; // Check if the feature is enabled
+        if (!Configuration.showWaypointsBurrows) return; // Check if the feature is enabled
         if (!ScoreboardUtils.currentLocation.isHub()) return; // Check if the player is in a hub
         Packet packet = event.packet;
          if (packet instanceof S2APacketParticles) {
@@ -85,13 +85,13 @@ public class Diana {
 
     @SubscribeEvent
     public void onRenderLast(RenderWorldLastEvent event) {
-        if (!Configuration.dianaGeneral) return; // Check if the feature is enabled
         if (!ScoreboardUtils.currentLocation.isHub()) return; // Check if the player is in a hub
-        drawWaypoints(event.partialTicks); // Draw waypoints
-        if (!Configuration.dianaGaiaConstruct) return; // Check if the feature is enabled
-        dianaMobCheck();
-        dianaMobRemover();
-        dianaMobRender(event.partialTicks); // Check for gaia constructs in entities and draw a hitbox according hp and hit status
+        if (Configuration.dianaShowWaypointsBurrows) drawWaypoints(event.partialTicks);
+        if (Configuration.dianaGaiaConstruct || Configuration.dianaSiamese) {
+            dianaMobCheck(); // Check entities on world, add to lists if not tracked
+            dianaMobRemover(); // Remove mobs from lists if out of render distance
+            dianaMobRender(event.partialTicks); // Check for mobs in entities and draw a hitbox
+        }
     }
 
     private void drawWaypoints(float partialTicks) {
@@ -216,6 +216,7 @@ public class Diana {
             }
         }
         for (SiameseLynx siamese : listSiameseAlive) {
+            // If both null = death, remove from list of siameses
             if (siamese.getEntity1() == null && siamese.getEntity2() == null) {
                 listSiameseAlive.remove(siamese);
                 System.out.println("Siamese removed, "+listSiameseAlive.size());
@@ -248,40 +249,38 @@ public class Diana {
     }*/
     @SubscribeEvent
     public void onSoundPacketReceive(PacketReadEvent event) {
-        if (!Configuration.dianaGeneral) return; // Check if the feature is enabled
-        if (!Configuration.dianaGaiaConstruct) return; // Check if the feature is enabled
         if (!ScoreboardUtils.currentLocation.isHub()) return; // Check if the player is in a hub
         Packet packet = event.packet;
         if (packet instanceof S29PacketSoundEffect) {
             S29PacketSoundEffect soundEffect = (S29PacketSoundEffect) packet;
             //System.out.println(soundEffect.getSoundName());
             int[] coordsSound = new int[] {(int)Math.floor(soundEffect.getX()), (int)Math.floor(soundEffect.getY()), (int)Math.floor(soundEffect.getZ())};
-            // List<GaiaConstruct> safeResults = new ArrayList<GaiaConstruct>(listGaiaAlive);
             String soundName = soundEffect.getSoundName();
             switch (soundName) {
                 // Remove explosion sound feature
                 case "random.explode":
+                    if (!Configuration.disableDianaExplosionSounds) return;
                     if (Math.floor(soundEffect.getPitch()*1000)/1000 == 1.190) {
-                        if (Configuration.disableDianaExplosionSounds) {
-                            if (event.isCancelable()) event.setCanceled(true);
-                        }
+                        if (event.isCancelable()) event.setCanceled(true);
                     }
                     break;
                 // Remove waypoint at pling sound
                 case "note.pling":
+                    if (!Configuration.dianaShowWaypointsBurrows) return;
                     deleteClosestWaypoint(coordsSound[0],coordsSound[1],coordsSound[2]);
                     break;
                 // Gaia track hits feature
                 case "mob.zombie.metal":
                 case "mob.irongolem.death":
                 case "mob.irongolem.hit":
+                    if (!Configuration.dianaGaiaConstruct) return; // Check if the feature is enabled
                     // Gaia track hits feature
                     GaiaConstruct closestGaia = getClosestGaia(coordsSound);
                     if (closestGaia == null) return;
                     if (soundName.equals("mob.zombie.metal") || soundName.equals("mob.irongolem.hit")) {
                         closestGaia.addHit();
-                        System.out.println("Hit registered, "+closestGaia.getHits());
-                    } else if (soundName.equals("mob.irongolem.death")) {
+                        //System.out.println("Hit registered, "+closestGaia.getHits());
+                    } else {
                         ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(1);
                         exec.schedule(new Runnable() {
                             public void run() {
@@ -296,22 +295,7 @@ public class Diana {
                         if (event.isCancelable()) event.setCanceled(true);
                     }*/
                     break;
-                // Siamese Lynx feature
-                case "mob.cat.hitt":
-                    //SiameseLynx closestSiamese = getClosestSiamese(coordsSound);
-                    //closestSiamese.addHit();
-                    break;
             }
-
-            // Remove harp sound
-            /*if (soundEffect.getSoundName().equals("note.harp")) {
-                if (Configuration.disableDianaHarpSounds) {
-                    System.out.println(soundEffect.getPitch());
-                    System.out.println(soundEffect.getVolume());
-                    if (event.isCancelable()) event.setCanceled(true);
-                }
-                return;
-            }*/
         }
     }
 
@@ -350,13 +334,13 @@ public class Diana {
 
     @SubscribeEvent
     public void handleClick(PlayerInteractEvent event) {
-        if (!Configuration.dianaGeneral) return; // Check if the feature is enabled
         if (!ScoreboardUtils.currentLocation.isHub()) return; // Check if the player is in a hub
+        if (!Configuration.dianaAutoEquipAncestralSpade) return; // Check if the feature is enabled
         if (event.action == PlayerInteractEvent.Action.RIGHT_CLICK_AIR) return; // Check if right click on air
         //System.out.println(event.face + ", "+event.pos);
         //if (!event.face.equals("up")) return;
         //deleteClosestWaypoint(event.pos.getX(),event.pos.getY(),event.pos.getZ());
-        if (Configuration.dianaAutoEquipAncestralSpade) autoEquipShovel(event.face.getName(),event.pos.getX(),event.pos.getY(),event.pos.getZ());
+        autoEquipShovel(event.face.getName(),event.pos.getX(),event.pos.getY(),event.pos.getZ());
         //System.out.println(Minecraft.getMinecraft().thePlayer.getHeldItem().getDisplayName());
     }
 
@@ -406,9 +390,7 @@ public class Diana {
 
     @SubscribeEvent()
     public void onWorldUnload(WorldEvent.Unload event) {
-        if (!Configuration.dianaGeneral) return; // Check if the feature is enabled
-        processor.clearProcessedGroups();
-        if (!Configuration.dianaGaiaConstruct) return; // Check if the feature is enabled
-        listGaiaAlive.clear();
+        if (Configuration.dianaShowWaypointsBurrows) processor.clearProcessedGroups();
+        if (Configuration.dianaGaiaConstruct) listGaiaAlive.clear();
     }
 }
