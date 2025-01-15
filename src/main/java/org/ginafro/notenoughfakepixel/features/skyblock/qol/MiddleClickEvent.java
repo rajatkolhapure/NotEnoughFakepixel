@@ -16,46 +16,6 @@ public class MiddleClickEvent {
     private static final Minecraft mc = Minecraft.getMinecraft();
 
     private static List<String> chestNames = Arrays.asList(
-            "Skyblock Menu",
-
-            "Pets",
-            "Autopet",
-
-            "Trades",
-            "Your Skills",
-            "Your Collections",
-            "Quest Log",
-            "Calendar and Events",
-            "Booster Cookie",
-
-            "Bazaar",
-            "Order Options",
-            "Farming ➜",
-            "Mining ➜",
-            "Combat ➜",
-            "Woods & Fishes ➜",
-            "Oddities ➜",
-
-            "Auction House",
-            "Manage Auctions",
-            "Create Auction",
-            "Your bids",
-            "BIN Auction View",
-
-            "Settings",
-            "Island Management",
-            "Island Category",
-            "Recipe Book",
-            "Profiles Management",
-
-            "Storage",
-            "Fast Travel",
-            "Active Effects",
-
-            "Bank",
-            "Coop Bank Account",
-            "Personal Bank Account",
-
             "Experimentation Table",
             "Chronomatron",
             "Ultrasequencer",
@@ -65,11 +25,7 @@ public class MiddleClickEvent {
             "Correct all the panes!",
             "Complete the maze!",
             "Click in order!",
-            "Select all the ",
-
-            "Wardrobe",
-            "Chocolate Factory"
-
+            "Select all the "
         );
 
     @SubscribeEvent

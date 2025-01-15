@@ -5,6 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.ginafro.notenoughfakepixel.Configuration;
+import org.ginafro.notenoughfakepixel.config.pages.MiningOverlayPage;
 import org.ginafro.notenoughfakepixel.utils.ItemUtils;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 import org.ginafro.notenoughfakepixel.variables.Colors;
@@ -30,7 +31,7 @@ public class DrillFuelParsing {
             lastRead++;
             return;
         }
-        if(!Configuration.miningOverlay.isEnabled()) return;
+        if(!MiningOverlayPage.miningOverlay.isEnabled()) return;
         if(Minecraft.getMinecraft().thePlayer == null) return;
         if(ScoreboardUtils.currentLocation != Location.DWARVEN) return;
 

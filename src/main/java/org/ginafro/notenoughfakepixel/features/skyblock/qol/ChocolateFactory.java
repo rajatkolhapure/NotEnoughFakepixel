@@ -20,11 +20,11 @@ import java.util.regex.Pattern;
 
 public class ChocolateFactory {
 
-    private Pattern upgradeCostPattern = Pattern.compile("(?<cost>[0-9,]+) Chocolate");
+    private Pattern upgradeCostPattern = Pattern.compile("(\u00A7.)(?<cost>[0-9,]+) Chocolate");
 
     @SubscribeEvent()
     public void onGuiOpen(GuiScreenEvent.BackgroundDrawnEvent event) {
-        if (!Configuration.showBestUpgrade || event.gui == null || !(event.gui instanceof GuiChest)) return;
+        if (!Configuration.showBestUpgrade || !(event.gui instanceof GuiChest)) return;
 
         TreeMap<Float, Slot> upgradeCosts = new TreeMap<>();
         GuiChest chest = (GuiChest) event.gui;

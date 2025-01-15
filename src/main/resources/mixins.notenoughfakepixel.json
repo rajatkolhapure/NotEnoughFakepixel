@@ -5,20 +5,20 @@
   "minVersion": "0.7",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "Accesors.AccessorGuiPlayerTabOverlay",
-    "Accesors.BlockAccessor",
-
-    "EntityPlayerSPMixinNausea",
-    "MixinInventoryEffectRenderer",
-
-    "BlockWartMixinHeight",
     "BlockCropsMixinHeight",
     "BlockMixinHitbox",
+    "BlockWartMixinHeight",
+    "EntityPlayerSPMixinNausea",
     "InGameHudMixin",
     "MixinEntityRenderer",
-    "MixinRendererLivingEntity",
     "MixinGuiMainMenu",
+    "MixinGuiUtils",
+    "MixinInventoryEffectRenderer",
+    "MixinRendererLivingEntity",
     "MixinRenderLightningBolt",
-    "MixinWorld"
+    "MixinWorld",
+    "bugfixes.NetHandlerPlayClientMixin",
+    "Accesors.AccessorGuiPlayerTabOverlay",
+    "Accesors.BlockAccessor"
   ]
 }

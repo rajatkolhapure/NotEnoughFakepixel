@@ -55,12 +55,15 @@ public class NotEnoughFakepixel {
 
         MinecraftForge.EVENT_BUS.register(new AutoReadyDungeon());
         MinecraftForge.EVENT_BUS.register(new AutoCloseChests());
-        MinecraftForge.EVENT_BUS.register(new AutoDropItems());
+        //MinecraftForge.EVENT_BUS.register(new AutoDropItems());
+        MinecraftForge.EVENT_BUS.register(new sPlusReminder());
 
         MinecraftForge.EVENT_BUS.register(new StarredMobDisplay());
         MinecraftForge.EVENT_BUS.register(new BatMobDisplay());
         MinecraftForge.EVENT_BUS.register(new FelMobDisplay());
         MinecraftForge.EVENT_BUS.register(new ThreeWeirdos());
+        MinecraftForge.EVENT_BUS.register(new SecretOverlay());
+
         EventManager.INSTANCE.register(new DungeonsMap());
         // Mining
         MinecraftForge.EVENT_BUS.register(new MiningOverlay());
@@ -73,7 +76,6 @@ public class NotEnoughFakepixel {
         // Fishing
         MinecraftForge.EVENT_BUS.register(new GreatCatchNotifier());
         // Enchanting
-        //MinecraftForge.EVENT_BUS.register(new EnchantingSolvers());
         MinecraftForge.EVENT_BUS.register(new EnchantingSolvers());
         // Chocolate Factory
         MinecraftForge.EVENT_BUS.register(new ChocolateFactory());
@@ -82,6 +84,7 @@ public class NotEnoughFakepixel {
         MinecraftForge.EVENT_BUS.register(new ChatCleaner());
         MinecraftForge.EVENT_BUS.register(new MiddleClickEvent());
         MinecraftForge.EVENT_BUS.register(new SoundRemover());
+        MinecraftForge.EVENT_BUS.register(new ScrollableTooltips());
         //MinecraftForge.EVENT_BUS.register(new SlotLocking());
         MinecraftForge.EVENT_BUS.register(new StorageOverlay.StorageEvent());
         MinecraftForge.EVENT_BUS.register(this);

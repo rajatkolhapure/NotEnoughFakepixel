@@ -23,11 +23,19 @@ public class MiningOverlay extends TextHud {
         if (!ScoreboardUtils.currentLocation.equals(Location.DWARVEN)) return;
 
         if (Configuration.abilityCooldown) {lines.add("\u00a77Ability Cooldown: \u00a7r" + AbilityNotifier.cdSecondsRemaining());}
-        if (Configuration.mithrilPowder) {lines.add(formatMithrilPowder(TablistParser.mithilPowder));}
+        if (Configuration.mithrilPowder) {lines.add(formatMithrilPowder(TablistParser.mithrilPowder));}
         if (Configuration.drillFuel) {lines.add(DrillFuelParsing.getString());}
         for(String commission : TablistParser.commissions){
             lines.add(formatCommission(commission));
         }
+    }
+
+    @Override
+    protected boolean shouldShow() {
+        if (!super.shouldShow()) {
+            return false;
+        }
+        return Configuration.miningOverlayEnabled;
     }
 
     @Override
