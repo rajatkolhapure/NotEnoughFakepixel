@@ -26,8 +26,10 @@ public class TablistParser {
     private static final Ordering<NetworkPlayerInfo> playerOrdering = Ordering.from(new PlayerComparator());
     private static long lastTime = 0;
 
-    public static int mithilPowder = 0;
+    public static int mithrilPowder = 0;
     public static List<String> commissions = new ArrayList<>();
+
+    public static int secretPercentage = -1;
 
     public static String currentOpenChestName = "";
     public static String lastOpenChestName = "";
@@ -120,11 +122,16 @@ public class TablistParser {
 
                 // Parsing mithril powder
                 if (cleanLine.contains("Mithril Powder: ")) {
-                    mithilPowder = Integer.parseInt(cleanLine.split(" ")[2].replace(",", ""));
+                    mithrilPowder = Integer.parseInt(cleanLine.split(" ")[2].replace(",", ""));
+                }
+
+                // Parsing secrets percentage
+                // line is "Secrets Found: 0%"
+                if (cleanLine.contains("Secrets Found: ")) {
+                    secretPercentage = Integer.parseInt(cleanLine.split(" ")[2].replace("%", ""));
                 }
 
                 // Parsing commisions
-
                 if (foundCommisions) {
                     if (cleanLine.isEmpty()) {
                         foundCommisions = false;

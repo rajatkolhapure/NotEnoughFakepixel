@@ -21,9 +21,7 @@ public class EventsMsgSupressor {
         §fprice and quality, get access to a variety of
         §bunique features §fand additional bonuses!
     */
-    private Pattern watchdogPattern = Pattern.compile("§4\\[WATCHDOG ANNOUNCEMENT]\n");
-    private Pattern infoPattern = Pattern.compile("§b\\[PLAYER INFORMATION]\n");
-    private Pattern friendJoinPattern = Pattern.compile("§aFriend > ");
+
 
     @SubscribeEvent
     public void onChatRecieve(ClientChatReceivedEvent e){
@@ -33,8 +31,6 @@ public class EventsMsgSupressor {
 
     private void checkMessageMatches(ClientChatReceivedEvent e) {
         checkDonEspressoMessage(e);
-        checkWatchdogMessage(e);
-        checkFriendJoinMessage(e);
     }
 
     private void checkDonEspressoMessage(ClientChatReceivedEvent e) {
@@ -46,20 +42,6 @@ public class EventsMsgSupressor {
         }
     }
 
-    private void checkWatchdogMessage(ClientChatReceivedEvent e) {
-        if (!Configuration.disableWatchdogInfo) return;
-        //System.out.println("Checking message " + e.message.getFormattedText());
-        if (watchdogPattern.matcher(e.message.getFormattedText()).find() ||
-            infoPattern.matcher(e.message.getFormattedText()).find()) {
-            e.setCanceled(true);
-        }
-    }
 
-    private void checkFriendJoinMessage(ClientChatReceivedEvent e) {
-        if (!Configuration.disableFriendJoin) return;
-        if (friendJoinPattern.matcher(e.message.getFormattedText()).find()) {
-            e.setCanceled(true);
-        }
-    }
 
 }

@@ -1,6 +1,7 @@
 package org.ginafro.notenoughfakepixel.mixin;
 
 import net.minecraft.world.World;
+import net.minecraft.world.storage.WorldInfo;
 import org.ginafro.notenoughfakepixel.Configuration;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -19,4 +20,24 @@ public class MixinWorld {
         }
     }
 
+    @Inject(method = "updateWeather", at = @At("HEAD"), cancellable = true)
+    private void disableRain(CallbackInfo ci) {
+        // Check if the custom configuration option to disable rain is enabled
+        if (Configuration.disableRain) {
+            // Cast this mixin instance back to World
+            World world = (World) (Object) this;
+
+            // Access the world info to modify weather
+            WorldInfo worldInfo = world.getWorldInfo();
+
+            // Set weather to clear
+            worldInfo.setRainTime(0);         // Reset rain timer
+            worldInfo.setThunderTime(0);     // Reset thunder timer
+            worldInfo.setRaining(false);     // Ensure it's not raining
+            worldInfo.setThundering(false);  // Ensure it's not thundering
+
+            // Cancel further execution of the weather update
+            ci.cancel();
+        }
+    }
 }

@@ -15,18 +15,4 @@ public class EntityPlayerSPMixinNausea extends AbstractClientPlayer {
     public EntityPlayerSPMixinNausea(World worldIn, GameProfile playerProfile) {
         super(worldIn, playerProfile);
     }
-
-    @Shadow public float timeInPortal;
-    @Shadow public float prevTimeInPortal;
-
-    @Override
-    public void removePotionEffectClient(int potionId) {
-        if (Configuration.noNausea && potionId == Potion.confusion.id) {
-            this.timeInPortal = 0.0f;
-            this.prevTimeInPortal = 0.0f;
-        }
-
-        super.removePotionEffectClient(potionId);
-    }
-
 }
