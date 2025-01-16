@@ -1,6 +1,7 @@
 package org.ginafro.notenoughfakepixel.features.skyblock.diana;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityGolem;
@@ -8,17 +9,20 @@ import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S29PacketSoundEffect;
 import net.minecraft.network.play.server.S2APacketParticles;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.*;
+import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.ginafro.notenoughfakepixel.Configuration;
+import org.ginafro.notenoughfakepixel.commands.Waypoint;
 import org.ginafro.notenoughfakepixel.events.PacketReadEvent;
 import net.minecraft.client.Minecraft;
 import org.ginafro.notenoughfakepixel.utils.RenderUtils;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 import net.minecraftforge.event.entity.player.*;
+import org.ginafro.notenoughfakepixel.utils.SoundUtils;
+import org.ginafro.notenoughfakepixel.variables.Location;
 import org.ginafro.notenoughfakepixel.variables.MobDisplayTypes;
 import org.ginafro.notenoughfakepixel.utils.InventoryUtils;
 import java.awt.*;
@@ -29,19 +33,23 @@ import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.*;
 
 import static org.ginafro.notenoughfakepixel.Configuration.*;
+import static org.ginafro.notenoughfakepixel.utils.ScoreboardUtils.getHubNumber;
 
 public class Diana {
-    private static BlockPos overlayLoc = null;
     ParticleProcessor processor = new ParticleProcessor();
     Color white = new Color(255, 255, 255, 100);
     private Queue<GaiaConstruct> listGaiaAlive = new ConcurrentLinkedQueue<>();
     private Queue<SiameseLynx> listSiameseAlive = new ConcurrentLinkedQueue<>();
     private int distanceRenderHitbox = 64;
-
-    Color red = new Color(255,0,0,255);
-    Color green = new Color(0,255,0,255);
+    private Pattern middleBar = Pattern.compile("(§6|§c)[0-9]+/[0-9]+❤(.)+");
+    private Pattern cooldownPattern = Pattern.compile("§r§cThis ability is on cooldown for [0-9] "+"more seconds.§r");
+    private Pattern minosInquisitor = Pattern.compile("§r§c§lUh oh! §r§eYou dug out §r§2Minos Inquisitor§r");
+    private Pattern minosInquisitorPartyChat = Pattern.compile("§9Party §8> (?:§[0-9a-f])*\\[?(?:(?:§[0-9a-f])?[A-Z](?:§[0-9a-f])?\\+*(?:§[0-9a-f])?)*\\]?(?:§[0-9a-f])*.*?: Minos Inquisitor found in x:(-?\\d+), y:(-?\\d+), z:(-?\\d+) in HUB-(1[0-9]|[1-9])");
+    private int counterTeleports = 0;
+    private String inquisitorSound = "mob.enderdragon.growl";
 
     @SubscribeEvent
     public void onPacketReceive(PacketReadEvent event) {
@@ -100,33 +108,46 @@ public class Diana {
         double viewerY = viewer.lastTickPosY + (viewer.posY - viewer.lastTickPosY) * partialTicks;
         double viewerZ = viewer.lastTickPosZ + (viewer.posZ - viewer.lastTickPosZ) * partialTicks;
 
-        List<ParticleProcessor.ClassificationResult> safeResults = new ArrayList<>();
-        synchronized (processor.getProcessedGroups()) {
+        List<ParticleProcessor.Waypoint> safeResults = new ArrayList<>();
+        synchronized (processor.getWaypoints()) {
             try {
-                safeResults = new ArrayList<>(processor.getProcessedGroups());
+                safeResults = new ArrayList<>(processor.getWaypoints());
             } catch (Exception ignored) {}
         }
-        for (ParticleProcessor.ClassificationResult result : safeResults) {
-            if (result.isHidden()) continue;
-            //RenderUtils.renderBeaconBeam(result.getCoordinates()[0], result.getCoordinates()[1], result.getCoordinates()[2], 0x1fd8f1, 1.0f, event.partialTicks, true);
-            Color newColor = white;
-            if (result.getType().equals("EMPTY")) newColor = emptyBurrowColor.toJavaColor();
-            if (result.getType().equals("MOB")) newColor = mobBurrowColor.toJavaColor();
-            if (result.getType().equals("TREASURE")) newColor = treasureBurrowColor.toJavaColor();
-            newColor = new Color(newColor.getRed(), newColor.getGreen(), newColor.getBlue(), 100);
-            AxisAlignedBB bb = new AxisAlignedBB(
-                    result.getCoordinates()[0] - viewerX,
-                    result.getCoordinates()[1] - viewerY,
-                    result.getCoordinates()[2] - viewerZ,
-                    result.getCoordinates()[0] + 1 - viewerX,
-                    result.getCoordinates()[1] + 1 - viewerY + 100,
-                    result.getCoordinates()[2] + 1 - viewerZ
-            ).expand(0.01f, 0.01f, 0.01f);
-            GlStateManager.disableCull();
-            RenderUtils.drawFilledBoundingBox(bb, 1f, newColor);
-            GlStateManager.enableCull();
-            GlStateManager.enableTexture2D();
-        }
+        try {
+            for (ParticleProcessor.Waypoint result : safeResults) {
+                if (result.isHidden()) continue;
+                Color newColor = white;
+                if (result.getType().equals("EMPTY")) newColor = emptyBurrowColor.toJavaColor();
+                if (result.getType().equals("MOB")) newColor = mobBurrowColor.toJavaColor();
+                if (result.getType().equals("TREASURE")) newColor = treasureBurrowColor.toJavaColor();
+                if (result.getType().equals("MINOS")) newColor = new Color(243, 225, 107);
+                newColor = new Color(newColor.getRed(), newColor.getGreen(), newColor.getBlue(), 100);
+                AxisAlignedBB bb = new AxisAlignedBB(
+                        result.getCoordinates()[0] - viewerX,
+                        result.getCoordinates()[1] - viewerY,
+                        result.getCoordinates()[2] - viewerZ,
+                        result.getCoordinates()[0] + 1 - viewerX,
+                        result.getCoordinates()[1] + 1 - viewerY + 250,
+                        result.getCoordinates()[2] + 1 - viewerZ
+                ).expand(0.01f, 0.01f, 0.01f);
+                if (result.getType().equals("MINOS")) {
+                    bb = new AxisAlignedBB(
+                            result.getCoordinates()[0] - viewerX,
+                            result.getCoordinates()[1] - viewerY,
+                            result.getCoordinates()[2] - viewerZ,
+                            result.getCoordinates()[0] + 1 - viewerX,
+                            result.getCoordinates()[1] + 1 - viewerY + 500,
+                            result.getCoordinates()[2] + 1 - viewerZ
+                    ).expand(0.01f, 0.01f, 0.01f);
+                }
+
+                GlStateManager.disableCull();
+                RenderUtils.drawFilledBoundingBox(bb, 1f, newColor);
+                GlStateManager.enableCull();
+                GlStateManager.enableTexture2D();
+            }
+        } catch (Exception ignored) {}
     }
 
     private void dianaMobRender(float partialTicks) {
@@ -190,7 +211,7 @@ public class Diana {
                 //System.out.println("Gaia added, "+listGaiaAlive.size());
             } else if (entity instanceof EntityOcelot){
                 for (SiameseLynx siamese : listSiameseAlive) {
-
+                    if (siamese.getEntity1() == null) return;
                     // If already added, don't add again
                     if (siamese.getEntity1().getUniqueID() == entity.getUniqueID()) return;
                     if (siamese.getEntity2() == null) {
@@ -266,8 +287,13 @@ public class Diana {
                     break;
                 // Remove waypoint at pling sound
                 case "note.pling":
-                    if (!Configuration.dianaShowWaypointsBurrows) return;
-                    deleteClosestWaypoint(coordsSound[0],coordsSound[1],coordsSound[2]);
+                    if (Configuration.dianaShowWaypointsBurrows) {
+                        deleteClosestWaypoint(coordsSound[0], coordsSound[1], coordsSound[2]);
+                    }
+                    if (Configuration.dianaAutoEquipAncestralSpadeForParticles) { // Check if the feature is enabled
+                        counterTeleports = 0;
+                    }
+
                     break;
                 // Gaia track hits feature
                 case "mob.zombie.metal":
@@ -277,9 +303,13 @@ public class Diana {
                     // Gaia track hits feature
                     GaiaConstruct closestGaia = getClosestGaia(coordsSound);
                     if (closestGaia == null) return;
-                    if (soundName.equals("mob.zombie.metal") || soundName.equals("mob.irongolem.hit")) {
+                    if (soundName.equals("mob.zombie.metal")) {
+                        System.out.println("GAIA HIT " + closestGaia.getHits() + "/" + closestGaia.getHitsNeeded()[closestGaia.getState()]);
                         closestGaia.addHit();
-                        //System.out.println("Hit registered, "+closestGaia.getHits());
+                    } else if (soundName.equals("mob.irongolem.hit")) {
+                        System.out.println("GAIA HURT"+closestGaia.getHits()+"/"+closestGaia.getHitsNeeded()[closestGaia.getState()]);
+                        System.out.println("Hit tooks: "+closestGaia.getHits());
+                        closestGaia.hurtAction();
                     } else {
                         ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(1);
                         exec.schedule(new Runnable() {
@@ -288,6 +318,14 @@ public class Diana {
                                 //System.out.println("Gaia removed, " + listGaiaAlive.size());
                             }
                         }, 1, TimeUnit.SECONDS);
+                    }
+                    break;
+                case "mob.endermen.portal":
+                    if (!Configuration.dianaAutoEquipAncestralSpadeForParticles) return; // Check if the feature is enabled
+                    counterTeleports++;
+                    if (counterTeleports > 15) {
+                        autoEquipShovelForParticles();
+                        counterTeleports = 0;
                     }
                     break;
                 case "note.harp":
@@ -316,15 +354,19 @@ public class Diana {
         Entity returnedSiamese = null;
         float distance = Float.MAX_VALUE;
         for (SiameseLynx siamese : listSiameseAlive) {
-            int[] coordsSiamese1 = new int[] {siamese.getEntity1().getPosition().getX(), siamese.getEntity1().getPosition().getY() ,siamese.getEntity1().getPosition().getZ()};
-            int[] coordsSiamese2 = new int[] {siamese.getEntity2().getPosition().getX(), siamese.getEntity2().getPosition().getY() ,siamese.getEntity2().getPosition().getZ()};
-            if (processor.getDistance(coords, coordsSiamese1) < distance) {
-                distance = processor.getDistance(coords, coordsSiamese1);
-                returnedSiamese = siamese.getEntity1();
+            if (siamese.getEntity1() != null) {
+                int[] coordsSiamese1 = new int[]{siamese.getEntity1().getPosition().getX(), siamese.getEntity1().getPosition().getY(), siamese.getEntity1().getPosition().getZ()};
+                if (processor.getDistance(coords, coordsSiamese1) < distance) {
+                    distance = processor.getDistance(coords, coordsSiamese1);
+                    returnedSiamese = siamese.getEntity1();
+                }
             }
-            if (processor.getDistance(coords, coordsSiamese2) < distance) {
-                distance = processor.getDistance(coords, coordsSiamese2);
-                returnedSiamese = siamese.getEntity2();
+            if (siamese.getEntity2() != null) {
+                int[] coordsSiamese2 = new int[]{siamese.getEntity2().getPosition().getX(), siamese.getEntity2().getPosition().getY(), siamese.getEntity2().getPosition().getZ()};
+                if (processor.getDistance(coords, coordsSiamese2) < distance) {
+                    distance = processor.getDistance(coords, coordsSiamese2);
+                    returnedSiamese = siamese.getEntity2();
+                }
             }
 
         }
@@ -335,62 +377,147 @@ public class Diana {
     @SubscribeEvent
     public void handleClick(PlayerInteractEvent event) {
         if (!ScoreboardUtils.currentLocation.isHub()) return; // Check if the player is in a hub
-        if (!Configuration.dianaAutoEquipAncestralSpade) return; // Check if the feature is enabled
+        if (!Configuration.dianaAutoEquipAncestralSpadeForDig) return; // Check if the feature is enabled
         if (event.action == PlayerInteractEvent.Action.RIGHT_CLICK_AIR) return; // Check if right click on air
-        //System.out.println(event.face + ", "+event.pos);
-        //if (!event.face.equals("up")) return;
-        //deleteClosestWaypoint(event.pos.getX(),event.pos.getY(),event.pos.getZ());
-        autoEquipShovel(event.face.getName(),event.pos.getX(),event.pos.getY(),event.pos.getZ());
-        //System.out.println(Minecraft.getMinecraft().thePlayer.getHeldItem().getDisplayName());
+
+        autoEquipShovelForDig(event.face.getName(),event.pos.getX(),event.pos.getY(),event.pos.getZ());
     }
 
     private void deleteClosestWaypoint(int x, int y, int z) {
         //int[] playerCoords = new int[] {(int)Minecraft.getMinecraft().thePlayer.posX, (int)Minecraft.getMinecraft().thePlayer.posY, (int)Minecraft.getMinecraft().thePlayer.posZ};
         int[] coords = new int[] {x, y, z};
-        ParticleProcessor.ClassificationResult res = processor.getClosestResult(coords);
+        ParticleProcessor.Waypoint res = processor.getClosestWaypoint(coords);
 
         if (res == null) return;
         if (processor.areCoordinatesClose(res.getCoordinates(), coords, 3)) {
+            if (res.getType().equals("MINOS")) return;
             res.setHidden(true);
             ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(1);
             exec.schedule(new Runnable() {
                 public void run() {
-                    processor.deleteProcessedGroup(res);
+                    processor.deleteWaypoint(res);
                 }
             }, 30000, TimeUnit.MILLISECONDS);
         }
     }
 
-    private void autoEquipShovel(String face, int x, int y, int z) {
+    private void autoEquipShovelForDig(String face, int x, int y, int z) {
         if (!face.equals("up")) return;
         EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
         int[] playerCoords = new int[] {(int)player.posX, (int)player.posY, (int)player.posZ};
-        ParticleProcessor.ClassificationResult res = processor.getClosestResult(playerCoords);
+        ParticleProcessor.Waypoint res = processor.getClosestWaypoint(playerCoords);
         if (res == null) return;
-        if (res.isHidden()) return;
+        if (res.isHidden() || res.getType().equals("MINOS")) return;
         int[] coordsBurrowClicked = new int[]{x, y+1, z};
-        if (!Arrays.equals(res.getCoordinates(), coordsBurrowClicked)) return;
-        // Clicked on a burrow
-        if (InventoryUtils.getHeldItem() == null) return;
-        if (!InventoryUtils.getHeldItem().getDisplayName().contains("Ancestral Spade")) {
-            int slot = InventoryUtils.getSlot("Ancestral Spade");
-            if (slot == -1) return;
-            int currentSlot = InventoryUtils.getCurrentSlot();
-            ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(1);
+        if (processor.areCoordinatesClose(res.getCoordinates(),coordsBurrowClicked,2.5f)) InventoryUtils.autoEquipItem("Ancestral Spade");
+    }
+
+    private void autoEquipShovelForParticles() {
+        InventoryUtils.autoEquipItem("Ancestral Spade", 250);
+    }
+
+    @SubscribeEvent
+    public void onChatRecieve(ClientChatReceivedEvent event){
+        EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
+        if (player == null) return;
+        if (!ScoreboardUtils.currentLocation.isHub()) return;
+        if (middleBar.matcher(event.message.getFormattedText()).matches()) return;
+        //System.out.println(event.message.getFormattedText());
+        if (Configuration.dianaCancelCooldownSpadeMessage) {
+            cancelMessage(true, event, cooldownPattern, true);
+        }
+        if (Configuration.dianaMinosInquisitorAlert && minosInquisitor.matcher(event.message.getFormattedText()).matches()) {
+            player.sendChatMessage("/pc Minos Inquisitor found in x:"+player.getPosition().getX()+", y:"+player.getPosition().getY()+", z:"+player.getPosition().getZ() + " in HUB-"+getHubNumber());
+            // vvvvv PENDING OF TESTING vvvvv
+            ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(8);
             exec.schedule(new Runnable() {
                 public void run() {
-                    InventoryUtils.goToSlot(currentSlot);
+                    player.sendChatMessage("/pc 30 seconds left!");
                 }
-            }, 100, TimeUnit.MILLISECONDS);
-            InventoryUtils.goToSlot(slot);
+            }, 30, TimeUnit.SECONDS);
+            exec.schedule(new Runnable() {
+                public void run() {
+                    player.sendChatMessage("/pc 20 seconds left!");
+                }
+            }, 40, TimeUnit.SECONDS);
+            exec.schedule(new Runnable() {
+                public void run() {
+                    player.sendChatMessage("/pc 10 seconds left!");
+                }
+            }, 50, TimeUnit.SECONDS);
+            exec.schedule(new Runnable() {
+                public void run() {
+                    player.sendChatMessage("/pc 5");
+                }
+            }, 55, TimeUnit.SECONDS);
+            exec.schedule(new Runnable() {
+                public void run() {
+                    player.sendChatMessage("/pc 4");
+                }
+            }, 56, TimeUnit.SECONDS);
+            exec.schedule(new Runnable() {
+                public void run() {
+                    player.sendChatMessage("/pc 3");
+                }
+            }, 57, TimeUnit.SECONDS);
+            exec.schedule(new Runnable() {
+                public void run() {
+                    player.sendChatMessage("/pc 2");
+                }
+            }, 58, TimeUnit.SECONDS);
+            exec.schedule(new Runnable() {
+                public void run() {
+                    player.sendChatMessage("/pc 1");
+                }
+            }, 59, TimeUnit.SECONDS);
+        }
+        if (Configuration.dianaMinosInquisitorAlert) {
+            Matcher matcher = minosInquisitorPartyChat.matcher(event.message.getFormattedText());
+            if (matcher.find()) {
+                // extract from message
+                int x = Integer.parseInt(matcher.group(1));
+                int y = Integer.parseInt(matcher.group(2));
+                int z = Integer.parseInt(matcher.group(3));
+                int hubNumber = Integer.parseInt(matcher.group(4)); // hub number
+
+                int[] coords = new int[] {Minecraft.getMinecraft().thePlayer.getPosition().getX(),
+                        Minecraft.getMinecraft().thePlayer.getPosition().getY(),
+                        Minecraft.getMinecraft().thePlayer.getPosition().getZ()};
+                SoundUtils.playSound(coords, inquisitorSound, 3.0f, 0.8f);
+
+
+                if (getHubNumber() == hubNumber) {
+                    ParticleProcessor.Waypoint wp = new ParticleProcessor.Waypoint("MINOS", new int[]{x, y, z});
+                    processor.addWaypoint(wp);
+                    ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(1);
+                    exec.schedule(new Runnable() {
+                        public void run() {
+                            processor.deleteWaypoint(wp);
+                        }
+                    }, 60, TimeUnit.SECONDS);
+                }
+
+            } else {
+                //System.out.println("No match found.");
+            }
         }
 
 
     }
 
+    private void cancelMessage(boolean option, ClientChatReceivedEvent e, Pattern pattern, boolean formatted){
+        if (!option) return;
+        String message = e.message.getUnformattedText();
+        if (formatted) message = e.message.getFormattedText();
+        if (pattern.matcher(message).find() || pattern.matcher(message).matches()){
+            e.setCanceled(true);
+        }
+    }
+
     @SubscribeEvent()
     public void onWorldUnload(WorldEvent.Unload event) {
-        if (Configuration.dianaShowWaypointsBurrows) processor.clearProcessedGroups();
+        if (Configuration.dianaShowWaypointsBurrows) processor.clearWaypoints();
         if (Configuration.dianaGaiaConstruct) listGaiaAlive.clear();
+        if (Configuration.dianaSiamese) listSiameseAlive.clear();
     }
 }
