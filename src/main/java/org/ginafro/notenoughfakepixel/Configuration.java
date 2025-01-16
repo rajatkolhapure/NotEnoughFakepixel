@@ -197,7 +197,7 @@ public class Configuration extends Config {
     @Color(name = "Gaia Un-hittable Color", category = "Diana", subcategory = "Mobs")
     public static OneColor gaiaUnhittableColor = new OneColor(255, 0, 0);
     // Minos inquisitor /pc feature
-    @Switch(name = "Minos Inquisitor alert on party chat", category = "Diana", subcategory = "Mobs")
+    @Switch(name = "Minos Inquisitor alert on party chat", category = "Diana", subcategory = "Mobs", description = "Enable alerts on party chat when Minos Inquisitor dug. Receive alerts from other players and show inquisitor waypoints.")
     public static boolean dianaMinosInquisitorAlert = true;
     @Color(name = "Siamese Hittable Color", category = "Diana", subcategory = "Mobs")
     public static OneColor siameseHittableColor = new OneColor(0, 255, 0);
