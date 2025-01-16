@@ -207,7 +207,7 @@ public class Configuration extends Config {
     public static boolean disableDianaExplosionSounds = false;
     @Switch(name = "Auto-equip Ancestral Spade when clicking on burrow" , category = "Diana", subcategory = "Misc", description = "When clicking burrow, equips Ancestral Spade automatically if its in hotbar.")
     public static boolean dianaAutoEquipAncestralSpadeForDig = true;
-    @Switch(name = "Auto-equip Ancestral Spade when using AOTE" , category = "Diana", subcategory = "Misc", description = "IMPORTANT: requires QOL enabled AOTE teleport sounds. When using AOTE teleport, equips Ancestral Spade automatically if its in hotbar for better particle recognition.")
+    @Switch(name = "Auto-equip Ancestral Spade when using AOTE" , category = "Diana", subcategory = "Misc", description = "IMPORTANT: requires QOL enabled AOTE teleport sounds. When using AOTE teleport, equips Ancestral Spade automatically each certain uses if its in hotbar for better particle recognition.")
     public static boolean dianaAutoEquipAncestralSpadeForParticles = false;
     @Switch(name = "Disable Ancestral Spade cooldown message" , category = "Diana", subcategory = "Misc", description = "Mute ability cooldown message on chat.")
     public static boolean dianaCancelCooldownSpadeMessage = true;
