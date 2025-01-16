@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.ConcurrentModificationException;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -101,6 +102,29 @@ public class ScoreboardUtils {
                 }
             }
         }
+    }
+
+    public static int getHubNumber() {
+        if (Minecraft.getMinecraft().getNetHandler() != null) {
+            System.out.println("Point 1 reached");
+            for (NetworkPlayerInfo playerInfo : Minecraft.getMinecraft().getNetHandler().getPlayerInfoMap()) {
+                IChatComponent s1 = playerInfo.getDisplayName();
+                if (s1 != null) {
+                    String name = StringUtils.stripControlCodes(s1.getUnformattedText());
+                    //System.out.println(name);
+                    if (name.contains("Server: ")) {
+                        String serverName = name.replace("Server: ", "").replaceAll("\\s+", "");
+                        Pattern hubPattern = Pattern.compile("skyblock-(\\d+)");
+                        Matcher matcher = hubPattern.matcher(serverName);
+
+                        if (matcher.find()) {
+                            String hubNumber = matcher.group(1); // Capturamos el número de HUB
+                            return Integer.parseInt(hubNumber);
+                        }
+                    }
+                }
+            }
+        } return -1;
     }
 
 
