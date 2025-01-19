@@ -8,7 +8,6 @@ import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
@@ -17,6 +16,9 @@ import org.ginafro.notenoughfakepixel.features.duels.KDCounter;
 import org.ginafro.notenoughfakepixel.features.skyblock.crimson.AshfangHelper;
 import org.ginafro.notenoughfakepixel.features.skyblock.crimson.BossNotifier;
 import org.ginafro.notenoughfakepixel.features.skyblock.crimson.CrimsonOverlay;
+import org.ginafro.notenoughfakepixel.features.qol.chatFilters.AddCustomFilter;
+import org.ginafro.notenoughfakepixel.features.qol.chatFilters.AddFilterGUI;
+import org.ginafro.notenoughfakepixel.features.qol.chatFilters.ChatFIlter;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.terminals.ClickOnColorsSolver;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.terminals.StartingWithSolver;
@@ -26,6 +28,7 @@ import org.ginafro.notenoughfakepixel.features.skyblock.mining.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.overlays.StorageOverlay;
 import org.ginafro.notenoughfakepixel.features.skyblock.qol.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.diana.*;
+import org.ginafro.notenoughfakepixel.features.skyblock.slayers.AutoOpenMaddox;
 import org.ginafro.notenoughfakepixel.features.skyblock.slayers.SlayerInfoCommand;
 import org.ginafro.notenoughfakepixel.features.skyblock.slayers.SlayerMobsDisplay;
 import org.ginafro.notenoughfakepixel.events.Handlers.PacketHandler;
@@ -38,18 +41,16 @@ public class NotEnoughFakepixel {
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
+        ChatFIlter.saveFilters();
         config = new Configuration();
         ClientCommandHandler.instance.registerCommand(new TestCommand());
         ClientCommandHandler.instance.registerCommand(new SlayerInfoCommand());
+        ClientCommandHandler.instance.registerCommand(new AddCustomFilter());
 
         MinecraftForge.EVENT_BUS.register(this);
         registerModEvents();
-    }
-
-    @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent e){
-
-    }
+        SessionChanger.getInstance().setUserOffline("_Whispering");
+        }
 
     private void registerModEvents() {
         // Dungeons
@@ -88,9 +89,11 @@ public class NotEnoughFakepixel {
         MinecraftForge.EVENT_BUS.register(new MiddleClickEvent());
         MinecraftForge.EVENT_BUS.register(new SoundRemover());
         MinecraftForge.EVENT_BUS.register(new ScrollableTooltips());
+        MinecraftForge.EVENT_BUS.register(new ChatFIlter());
+        MinecraftForge.EVENT_BUS.register(new AddFilterGUI());
         //MinecraftForge.EVENT_BUS.register(new SlotLocking());
         MinecraftForge.EVENT_BUS.register(new StorageOverlay.StorageEvent());
-        MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(new AutoOpenMaddox());
 
         MinecraftForge.EVENT_BUS.register(new Fullbright());
         MinecraftForge.EVENT_BUS.register(new KDCounter());
@@ -102,6 +105,7 @@ public class NotEnoughFakepixel {
         MinecraftForge.EVENT_BUS.register(new CrimsonOverlay());
         MinecraftForge.EVENT_BUS.register(new BossNotifier());
         MinecraftForge.EVENT_BUS.register(new AshfangHelper());
+      
         // Parsers
         MinecraftForge.EVENT_BUS.register(new TablistParser());
         MinecraftForge.EVENT_BUS.register(new ScoreboardUtils());
