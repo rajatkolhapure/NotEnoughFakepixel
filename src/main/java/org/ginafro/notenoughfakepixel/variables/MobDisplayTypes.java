@@ -10,6 +10,8 @@ public enum MobDisplayTypes {
     BROODFATHER,
     GAIA,
     SIAMESE,
+    BLAZE,
+    BLAZINGSOUL,
     NONE;
 
 }
