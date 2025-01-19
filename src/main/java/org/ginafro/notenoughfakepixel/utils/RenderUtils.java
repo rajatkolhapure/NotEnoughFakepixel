@@ -271,8 +271,22 @@ public class RenderUtils {
             z1 = z - 0.75;
             z2 = z + 0.75;
         } else if (type == MobDisplayTypes.SIAMESE) {
-            y2 = y + 1.7;
             y1 = y + 1.0;
+            y2 = y + 1.7;
+            x1 = x - 0.3;
+            x2 = x + 0.3;
+            z1 = z - 0.3;
+            z2 = z + 0.3;
+        }  else if (type == MobDisplayTypes.BLAZE) {
+            y1 = y - 1.0;
+            y2 = y + 0.8;
+            x1 = x - 0.3;
+            x2 = x + 0.3;
+            z1 = z - 0.3;
+            z2 = z + 0.3;
+        } else if (type == MobDisplayTypes.BLAZINGSOUL) {
+            y1 = y + 0.2;
+            y2 = y + 0.785;
             x1 = x - 0.3;
             x2 = x + 0.3;
             z1 = z - 0.3;

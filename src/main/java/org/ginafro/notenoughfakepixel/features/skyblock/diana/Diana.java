@@ -103,11 +103,6 @@ public class Diana {
     }
 
     private void drawWaypoints(float partialTicks) {
-        Entity viewer = Minecraft.getMinecraft().getRenderViewEntity();
-        double viewerX = viewer.lastTickPosX + (viewer.posX - viewer.lastTickPosX) * partialTicks;
-        double viewerY = viewer.lastTickPosY + (viewer.posY - viewer.lastTickPosY) * partialTicks;
-        double viewerZ = viewer.lastTickPosZ + (viewer.posZ - viewer.lastTickPosZ) * partialTicks;
-
         List<ParticleProcessor.Waypoint> safeResults = new ArrayList<>();
         synchronized (processor.getWaypoints()) {
             try {
@@ -115,6 +110,11 @@ public class Diana {
             } catch (Exception ignored) {}
         }
         try {
+            if (safeResults.isEmpty()) return;
+            Entity viewer = Minecraft.getMinecraft().getRenderViewEntity();
+            double viewerX = viewer.lastTickPosX + (viewer.posX - viewer.lastTickPosX) * partialTicks;
+            double viewerY = viewer.lastTickPosY + (viewer.posY - viewer.lastTickPosY) * partialTicks;
+            double viewerZ = viewer.lastTickPosZ + (viewer.posZ - viewer.lastTickPosZ) * partialTicks;
             for (ParticleProcessor.Waypoint result : safeResults) {
                 if (result.isHidden()) continue;
                 Color newColor = white;

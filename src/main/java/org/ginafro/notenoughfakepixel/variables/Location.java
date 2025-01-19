@@ -49,4 +49,8 @@ public enum Location {
         return this == HUB || this == PRIVATE_HUB;
     }
 
+    public boolean isCrimson(){
+        return this == CRIMSON_ISLE;
+    }
+
 }
