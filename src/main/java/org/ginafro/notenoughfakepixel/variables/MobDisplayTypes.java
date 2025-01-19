@@ -8,6 +8,8 @@ public enum MobDisplayTypes {
     WOLF,
     SPIDER,
     BROODFATHER,
+    GAIA,
+    SIAMESE,
     NONE;
 
 }

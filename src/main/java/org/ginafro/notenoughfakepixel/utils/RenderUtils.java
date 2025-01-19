@@ -221,7 +221,7 @@ public class RenderUtils {
             x2 = x + 0.3;
             z1 = z - 0.3;
             z2 = z + 0.3;
-        }else if (type == MobDisplayTypes.FEL) {
+        } else if (type == MobDisplayTypes.FEL) {
             y1 = y - 0.5;
             y2 = y + 3.0;
             x1 = x - 0.5;
@@ -249,7 +249,7 @@ public class RenderUtils {
             x2 = x + 0.75;
             z1 = z - 0.75;
             z2 = z + 0.75;
-        }else if (type == MobDisplayTypes.ENDERMAN && Boolean.TRUE == isBoss){
+        } else if (type == MobDisplayTypes.ENDERMAN && Boolean.TRUE == isBoss){
             y1 = y - 2.75;
             y2 = y + 0.0;
             x1 = x - 0.5;
@@ -263,6 +263,20 @@ public class RenderUtils {
             x2 = x + 0.5;
             z1 = z - 0.5;
             z2 = z + 0.5;
+        } else if (type == MobDisplayTypes.GAIA) {
+            y1 = y + 1.0;
+            y2 = y + 4.0;
+            x1 = x - 0.75;
+            x2 = x + 0.75;
+            z1 = z - 0.75;
+            z2 = z + 0.75;
+        } else if (type == MobDisplayTypes.SIAMESE) {
+            y2 = y + 1.7;
+            y1 = y + 1.0;
+            x1 = x - 0.3;
+            x2 = x + 0.3;
+            z1 = z - 0.3;
+            z2 = z + 0.3;
         } else {
             y1 = y - 1;
             y2 = y + 1;
@@ -276,6 +290,10 @@ public class RenderUtils {
         WorldRenderer worldRenderer = tessellator.getWorldRenderer();
         worldRenderer.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
         GL11.glLineWidth(3.0f);
+
+        if (type == MobDisplayTypes.GAIA) {
+            GL11.glLineWidth(5.0f);
+        }
 
         int red = color.getRed();
         int green = color.getGreen();
