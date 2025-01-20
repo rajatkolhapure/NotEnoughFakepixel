@@ -23,6 +23,7 @@ public class Configuration extends Config {
     private transient static final String SLAYER = "Slayer";
     private transient static final String DIANA = "Diana";
     private transient static final String CRIMSON = "Crimson";
+    private transient static final String EXPERIMENTATION = "Experimentation Table";
 
 
 
@@ -241,15 +242,14 @@ public class Configuration extends Config {
 
     // Enchanting
 
-    @Header(text = "Enchanting" , category = "Enchanting" , size = 2)
+    @Header(text = "Experimentation Table" , category = EXPERIMENTATION , size = 2)
     public boolean _enchanting = true;
-
-    @Header(text = "Coming soon..." , category = "Enchanting" , size = 2, subcategory = "")
-
-    //@Switch(name = "Ultra Sequencer" , category = "Enchanting" , subcategory = "Enchanting")
-    public static boolean ultraSequencerSolver = true;
-    //@Switch(name = "Chronomatron Solver" , category = "Enchanting" , subcategory = "Enchanting")
+    @Switch(name = "Chronomatron solver" , category = EXPERIMENTATION, description = "Enables Chronomatron solver.")
     public static boolean chronomatronSolver = true;
+    @Switch(name = "Ultrasequencer solver" , category = EXPERIMENTATION, description = "Enables Ultrasequencer solver.")
+    public static boolean ultraSequencerSolver = true;
+    @Switch(name = "Prevent missclicks" , category = EXPERIMENTATION, description = "Prevents wrong answers when doing experiments.")
+    public static boolean preventMissclicksExperimentation = true;
 
     // Mining
 
