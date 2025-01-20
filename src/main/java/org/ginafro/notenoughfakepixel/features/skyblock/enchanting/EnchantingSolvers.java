@@ -231,7 +231,7 @@ public class EnchantingSolvers {
             event.setCanceled(true);
         } else if (Configuration.ultraSequencerSolver && currentSolverType == SolverTypes.ULTRASEQUENCER && resolving) {
             for(UltrasequencerSlot slot : ultrasequencerSlots){
-                System.out.println(slotToClickUltrasequencer + ", " + slot.quantity);
+                //System.out.println(slotToClickUltrasequencer + ", " + slot.quantity);
                 ItemStack itemInSlot = chestGui.inventorySlots.getInventory().get(slotIndex);
                 if (slot.slot == chestGui.getSlotUnderMouse() && slotToClickUltrasequencer == slot.quantity) {
                     slotToClickUltrasequencer++;
