@@ -74,6 +74,8 @@ public class Configuration extends Config {
 
     @Header(text = "General" , category = QUALITY_OF_LIFE, size = 2)
     public boolean _qol = true;
+    @Switch(name = "Custom Chat Filters" , description = "Add your own chat filters, by - /addfilter", category = QUALITY_OF_LIFE)
+    public static boolean customFilters = true;
     @Switch(name = "Disable Hyperion Explosion" , category = QUALITY_OF_LIFE)
     public static boolean disableHyperionExplosions = true;
     @Switch(name = "Disable Thunderlord Bolt" , category = QUALITY_OF_LIFE)
@@ -88,6 +90,9 @@ public class Configuration extends Config {
     public static boolean disablePotionEffects = true;
     @Switch(name = "Disable rain" , category = QUALITY_OF_LIFE, description = "Disables rain rendering")
     public static boolean disableRain = true;
+
+    @Switch(name = "Show Enchant Level", category = QUALITY_OF_LIFE, description = "Show enchant level of an book on its icon")
+    public static boolean showEnchantLevel = true;
 
     @Switch(name = "Show best upgrade" , category = QUALITY_OF_LIFE, subcategory = "Chocolate Factory")
     public static boolean showBestUpgrade = true;
@@ -230,7 +235,6 @@ public class Configuration extends Config {
 
     @Header(text = SLAYER , category = SLAYER , size = 2)
     public boolean _slayer = true;
-
     @Switch(name = "Slayer Minibosses Display" , category = SLAYER , subcategory = "Slayer Mobs", description = "Draws a box around slayer minibosses.")
     public static boolean slayerMinibosses = true;
     @Color(name = "Slayer Minibosses Color", category = SLAYER , subcategory = "Slayer Mobs", description = "Color of the slayer minibosses.")
@@ -239,7 +243,8 @@ public class Configuration extends Config {
     public static boolean slayerBosses = true;
     @Color(name = "Slayer Bosses Color", category = SLAYER , subcategory = "Slayer Mobs", description = "Color of the slayer bosses.")
     public static OneColor slayerBossColor = new OneColor(92, 154, 255);
-
+    @Dropdown(name = "Faster Maddox Calling", category = SLAYER,subcategory = "Quality of Life",options = {"Auto Open","Semi Auto","Disabled"})
+    public static int maddoxCalling = 1;
     // Enchanting
 
     @Header(text = "Experimentation Table" , category = EXPERIMENTATION , size = 2)

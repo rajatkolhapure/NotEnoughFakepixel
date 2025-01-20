@@ -19,6 +19,7 @@
     "MixinWorld",
     "bugfixes.NetHandlerPlayClientMixin",
     "Accesors.AccessorGuiPlayerTabOverlay",
-    "Accesors.BlockAccessor"
+    "Accesors.BlockAccessor",
+    "Accesors.SessionAccessor"
   ]
 }
