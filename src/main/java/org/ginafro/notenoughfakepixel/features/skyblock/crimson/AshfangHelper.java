@@ -21,6 +21,7 @@ import org.ginafro.notenoughfakepixel.features.skyblock.diana.ParticleProcessor;
 import org.ginafro.notenoughfakepixel.utils.RenderUtils;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 import org.ginafro.notenoughfakepixel.utils.SoundUtils;
+import org.ginafro.notenoughfakepixel.utils.Waypoint;
 import org.ginafro.notenoughfakepixel.variables.*;
 import org.jetbrains.annotations.NotNull;
 
@@ -37,7 +38,7 @@ import static org.ginafro.notenoughfakepixel.Configuration.*;
 
 public class AshfangHelper {
 
-    private final ParticleProcessor.Waypoint[] waypoints2 = new ParticleProcessor.Waypoint[2];
+    private final Waypoint[] waypoints2 = new Waypoint[2];
     private static int blazingSoulsCounter = 0;
     private static int ashfangFollowersCounter = 0;
     private final Queue<S2APacketParticles> particlesQueue = new ConcurrentLinkedQueue<>();
@@ -47,13 +48,13 @@ public class AshfangHelper {
     private String blazingSoul = "Blazing Soul";
     private static Entity currentAshfang;
     private static Entity currentGravityOrb;
-    private ParticleProcessor.Waypoint waypoint1;
-    private ParticleProcessor.Waypoint waypoint2;
+    private Waypoint waypointAshfang;
+    private Waypoint waypointGravityOrb;
     private static Pattern ashfangHPPattern = Pattern.compile("([0-9]*[.,]?[0-9]*)([Mk])");
 
     public AshfangHelper() {
-        this.waypoints2[0] = new ParticleProcessor.Waypoint("ASHFANG",new int[]{-484, 141, -1015});
-        this.waypoints2[1] = new ParticleProcessor.Waypoint("GRAVITYORB",new int[]{-490, -200, -1015});
+        this.waypoints2[0] = new Waypoint("ASHFANG",new int[]{-484, 141, -1015});
+        this.waypoints2[1] = new Waypoint("GRAVITYORB",new int[]{-490, -200, -1015});
     }
 
     @SubscribeEvent
@@ -126,7 +127,7 @@ public class AshfangHelper {
                     } else {
                         // Gravity Orb
                         System.out.println("GRAVITY ORB DETECTED:" + it.getDisplayName() + ", " + entity.getUniqueID() + ", " + entity.getPosition().getX() + ", " + entity.getPosition().getY() + ", " + entity.getPosition().getZ());
-                        waypoint2 = new ParticleProcessor.Waypoint("GRAVITYORB", position);
+                        waypointGravityOrb = new Waypoint("GRAVITYORB", position);
                         gravityFound = true;
                         if (currentGravityOrb == null) {
                             SoundUtils.playSound(position, "random.pop", 5.0f, 1.5f);
@@ -139,7 +140,7 @@ public class AshfangHelper {
                         (currentAshfang == null || currentAshfang.getUniqueID() != entity.getUniqueID())) {
                     if (!Configuration.ashfangWaypoint) continue;
                     if (!Crimson.checkAshfangArea(position)) continue;
-                    waypoint1 = new ParticleProcessor.Waypoint("ASHFANG", position);
+                    waypointAshfang = new Waypoint("ASHFANG", position);
                     //System.out.println("ASHFANG DETECTED: " + entity.getUniqueID() + ", " + entity.getPosition().getX() + ", " + entity.getPosition().getY() + ", " + entity.getPosition().getZ());
                     currentAshfang = entity;
                 } else if (isNameAshfangMinion(entityName)) {
@@ -172,10 +173,10 @@ public class AshfangHelper {
             }
         }
         blazingSoulsCounter = blazingSoulCounter.get();
-        if (!gravityFound) waypoint2 = null;
+        if (!gravityFound) waypointGravityOrb = null;
     }
 
-    private ParticleProcessor.Waypoint[] getWaypoints() {
+    private Waypoint[] getWaypoints() {
         return waypoints2;
     }
 
@@ -183,7 +184,7 @@ public class AshfangHelper {
         return name.contains(underling) || name.contains(acolyte) || name.contains(follower);
     }
 
-    private void drawWaypoint (ParticleProcessor.Waypoint waypoint, float partialTicks) {
+    private void drawWaypoint (Waypoint waypoint, float partialTicks) {
         Entity viewer = Minecraft.getMinecraft().getRenderViewEntity();
         double viewerX = viewer.lastTickPosX + (viewer.posX - viewer.lastTickPosX) * partialTicks;
         double viewerY = viewer.lastTickPosY + (viewer.posY - viewer.lastTickPosY) * partialTicks;
@@ -218,9 +219,9 @@ public class AshfangHelper {
 
     private void drawWaypoints(float partialTicks){
         if (!BossNotifier.getAshfangScheduled()[0]) {
-            drawWaypoint(waypoint1, partialTicks);
+            drawWaypoint(waypointAshfang, partialTicks);
         }
-        drawWaypoint(waypoint2, partialTicks);
+        drawWaypoint(waypointGravityOrb, partialTicks);
     }
 
     public static int getBlazingSoulCounter(){

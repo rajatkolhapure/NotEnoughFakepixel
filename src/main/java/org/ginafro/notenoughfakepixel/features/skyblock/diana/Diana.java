@@ -14,17 +14,14 @@ import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import org.ginafro.notenoughfakepixel.utils.*;
 import org.ginafro.notenoughfakepixel.Configuration;
-import org.ginafro.notenoughfakepixel.commands.Waypoint;
 import org.ginafro.notenoughfakepixel.events.PacketReadEvent;
 import net.minecraft.client.Minecraft;
-import org.ginafro.notenoughfakepixel.utils.RenderUtils;
-import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 import net.minecraftforge.event.entity.player.*;
-import org.ginafro.notenoughfakepixel.utils.SoundUtils;
 import org.ginafro.notenoughfakepixel.variables.Location;
 import org.ginafro.notenoughfakepixel.variables.MobDisplayTypes;
-import org.ginafro.notenoughfakepixel.utils.InventoryUtils;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,7 +41,6 @@ public class Diana {
     private Queue<GaiaConstruct> listGaiaAlive = new ConcurrentLinkedQueue<>();
     private Queue<SiameseLynx> listSiameseAlive = new ConcurrentLinkedQueue<>();
     private int distanceRenderHitbox = 64;
-    private Pattern middleBar = Pattern.compile("(§6|§c)[0-9]+/[0-9]+❤(.)+");
     private Pattern cooldownPattern = Pattern.compile("§r§cThis ability is on cooldown for [0-9] "+"more seconds.§r");
     private Pattern minosInquisitor = Pattern.compile("§r§c§lUh oh! §r§eYou dug out §r§2Minos Inquisitor§r");
     private Pattern minosInquisitorPartyChat = Pattern.compile("§9Party §8> (?:§[0-9a-f])*\\[?(?:(?:§[0-9a-f])?[A-Z](?:§[0-9a-f])?\\+*(?:§[0-9a-f])?)*\\]?(?:§[0-9a-f])*.*?: Minos Inquisitor found in x:(-?\\d+), y:(-?\\d+), z:(-?\\d+) in HUB-(1[0-9]|[1-9])");
@@ -103,7 +99,7 @@ public class Diana {
     }
 
     private void drawWaypoints(float partialTicks) {
-        List<ParticleProcessor.Waypoint> safeResults = new ArrayList<>();
+        List<Waypoint> safeResults = new ArrayList<>();
         synchronized (processor.getWaypoints()) {
             try {
                 safeResults = new ArrayList<>(processor.getWaypoints());
@@ -115,7 +111,7 @@ public class Diana {
             double viewerX = viewer.lastTickPosX + (viewer.posX - viewer.lastTickPosX) * partialTicks;
             double viewerY = viewer.lastTickPosY + (viewer.posY - viewer.lastTickPosY) * partialTicks;
             double viewerZ = viewer.lastTickPosZ + (viewer.posZ - viewer.lastTickPosZ) * partialTicks;
-            for (ParticleProcessor.Waypoint result : safeResults) {
+            for (Waypoint result : safeResults) {
                 if (result.isHidden()) continue;
                 Color newColor = white;
                 if (result.getType().equals("EMPTY")) newColor = emptyBurrowColor.toJavaColor();
@@ -386,7 +382,7 @@ public class Diana {
     private void deleteClosestWaypoint(int x, int y, int z) {
         //int[] playerCoords = new int[] {(int)Minecraft.getMinecraft().thePlayer.posX, (int)Minecraft.getMinecraft().thePlayer.posY, (int)Minecraft.getMinecraft().thePlayer.posZ};
         int[] coords = new int[] {x, y, z};
-        ParticleProcessor.Waypoint res = processor.getClosestWaypoint(coords);
+        Waypoint res = processor.getClosestWaypoint(coords);
 
         if (res == null) return;
         if (processor.areCoordinatesClose(res.getCoordinates(), coords, 3)) {
@@ -405,7 +401,7 @@ public class Diana {
         if (!face.equals("up")) return;
         EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
         int[] playerCoords = new int[] {(int)player.posX, (int)player.posY, (int)player.posZ};
-        ParticleProcessor.Waypoint res = processor.getClosestWaypoint(playerCoords);
+        Waypoint res = processor.getClosestWaypoint(playerCoords);
         if (res == null) return;
         if (res.isHidden() || res.getType().equals("MINOS")) return;
         int[] coordsBurrowClicked = new int[]{x, y+1, z};
@@ -421,7 +417,7 @@ public class Diana {
         EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
         if (player == null) return;
         if (!ScoreboardUtils.currentLocation.isHub()) return;
-        if (middleBar.matcher(event.message.getFormattedText()).matches()) return;
+        if (ChatUtils.middleBar.matcher(event.message.getFormattedText()).matches()) return;
         //System.out.println(event.message.getFormattedText());
         if (Configuration.dianaCancelCooldownSpadeMessage) {
             cancelMessage(true, event, cooldownPattern, true);
@@ -487,7 +483,7 @@ public class Diana {
 
 
                 if (getHubNumber() == hubNumber) {
-                    ParticleProcessor.Waypoint wp = new ParticleProcessor.Waypoint("MINOS", new int[]{x, y, z});
+                    Waypoint wp = new Waypoint("MINOS", new int[]{x, y, z});
                     processor.addWaypoint(wp);
                     ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(1);
                     exec.schedule(new Runnable() {
