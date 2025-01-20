@@ -94,8 +94,13 @@ public class Configuration extends Config {
     @Switch(name = "Show Enchant Level", category = QUALITY_OF_LIFE, description = "Show enchant level of an book on its icon")
     public static boolean showEnchantLevel = true;
 
-    @Switch(name = "Show best upgrade" , category = QUALITY_OF_LIFE, subcategory = "Chocolate Factory")
+    @Switch(name = "Show Best Upgrade" , category = QUALITY_OF_LIFE, subcategory = "Chocolate Factory")
     public static boolean showBestUpgrade = true;
+    @Switch(name = "Show Waypoints on Chocolate Eggs" , category = QUALITY_OF_LIFE, subcategory = "Chocolate Factory", description = "Show waypoints on chocolate eggs.")
+    public static boolean chocolateEggWaypoints = true;
+    @Color(name = "Chocolate Eggs Waypoints Color", category = QUALITY_OF_LIFE , subcategory = "Chocolate Factory", description = "Color of Chocolate Eggs' waypoints.")
+    public static OneColor chocolateEggWaypointsColor = new OneColor(210,105,30);
+
 
     @Switch(name = "Show pet equipped" , category = QUALITY_OF_LIFE, subcategory = "Pets")
     public static boolean showPetEquipped = true;
