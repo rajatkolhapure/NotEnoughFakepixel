@@ -26,6 +26,7 @@ public class BossNotifier {
     private final static String countdownSound = "random.orb";
     private final static String titleSoundMageOutlawReady = "mob.wither.spawn";
     private final static String titleTextBossReady = " Ready";
+    private final boolean[] bladesoulScheduled = new boolean[]{false,false,false,false,false,false};
     private final boolean[] mageOutlawScheduled = new boolean[]{false,false,false,false,false,false};
     private static final boolean[] ashfangScheduled = new boolean[]{false,false,false,false,false,false};
     private static final boolean[] barbarianDukeXScheduled = new boolean[]{false,false,false,false,false,false};
@@ -35,6 +36,9 @@ public class BossNotifier {
     private long ashfangReady = -1;
     private long barbarianDukeXLastKill = -1;
     private long barbarianDukeXReady = -1;
+    private long bladesoulLastKill = -1;
+    private long bladesoulReady = -1;
+    private final int spawnBladesoulSeconds = 124;
     private final int spawnOutlawSeconds = 125;
     private final int spawnAshfangSeconds = 124;
     private final int spawnBarbarianDukeXSeconds = 124;
@@ -44,12 +48,23 @@ public class BossNotifier {
     public void onChat(@NotNull ClientChatReceivedEvent e){
         if (Crimson.checkEssentials()) return;
 
+        if (Configuration.bladesoulNotifier) {
+            Matcher matcher = Pattern.compile("BLADESOUL DOWN!").matcher(e.message.getUnformattedText());
+            if (matcher.find()) {
+                bladesoulLastKill = System.currentTimeMillis();
+                bladesoulReady = bladesoulLastKill + spawnBladesoulSeconds*1000;
+                Arrays.fill(bladesoulScheduled, true);
+                return;
+            }
+        }
+
         if (Configuration.mageOutlawNotifier) {
             Matcher matcher = Pattern.compile("MAGE OUTLAW DOWN!").matcher(e.message.getUnformattedText());
             if (matcher.find()) {
                 mageOutlawLastKill = System.currentTimeMillis();
                 mageOutlawReady = mageOutlawLastKill + spawnOutlawSeconds*1000;
                 Arrays.fill(mageOutlawScheduled, true);
+                return;
             }
         }
 
@@ -59,16 +74,17 @@ public class BossNotifier {
                 ashfangLastKill = System.currentTimeMillis();
                 ashfangReady = ashfangLastKill + spawnAshfangSeconds*1000;
                 Arrays.fill(ashfangScheduled, true);
-                //AshfangHelper.setBlazingSoulCounter(0);
+                return;
             }
         }
 
-        if (Configuration.ashfangNotifier) {
+        if (Configuration.barbarianDukeXNotifier) {
             Matcher matcher = Pattern.compile("BARBARIAN DUKE X DOWN!").matcher(e.message.getUnformattedText());
             if (matcher.find()) {
                 barbarianDukeXLastKill = System.currentTimeMillis();
                 barbarianDukeXReady = barbarianDukeXLastKill + spawnBarbarianDukeXSeconds*1000;
                 Arrays.fill(barbarianDukeXScheduled, true);
+                return;
             }
         }
     }
@@ -77,6 +93,9 @@ public class BossNotifier {
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent e){
         if (Crimson.checkEssentials()) return;
+        if (Configuration.bladesoulNotifier) {
+            playCountdown("Bladesoul", bladesoulReady, bladesoulLastKill,bladesoulScheduled);
+        }
         if (Configuration.mageOutlawNotifier) {
             playCountdown("Mage Outlaw", mageOutlawReady, mageOutlawLastKill,mageOutlawScheduled);
         }
@@ -90,6 +109,11 @@ public class BossNotifier {
 
     @SubscribeEvent()
     public void onWorldUnload(WorldEvent.Unload event) {
+        if (Configuration.bladesoulNotifier) {
+            Arrays.fill(bladesoulScheduled, false);
+            bladesoulReady = -1;
+            bladesoulLastKill = -1;
+        }
         if (Configuration.mageOutlawNotifier) {
             Arrays.fill(mageOutlawScheduled, false);
             mageOutlawReady = -1;
@@ -143,12 +167,14 @@ public class BossNotifier {
         }
     }
 
-    private void notifyTitle(String boss){
+    private void notifyTitle(String boss) {
         Minecraft.getMinecraft().ingameGUI.displayTitle(EnumChatFormatting.GOLD + boss + titleTextBossReady, "", 2, 40, 2);
         SoundUtils.playSound(new int[]{Minecraft.getMinecraft().thePlayer.getPosition().getX(),
                 Minecraft.getMinecraft().thePlayer.getPosition().getY(),
-                Minecraft.getMinecraft().thePlayer.getPosition().getZ()},titleSoundMageOutlawReady,2.0f,1.0f);
-        if (boss.equals("Mage Outlaw")) {
+                Minecraft.getMinecraft().thePlayer.getPosition().getZ()}, titleSoundMageOutlawReady, 2.0f, 1.0f);
+        if (boss.equals("Bladesoul")){
+            bladesoulScheduled[0] = false;
+        } else if (boss.equals("Mage Outlaw")) {
             mageOutlawScheduled[0] = false;
         } else if (boss.equals("Ashfang")) {
             ashfangScheduled[0] = false;

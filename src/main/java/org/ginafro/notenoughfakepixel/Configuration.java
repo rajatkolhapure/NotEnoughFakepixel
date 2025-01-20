@@ -284,6 +284,8 @@ public class Configuration extends Config {
 
     @Header(text = CRIMSON, category = CRIMSON, size = 2)
     public boolean _crimson = true;
+    @Switch(name = "Bladesoul notifier", category = CRIMSON, subcategory = "Bosses", description = "Notifies you when Bladesoul boss spawns.")
+    public static boolean bladesoulNotifier = true;
     @Switch(name = "Mage Outlaw notifier", category = CRIMSON, subcategory = "Bosses", description = "Notifies you when Mage Outlaw boss spawns.")
     public static boolean mageOutlawNotifier = true;
     @Switch(name = "Ashfang notifier", category = CRIMSON, subcategory = "Bosses", description = "Notifies you when Ashfang boss spawns.")
