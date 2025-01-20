@@ -5,6 +5,7 @@ import net.minecraft.network.play.server.S29PacketSoundEffect;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.ginafro.notenoughfakepixel.Configuration;
 import org.ginafro.notenoughfakepixel.events.PacketReadEvent;
+import org.ginafro.notenoughfakepixel.utils.InventoryUtils;
 
 public class SoundRemover {
     @SubscribeEvent
@@ -14,14 +15,14 @@ public class SoundRemover {
             S29PacketSoundEffect soundEffect = (S29PacketSoundEffect) packet;
 
             if (soundEffect.getSoundName().equals("mob.villager.yes") || soundEffect.getSoundName().equals("mob.villager.haggle")) {
-                if (Configuration.disableJerryChineGunSounds) {
+                if (Configuration.disableJerryChineGunSounds && InventoryUtils.getSlot("Jerry-chine Gun") != -1) {
                     if (event.isCancelable()) event.setCanceled(true);
                 }
                 return;
             }
 
             if (soundEffect.getSoundName().equals("mob.endermen.portal")) {
-                if (Configuration.disableAoteSounds) {
+                if (Configuration.disableAoteSounds && InventoryUtils.getSlot("Aspect of the End") != -1) {
                     if (event.isCancelable()) event.setCanceled(true);
                 }
                 return;

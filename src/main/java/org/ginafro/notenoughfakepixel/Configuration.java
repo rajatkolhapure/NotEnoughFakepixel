@@ -98,7 +98,7 @@ public class Configuration extends Config {
     public static boolean showBestUpgrade = true;
     @Switch(name = "Show Waypoints on Chocolate Eggs" , category = QUALITY_OF_LIFE, subcategory = "Chocolate Factory", description = "Show waypoints on chocolate eggs.")
     public static boolean chocolateEggWaypoints = true;
-    @Color(name = "Chocolate Eggs Waypoints Color", category = CRIMSON , subcategory = "Chocolate Factory", description = "Color of Chocolate Eggs' waypoints.")
+    @Color(name = "Chocolate Eggs Waypoints Color", category = QUALITY_OF_LIFE , subcategory = "Chocolate Factory", description = "Color of Chocolate Eggs' waypoints.")
     public static OneColor chocolateEggWaypointsColor = new OneColor(210,105,30);
 
 
