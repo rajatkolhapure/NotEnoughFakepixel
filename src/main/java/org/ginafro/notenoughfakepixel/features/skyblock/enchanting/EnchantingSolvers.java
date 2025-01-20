@@ -160,12 +160,29 @@ public class EnchantingSolvers {
                 }
                 if (!noteFinished) return;
 
-                for (Slot slot : containerChest.inventorySlots){
+                List<Integer> slotRanges = new ArrayList<>();
+
+                for (int i = 9; i <= 18; i++) {
+                    slotRanges.add(i);
+                }
+
+                if (TablistParser.currentOpenChestName.contains("Transcendent") ||
+                        TablistParser.currentOpenChestName.contains("Metaphysical")) {
+                    for (int i = 28; i <= 37; i++) {
+                        slotRanges.add(i);
+                    }
+                }
+
+                for (int index : slotRanges) {
+                    Slot slot = containerChest.inventorySlots.get(index);
                     ItemStack item = slot.getStack();
+
                     if (item == null) continue;
+
                     if (Block.getBlockFromItem(item.getItem()) != Blocks.stained_hardened_clay) {
                         continue;
                     }
+
                     previousIndex = slot.getSlotIndex();
                     chronomatronOrder.add(previousIndex);
                     noteFinished = false;
