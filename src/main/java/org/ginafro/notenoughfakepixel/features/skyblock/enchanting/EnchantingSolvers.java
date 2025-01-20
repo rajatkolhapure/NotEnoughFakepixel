@@ -146,6 +146,7 @@ public class EnchantingSolvers {
             boolean isClock = timerStack.getItem() == Items.clock;
             // if is not clock, then remember the items
             if (!isClock) {
+                if (resolving) chronomatronOrder.clear();
                 resolving = false;
                 // getting item in slot 4
                 ItemStack itemInSlot = containerChest.inventorySlots.get(4).getStack();
