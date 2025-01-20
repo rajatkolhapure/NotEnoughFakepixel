@@ -44,10 +44,6 @@ public class ChocolateFactory {
     private String eggLime = "e3da4593-afbb-38df-bf1e-b57e27a2e0e1";
     private String eggBlue = "15785089-b2b0-38ac-b379-8af3d6253c62";
     private String eggCake = "9e39f2f4-8038-3aac-97fd-d7420cdf4601";
-    private String egg1 = "";
-    private String egg2 = "";
-    private String egg3 = "";
-    private String egg4 = "";
     private ArrayList <Waypoint> waypoints = new ArrayList<>();
 
 
@@ -140,17 +136,14 @@ public class ChocolateFactory {
         // Iterate through all waypoints
         for (Waypoint waypoint : waypoints) {
             int[] waypointCoordinates = waypoint.getCoordinates();
-
             // Calculate the Euclidean distance
             double distance = distance(coords, waypointCoordinates);
-
             // Check if this waypoint is closer than the current closest
             if (distance < shortestDistance) {
                 shortestDistance = distance;
                 closestWaypoint = waypoint;
             }
         }
-
         return closestWaypoint;
     }
 
@@ -168,7 +161,6 @@ public class ChocolateFactory {
             Entity entity = world.loadedEntityList.get(i);
             if (entity == null) continue;
             if (entity.getName() == null) continue;
-            int[] position = new int[]{entity.getPosition().getX(), entity.getPosition().getY(), entity.getPosition().getZ()};
             if (entity instanceof EntityArmorStand) {
                 ItemStack it = ((EntityArmorStand) entity).getEquipmentInSlot(4);
                 if (it != null && it.getUnlocalizedName().contains("item.skull.char")) {
@@ -199,7 +191,7 @@ public class ChocolateFactory {
         for (Waypoint waypoint : waypoints) {
             if (waypoint == null || waypoint.isHidden()) continue;
             Color colorDrawWaypoint = chocolateEggWaypointsColor.toJavaColor();
-            colorDrawWaypoint = new Color(colorDrawWaypoint.getRed(), colorDrawWaypoint.getGreen(), colorDrawWaypoint.getBlue(), 75);
+            colorDrawWaypoint = new Color(colorDrawWaypoint.getRed(), colorDrawWaypoint.getGreen(), colorDrawWaypoint.getBlue(), 150);
             AxisAlignedBB bb = new AxisAlignedBB(
                     waypoint.getCoordinates()[0] - viewerX,
                     waypoint.getCoordinates()[1] - viewerY,
@@ -208,7 +200,6 @@ public class ChocolateFactory {
                     waypoint.getCoordinates()[1] + 1 - viewerY + 150,
                     waypoint.getCoordinates()[2] + 1 - viewerZ
             ).expand(0.01f, 0.01f, 0.01f);
-            //if (waypoint.getType().equals("GRAVITYORB")) GlStateManager.disableCull();
             GlStateManager.disableCull();
             RenderUtils.drawFilledBoundingBox(bb, 1f, colorDrawWaypoint);
             GlStateManager.enableCull();
