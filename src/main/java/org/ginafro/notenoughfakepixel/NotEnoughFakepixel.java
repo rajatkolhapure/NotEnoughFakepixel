@@ -16,9 +16,6 @@ import org.ginafro.notenoughfakepixel.features.duels.KDCounter;
 import org.ginafro.notenoughfakepixel.features.skyblock.crimson.AshfangHelper;
 import org.ginafro.notenoughfakepixel.features.skyblock.crimson.BossNotifier;
 import org.ginafro.notenoughfakepixel.features.skyblock.crimson.CrimsonOverlay;
-import org.ginafro.notenoughfakepixel.features.qol.chatFilters.AddCustomFilter;
-import org.ginafro.notenoughfakepixel.features.qol.chatFilters.AddFilterGUI;
-import org.ginafro.notenoughfakepixel.features.qol.chatFilters.ChatFIlter;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.terminals.ClickOnColorsSolver;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.terminals.StartingWithSolver;
@@ -41,15 +38,12 @@ public class NotEnoughFakepixel {
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-        ChatFIlter.saveFilters();
         config = new Configuration();
         ClientCommandHandler.instance.registerCommand(new TestCommand());
         ClientCommandHandler.instance.registerCommand(new SlayerInfoCommand());
-        ClientCommandHandler.instance.registerCommand(new AddCustomFilter());
 
         MinecraftForge.EVENT_BUS.register(this);
         registerModEvents();
-        SessionChanger.getInstance().setUserOffline("_Whispering");
         }
 
     private void registerModEvents() {
@@ -89,8 +83,6 @@ public class NotEnoughFakepixel {
         MinecraftForge.EVENT_BUS.register(new MiddleClickEvent());
         MinecraftForge.EVENT_BUS.register(new SoundRemover());
         MinecraftForge.EVENT_BUS.register(new ScrollableTooltips());
-        MinecraftForge.EVENT_BUS.register(new ChatFIlter());
-        MinecraftForge.EVENT_BUS.register(new AddFilterGUI());
         //MinecraftForge.EVENT_BUS.register(new SlotLocking());
         MinecraftForge.EVENT_BUS.register(new StorageOverlay.StorageEvent());
         MinecraftForge.EVENT_BUS.register(new AutoOpenMaddox());
