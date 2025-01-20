@@ -165,6 +165,9 @@ public class BossNotifier {
         } else {
             Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.YELLOW + boss + joinText + seconds + " seconds"));
         }
+        SoundUtils.playSound(new int[]{Minecraft.getMinecraft().thePlayer.getPosition().getX(),
+                Minecraft.getMinecraft().thePlayer.getPosition().getY(),
+                Minecraft.getMinecraft().thePlayer.getPosition().getZ()},countdownSound,2.0f,1.0f);
     }
 
     private void notifyTitle(String boss) {
