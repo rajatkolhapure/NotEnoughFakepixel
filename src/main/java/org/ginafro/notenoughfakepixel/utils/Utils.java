@@ -37,4 +37,8 @@ public class Utils {
         // This function will only apply commas to a number.
         return String.format("%,d", (long) n);
     }
+
+    public static String removeFormatting(String input) {
+        return input.replaceAll("[§|&][0-9a-fk-or]", "");
+    }
 }

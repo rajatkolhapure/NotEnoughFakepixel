@@ -6,11 +6,9 @@ import cc.polyfrost.oneconfig.config.core.OneColor;
 import cc.polyfrost.oneconfig.config.data.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ChatComponentText;
-import org.ginafro.notenoughfakepixel.config.pages.CrimsonOverlayPage;
+import org.ginafro.notenoughfakepixel.config.pages.AshfangOverlayPage;
 import org.ginafro.notenoughfakepixel.config.pages.MiningOverlayPage;
 import org.ginafro.notenoughfakepixel.config.pages.SecretOverlayPage;
-import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.SecretOverlay;
-import org.ginafro.notenoughfakepixel.features.skyblock.mining.MiningOverlay;
 import org.ginafro.notenoughfakepixel.features.skyblock.mining.RemoveGhostInvis;
 
 public class Configuration extends Config {
@@ -24,7 +22,6 @@ public class Configuration extends Config {
     private transient static final String DIANA = "Diana";
     private transient static final String CRIMSON = "Crimson";
     private transient static final String EXPERIMENTATION = "Experimentation Table";
-
 
 
     public Configuration(){
@@ -122,6 +119,9 @@ public class Configuration extends Config {
     public static boolean disableJerryChineGunSounds = true;
     @Switch(name = "Disable AOTE teleport sounds" , category = "Quality of Life", subcategory = "Sounds", description = "Disable Aspect of the End teleport sounds.")
     public static boolean disableAoteSounds = false;
+    @Switch(name = "Disable Midas Staff animation and sounds" , category = "Quality of Life", subcategory = "Sounds", description = "Disable Aspect of the End teleport sounds.")
+    public static boolean disableMidaStaffAnimation = false;
+
 
     @Switch(name = "Damage Commas" , category = QUALITY_OF_LIFE, subcategory = "Damage Formatter")
     public static boolean dmgCommas = false;
@@ -237,7 +237,6 @@ public class Configuration extends Config {
 
 
     // Slayer
-
     @Header(text = SLAYER , category = SLAYER , size = 2)
     public boolean _slayer = true;
     @Switch(name = "Slayer Minibosses Display" , category = SLAYER , subcategory = "Slayer Mobs", description = "Draws a box around slayer minibosses.")
@@ -250,8 +249,19 @@ public class Configuration extends Config {
     public static OneColor slayerBossColor = new OneColor(92, 154, 255);
     @Dropdown(name = "Faster Maddox Calling", category = SLAYER,subcategory = "Quality of Life",options = {"Auto Open","Semi Auto","Disabled"})
     public static int maddoxCalling = 1;
-    // Enchanting
+    @Switch(name = "highlightVoidgloomBeacons" , category = SLAYER , subcategory = "Voidgloom Seraph", description = ".")
+    public static boolean slayerHighlightVoidgloomBeacons = true;
+    @Switch(name = "highlightVoidgloomSkulls" , category = SLAYER , subcategory = "Voidgloom Seraph", description = ".")
+    public static boolean slayerHighlightVoidgloomSkulls = true;
+    @Switch(name = "ignoreOtherVoidgloom" , category = SLAYER , subcategory = "Voidgloom Seraph", description = ".")
+    public static boolean slayerIgnoreOtherVoidgloom = true;
+    @Switch(name = "showBeaconPath" , category = SLAYER , subcategory = "Voidgloom Seraph", description = ".")
+    public static boolean slayerShowBeaconPath = true;
+    @Switch(name = "beaconWarningTitle" , category = SLAYER , subcategory = "Voidgloom Seraph", description = ".")
+    public static boolean slayerBeaconWarningTitle = true;
 
+
+    // Enchanting
     @Header(text = "Experimentation Table" , category = EXPERIMENTATION , size = 2)
     public boolean _enchanting = true;
     @Switch(name = "Chronomatron solver" , category = EXPERIMENTATION, description = "Enables Chronomatron solver.")
@@ -289,34 +299,34 @@ public class Configuration extends Config {
 
     @Header(text = CRIMSON, category = CRIMSON, size = 2)
     public boolean _crimson = true;
-    @Switch(name = "Bladesoul notifier", category = CRIMSON, subcategory = "Bosses", description = "Notifies you when Bladesoul boss spawns.")
+    @Switch(name = "Bladesoul notifier", category = CRIMSON, subcategory = "Bosses notifier", description = "Notifies you when Bladesoul boss spawns.")
     public static boolean bladesoulNotifier = true;
-    @Switch(name = "Mage Outlaw notifier", category = CRIMSON, subcategory = "Bosses", description = "Notifies you when Mage Outlaw boss spawns.")
+    @Switch(name = "Mage Outlaw notifier", category = CRIMSON, subcategory = "Bosses notifier", description = "Notifies you when Mage Outlaw boss spawns.")
     public static boolean mageOutlawNotifier = true;
-    @Switch(name = "Ashfang notifier", category = CRIMSON, subcategory = "Bosses", description = "Notifies you when Ashfang boss spawns.")
+    @Switch(name = "Ashfang notifier", category = CRIMSON, subcategory = "Bosses notifier", description = "Notifies you when Ashfang boss spawns.")
     public static boolean ashfangNotifier = true;
-    @Switch(name = "Barbarian Duke X notifier", category = CRIMSON, subcategory = "Bosses", description = "Notifies you when Barbarian Duke X boss spawns.")
+    @Switch(name = "Barbarian Duke X notifier", category = CRIMSON, subcategory = "Bosses notifier", description = "Notifies you when Barbarian Duke X boss spawns.")
     public static boolean barbarianDukeXNotifier = true;
-    @Switch(name = "Ashfang overlay", category = CRIMSON, subcategory = "Ashfang", description = "Overlay that shows the HP of Ashfang, as well as Blazing Souls alive and needed for killing the boss.")
-    public static boolean ashfangOverlay = true;
-    @Switch(name = "Ashfang hitboxes", category = CRIMSON, subcategory = "Ashfang", description = "Show colors on different Ashfang's minions (Follower, Acolyte, Underling) for better recognition.")
-    public static boolean ashfangHitboxes = true;
-    @Switch(name = "Ashfang waypoint", category = CRIMSON, subcategory = "Ashfang", description = "Show a waypoint on Ashfang for better precision on launching Blazing Souls.")
+    @Switch(name = "Ashfang waypoint", category = CRIMSON, subcategory = "Ashfang", description = "Show a waypoint on Ashfang for launching Blazing Souls easier.")
     public static boolean ashfangWaypoint = true;
     @Color(name = "Ashfang waypoint color", category = CRIMSON , subcategory = "Ashfang", description = "Color of Ashfang's waypoint.")
     public static OneColor ashfangWaypointColor = new OneColor(0, 255, 0);
-    @Switch(name = "Gravity Orb waypoint", category = CRIMSON, subcategory = "Ashfang", description = "Show a waypoint on Gravity Orb to lure Ashfang Followers easy.")
+    @Switch(name = "Gravity Orb waypoint", category = CRIMSON, subcategory = "Ashfang", description = "Show a waypoint on Gravity Orb to lure Ashfang Followers easier.")
     public static boolean gravityOrbWaypoint = true;
     @Color(name = "Gravity orb waypoint color", category = CRIMSON , subcategory = "Ashfang", description = "Color of Gravity Orb's waypoint.")
     public static OneColor blazingSoulWaypointColor = new OneColor(255, 255, 0);
+    @Switch(name = "Ashfang hitboxes", category = CRIMSON, subcategory = "Ashfang", description = "Show colors on different Ashfang's minions (Follower, Acolyte, Underling) for better recognition.")
+    public static boolean ashfangHitboxes = true;
     @Switch(name = "Ashfang mute chat", category = CRIMSON, subcategory = "Ashfang", description = "Mute irrelevant chat messages generated by Ashfang's minions.")
     public static boolean ashfangMuteChat = true;
     @Switch(name = "Ashfang mute sound", category = CRIMSON, subcategory = "Ashfang", description = "Mute annoying sounds generated by Ashfang's minions.")
     public static boolean ashfangMuteSound = true;
     @Switch(name = "Ashfang hurt sound", category = CRIMSON, subcategory = "Ashfang", description = "Make a sound when Ashfang is hit by a Blazing Soul.")
     public static boolean ashfangHurtSound = true;
+    @Switch(name = "Ashfang overlay", category = CRIMSON, subcategory = "Ashfang", description = "Overlay that shows the HP of Ashfang, as well as Blazing Souls alive and needed for killing the boss.")
+    public static boolean ashfangOverlay = true;
     @Page(name = "Ashfang Overlay Options", category = CRIMSON, subcategory = "Ashfang", location = PageLocation.BOTTOM)
-    public static CrimsonOverlayPage crimsonOverlayPage = new CrimsonOverlayPage();
+    public static AshfangOverlayPage ashfangOverlayPage = new AshfangOverlayPage();
 
 
     // SKYBLOCK

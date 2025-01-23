@@ -53,4 +53,8 @@ public enum Location {
         return this == CRIMSON_ISLE;
     }
 
+    public boolean isEnd(){
+        return this == THE_END;
+    }
+
 }

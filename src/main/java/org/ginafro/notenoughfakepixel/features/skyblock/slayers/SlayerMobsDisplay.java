@@ -3,8 +3,14 @@ package org.ginafro.notenoughfakepixel.features.skyblock.slayers;
 import cc.polyfrost.oneconfig.config.core.OneColor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityArmorStand;
+import net.minecraft.entity.item.EntityFallingBlock;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.ginafro.notenoughfakepixel.Configuration;
 import org.ginafro.notenoughfakepixel.utils.RenderUtils;
@@ -14,8 +20,14 @@ import org.ginafro.notenoughfakepixel.variables.MobDisplayTypes;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
+import java.util.Base64;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SlayerMobsDisplay {
+
+    private Pattern pattern = Pattern.compile("Id:\"([^\"]+)\"");
+
 
     @SubscribeEvent
     public void onRenderLast(RenderWorldLastEvent event) {

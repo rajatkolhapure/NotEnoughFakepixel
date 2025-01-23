@@ -2,21 +2,17 @@ package org.ginafro.notenoughfakepixel.features.skyblock.crimson;
 import cc.polyfrost.oneconfig.hud.TextHud;
 import net.minecraft.client.Minecraft;
 import org.ginafro.notenoughfakepixel.Configuration;
-import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
-import org.ginafro.notenoughfakepixel.utils.TablistParser;
-import org.ginafro.notenoughfakepixel.variables.Location;
 
-import java.text.NumberFormat;
 import java.util.List;
 
-public class CrimsonOverlay extends TextHud {
+public class AshfangOverlay extends TextHud {
 
     private static int LINE_HEIGHT = 11;
     private static int MINIMUM_WIDTH = 20;
     //NumberFormat formatter = NumberFormat.getCompactNumberInstance(Locale.US, NumberFormat.Style.SHORT);
     private static char[] c = new char[]{'k', 'M'};
 
-    public CrimsonOverlay() {
+    public AshfangOverlay() {
         super(true);
     }
 

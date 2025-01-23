@@ -81,6 +81,7 @@ public class EnchantingSolvers {
         } else {
             currentSolverType = SolverTypes.NONE;
         }
+        resolving = false;
     }
 
     @SubscribeEvent

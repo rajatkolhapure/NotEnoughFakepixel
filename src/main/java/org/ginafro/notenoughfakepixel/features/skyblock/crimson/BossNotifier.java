@@ -11,6 +11,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.ginafro.notenoughfakepixel.Configuration;
 import org.ginafro.notenoughfakepixel.events.PacketReadEvent;
+import org.ginafro.notenoughfakepixel.utils.ChatUtils;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 import org.ginafro.notenoughfakepixel.utils.SoundUtils;
 import org.ginafro.notenoughfakepixel.variables.Location;
@@ -43,6 +44,23 @@ public class BossNotifier {
     private final int spawnAshfangSeconds = 124;
     private final int spawnBarbarianDukeXSeconds = 124;
     private final String joinText = " spawning in ";
+
+    @SubscribeEvent
+    public void onTick(TickEvent.ClientTickEvent e){
+        if (Crimson.checkEssentials()) return;
+        if (Configuration.bladesoulNotifier) {
+            playCountdown("Bladesoul", bladesoulReady, bladesoulLastKill,bladesoulScheduled);
+        }
+        if (Configuration.mageOutlawNotifier) {
+            playCountdown("Mage Outlaw", mageOutlawReady, mageOutlawLastKill,mageOutlawScheduled);
+        }
+        if (Configuration.ashfangNotifier) {
+            playCountdown("Ashfang", ashfangReady, ashfangLastKill,ashfangScheduled);
+        }
+        if (Configuration.barbarianDukeXNotifier) {
+            playCountdown("Barbarian Duke X", barbarianDukeXReady, barbarianDukeXLastKill,barbarianDukeXScheduled);
+        }
+    }
 
     @SubscribeEvent
     public void onChat(@NotNull ClientChatReceivedEvent e){
@@ -86,24 +104,6 @@ public class BossNotifier {
                 Arrays.fill(barbarianDukeXScheduled, true);
                 return;
             }
-        }
-    }
-
-
-    @SubscribeEvent
-    public void onTick(TickEvent.ClientTickEvent e){
-        if (Crimson.checkEssentials()) return;
-        if (Configuration.bladesoulNotifier) {
-            playCountdown("Bladesoul", bladesoulReady, bladesoulLastKill,bladesoulScheduled);
-        }
-        if (Configuration.mageOutlawNotifier) {
-            playCountdown("Mage Outlaw", mageOutlawReady, mageOutlawLastKill,mageOutlawScheduled);
-        }
-        if (Configuration.ashfangNotifier) {
-            playCountdown("Ashfang", ashfangReady, ashfangLastKill,ashfangScheduled);
-        }
-        if (Configuration.barbarianDukeXNotifier) {
-            playCountdown("Barbarian Duke X", barbarianDukeXReady, barbarianDukeXLastKill,barbarianDukeXScheduled);
         }
     }
 
@@ -159,11 +159,11 @@ public class BossNotifier {
 
     private void notifyChat(String boss, int seconds){
         if (seconds == 120) {
-            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.YELLOW + boss + joinText + "2 minutes"));
+            ChatUtils.notifyChat(EnumChatFormatting.YELLOW + boss + joinText + "2 minutes");
         } else if (seconds == 60) {
-            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.YELLOW + boss + joinText + "1 minute"));
+            ChatUtils.notifyChat(EnumChatFormatting.YELLOW + boss + joinText + "1 minute");
         } else {
-            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.YELLOW + boss + joinText + seconds + " seconds"));
+            ChatUtils.notifyChat(EnumChatFormatting.YELLOW + boss + joinText + seconds + " seconds");
         }
         SoundUtils.playSound(new int[]{Minecraft.getMinecraft().thePlayer.getPosition().getX(),
                 Minecraft.getMinecraft().thePlayer.getPosition().getY(),
@@ -171,7 +171,7 @@ public class BossNotifier {
     }
 
     private void notifyTitle(String boss) {
-        Minecraft.getMinecraft().ingameGUI.displayTitle(EnumChatFormatting.GOLD + boss + titleTextBossReady, "", 2, 40, 2);
+        Minecraft.getMinecraft().ingameGUI.displayTitle(EnumChatFormatting.GOLD + boss + titleTextBossReady, "", 2, 25, 2);
         SoundUtils.playSound(new int[]{Minecraft.getMinecraft().thePlayer.getPosition().getX(),
                 Minecraft.getMinecraft().thePlayer.getPosition().getY(),
                 Minecraft.getMinecraft().thePlayer.getPosition().getZ()}, titleSoundMageOutlawReady, 2.0f, 1.0f);
