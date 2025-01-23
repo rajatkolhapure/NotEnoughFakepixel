@@ -15,7 +15,7 @@ import org.ginafro.notenoughfakepixel.commands.TestCommand;
 import org.ginafro.notenoughfakepixel.features.duels.KDCounter;
 import org.ginafro.notenoughfakepixel.features.skyblock.crimson.AshfangHelper;
 import org.ginafro.notenoughfakepixel.features.skyblock.crimson.BossNotifier;
-import org.ginafro.notenoughfakepixel.features.skyblock.crimson.CrimsonOverlay;
+import org.ginafro.notenoughfakepixel.features.skyblock.crimson.AshfangOverlay;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.terminals.ClickOnColorsSolver;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.terminals.StartingWithSolver;
@@ -29,6 +29,7 @@ import org.ginafro.notenoughfakepixel.features.skyblock.slayers.AutoOpenMaddox;
 import org.ginafro.notenoughfakepixel.features.skyblock.slayers.SlayerInfoCommand;
 import org.ginafro.notenoughfakepixel.features.skyblock.slayers.SlayerMobsDisplay;
 import org.ginafro.notenoughfakepixel.events.Handlers.PacketHandler;
+import org.ginafro.notenoughfakepixel.features.skyblock.slayers.VoidgloomSeraph;
 import org.ginafro.notenoughfakepixel.utils.*;
 
 @Mod(modid = "notenoughfakepixel", useMetadata=true)
@@ -86,17 +87,19 @@ public class NotEnoughFakepixel {
         //MinecraftForge.EVENT_BUS.register(new SlotLocking());
         MinecraftForge.EVENT_BUS.register(new StorageOverlay.StorageEvent());
         MinecraftForge.EVENT_BUS.register(new AutoOpenMaddox());
+        MinecraftForge.EVENT_BUS.register(new MidasStaff());
 
         MinecraftForge.EVENT_BUS.register(new Fullbright());
         MinecraftForge.EVENT_BUS.register(new KDCounter());
         // Diana
         MinecraftForge.EVENT_BUS.register(new Diana());
-        // Slayer
-        MinecraftForge.EVENT_BUS.register(new SlayerMobsDisplay());
         // Crimson
-        MinecraftForge.EVENT_BUS.register(new CrimsonOverlay());
+        MinecraftForge.EVENT_BUS.register(new AshfangOverlay());
         MinecraftForge.EVENT_BUS.register(new BossNotifier());
         MinecraftForge.EVENT_BUS.register(new AshfangHelper());
+        // Slayer
+        MinecraftForge.EVENT_BUS.register(new SlayerMobsDisplay());
+        MinecraftForge.EVENT_BUS.register(new VoidgloomSeraph());
       
         // Parsers
         MinecraftForge.EVENT_BUS.register(new TablistParser());

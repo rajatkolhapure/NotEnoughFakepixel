@@ -155,12 +155,12 @@ public class RenderUtils {
     public static void drawOutlinedBoundingBox(AxisAlignedBB aabb, Color color, float width, float partialTicks) {
         Entity render = Minecraft.getMinecraft().getRenderViewEntity();
 
-        double realX = render.lastTickPosX + (render.posX - render.lastTickPosX) * partialTicks;
-        double realY = render.lastTickPosY + (render.posY - render.lastTickPosY) * partialTicks;
-        double realZ = render.lastTickPosZ + (render.posZ - render.lastTickPosZ) * partialTicks;
+        double coordX = render.lastTickPosX + (render.posX - render.lastTickPosX) * partialTicks;
+        double coordY = render.lastTickPosY + (render.posY - render.lastTickPosY) * partialTicks;
+        double coordZ = render.lastTickPosZ + (render.posZ - render.lastTickPosZ) * partialTicks;
 
         GlStateManager.pushMatrix();
-        GlStateManager.translate(-realX, -realY, -realZ);
+        GlStateManager.translate(-coordX, -coordY, -coordZ);
         GlStateManager.disableTexture2D();
         GlStateManager.enableBlend();
         GlStateManager.disableLighting();
@@ -170,7 +170,7 @@ public class RenderUtils {
 
         RenderGlobal.drawOutlinedBoundingBox(aabb, color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
 
-        GlStateManager.translate(realX, realY, realZ);
+        GlStateManager.translate(coordX, coordY, coordZ);
         GlStateManager.disableBlend();
         GlStateManager.enableAlpha();
         GlStateManager.enableTexture2D();
@@ -361,6 +361,63 @@ public class RenderUtils {
         if (lightingState) {
             GlStateManager.enableLighting();
         }
+    }
+
+    public static void draw3DLine(Vec3 pos1, Vec3 pos2, Color color, int lineWidth, boolean depth, float partialTicks) {
+        Entity render = Minecraft.getMinecraft().getRenderViewEntity();
+        WorldRenderer worldRenderer = Tessellator.getInstance().getWorldRenderer();
+
+        double coordX = render.lastTickPosX + (render.posX - render.lastTickPosX) * partialTicks;
+        double coordY = render.lastTickPosY + (render.posY - render.lastTickPosY) * partialTicks;
+        double coordZ = render.lastTickPosZ + (render.posZ - render.lastTickPosZ) * partialTicks;
+
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(-coordX, -coordY, -coordZ);
+        GlStateManager.disableTexture2D();
+        GlStateManager.enableBlend();
+        GlStateManager.disableAlpha();
+        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+        GL11.glLineWidth(lineWidth);
+        if (!depth) {
+            GL11.glDisable(GL11.GL_DEPTH_TEST);
+            GlStateManager.depthMask(false);
+        }
+        GlStateManager.color(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f);
+        worldRenderer.begin(GL11.GL_LINE_STRIP, DefaultVertexFormats.POSITION);
+
+        worldRenderer.pos(pos1.xCoord, pos1.yCoord, pos1.zCoord).endVertex();
+        worldRenderer.pos(pos2.xCoord, pos2.yCoord, pos2.zCoord).endVertex();
+        Tessellator.getInstance().draw();
+
+        GlStateManager.translate(coordX, coordY, coordZ);
+        if (!depth) {
+            GL11.glEnable(GL11.GL_DEPTH_TEST);
+            GlStateManager.depthMask(true);
+        }
+        GlStateManager.disableBlend();
+        GlStateManager.enableAlpha();
+        GlStateManager.enableTexture2D();
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.popMatrix();
+    }
+
+    public static void highlightBlock(BlockPos pos, Color color, float partialTicks) {
+        Entity viewer = Minecraft.getMinecraft().getRenderViewEntity();
+        double viewerX = viewer.lastTickPosX + (viewer.posX - viewer.lastTickPosX) * partialTicks;
+        double viewerY = viewer.lastTickPosY + (viewer.posY - viewer.lastTickPosY) * partialTicks;
+        double viewerZ = viewer.lastTickPosZ + (viewer.posZ - viewer.lastTickPosZ) * partialTicks;
+
+        double x = pos.getX() - viewerX;
+        double y = pos.getY() - viewerY;
+        double z = pos.getZ() - viewerZ;
+
+        GlStateManager.disableDepth();
+        GlStateManager.disableCull();
+        GlStateManager.disableLighting();
+        RenderUtils.drawFilledBoundingBox(new AxisAlignedBB(x, y, z, x + 1, y + 1, z + 1), 1f, color);
+        GlStateManager.enableLighting();
+        GlStateManager.enableDepth();
+        GlStateManager.enableCull();
     }
 
     public static void drawFilledBoundingBox(AxisAlignedBB p_181561_0_, float alpha, Color color) {

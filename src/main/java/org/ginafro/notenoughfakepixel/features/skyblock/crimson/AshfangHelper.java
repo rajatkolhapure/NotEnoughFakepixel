@@ -6,7 +6,9 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityArmorStand;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S29PacketSoundEffect;
 import net.minecraft.network.play.server.S2APacketParticles;
@@ -51,6 +53,7 @@ public class AshfangHelper {
     private Waypoint waypointAshfang;
     private Waypoint waypointGravityOrb;
     private static Pattern ashfangHPPattern = Pattern.compile("([0-9]*[.,]?[0-9]*)([Mk])");
+    private String gravityOrbID = "e0614291-7855-32a6-825a-2315725b4cfa";
 
     public AshfangHelper() {
         this.waypoints2[0] = new Waypoint("ASHFANG",new int[]{-484, 141, -1015});
@@ -120,21 +123,23 @@ public class AshfangHelper {
             if (entity instanceof EntityArmorStand) {
                 if (!Crimson.checkAshfangArea(position)) continue;
                 ItemStack it = ((EntityArmorStand) entity).getEquipmentInSlot(4); // Head slot
-                if (it != null && it.getUnlocalizedName().contains("item.skull.char")) {
+                if (it != null && it.getItem() == Items.skull) {
                     if (!Configuration.gravityOrbWaypoint) continue;
-                    if (it.getDisplayName().contains("Burning Eye")) {
-                        // ALREADY DONE IN BLAZINGSOUL
-                    } else {
-                        // Gravity Orb
-                        System.out.println("GRAVITY ORB DETECTED:" + it.getDisplayName() + ", " + entity.getUniqueID() + ", " + entity.getPosition().getX() + ", " + entity.getPosition().getY() + ", " + entity.getPosition().getZ());
-                        waypointGravityOrb = new Waypoint("GRAVITYORB", position);
-                        gravityFound = true;
-                        if (currentGravityOrb == null) {
-                            SoundUtils.playSound(position, "random.pop", 5.0f, 1.5f);
-                        } else if (entity.getUniqueID() != currentGravityOrb.getUniqueID()) {
-                            SoundUtils.playSound(position, "random.pop", 5.0f, 1.5f);
+                    NBTTagCompound nbt = it.getTagCompound();
+                    if(nbt != null && nbt.hasKey("SkullOwner") && nbt.getCompoundTag("SkullOwner").hasKey("Id")) {
+                        String id = nbt.getCompoundTag("SkullOwner").getString("Id");
+                        if (id.equals(gravityOrbID)) {
+                            // Gravity Orb
+                            //System.out.println("GRAVITY ORB DETECTED: " + id + ", " + entity.getPosition().getX() + ", " + entity.getPosition().getY() + ", " + entity.getPosition().getZ());
+                            waypointGravityOrb = new Waypoint("GRAVITYORB", position);
+                            gravityFound = true;
+                            if (currentGravityOrb == null) {
+                                SoundUtils.playSound(position, "random.pop", 5.0f, 1.5f);
+                            } else if (entity.getUniqueID() != currentGravityOrb.getUniqueID()) {
+                                SoundUtils.playSound(position, "random.pop", 5.0f, 1.5f);
+                            }
+                            currentGravityOrb = entity;
                         }
-                        currentGravityOrb = entity;
                     }
                 } else if (entityName.contains("Ashfang") && !isNameAshfangMinion(entityName) &&
                         (currentAshfang == null || currentAshfang.getUniqueID() != entity.getUniqueID())) {

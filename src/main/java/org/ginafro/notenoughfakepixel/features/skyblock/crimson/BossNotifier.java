@@ -66,33 +66,43 @@ public class BossNotifier {
     public void onChat(@NotNull ClientChatReceivedEvent e){
         if (Crimson.checkEssentials()) return;
 
-        Matcher matcher = Pattern.compile("BLADESOUL DOWN!").matcher(e.message.getUnformattedText());
-        Matcher matcher2 = Pattern.compile("MAGE OUTLAW DOWN!").matcher(e.message.getUnformattedText());
-        Matcher matcher3 = Pattern.compile("ASHFANG DOWN!").matcher(e.message.getUnformattedText());
-        Matcher matcher4 = Pattern.compile("BARBARIAN DUKE X DOWN!").matcher(e.message.getUnformattedText());
-        if (matcher.find()) {
-            if (Configuration.bladesoulNotifier) {
+        if (Configuration.bladesoulNotifier) {
+            Matcher matcher = Pattern.compile("BLADESOUL DOWN!").matcher(e.message.getUnformattedText());
+            if (matcher.find()) {
                 bladesoulLastKill = System.currentTimeMillis();
                 bladesoulReady = bladesoulLastKill + spawnBladesoulSeconds*1000;
                 Arrays.fill(bladesoulScheduled, true);
+                return;
             }
-        } else if (matcher2.find()) {
-            if (Configuration.mageOutlawNotifier) {
+        }
+
+        if (Configuration.mageOutlawNotifier) {
+            Matcher matcher = Pattern.compile("MAGE OUTLAW DOWN!").matcher(e.message.getUnformattedText());
+            if (matcher.find()) {
                 mageOutlawLastKill = System.currentTimeMillis();
-                mageOutlawReady = mageOutlawLastKill + spawnOutlawSeconds * 1000;
+                mageOutlawReady = mageOutlawLastKill + spawnOutlawSeconds*1000;
                 Arrays.fill(mageOutlawScheduled, true);
+                return;
             }
-        } else if (matcher3.find()) {
-            if (Configuration.ashfangNotifier) {
+        }
+
+        if (Configuration.ashfangNotifier) {
+            Matcher matcher = Pattern.compile("ASHFANG DOWN!").matcher(e.message.getUnformattedText());
+            if (matcher.find()) {
                 ashfangLastKill = System.currentTimeMillis();
-                ashfangReady = ashfangLastKill + spawnAshfangSeconds * 1000;
+                ashfangReady = ashfangLastKill + spawnAshfangSeconds*1000;
                 Arrays.fill(ashfangScheduled, true);
+                return;
             }
-        } else if (matcher4.find()) {
-            if (Configuration.barbarianDukeXNotifier) {
+        }
+
+        if (Configuration.barbarianDukeXNotifier) {
+            Matcher matcher = Pattern.compile("BARBARIAN DUKE X DOWN!").matcher(e.message.getUnformattedText());
+            if (matcher.find()) {
                 barbarianDukeXLastKill = System.currentTimeMillis();
                 barbarianDukeXReady = barbarianDukeXLastKill + spawnBarbarianDukeXSeconds*1000;
                 Arrays.fill(barbarianDukeXScheduled, true);
+                return;
             }
         }
     }

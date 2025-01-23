@@ -9,6 +9,7 @@ import java.util.List;
 public class Crimson {
 
     private static int[][] ashfangArea = new int[][]{{-510,100,-1040}, {-450,200,-990}};
+
     public static boolean checkEssentials(){
         return (Minecraft.getMinecraft().thePlayer == null) ||
                 (!ScoreboardUtils.currentGamemode.isSkyblock()) ||
