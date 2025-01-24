@@ -196,7 +196,7 @@ public class Configuration extends Config {
     // Diana
     @Header(text = DIANA , category = DIANA , size = 2)
     public boolean _diana = true;
-    @Switch(name = "Show Waypoints on Burrows" , category = DIANA, subcategory = "Waypoints")
+    @Switch(name = "Show Waypoints on Burrows" , category = DIANA, subcategory = "Waypoints", description = "IMPORTANT: this feature needs \"Video Settings, Particles\" active. Show waypoints on burrows when certain amount of burrow particles are detected.")
     public static boolean dianaShowWaypointsBurrows = true;
     @Color(name = "Empty Burrow Color", category = DIANA, subcategory = "Waypoints")
     public static OneColor emptyBurrowColor = new OneColor(0, 0, 255);
@@ -268,7 +268,7 @@ public class Configuration extends Config {
     public static boolean chronomatronSolver = true;
     @Switch(name = "Ultrasequencer solver" , category = EXPERIMENTATION, description = "Enables Ultrasequencer solver.")
     public static boolean ultraSequencerSolver = true;
-    @Switch(name = "Prevent missclicks" , category = EXPERIMENTATION, description = "Prevents wrong answers when doing experiments.")
+    @Switch(name = "Prevent missclicks" , category = EXPERIMENTATION, description = "IMPORTANT: this feature doesn't work properly if your connection isn't stable or server has lag. Prevents clicking wrong answers when doing experiments.")
     public static boolean preventMissclicksExperimentation = true;
 
     // Mining
