@@ -7,6 +7,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S29PacketSoundEffect;
 import net.minecraft.network.play.server.S2APacketParticles;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.ginafro.notenoughfakepixel.Configuration;
@@ -16,6 +17,8 @@ import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 import java.util.Collection;
 
 public class MidasStaff {
+
+    private int grassSoundCounter = 0;
 
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event) {
@@ -56,22 +59,26 @@ public class MidasStaff {
             S29PacketSoundEffect soundEffect = (S29PacketSoundEffect) packet;
             String soundName = soundEffect.getSoundName();
             if (soundName.equals("dig.grass")) {
-                event.setCanceled(true);
+                grassSoundCounter++;
+                if (grassSoundCounter > 1) {
+                    event.setCanceled(true);
+                }
             }
         }
     }
 
-    /*@SubscribeEvent
+    @SubscribeEvent
     public void handleClick(PlayerInteractEvent event) {
         if (!Configuration.disableMidaStaffAnimation) return;
         if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
         if (InventoryUtils.getSlot("Midas Staff") != -1) {
             if (!(event.action == PlayerInteractEvent.Action.RIGHT_CLICK_AIR || event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK)) return; // Check if right click on air
-            int[] playerCoords = new int[] {Minecraft.getMinecraft().thePlayer.getPosition().getX(), Minecraft.getMinecraft().thePlayer.getPosition().getY(), Minecraft.getMinecraft().thePlayer.getPosition().getZ()};
-            SoundUtils.playSound(playerCoords, "dig.grass", 1.0f, 1.0f);
+            grassSoundCounter = 0;
+            //int[] playerCoords = new int[] {Minecraft.getMinecraft().thePlayer.getPosition().getX(), Minecraft.getMinecraft().thePlayer.getPosition().getY(), Minecraft.getMinecraft().thePlayer.getPosition().getZ()};
+            //SoundUtils.playSound(playerCoords, "dig.grass", 1.0f, 1.0f);
         }
 
-    }*/
+    }
 
 
 }

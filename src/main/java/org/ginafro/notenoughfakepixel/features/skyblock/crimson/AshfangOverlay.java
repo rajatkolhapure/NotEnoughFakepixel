@@ -7,9 +7,6 @@ import java.util.List;
 
 public class AshfangOverlay extends TextHud {
 
-    private static int LINE_HEIGHT = 11;
-    private static int MINIMUM_WIDTH = 20;
-    //NumberFormat formatter = NumberFormat.getCompactNumberInstance(Locale.US, NumberFormat.Style.SHORT);
     private static char[] c = new char[]{'k', 'M'};
 
     public AshfangOverlay() {
@@ -19,7 +16,7 @@ public class AshfangOverlay extends TextHud {
     @Override
     protected void getLines(List<String> lines, boolean example) {
         if (Crimson.checkEssentials()) return;
-        if (Configuration.ashfangOverlay) {lines.add("\u00a77Ashfang HP: \u00a7r" + coolFormat(AshfangHelper.getAshfangHP(),0));}
+        if (Configuration.ashfangOverlay) {lines.add("\u00a77Ashfang HP: \u00a7r" + formatAshfangHP(AshfangHelper.getAshfangHP()));}
         if (Configuration.ashfangOverlay) {lines.add("\u00a77Blazing souls to launch: \u00a7r" + AshfangHelper.getBlazingSoulCounter() + " / "+AshfangHelper.getHitsNeeded());}
     }
 
@@ -31,6 +28,28 @@ public class AshfangOverlay extends TextHud {
         return (Configuration.ashfangOverlay && Crimson.checkAshfangArea(new int[]{Minecraft.getMinecraft().thePlayer.getPosition().getX(), Minecraft.getMinecraft().thePlayer.getPosition().getY(), Minecraft.getMinecraft().thePlayer.getPosition().getZ()}));
     }
 
+    private static String formatAshfangHP(double hp) {
+        // Get the percentage of HP remaining
+        double percentage = hp / 50_000_000;
+
+        // Determine the prefix based on the percentage
+        String prefix;
+        if (percentage > 0.5) {
+            prefix = "§a"; // Green
+        } else if (percentage > 0.1) {
+            prefix = "§e"; // Yellow
+        } else {
+            prefix = "§c"; // Red
+        }
+
+        // Format the HP using coolFormat
+        String formattedHP = coolFormat(hp, 0);
+
+        // Add the prefix to the formatted HP
+        return prefix + formattedHP;
+    }
+
+
     private static String coolFormat(double n, int iteration) {
         double d = ((long) n / 100) / 10.0;
         boolean isRound = (d * 10) %10 == 0;//true if the decimal part is equal to 0 (then it's trimmed anyway)
@@ -41,11 +60,4 @@ public class AshfangOverlay extends TextHud {
                 : coolFormat(d, iteration+1));
 
     }
-
-    /*
-    @Override
-    protected float getWidth(float scale, boolean example) {
-        float var = MINIMUM_WIDTH;
-        return var * scale;
-    }*/
 }

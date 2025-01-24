@@ -13,6 +13,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.ginafro.notenoughfakepixel.Configuration;
 import org.ginafro.notenoughfakepixel.utils.RenderUtils;
@@ -261,7 +263,16 @@ public class EnchantingSolvers {
             }
             event.setCanceled(true); // cancel click if not found
         }
-
-
     }
+
+    /*@SubscribeEvent(priority = EventPriority.LOWEST)
+    public void onDisplayTooltip(ItemTooltipEvent event) {
+        if (event.isCancelable()) event.setCanceled(true);
+        event = new ItemTooltipEvent(event.itemStack, event.entityPlayer, null, false);
+    }/*
+
+    /*public class CustomTooltipHandler extends IContainerTooltipHandler {
+        @override
+        public void shouldShow
+    }*/
 }
