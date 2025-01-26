@@ -97,10 +97,10 @@ public class VoidgloomSeraph {
         }
     }
 
-    @SubscribeEvent
+    /*@SubscribeEvent
     public void onBlockChange(BlockChangeEvent event) {
         System.out.println("BLOCKCHANGE EVENT");
-    }
+    }*/
 
     @SubscribeEvent()
     public void onWorldUnload(WorldEvent.Unload event) {

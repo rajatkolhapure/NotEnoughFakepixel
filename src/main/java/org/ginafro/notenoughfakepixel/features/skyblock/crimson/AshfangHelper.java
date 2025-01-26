@@ -40,7 +40,7 @@ import static org.ginafro.notenoughfakepixel.Configuration.*;
 
 public class AshfangHelper {
 
-    private final Waypoint[] waypoints2 = new Waypoint[2];
+    private final Waypoint[] waypoints = new Waypoint[2];
     private static int blazingSoulsCounter = 0;
     private static int ashfangFollowersCounter = 0;
     private final Queue<S2APacketParticles> particlesQueue = new ConcurrentLinkedQueue<>();
@@ -54,10 +54,10 @@ public class AshfangHelper {
     private Waypoint waypointGravityOrb;
     private static Pattern ashfangHPPattern = Pattern.compile("([0-9]*[.,]?[0-9]*)([Mk])");
     private String gravityOrbID = "e0614291-7855-32a6-825a-2315725b4cfa";
-
+    private float lastHP = 50_000_000;
     public AshfangHelper() {
-        this.waypoints2[0] = new Waypoint("ASHFANG",new int[]{-484, 141, -1015});
-        this.waypoints2[1] = new Waypoint("GRAVITYORB",new int[]{-490, -200, -1015});
+        this.waypoints[0] = new Waypoint("ASHFANG",new int[]{-484, 141, -1015});
+        this.waypoints[1] = new Waypoint("GRAVITYORB",new int[]{-490, -200, -1015});
     }
 
     @SubscribeEvent
@@ -67,6 +67,7 @@ public class AshfangHelper {
         if (!Crimson.checkAshfangArea(position)) return;
         if (Configuration.ashfangWaypoint || Configuration.gravityOrbWaypoint) drawWaypoints(event.partialTicks);
         renderEntities(event.partialTicks);
+        checkHPForSound();
     }
 
     @SubscribeEvent
@@ -84,7 +85,7 @@ public class AshfangHelper {
             Matcher matcher3 = Pattern.compile("The Blazing Soul dealt").matcher(e.message.getUnformattedText());
             if (matcher3.find()) {
                 int[] position = new int[]{Minecraft.getMinecraft().thePlayer.getPosition().getX(), Minecraft.getMinecraft().thePlayer.getPosition().getY(), Minecraft.getMinecraft().thePlayer.getPosition().getZ()};
-                if (Configuration.ashfangHurtSound) SoundUtils.playSound(position, "mob.wither.hurt", 0.7f, 0.7f);
+                //if (Configuration.ashfangHurtSound) SoundUtils.playSound(position, "mob.wither.hurt", 0.7f, 0.7f);
                 if (Configuration.ashfangMuteChat) e.setCanceled(true);
                 return;
             }
@@ -182,7 +183,7 @@ public class AshfangHelper {
     }
 
     private Waypoint[] getWaypoints() {
-        return waypoints2;
+        return waypoints;
     }
 
     private boolean isNameAshfangMinion(String name) {
@@ -223,10 +224,23 @@ public class AshfangHelper {
     }
 
     private void drawWaypoints(float partialTicks){
-        if (!BossNotifier.getAshfangScheduled()[0]) {
-            drawWaypoint(waypointAshfang, partialTicks);
+        if (Configuration.ashfangWaypoint) {
+            if (!BossNotifier.getAshfangScheduled()[0]) {
+                drawWaypoint(waypointAshfang, partialTicks);
+            }
         }
-        drawWaypoint(waypointGravityOrb, partialTicks);
+        if (Configuration.gravityOrbWaypoint) {
+            drawWaypoint(waypointGravityOrb, partialTicks);
+        }
+    }
+
+    private void checkHPForSound() {
+        float currentHP = getAshfangHP();
+        if (currentHP < lastHP && currentHP != -1) {
+            int[] position = new int[]{Minecraft.getMinecraft().thePlayer.getPosition().getX(), Minecraft.getMinecraft().thePlayer.getPosition().getY(), Minecraft.getMinecraft().thePlayer.getPosition().getZ()};
+            SoundUtils.playSound(position, "mob.wither.hurt", 0.7f, 0.7f);
+        }
+        lastHP = currentHP;
     }
 
     public static int getBlazingSoulCounter(){

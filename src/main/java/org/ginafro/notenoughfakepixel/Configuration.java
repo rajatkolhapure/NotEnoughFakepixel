@@ -3,7 +3,9 @@ package org.ginafro.notenoughfakepixel;
 import cc.polyfrost.oneconfig.config.Config;
 import cc.polyfrost.oneconfig.config.annotations.*;
 import cc.polyfrost.oneconfig.config.core.OneColor;
+import cc.polyfrost.oneconfig.config.core.OneKeyBind;
 import cc.polyfrost.oneconfig.config.data.*;
+import cc.polyfrost.oneconfig.libs.universal.UKeyboard;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ChatComponentText;
 import org.ginafro.notenoughfakepixel.config.pages.AshfangOverlayPage;
@@ -87,15 +89,20 @@ public class Configuration extends Config {
     public static boolean disablePotionEffects = true;
     @Switch(name = "Disable rain" , category = QUALITY_OF_LIFE, description = "Disables rain rendering")
     public static boolean disableRain = true;
-
+    @Switch(name = "Wardrobe Shortcut" , category = QUALITY_OF_LIFE)
+    public static boolean shortcutWardrobe = true;
+    @KeyBind(name = "Wardrobe Shortcut Key", category = QUALITY_OF_LIFE)
+    public static OneKeyBind wardrobeKeyBind = new OneKeyBind(UKeyboard.KEY_R);
     @Switch(name = "Show Enchant Level", category = QUALITY_OF_LIFE, description = "Show enchant level of an book on its icon")
     public static boolean showEnchantLevel = true;
+    @Switch(name = "Middle click on terminals and Enchanting" , category = QUALITY_OF_LIFE, description = "Middle clicks on terminals and enchanting gui.")
+    public static boolean middleClickChests = true;
 
     @Switch(name = "Show Best Upgrade" , category = QUALITY_OF_LIFE, subcategory = "Chocolate Factory")
     public static boolean showBestUpgrade = true;
-    @Switch(name = "Show Waypoints on Chocolate Eggs" , category = QUALITY_OF_LIFE, subcategory = "Chocolate Factory", description = "Show waypoints on chocolate eggs.")
+    @Switch(name = "Show Waypoints on Chocolate Eggs" , category = QUALITY_OF_LIFE, subcategory = "Chocolate Factory", description = "Show waypoints on chocolate eggs on Hoppity's Hunt event.")
     public static boolean chocolateEggWaypoints = true;
-    @Color(name = "Chocolate Eggs Waypoints Color", category = QUALITY_OF_LIFE , subcategory = "Chocolate Factory", description = "Color of Chocolate Eggs' waypoints.")
+    @Color(name = "Chocolate Eggs Waypoints Color", category = QUALITY_OF_LIFE , subcategory = "Chocolate Factory", description = "Color of chocolate eggs' waypoints.")
     public static OneColor chocolateEggWaypointsColor = new OneColor(210,105,30);
 
 
@@ -119,7 +126,7 @@ public class Configuration extends Config {
     public static boolean disableJerryChineGunSounds = true;
     @Switch(name = "Disable AOTE teleport sounds" , category = "Quality of Life", subcategory = "Sounds", description = "Disable Aspect of the End teleport sounds.")
     public static boolean disableAoteSounds = false;
-    @Switch(name = "Disable Midas Staff animation and sounds" , category = "Quality of Life", subcategory = "Sounds", description = "Disable Aspect of the End teleport sounds.")
+    @Switch(name = "Minimum Midas Staff animation and sounds" , category = "Quality of Life", subcategory = "Sounds", description = "Low-render gold blocks and set sound only at right click.")
     public static boolean disableMidaStaffAnimation = false;
 
 
@@ -139,8 +146,8 @@ public class Configuration extends Config {
     public static String autoReadyName = "your nicked name";
     @Switch(name = "Auto close chests", category = DUNGEONS, subcategory = "QOL", description = "Automatically closes chests in dungeons.")
     public static boolean autoCloseChests = true;
-    @Switch(name = "Auto drop useless items", category = DUNGEONS, subcategory = "QOL", description = "Automatically drop training weights and defuse kits from dungeon secrets.")
-    public static boolean autoDropItems = true;
+    //@Switch(name = "Auto drop useless items", category = DUNGEONS, subcategory = "QOL", description = "Automatically drop training weights and defuse kits from dungeon secrets.")
+    public static boolean autoDropItems = false;
 
     @Switch(name = "Starred Mobs Helper" , category = DUNGEONS, subcategory = "Starred Mobs")
     public static boolean starredMobs = true;
@@ -169,8 +176,6 @@ public class Configuration extends Config {
     public static boolean clickInOrder = true;
     @Switch(name = "Select colors Solver" , category = DUNGEONS , subcategory = "Floor 7")
     public static boolean selectColors = true;
-    @Switch(name = "Middle click on terminals and Enchanting" , category = QUALITY_OF_LIFE, description = "Middle clicks on terminals and enchanting gui.")
-    public static boolean middleClickChests = true;
 
     @Color(name = "Terminal Overlay Color", category = DUNGEONS , subcategory = "Floor 7")
     public static OneColor terminalColor = new OneColor(0,255,0);
@@ -221,19 +226,16 @@ public class Configuration extends Config {
     public static boolean dianaWaypointSounds = true;
     @Switch(name = "Disable Explosion Sounds" , category = DIANA, subcategory = "Sounds", description = "Disable explosion sounds generated by digging a burrow.")
     public static boolean disableDianaExplosionSounds = false;
-    @Switch(name = "Auto-equip Ancestral Spade when clicking on burrow" , category = DIANA, subcategory = "Misc", description = "When clicking burrow, equips Ancestral Spade automatically if its in hotbar.")
-    public static boolean dianaAutoEquipAncestralSpadeForDig = true;
-    @Switch(name = "Auto-equip Ancestral Spade when using AOTE" , category = DIANA, subcategory = "Misc", description = "IMPORTANT: requires QOL enabled AOTE teleport sounds. When using AOTE teleport, equips Ancestral Spade automatically each certain uses if its in hotbar for better particle recognition.")
+    //@Switch(name = "Auto-equip Ancestral Spade when clicking on burrow" , category = DIANA, subcategory = "Misc", description = "When clicking burrow, equips Ancestral Spade automatically if its in hotbar.")
+    public static boolean dianaAutoEquipAncestralSpadeForDig = false;
+    //@Switch(name = "Auto-equip Ancestral Spade when using AOTE" , category = DIANA, subcategory = "Misc", description = "IMPORTANT: requires QOL enabled AOTE teleport sounds. When using AOTE teleport, equips Ancestral Spade automatically each certain uses if its in hotbar for better particle recognition.")
     public static boolean dianaAutoEquipAncestralSpadeForParticles = false;
     @Switch(name = "Disable Ancestral Spade cooldown message" , category = DIANA, subcategory = "Misc", description = "Mute ability cooldown message on chat.")
     public static boolean dianaCancelCooldownSpadeMessage = true;
 
 
-
     //@Switch(name = "Disable harp sounds" , category = DIANA, subcategory = "Sounds", description = "Turn off/on harp sounds.")
     //public static boolean disableDianaHarpSounds = true;
-
-
 
 
     // Slayer
@@ -249,16 +251,8 @@ public class Configuration extends Config {
     public static OneColor slayerBossColor = new OneColor(92, 154, 255);
     @Dropdown(name = "Faster Maddox Calling", category = SLAYER,subcategory = "Quality of Life",options = {"Auto Open","Semi Auto","Disabled"})
     public static int maddoxCalling = 1;
-    @Switch(name = "highlightVoidgloomBeacons" , category = SLAYER , subcategory = "Voidgloom Seraph", description = ".")
-    public static boolean slayerHighlightVoidgloomBeacons = true;
-    @Switch(name = "highlightVoidgloomSkulls" , category = SLAYER , subcategory = "Voidgloom Seraph", description = ".")
-    public static boolean slayerHighlightVoidgloomSkulls = true;
-    @Switch(name = "ignoreOtherVoidgloom" , category = SLAYER , subcategory = "Voidgloom Seraph", description = ".")
-    public static boolean slayerIgnoreOtherVoidgloom = true;
     @Switch(name = "showBeaconPath" , category = SLAYER , subcategory = "Voidgloom Seraph", description = ".")
     public static boolean slayerShowBeaconPath = true;
-    @Switch(name = "beaconWarningTitle" , category = SLAYER , subcategory = "Voidgloom Seraph", description = ".")
-    public static boolean slayerBeaconWarningTitle = true;
 
 
     // Enchanting

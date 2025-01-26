@@ -1,9 +1,9 @@
 package org.ginafro.notenoughfakepixel.features.skyblock.diana;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.WorldClient;
-import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityGolem;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.network.Packet;
@@ -11,6 +11,7 @@ import net.minecraft.network.play.server.S29PacketSoundEffect;
 import net.minecraft.network.play.server.S2APacketParticles;
 import net.minecraft.util.*;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
+import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -19,12 +20,11 @@ import org.ginafro.notenoughfakepixel.Configuration;
 import org.ginafro.notenoughfakepixel.events.PacketReadEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.event.entity.player.*;
-import org.ginafro.notenoughfakepixel.variables.Location;
 import org.ginafro.notenoughfakepixel.variables.MobDisplayTypes;
 
 import java.awt.*;
+import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -43,12 +43,14 @@ public class Diana {
     private int distanceRenderHitbox = 64;
     private Pattern cooldownPattern = Pattern.compile("§r§cThis ability is on cooldown for [0-9] "+"more seconds.§r");
     private Pattern minosInquisitor = Pattern.compile("§r§c§lUh oh! §r§eYou dug out §r§2Minos Inquisitor§r");
-    private Pattern minosInquisitorPartyChat = Pattern.compile("§9Party §8> (?:§[0-9a-f])*\\[?(?:(?:§[0-9a-f])?[A-Z](?:§[0-9a-f])?\\+*(?:§[0-9a-f])?)*\\]?(?:§[0-9a-f])*.*?: Minos Inquisitor found in x:(-?\\d+), y:(-?\\d+), z:(-?\\d+) in HUB-(1[0-9]|[1-9])");
+    private Pattern minosInquisitorPartyChat = Pattern.compile("§9Party §8> (?:§[0-9a-f])*\\[?(?:(?:§[0-9a-f])?[A-Z](?:§[0-9a-f])?\\+*(?:§[0-9a-f])?)*\\]?(?:§[0-9a-f])*.*?: Minos Inquisitor found at .*,? ?x:(-?\\d+), y:(-?\\d+), z:(-?\\d+) in HUB-(1[0-9]|[1-9])");
     private int counterTeleports = 0;
     private String inquisitorSound = "mob.enderdragon.growl";
+    Instant lastCaptureTime = Instant.now();
+    private final Map<String, int[]> locations = new HashMap<>();
 
     @SubscribeEvent
-    public void onPacketReceive(PacketReadEvent event) {
+    public void onParticlePacketReceive(PacketReadEvent event) {
         if (!Configuration.dianaShowWaypointsBurrows) return; // Check if the feature is enabled
         if (!ScoreboardUtils.currentLocation.isHub()) return; // Check if the player is in a hub
         Packet packet = event.packet;
@@ -96,6 +98,79 @@ public class Diana {
             dianaMobRemover(); // Remove mobs from lists if out of render distance
             dianaMobRender(event.partialTicks); // Check for mobs in entities and draw a hitbox
         }
+    }
+
+
+    @SubscribeEvent
+    public void onWorldLoad(WorldEvent.Load event) {
+        if (!ScoreboardUtils.currentLocation.isHub()) return; // Check if the player is in a hub
+        if (!Configuration.dianaMinosInquisitorAlert) return;
+        initializeLocations();
+    }
+
+    @SubscribeEvent
+    public void onRenderLiving(RenderLivingEvent.Pre<EntityLivingBase> event) {
+        if (!ScoreboardUtils.currentLocation.isHub()) return; // Check if the player is in a hub
+        if (!Configuration.dianaMinosInquisitorAlert) return;
+        String entityName = event.entity.getDisplayName().getUnformattedText();
+        if (entityName.contains("Minos Inquisitor")) {
+            Instant now = Instant.now();
+            Minecraft.getMinecraft().ingameGUI.displayTitle("Inquisitor detected!", null, 10, 40, 20);
+            if (now.isAfter(lastCaptureTime.plusSeconds(61))) {
+                double x = Math.floor(event.entity.posX);
+                double y = Math.floor(event.entity.posY);
+                double z = Math.floor(event.entity.posZ);
+                //Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc Minos Inquisitor found at x:"+event.entity.getPosition().getX()+", y:"+event.entity.getPosition().getY()+", z:"+event.entity.getPosition().getZ() + " in HUB-"+getHubNumber());
+                String locationName = findNearestLocation((int) x, (int) y, (int) z);
+                if (locationName != null) {
+                    Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc Minos Inquisitor found at " + locationName + ", x:"+event.entity.getPosition().getX()+", y:"+event.entity.getPosition().getY()+", z:"+event.entity.getPosition().getZ() + " in HUB-"+getHubNumber());
+                } else {
+                    Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc Minos Inquisitor found at x:"+event.entity.getPosition().getX()+", y:"+event.entity.getPosition().getY()+", z:"+event.entity.getPosition().getZ() + " in HUB-"+getHubNumber());
+                }
+                /*if (locationName != null) {
+                    Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc Inquisitor at + locationName + (Exact coords: " + (int) x + (int) y + (int) z + ")");
+                }*/
+                lastCaptureTime = now;
+            }
+        }
+    }
+
+    private String findNearestLocation(int playerX, int playerY, int playerZ) {
+        String nearestLocation = null;
+        double minDistance = Double.MAX_VALUE;
+
+        for (Map.Entry<String, int[]> entry : locations.entrySet()) {
+            int[] coords = entry.getValue();
+            double distance = Math.sqrt(Math.pow(playerX - coords[0], 2) + Math.pow(playerY - coords[1], 2) + Math.pow(playerZ - coords[2], 2));
+
+            if (distance < minDistance) {
+                minDistance = distance;
+                nearestLocation = entry.getKey();
+            }
+        }
+
+        return nearestLocation;
+    }
+
+    private void initializeLocations() {
+        locations.put("Farm", new int[]{60, 72, -173});
+        locations.put("Above Coal mine", new int[]{-40, 85, -196});
+        locations.put("Farm", new int[]{81, 72, -140});
+        locations.put("Koban4ik NPC", new int[]{83, 72, -102});
+        locations.put("Colosseum left side", new int[]{101, 72, -73});
+        locations.put("Wizard tower", new int[]{53, 72, 66});
+        locations.put("Spider den portal", new int[]{-120, 76, -177});
+        locations.put("Crypt entrance", new int[]{-173, 74, -92});
+        locations.put("Dante statue in the graveyard", new int[]{-98, 72, -135});
+        locations.put("Graveyard entrance", new int[]{-120, 71, -77});
+        locations.put("Lumber jack npc", new int[]{-114, 74, -32});
+        locations.put("Park portal", new int[]{-192, 74, -23});
+        locations.put("Castle / ruins", new int[]{-209, 91, 70});
+        locations.put("Museum", new int[]{-108, 68, 102});
+        locations.put("High level", new int[]{-6, 71, 164});
+        locations.put("Dark auction hut", new int[]{84, 74, 176});
+        locations.put("Fairy lake in wilderness", new int[]{110, 66, 114});
+        locations.put("Colosseum", new int[]{143, 76, -17});
     }
 
     private void drawWaypoints(float partialTicks) {
@@ -205,7 +280,7 @@ public class Diana {
                 // If this point reached, no occurrences, so new gaia added
                 listGaiaAlive.add(new GaiaConstruct(entity));
                 //System.out.println("Gaia added, "+listGaiaAlive.size());
-            } else if (entity instanceof EntityOcelot){
+            } else if (entity instanceof EntityOcelot && (entity.getDisplayName().getUnformattedText().contains("Bagheera") || entity.getDisplayName().getUnformattedText().contains("Azrael"))) {
                 for (SiameseLynx siamese : listSiameseAlive) {
                     if (siamese.getEntity1() == null) return;
                     // If already added, don't add again
@@ -422,8 +497,10 @@ public class Diana {
         if (Configuration.dianaCancelCooldownSpadeMessage) {
             cancelMessage(true, event, cooldownPattern, true);
         }
-        if (Configuration.dianaMinosInquisitorAlert && minosInquisitor.matcher(event.message.getFormattedText()).matches()) {
-            player.sendChatMessage("/pc Minos Inquisitor found in x:"+player.getPosition().getX()+", y:"+player.getPosition().getY()+", z:"+player.getPosition().getZ() + " in HUB-"+getHubNumber());
+        /*if (Configuration.dianaMinosInquisitorAlert && minosInquisitor.matcher(event.message.getFormattedText()).matches()) {
+            String locationName = findNearestLocation(player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ());
+            Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc Minos Inquisitor found at " + locationName + ", x:"+player.getPosition().getX()+", y:"+player.getPosition().getY()+", z:"+player.getPosition().getZ() + " in HUB-"+getHubNumber());
+            //player.sendChatMessage("/pc Minos Inquisitor found at x:"+player.getPosition().getX()+", y:"+player.getPosition().getY()+", z:"+player.getPosition().getZ() + " in HUB-"+getHubNumber());
             // vvvvv PENDING OF TESTING vvvvv
             ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(8);
             exec.schedule(new Runnable() {
@@ -466,7 +543,7 @@ public class Diana {
                     player.sendChatMessage("/pc 1");
                 }
             }, 59, TimeUnit.SECONDS);
-        }
+        }*/
         if (Configuration.dianaMinosInquisitorAlert) {
             Matcher matcher = minosInquisitorPartyChat.matcher(event.message.getFormattedText());
             if (matcher.find()) {
