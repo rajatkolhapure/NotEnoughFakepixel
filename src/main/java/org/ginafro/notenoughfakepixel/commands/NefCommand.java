@@ -27,6 +27,7 @@ public class NefCommand extends CommandBase {
     @Override
     public void processCommand(ICommandSender sender, String[] args) throws CommandException {
         if(args == null || args.length == 0){
+            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"+System.getProperty("os.name"));
             if (System.getProperty("os.name").contains("Android") || System.getProperty("os.name").contains("Linux")) {
                 sender.addChatMessage(new ChatComponentText(EnumChatFormatting.YELLOW + "Usage: " + EnumChatFormatting.RESET + EnumChatFormatting.BOLD+EnumChatFormatting.GRAY + "/nef category "+EnumChatFormatting.RESET+EnumChatFormatting.GRAY+"- Enable/disable one entire category. Possible categories: qol, dungeons, fishing, diana, slayer, experimentation, mining, crimson.\n        " + EnumChatFormatting.BOLD+EnumChatFormatting.GRAY + "/nef default "+EnumChatFormatting.RESET+EnumChatFormatting.GRAY+"- Resets all settings to default\n        " + EnumChatFormatting.BOLD+EnumChatFormatting.GRAY + "/nef help"+EnumChatFormatting.RESET+EnumChatFormatting.GRAY+" - Display all commands from NEF"));
             } else {
