@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
-import org.ginafro.notenoughfakepixel.commands.TestCommand;
+import org.ginafro.notenoughfakepixel.commands.NefCommand;
 import org.ginafro.notenoughfakepixel.features.duels.KDCounter;
 import org.ginafro.notenoughfakepixel.features.skyblock.crimson.AshfangHelper;
 import org.ginafro.notenoughfakepixel.features.skyblock.crimson.BossNotifier;
@@ -40,8 +40,9 @@ public class NotEnoughFakepixel {
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         config = new Configuration();
-        ClientCommandHandler.instance.registerCommand(new TestCommand());
-        ClientCommandHandler.instance.registerCommand(new SlayerInfoCommand());
+        //ClientCommandHandler.instance.registerCommand(new TestCommand());
+        //ClientCommandHandler.instance.registerCommand(new SlayerInfoCommand());
+        ClientCommandHandler.instance.registerCommand(new NefCommand());
 
         MinecraftForge.EVENT_BUS.register(this);
         registerModEvents();

@@ -24,6 +24,8 @@ public class Wardrobe {
 
     @SubscribeEvent
     public void onKeyPress(InputEvent.KeyInputEvent event) {
+        if (!Configuration.shortcutWardrobe) return;
+        if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
         EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
 
         // Get the list of key binds
@@ -51,6 +53,8 @@ public class Wardrobe {
 
     @SubscribeEvent
     public void onKeyPressOnGui(GuiScreenEvent.KeyboardInputEvent event) {
+        if (!Configuration.shortcutWardrobe) return;
+        if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
         if(!(event.gui instanceof GuiChest)) return;
         GuiChest chest = (GuiChest) event.gui;
         Container container = chest.inventorySlots;

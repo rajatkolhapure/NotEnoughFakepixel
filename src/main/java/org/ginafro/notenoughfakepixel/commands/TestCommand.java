@@ -9,7 +9,7 @@ import org.ginafro.notenoughfakepixel.NotEnoughFakepixel;
 
 public class TestCommand extends CommandBase {
     @Override
-    public String getCommandName() {
+        public String getCommandName() {
         return "nef";
     }
 

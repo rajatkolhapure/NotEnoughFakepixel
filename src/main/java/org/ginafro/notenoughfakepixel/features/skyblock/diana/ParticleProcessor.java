@@ -183,12 +183,14 @@ public class ParticleProcessor {
 
     private boolean isDuplicateResult(Waypoint result) {
         if (result == null) return false;
-        for (Waypoint processedResult : waypoints) {
-            if (processedResult == null) continue;
-            if (areCoordinatesClose(processedResult.getCoordinates(), result.getCoordinates(), distanceThreshold)) {
-                return true;
+        try {
+            for (Waypoint processedResult : waypoints) {
+                if (processedResult == null) continue;
+                if (areCoordinatesClose(processedResult.getCoordinates(), result.getCoordinates(), distanceThreshold)) {
+                    return true;
+                }
             }
-        }
+        } catch (Exception ignored) {}
         return false;
     }
 
