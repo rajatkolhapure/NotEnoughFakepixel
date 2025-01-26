@@ -25,7 +25,6 @@ public class Configuration extends Config {
     private transient static final String CRIMSON = "Crimson";
     private transient static final String EXPERIMENTATION = "Experimentation Table";
 
-
     public Configuration(){
         super(new Mod("NotEnoughFakepixel", ModType.UTIL_QOL, "assets/notenoughfakepixel/logo.png"), "config.json");
         initialize();
@@ -72,7 +71,7 @@ public class Configuration extends Config {
     // Quality Of Life
 
     @Header(text = "General" , category = QUALITY_OF_LIFE, size = 2)
-    public boolean _qol = true;
+    public static boolean _qol = true;
     @Switch(name = "Custom Chat Filters" , description = "Add your own chat filters, by - /addfilter", category = QUALITY_OF_LIFE)
     public static boolean customFilters = true;
     @Switch(name = "Disable Hyperion Explosion" , category = QUALITY_OF_LIFE)
@@ -121,7 +120,7 @@ public class Configuration extends Config {
     public static boolean disableSellingRanks = false;
     @Switch(name = "Scrollable tooltips" , category = QUALITY_OF_LIFE, subcategory = "Items", description = "Scroll through the item lore")
     public static boolean scrollableTooltips = true;
-  
+
     @Switch(name = "Disable Jerry-chine Gun sounds" , category = "Quality of Life", subcategory = "Sounds", description = "Disable Jerry-chine gun sounds.")
     public static boolean disableJerryChineGunSounds = true;
     @Switch(name = "Disable AOTE teleport sounds" , category = "Quality of Life", subcategory = "Sounds", description = "Disable Aspect of the End teleport sounds.")
@@ -138,7 +137,7 @@ public class Configuration extends Config {
     // Dungeons
 
     @Header(text = "Dungeons", category = DUNGEONS, size = 2)
-    public boolean _dungeons = true;
+    public static boolean _dungeons = true;
 
     @Switch(name = "Auto Ready Dungeon" , category = DUNGEONS, subcategory = "QOL", description = "Automatically ready up in dungeons.")
     public static boolean autoReadyDungeon = true;
@@ -190,7 +189,7 @@ public class Configuration extends Config {
     // Fishing
 
     @Header(text = FISHING , category = FISHING , size = 2)
-    public boolean _fishing = true;
+    public static boolean _fishing = true;
     @Switch(name = "Notify Legendary Creatures" , category = FISHING, description = "Notifies you when a legendary creature is catched.")
     public static boolean legendaryCreatures = true;
     //@Switch(name = "Notify on Great Catch (not working?)" , category = FISHING)
@@ -200,7 +199,7 @@ public class Configuration extends Config {
 
     // Diana
     @Header(text = DIANA , category = DIANA , size = 2)
-    public boolean _diana = true;
+    public static boolean _diana = true;
     @Switch(name = "Show Waypoints on Burrows" , category = DIANA, subcategory = "Waypoints", description = "IMPORTANT: this feature needs \"Video Settings, Particles\" active. Show waypoints on burrows when certain amount of burrow particles are detected.")
     public static boolean dianaShowWaypointsBurrows = true;
     @Color(name = "Empty Burrow Color", category = DIANA, subcategory = "Waypoints")
@@ -214,7 +213,7 @@ public class Configuration extends Config {
     @Color(name = "Gaia Hittable Color", category = DIANA, subcategory = "Mobs")
     public static OneColor gaiaHittableColor = new OneColor(0, 255, 0);
     @Switch(name = "Show Hittable Siamese", category = DIANA, subcategory = "Mobs", description = "Turn off/on hitbox that represents which siamese can be damaged.")
-    public static boolean dianaSiamese = true;
+    public static boolean dianaSiamese = false;
     @Color(name = "Gaia Un-hittable Color", category = DIANA, subcategory = "Mobs")
     public static OneColor gaiaUnhittableColor = new OneColor(255, 0, 0);
     // Minos inquisitor /pc feature
@@ -240,7 +239,7 @@ public class Configuration extends Config {
 
     // Slayer
     @Header(text = SLAYER , category = SLAYER , size = 2)
-    public boolean _slayer = true;
+    public static boolean _slayer = true;
     @Switch(name = "Slayer Minibosses Display" , category = SLAYER , subcategory = "Slayer Mobs", description = "Draws a box around slayer minibosses.")
     public static boolean slayerMinibosses = true;
     @Color(name = "Slayer Minibosses Color", category = SLAYER , subcategory = "Slayer Mobs", description = "Color of the slayer minibosses.")
@@ -257,7 +256,7 @@ public class Configuration extends Config {
 
     // Enchanting
     @Header(text = "Experimentation Table" , category = EXPERIMENTATION , size = 2)
-    public boolean _enchanting = true;
+    public static boolean _enchanting = true;
     @Switch(name = "Chronomatron solver" , category = EXPERIMENTATION, description = "Enables Chronomatron solver.")
     public static boolean chronomatronSolver = true;
     @Switch(name = "Ultrasequencer solver" , category = EXPERIMENTATION, description = "Enables Ultrasequencer solver.")
@@ -268,7 +267,7 @@ public class Configuration extends Config {
     // Mining
 
     @Header(text = MINING , category = MINING , size = 2)
-    public boolean _mining = true;
+    public static boolean _mining = true;
     @Switch(name = "Enable mining ability Notifier" , category = MINING, subcategory = "", description = "Notifies you when your mining ability is ready.")
     public static boolean miningAbilityNotifier = true;
     @Switch(name = "Disable Don Espresso messages" , category = MINING, subcategory = "", description = "Disables Don Espresso event messages.")
@@ -292,7 +291,7 @@ public class Configuration extends Config {
     public static MiningOverlayPage miningOverlayPage = new MiningOverlayPage();
 
     @Header(text = CRIMSON, category = CRIMSON, size = 2)
-    public boolean _crimson = true;
+    public static boolean _crimson = true;
     @Switch(name = "Bladesoul notifier", category = CRIMSON, subcategory = "Bosses notifier", description = "Notifies you when Bladesoul boss spawns.")
     public static boolean bladesoulNotifier = true;
     @Switch(name = "Mage Outlaw notifier", category = CRIMSON, subcategory = "Bosses notifier", description = "Notifies you when Mage Outlaw boss spawns.")
