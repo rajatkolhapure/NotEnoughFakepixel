@@ -311,7 +311,7 @@ public class Diana {
             // If both null = death, remove from list of siameses
             if (siamese.getEntity1() == null && siamese.getEntity2() == null) {
                 listSiameseAlive.remove(siamese);
-                System.out.println("Siamese removed"+listSiameseAlive.size());
+                //System.out.println("Siamese removed"+listSiameseAlive.size());
                 return;
             }
             if (siamese.getEntity1() != null) {
