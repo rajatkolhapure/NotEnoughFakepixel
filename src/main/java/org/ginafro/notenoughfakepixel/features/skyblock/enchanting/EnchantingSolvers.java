@@ -224,7 +224,7 @@ public class EnchantingSolvers {
         else if (currentSolverType == SolverTypes.NONE){
             if (chronomatronOrder.isEmpty() && ultrasequencerSlots.isEmpty()) return;
 
-            System.out.println("Deleting data");
+            //System.out.println("Deleting data");
             ultrasequencerSlots = new ArrayList<>();
             chronomatronOrder = new ArrayList<>();
             previousIndex = 0;
