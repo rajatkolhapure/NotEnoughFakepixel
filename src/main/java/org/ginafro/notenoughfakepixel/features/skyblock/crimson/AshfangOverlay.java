@@ -17,7 +17,7 @@ public class AshfangOverlay extends TextHud {
     protected void getLines(List<String> lines, boolean example) {
         if (Crimson.checkEssentials()) return;
         if (Configuration.ashfangOverlay) {lines.add("\u00a77Ashfang HP: \u00a7r" + formatAshfangHP(AshfangHelper.getAshfangHP()));}
-        if (Configuration.ashfangOverlay) {lines.add("\u00a77Blazing souls to launch: \u00a7r" + AshfangHelper.getBlazingSoulCounter() + " / "+AshfangHelper.getHitsNeeded());}
+        if (Configuration.ashfangOverlay) {lines.add("\u00a77Blazing souls: \u00a7r" + AshfangHelper.getBlazingSoulCounter() + " / "+AshfangHelper.getHitsNeeded());}
     }
 
     @Override
