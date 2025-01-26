@@ -24,7 +24,6 @@ public class Wardrobe {
 
     @SubscribeEvent
     public void onKeyPress(InputEvent.KeyInputEvent event) {
-        System.out.println("EVENT2");
         EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
 
         // Get the list of key binds
