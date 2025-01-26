@@ -197,6 +197,7 @@ public class EnchantingSolvers {
                 resolving = true;
                 if (!chronomatronOrder.isEmpty()) {
                     int resultIndex = chronomatronOrder.get(0);
+                    if (containerChest.inventorySlots.get(resultIndex).getStack() == null) return;
                     Item resultItem = containerChest.inventorySlots.get(resultIndex).getStack().getItem();
                     if (Block.getBlockFromItem(resultItem) == Blocks.stained_glass) {
                         if (resolved) {

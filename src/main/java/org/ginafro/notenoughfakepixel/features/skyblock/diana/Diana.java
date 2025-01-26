@@ -75,12 +75,12 @@ public class Diana {
                  if (closestSiamese != null) {
                      for (SiameseLynx siamese : listSiameseAlive) {
                          if (siamese.getEntity1().getUniqueID() == closestSiamese.getUniqueID()) {
-                             //System.out.println("Siamese1 hittable");
                              siamese.setHittable(closestSiamese);
+                             //System.out.println("Ocelot 1 hittable");
                              break;
                          } else if (siamese.getEntity2().getUniqueID() == closestSiamese.getUniqueID()) {
-                             //System.out.println("Siamese2 hittable");
                              siamese.setHittable(closestSiamese);
+                             //System.out.println("Ocelot 2 hittable");
                              break;
                          }
                      }
@@ -98,6 +98,7 @@ public class Diana {
             dianaMobCheck(); // Check entities on world, add to lists if not tracked
             dianaMobRemover(); // Remove mobs from lists if out of render distance
             dianaMobRender(event.partialTicks); // Check for mobs in entities and draw a hitbox
+            listSiameseAlive.clear();
         }
     }
 
@@ -124,13 +125,10 @@ public class Diana {
                 //Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc Minos Inquisitor found at x:"+event.entity.getPosition().getX()+", y:"+event.entity.getPosition().getY()+", z:"+event.entity.getPosition().getZ() + " in HUB-"+getHubNumber());
                 String locationName = findNearestLocation((int) x, (int) y, (int) z);
                 if (locationName != null) {
-                    Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc Minos Inquisitor found at " + locationName + ", x:"+event.entity.getPosition().getX()+", y:"+(event.entity.getPosition().getY()-1)+", z:"+event.entity.getPosition().getZ() + " in HUB-"+getHubNumber());
+                    Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc Minos Inquisitor found at " + locationName + ", x:"+event.entity.getPosition().getX()+", y:"+(event.entity.getPosition().getY()-2)+", z:"+event.entity.getPosition().getZ() + " in HUB-"+getHubNumber());
                 } else {
-                    Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc Minos Inquisitor found at x:"+event.entity.getPosition().getX()+", y:"+(event.entity.getPosition().getY()-1)+", z:"+event.entity.getPosition().getZ() + " in HUB-"+getHubNumber());
+                    Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc Minos Inquisitor found at x:"+event.entity.getPosition().getX()+", y:"+(event.entity.getPosition().getY()-2)+", z:"+event.entity.getPosition().getZ() + " in HUB-"+getHubNumber());
                 }
-                /*if (locationName != null) {
-                    Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc Inquisitor at + locationName + (Exact coords: " + (int) x + (int) y + (int) z + ")");
-                }*/
                 lastCaptureTime = now;
             }
         }
@@ -313,19 +311,21 @@ public class Diana {
             // If both null = death, remove from list of siameses
             if (siamese.getEntity1() == null && siamese.getEntity2() == null) {
                 listSiameseAlive.remove(siamese);
-                //System.out.println("Siamese removed, "+listSiameseAlive.size());
+                //System.out.println("Siamese removed"+listSiameseAlive.size());
                 return;
             }
             if (siamese.getEntity1() != null) {
                 int[] siamese1Coords = new int[]{siamese.getEntity1().getPosition().getX(), siamese.getEntity1().getPosition().getY(), siamese.getEntity1().getPosition().getZ()};
                 if (!processor.areCoordinatesClose(playerCoords, siamese1Coords, distanceRenderHitbox)) {
                     siamese.setEntity1(null);
+                    //System.out.println("Ocelot1 removed, "+listSiameseAlive.size());
                 }
             }
             if (siamese.getEntity2() != null) {
                 int[] siamese2Coords = new int[]{siamese.getEntity2().getPosition().getX(), siamese.getEntity2().getPosition().getY(), siamese.getEntity2().getPosition().getZ()};
                 if (!processor.areCoordinatesClose(playerCoords, siamese2Coords, distanceRenderHitbox)) {
                     siamese.setEntity2(null);
+                    //System.out.println("Ocelot2 removed, "+listSiameseAlive.size());
                 }
             }
         }
