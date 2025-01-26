@@ -271,8 +271,8 @@ public class RenderUtils {
             z1 = z - 0.75;
             z2 = z + 0.75;
         } else if (type == MobDisplayTypes.SIAMESE) {
-            y1 = y + 1.0;
-            y2 = y + 1.7;
+            y1 = y + 0.0;
+            y2 = y + 0.7;
             x1 = x - 0.3;
             x2 = x + 0.3;
             z1 = z - 0.3;

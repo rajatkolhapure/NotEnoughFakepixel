@@ -4,6 +4,7 @@ import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.entity.monster.EntityGolem;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.network.Packet;
@@ -115,17 +116,17 @@ public class Diana {
         String entityName = event.entity.getDisplayName().getUnformattedText();
         if (entityName.contains("Minos Inquisitor")) {
             Instant now = Instant.now();
-            Minecraft.getMinecraft().ingameGUI.displayTitle("Inquisitor detected!", null, 10, 40, 20);
             if (now.isAfter(lastCaptureTime.plusSeconds(61))) {
+                Minecraft.getMinecraft().ingameGUI.displayTitle("Inquisitor detected!", null, 10, 40, 20);
                 double x = Math.floor(event.entity.posX);
                 double y = Math.floor(event.entity.posY);
                 double z = Math.floor(event.entity.posZ);
                 //Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc Minos Inquisitor found at x:"+event.entity.getPosition().getX()+", y:"+event.entity.getPosition().getY()+", z:"+event.entity.getPosition().getZ() + " in HUB-"+getHubNumber());
                 String locationName = findNearestLocation((int) x, (int) y, (int) z);
                 if (locationName != null) {
-                    Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc Minos Inquisitor found at " + locationName + ", x:"+event.entity.getPosition().getX()+", y:"+event.entity.getPosition().getY()+", z:"+event.entity.getPosition().getZ() + " in HUB-"+getHubNumber());
+                    Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc Minos Inquisitor found at " + locationName + ", x:"+event.entity.getPosition().getX()+", y:"+(event.entity.getPosition().getY()-1)+", z:"+event.entity.getPosition().getZ() + " in HUB-"+getHubNumber());
                 } else {
-                    Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc Minos Inquisitor found at x:"+event.entity.getPosition().getX()+", y:"+event.entity.getPosition().getY()+", z:"+event.entity.getPosition().getZ() + " in HUB-"+getHubNumber());
+                    Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc Minos Inquisitor found at x:"+event.entity.getPosition().getX()+", y:"+(event.entity.getPosition().getY()-1)+", z:"+event.entity.getPosition().getZ() + " in HUB-"+getHubNumber());
                 }
                 /*if (locationName != null) {
                     Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc Inquisitor at + locationName + (Exact coords: " + (int) x + (int) y + (int) z + ")");
@@ -280,7 +281,8 @@ public class Diana {
                 // If this point reached, no occurrences, so new gaia added
                 listGaiaAlive.add(new GaiaConstruct(entity));
                 //System.out.println("Gaia added, "+listGaiaAlive.size());
-            } else if (entity instanceof EntityOcelot && (entity.getDisplayName().getUnformattedText().contains("Bagheera") || entity.getDisplayName().getUnformattedText().contains("Azrael"))) {
+            } else if (entity instanceof EntityArmorStand) {
+                if (!(entity.getDisplayName().getUnformattedText().contains("Bagheera") || entity.getDisplayName().getUnformattedText().contains("Azrael"))) return;
                 for (SiameseLynx siamese : listSiameseAlive) {
                     if (siamese.getEntity1() == null) return;
                     // If already added, don't add again
