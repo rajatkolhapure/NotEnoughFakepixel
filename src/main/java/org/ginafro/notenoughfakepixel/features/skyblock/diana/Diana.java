@@ -98,7 +98,6 @@ public class Diana {
             dianaMobCheck(); // Check entities on world, add to lists if not tracked
             dianaMobRemover(); // Remove mobs from lists if out of render distance
             dianaMobRender(event.partialTicks); // Check for mobs in entities and draw a hitbox
-            listSiameseAlive.clear();
         }
     }
 
@@ -287,13 +286,13 @@ public class Diana {
                     if (siamese.getEntity1().getUniqueID() == entity.getUniqueID()) return;
                     if (siamese.getEntity2() == null) {
                         siamese.setEntity2(entity);
-                        //System.out.println("Ocelot2 added, "+listSiameseAlive.size());
+                        System.out.println("Ocelot2 added, "+listSiameseAlive.size());
                     }
                     if (siamese.getEntity2().getUniqueID() == entity.getUniqueID()) return;
                 }
                 // If this point reached, no occurrences, so new siamese added
                 listSiameseAlive.add(new SiameseLynx(entity));
-                //System.out.println("Siamese added, "+listSiameseAlive.size());
+                System.out.println("Siamese added, "+listSiameseAlive.size());
             }
         });
     }
@@ -311,21 +310,21 @@ public class Diana {
             // If both null = death, remove from list of siameses
             if (siamese.getEntity1() == null && siamese.getEntity2() == null) {
                 listSiameseAlive.remove(siamese);
-                //System.out.println("Siamese removed"+listSiameseAlive.size());
+                System.out.println("Siamese removed for distance"+listSiameseAlive.size());
                 return;
             }
             if (siamese.getEntity1() != null) {
                 int[] siamese1Coords = new int[]{siamese.getEntity1().getPosition().getX(), siamese.getEntity1().getPosition().getY(), siamese.getEntity1().getPosition().getZ()};
                 if (!processor.areCoordinatesClose(playerCoords, siamese1Coords, distanceRenderHitbox)) {
                     siamese.setEntity1(null);
-                    //System.out.println("Ocelot1 removed, "+listSiameseAlive.size());
+                    System.out.println("Ocelot1 removed for distance, "+listSiameseAlive.size());
                 }
             }
             if (siamese.getEntity2() != null) {
                 int[] siamese2Coords = new int[]{siamese.getEntity2().getPosition().getX(), siamese.getEntity2().getPosition().getY(), siamese.getEntity2().getPosition().getZ()};
                 if (!processor.areCoordinatesClose(playerCoords, siamese2Coords, distanceRenderHitbox)) {
                     siamese.setEntity2(null);
-                    //System.out.println("Ocelot2 removed, "+listSiameseAlive.size());
+                    System.out.println("Ocelot2 removed for distance, "+listSiameseAlive.size());
                 }
             }
         }
@@ -347,7 +346,7 @@ public class Diana {
         Packet packet = event.packet;
         if (packet instanceof S29PacketSoundEffect) {
             S29PacketSoundEffect soundEffect = (S29PacketSoundEffect) packet;
-            //System.out.println(soundEffect.getSoundName());
+            System.out.println(soundEffect.getSoundName());
             int[] coordsSound = new int[] {(int)Math.floor(soundEffect.getX()), (int)Math.floor(soundEffect.getY()), (int)Math.floor(soundEffect.getZ())};
             String soundName = soundEffect.getSoundName();
             switch (soundName) {

@@ -118,6 +118,8 @@ public class Configuration extends Config {
     public static boolean chatCleaner = false;
     @Switch(name = "Disable 'Selling ranks' messages" , category = QUALITY_OF_LIFE, subcategory = "Chat")
     public static boolean disableSellingRanks = false;
+    @Switch(name = "Disable zombie rare drops messages" , category = QUALITY_OF_LIFE, subcategory = "Chat", description = "Disable drops carrot, potato and poisonous potato chat messages.")
+    public static boolean disableZombieRareDrops = true;
     @Switch(name = "Scrollable tooltips" , category = QUALITY_OF_LIFE, subcategory = "Items", description = "Scroll through the item lore")
     public static boolean scrollableTooltips = true;
 

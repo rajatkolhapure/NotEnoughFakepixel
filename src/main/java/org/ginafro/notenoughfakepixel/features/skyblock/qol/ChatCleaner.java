@@ -15,23 +15,30 @@ public class ChatCleaner {
     private Pattern watchdogPattern = Pattern.compile("§4\\[WATCHDOG ANNOUNCEMENT]\n");
     private Pattern infoPattern = Pattern.compile("§b\\[PLAYER INFORMATION]\n");
     private Pattern friendJoinPattern = Pattern.compile("§aFriend > ");
+    private Pattern potatoDropPattern = Pattern.compile("§r§6§lRARE DROP! §r§fPotato§r§b");
+    private Pattern poisonousPotatoDropPattern = Pattern.compile("§r§6§lRARE DROP! §r§fPoisonous Potato§r§b");
+    private Pattern carrotDropPattern = Pattern.compile("§r§6§lRARE DROP! §r§fCarrot§r§b");
 
     @SubscribeEvent
     public void onChatRecieve(ClientChatReceivedEvent event){
         if (Minecraft.getMinecraft().thePlayer == null) return;
         if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
         if (ChatUtils.middleBar.matcher(event.message.getFormattedText()).matches()) return;
-
         cancelMessage(Configuration.disableSellingRanks, event, sellingRankPattern);
         cancelMessage(Configuration.disableWatchdogInfo, event, watchdogPattern, true);
         cancelMessage(Configuration.disableWatchdogInfo, event, infoPattern, true);
         cancelMessage(Configuration.disableFriendJoin, event, friendJoinPattern, true);
+        cancelMessage(Configuration.disableZombieRareDrops, event, potatoDropPattern, true);
+        cancelMessage(Configuration.disableZombieRareDrops, event, poisonousPotatoDropPattern, true);
+        cancelMessage(Configuration.disableZombieRareDrops, event, carrotDropPattern, true);
     }
 
     private void cancelMessage(boolean option, ClientChatReceivedEvent e, Pattern pattern, boolean formatted){
         if (!option) return;
         String message = e.message.getUnformattedText();
         if (formatted) message = e.message.getFormattedText();
+        System.out.println(message);
+
         if (pattern.matcher(message).find() || pattern.matcher(message).matches()){
             e.setCanceled(true);
         }

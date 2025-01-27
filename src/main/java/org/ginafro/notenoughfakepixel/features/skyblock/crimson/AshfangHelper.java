@@ -81,11 +81,10 @@ public class AshfangHelper {
                 return;
             }
         }
-        if (Configuration.ashfangHurtSound || Configuration.ashfangMuteChat) {
+        if (Configuration.ashfangMuteChat) {
             Matcher matcher3 = Pattern.compile("The Blazing Soul dealt").matcher(e.message.getUnformattedText());
             if (matcher3.find()) {
                 int[] position = new int[]{Minecraft.getMinecraft().thePlayer.getPosition().getX(), Minecraft.getMinecraft().thePlayer.getPosition().getY(), Minecraft.getMinecraft().thePlayer.getPosition().getZ()};
-                //if (Configuration.ashfangHurtSound) SoundUtils.playSound(position, "mob.wither.hurt", 0.7f, 0.7f);
                 if (Configuration.ashfangMuteChat) e.setCanceled(true);
                 return;
             }

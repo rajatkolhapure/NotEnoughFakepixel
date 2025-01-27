@@ -60,6 +60,7 @@ public class NefCommand extends CommandBase {
                     Configuration.disableWatchdogInfo = Configuration._qol;
                     Configuration.disableFriendJoin = Configuration._qol;
                     Configuration.disableSellingRanks = Configuration._qol;
+                    Configuration.disableZombieRareDrops = Configuration._qol;
                     Configuration.scrollableTooltips = Configuration._qol;
                     Configuration.disableJerryChineGunSounds = Configuration._qol;
                     Configuration.disableAoteSounds = Configuration._qol;
@@ -69,7 +70,7 @@ public class NefCommand extends CommandBase {
                     break;
                 case "dungeons":
                     Configuration._dungeons = !Configuration._dungeons;
-                    sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Dungeon configuration changed to " + Configuration._qol));
+                    sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Dungeon configuration changed to " + Configuration._dungeons));
                     Configuration.autoReadyDungeon = Configuration._dungeons;
                     Configuration.autoCloseChests = Configuration._dungeons;
                     Configuration.starredMobs = Configuration._dungeons;
@@ -85,14 +86,14 @@ public class NefCommand extends CommandBase {
                     break;
                 case "fishing":
                     Configuration._fishing = !Configuration._fishing;
-                    sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Fishing configuration changed to " + Configuration._qol));
+                    sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Fishing configuration changed to " + Configuration._fishing));
                     Configuration.legendaryCreatures = Configuration._fishing;
                     Configuration.greatCatch = Configuration._fishing;
                     Configuration.trophyFish = Configuration._fishing;
                     break;
                 case "diana":
                     Configuration._diana = !Configuration._diana;
-                    sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Diana configuration changed to " + Configuration._qol));
+                    sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Diana configuration changed to " + Configuration._diana));
                     Configuration.dianaShowWaypointsBurrows = Configuration._diana;
                     Configuration.dianaGaiaConstruct = Configuration._diana;
                     Configuration.dianaSiamese = Configuration._diana;
@@ -103,21 +104,21 @@ public class NefCommand extends CommandBase {
                     break;
                 case "slayer":
                     Configuration._slayer = !Configuration._slayer;
-                    sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Slayer configuration changed to " + Configuration._qol));
+                    sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Slayer configuration changed to " + Configuration._slayer));
                     Configuration.slayerMinibosses = Configuration._slayer;
                     Configuration.slayerBosses = Configuration._slayer;
                     Configuration.slayerShowBeaconPath = Configuration._slayer;
                     break;
                 case "experimentation":
                     Configuration._enchanting = !Configuration._enchanting;
-                    sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Experimentation configuration changed to " + Configuration._qol));
+                    sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Experimentation configuration changed to " + Configuration._enchanting));
                     Configuration.chronomatronSolver = Configuration._enchanting;
                     Configuration.ultraSequencerSolver = Configuration._enchanting;
                     Configuration.preventMissclicksExperimentation = Configuration._enchanting;
                     break;
                 case "mining":
                     Configuration._mining = !Configuration._mining;
-                    sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Mining configuration changed to " + Configuration._qol));
+                    sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Mining configuration changed to " + Configuration._mining));
                     Configuration.miningAbilityNotifier = Configuration._mining;
                     Configuration.disableDonEspresso = Configuration._mining;
                     Configuration.drillFix = Configuration._mining;
@@ -130,7 +131,7 @@ public class NefCommand extends CommandBase {
                     break;
                 case "crimson":
                     Configuration._crimson = !Configuration._crimson;
-                    sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Crimson configuration changed to " + Configuration._qol));
+                    sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Crimson configuration changed to " + Configuration._crimson));
                     Configuration.bladesoulNotifier = Configuration._crimson;
                     Configuration.mageOutlawNotifier = Configuration._crimson;
                     Configuration.ashfangNotifier = Configuration._crimson;
@@ -165,6 +166,7 @@ public class NefCommand extends CommandBase {
                     Configuration.disableFriendJoin = false;
                     Configuration.chatCleaner = false;
                     Configuration.disableSellingRanks = false;
+                    Configuration.disableZombieRareDrops = true;
                     Configuration.scrollableTooltips = true;
                     Configuration.disableJerryChineGunSounds = true;
                     Configuration.disableAoteSounds = false;
