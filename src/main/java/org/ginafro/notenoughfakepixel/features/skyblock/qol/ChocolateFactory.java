@@ -13,26 +13,19 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemSkull;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S29PacketSoundEffect;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.ginafro.notenoughfakepixel.Configuration;
-import org.ginafro.notenoughfakepixel.events.PacketReadEvent;
 import org.ginafro.notenoughfakepixel.utils.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.TreeMap;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -59,14 +52,14 @@ public class ChocolateFactory {
     @SubscribeEvent
     public void onRenderLast(RenderWorldLastEvent event) {
         if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
-        if (!Configuration.chocolateEggWaypoints) return;
+        if (!Configuration.qolChocolateEggWaypoints) return;
         checkForEggs();
         drawWaypoints(event.partialTicks);
     }
 
     @SubscribeEvent()
     public void onGuiOpen(GuiScreenEvent.BackgroundDrawnEvent event) {
-        if (!Configuration.showBestUpgrade || !(event.gui instanceof GuiChest)) return;
+        if (!Configuration.qolChocolateShowBestUpgrade || !(event.gui instanceof GuiChest)) return;
 
         TreeMap<Float, Slot> upgradeCosts = new TreeMap<>();
         GuiChest chest = (GuiChest) event.gui;
@@ -99,7 +92,7 @@ public class ChocolateFactory {
 
     @SubscribeEvent
     public void onChat(@NotNull ClientChatReceivedEvent e){
-        if (!Configuration.chocolateEggWaypoints) return;
+        if (!Configuration.qolChocolateEggWaypoints) return;
         if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
         if (ChatUtils.middleBar.matcher(e.message.getFormattedText()).matches()) return;
         Matcher matcher = Pattern.compile("HOPPITY'S HUNT You found").matcher(e.message.getUnformattedText());
@@ -126,7 +119,7 @@ public class ChocolateFactory {
 
     @SubscribeEvent()
     public void onWorldUnload(WorldEvent.Unload event) {
-        if (Configuration.chocolateEggWaypoints) waypoints.clear();
+        if (Configuration.qolChocolateEggWaypoints) waypoints.clear();
     }
 
     private void checkForEggs() {
@@ -161,7 +154,7 @@ public class ChocolateFactory {
         double viewerZ = viewer.lastTickPosZ + (viewer.posZ - viewer.lastTickPosZ) * partialTicks;
         for (Waypoint waypoint : waypoints) {
             if (waypoint == null || waypoint.isHidden()) continue;
-            Color colorDrawWaypoint = chocolateEggWaypointsColor.toJavaColor();
+            Color colorDrawWaypoint = qolChocolateEggWaypointsColor.toJavaColor();
             colorDrawWaypoint = new Color(colorDrawWaypoint.getRed(), colorDrawWaypoint.getGreen(), colorDrawWaypoint.getBlue(), 150);
             AxisAlignedBB bb = new AxisAlignedBB(
                     waypoint.getCoordinates()[0] - viewerX,

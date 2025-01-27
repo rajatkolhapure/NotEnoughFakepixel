@@ -14,7 +14,7 @@ public class Fullbright {
 
     @SubscribeEvent
     public void onRender(RenderHandEvent event) {
-        if(Configuration.fullbright) changeBrightness(FULLBRIGHT);
+        if(Configuration.qolFullbright) changeBrightness(FULLBRIGHT);
         else changeBrightness(BRIGHTEST);
     }
 

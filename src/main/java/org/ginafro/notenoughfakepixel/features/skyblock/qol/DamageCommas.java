@@ -40,7 +40,7 @@ public class DamageCommas {
         if (!entity.hasCustomName()) return name;
         if(ScoreboardUtils.currentGamemode != Gamemode.SKYBLOCK) return name;
 
-        if(Configuration.dmgCommas) return replaceForCommas(entity, name);
+        if(Configuration.qolDmgCommas) return replaceForCommas(entity, name);
         else return name;
     }
 
@@ -121,7 +121,7 @@ public class DamageCommas {
     }
 
     private static String formatNumber(int number) {
-        if(Configuration.dmgFormatter){
+        if(Configuration.qolDmgFormatter){
             return Utils.shortNumberFormat(number, 0);
         } else {
             return Utils.commaFormat(number);

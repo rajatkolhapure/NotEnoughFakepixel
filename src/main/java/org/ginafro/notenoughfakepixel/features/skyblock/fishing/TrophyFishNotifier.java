@@ -12,7 +12,7 @@ public class TrophyFishNotifier {
     @SubscribeEvent
     public void onChatRecieve(ClientChatReceivedEvent e){
         if(e.type != 1) return;
-        if(!Configuration.trophyFish) return;
+        if(!Configuration.fishingTrophyFish) return;
 
         if (ScoreboardUtils.currentArea != Area.CRIMSON &&
                 ScoreboardUtils.currentArea != Area.CRIMSON_FIELDS &&

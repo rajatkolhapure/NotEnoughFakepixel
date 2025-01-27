@@ -34,7 +34,7 @@ public class EventsMsgSupressor {
     }
 
     private void checkDonEspressoMessage(ClientChatReceivedEvent e) {
-        if (!Configuration.disableDonEspresso) return;
+        if (!Configuration.miningDisableDonEspresso) return;
         if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
         if (ScoreboardUtils.currentLocation != Location.DWARVEN) return;
         if (donEspressoPattern.matcher(e.message.getFormattedText()).find()) {

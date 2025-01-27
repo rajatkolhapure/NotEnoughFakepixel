@@ -22,7 +22,7 @@ public class StartingWithSolver {
     public void onOpen(GuiScreenEvent.BackgroundDrawnEvent e){
         if(ScoreboardUtils.currentGamemode != Gamemode.SKYBLOCK) return;
         if(!ScoreboardUtils.currentLocation.isDungeon()) return;
-        if(!Configuration.startsWith) return;
+        if(!Configuration.dungeonsStartsWith) return;
         if(!(e.gui instanceof GuiChest)) return;
 
         GuiChest chest = (GuiChest) e.gui;
@@ -43,7 +43,7 @@ public class StartingWithSolver {
                 if(item.isItemEnchanted()) continue;
 
                 if(StringUtils.stripControlCodes(item.getDisplayName()).charAt(0) == letter) {
-                    OneColor color = Configuration.terminalColor;
+                    OneColor color = Configuration.dungeonsTerminalColor;
                     color.setAlpha(102);
                     RenderUtils.drawOnSlot(chest.inventorySlots.inventorySlots.size(), slot.xDisplayPosition , slot.yDisplayPosition , color.getRGB());
                 }

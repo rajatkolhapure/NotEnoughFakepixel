@@ -1,11 +1,9 @@
 package org.ginafro.notenoughfakepixel.features.skyblock.slayers;
 
-import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockBeacon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S29PacketSoundEffect;
@@ -15,9 +13,7 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.ginafro.notenoughfakepixel.Configuration;
-import org.ginafro.notenoughfakepixel.events.BlockChangeEvent;
 import org.ginafro.notenoughfakepixel.events.PacketReadEvent;
-import org.ginafro.notenoughfakepixel.features.skyblock.crimson.Crimson;
 import org.ginafro.notenoughfakepixel.utils.RenderUtils;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 import org.ginafro.notenoughfakepixel.utils.SoundUtils;
@@ -27,7 +23,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import static org.ginafro.notenoughfakepixel.Configuration.chocolateEggWaypointsColor;
+import static org.ginafro.notenoughfakepixel.Configuration.qolChocolateEggWaypointsColor;
 
 public class VoidgloomSeraph {
     ArrayList<EntityFallingBlock> fallingBlocks = new ArrayList<>();
@@ -117,7 +113,7 @@ public class VoidgloomSeraph {
         double viewerZ = viewer.lastTickPosZ + (viewer.posZ - viewer.lastTickPosZ) * partialTicks;
         for (Waypoint waypoint : waypoints) {
             if (waypoint == null || waypoint.isHidden()) continue;
-            Color colorDrawWaypoint = chocolateEggWaypointsColor.toJavaColor();
+            Color colorDrawWaypoint = qolChocolateEggWaypointsColor.toJavaColor();
             colorDrawWaypoint = new Color(colorDrawWaypoint.getRed(), colorDrawWaypoint.getGreen(), colorDrawWaypoint.getBlue(), 150);
             AxisAlignedBB bb = new AxisAlignedBB(
                     waypoint.getCoordinates()[0] - viewerX,

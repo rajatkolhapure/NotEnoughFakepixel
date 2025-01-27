@@ -25,7 +25,7 @@ public class ClickOnColorsSolver {
     public void onOpen(GuiScreenEvent.BackgroundDrawnEvent e){
         if(!ScoreboardUtils.currentLocation.isDungeon()) return;
 
-        if(!Configuration.selectColors && ScoreboardUtils.currentGamemode != Gamemode.SKYBLOCK) return;
+        if(!Configuration.dungeonsSelectColors && ScoreboardUtils.currentGamemode != Gamemode.SKYBLOCK) return;
         if(!(e.gui instanceof GuiChest)) return;
 
         GuiChest chest = (GuiChest) e.gui;
@@ -61,7 +61,7 @@ public class ClickOnColorsSolver {
     }
 
     public static void highlightSlot(Slot slot, GuiChest chest){
-        OneColor color1 = Configuration.terminalColor;
+        OneColor color1 = Configuration.dungeonsTerminalColor;
         RenderUtils.drawOnSlot(chest.inventorySlots.inventorySlots.size(), slot.xDisplayPosition, slot.yDisplayPosition, color1.getRGB());
     }
 

@@ -16,8 +16,8 @@ public class AshfangOverlay extends TextHud {
     @Override
     protected void getLines(List<String> lines, boolean example) {
         if (Crimson.checkEssentials()) return;
-        if (Configuration.ashfangOverlay) {lines.add("\u00a77Ashfang HP: \u00a7r" + formatAshfangHP(AshfangHelper.getAshfangHP()));}
-        if (Configuration.ashfangOverlay) {lines.add("\u00a77Blazing souls: \u00a7r" + AshfangHelper.getBlazingSoulCounter() + " / "+AshfangHelper.getHitsNeeded());}
+        if (Configuration.crimsonAshfangOverlay) {lines.add("\u00a77Ashfang HP: \u00a7r" + formatAshfangHP(AshfangHelper.getAshfangHP()));}
+        if (Configuration.crimsonAshfangOverlay) {lines.add("\u00a77Blazing souls: \u00a7r" + AshfangHelper.getBlazingSoulCounter() + " / "+AshfangHelper.getHitsNeeded());}
     }
 
     @Override
@@ -25,7 +25,7 @@ public class AshfangOverlay extends TextHud {
         if (!super.shouldShow()) {
             return false;
         }
-        return (Configuration.ashfangOverlay && Crimson.checkAshfangArea(new int[]{Minecraft.getMinecraft().thePlayer.getPosition().getX(), Minecraft.getMinecraft().thePlayer.getPosition().getY(), Minecraft.getMinecraft().thePlayer.getPosition().getZ()}));
+        return (Configuration.crimsonAshfangOverlay && Crimson.checkAshfangArea(new int[]{Minecraft.getMinecraft().thePlayer.getPosition().getX(), Minecraft.getMinecraft().thePlayer.getPosition().getY(), Minecraft.getMinecraft().thePlayer.getPosition().getZ()}));
     }
 
     private static String formatAshfangHP(double hp) {

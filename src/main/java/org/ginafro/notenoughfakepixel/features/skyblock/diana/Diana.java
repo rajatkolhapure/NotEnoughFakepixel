@@ -187,9 +187,9 @@ public class Diana {
             for (Waypoint result : safeResults) {
                 if (result.isHidden()) continue;
                 Color newColor = white;
-                if (result.getType().equals("EMPTY")) newColor = emptyBurrowColor.toJavaColor();
-                if (result.getType().equals("MOB")) newColor = mobBurrowColor.toJavaColor();
-                if (result.getType().equals("TREASURE")) newColor = treasureBurrowColor.toJavaColor();
+                if (result.getType().equals("EMPTY")) newColor = dianaEmptyBurrowColor.toJavaColor();
+                if (result.getType().equals("MOB")) newColor = dianaMobBurrowColor.toJavaColor();
+                if (result.getType().equals("TREASURE")) newColor = dianaTreasureBurrowColor.toJavaColor();
                 if (result.getType().equals("MINOS")) newColor = new Color(243, 225, 107);
                 newColor = new Color(newColor.getRed(), newColor.getGreen(), newColor.getBlue(), 100);
                 AxisAlignedBB bb = new AxisAlignedBB(
@@ -234,14 +234,14 @@ public class Diana {
                             RenderUtils.renderEntityHitbox(
                                     gaiaEntity,
                                     partialTicks,
-                                    new Color(Configuration.gaiaHittableColor.getRed(), Configuration.gaiaHittableColor.getGreen(), Configuration.gaiaHittableColor.getBlue(), 150),
+                                    new Color(Configuration.dianaGaiaHittableColor.getRed(), Configuration.dianaGaiaHittableColor.getGreen(), Configuration.dianaGaiaHittableColor.getBlue(), 150),
                                     MobDisplayTypes.GAIA
                             );
                         } else {
                             RenderUtils.renderEntityHitbox(
                                     gaiaEntity,
                                     partialTicks,
-                                    new Color(gaiaUnhittableColor.getRed(), gaiaUnhittableColor.getGreen(), gaiaUnhittableColor.getBlue(), 150),
+                                    new Color(dianaGaiaUnhittableColor.getRed(), dianaGaiaUnhittableColor.getGreen(), dianaGaiaUnhittableColor.getBlue(), 150),
                                     MobDisplayTypes.GAIA
                             );
                         }
@@ -254,7 +254,7 @@ public class Diana {
                     RenderUtils.renderEntityHitbox(
                             siamese.getHittable(),
                             partialTicks,
-                            new Color(Configuration.siameseHittableColor.getRed(), Configuration.siameseHittableColor.getGreen(), Configuration.siameseHittableColor.getBlue(), 150),
+                            new Color(Configuration.dianaSiameseHittableColor.getRed(), Configuration.dianaSiameseHittableColor.getGreen(), Configuration.dianaSiameseHittableColor.getBlue(), 150),
                             MobDisplayTypes.SIAMESE
                     );
                 }
@@ -352,7 +352,7 @@ public class Diana {
             switch (soundName) {
                 // Remove explosion sound feature
                 case "random.explode":
-                    if (!Configuration.disableDianaExplosionSounds) return;
+                    if (!Configuration.dianaDisableDianaExplosionSounds) return;
                     if (Math.floor(soundEffect.getPitch()*1000)/1000 == 1.190) {
                         if (event.isCancelable()) event.setCanceled(true);
                     }

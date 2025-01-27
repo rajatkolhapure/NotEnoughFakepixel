@@ -15,7 +15,7 @@ public class StarredMobDisplay {
 
     @SubscribeEvent
     public void onRenderLast(RenderWorldLastEvent event) {
-        if (!Configuration.starredMobs) return;
+        if (!Configuration.dungeonsStarredMobs) return;
         if (Minecraft.getMinecraft().thePlayer == null) return;
         if (Minecraft.getMinecraft().theWorld == null) return;
 
@@ -27,10 +27,10 @@ public class StarredMobDisplay {
             if (!(entity instanceof EntityArmorStand)) return;
             if (entity.getName().startsWith("§6✮")){
                 Color color = new Color(
-                        Configuration.starredBoxColor.getRed(),
-                        Configuration.starredBoxColor.getGreen(),
-                        Configuration.starredBoxColor.getBlue(),
-                        Configuration.starredBoxColor.getAlpha()
+                        Configuration.dungeonsStarredBoxColor.getRed(),
+                        Configuration.dungeonsStarredBoxColor.getGreen(),
+                        Configuration.dungeonsStarredBoxColor.getBlue(),
+                        Configuration.dungeonsStarredBoxColor.getAlpha()
                 );
 
                 RenderUtils.renderEntityHitbox(

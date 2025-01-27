@@ -12,7 +12,7 @@ public class MixinInventoryEffectRenderer {
 
     @ModifyVariable(method = "updateActivePotionEffects", at = @At(value = "STORE"))
     public boolean hasVisibleEffect_updateActivePotionEffects(boolean hasVisibleEffect) {
-        if (Configuration.disablePotionEffects && ScoreboardUtils.currentGamemode.isSkyblock()) {
+        if (Configuration.qolDisablePotionEffects && ScoreboardUtils.currentGamemode.isSkyblock()) {
             return false;
         } else {
             return hasVisibleEffect;

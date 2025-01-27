@@ -10,7 +10,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import org.ginafro.notenoughfakepixel.Configuration;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
-import org.ginafro.notenoughfakepixel.utils.TablistParser;
 import org.lwjgl.input.Keyboard;
 
 import java.util.HashSet;
@@ -24,12 +23,12 @@ public class Wardrobe {
 
     @SubscribeEvent
     public void onKeyPress(InputEvent.KeyInputEvent event) {
-        if (!Configuration.shortcutWardrobe) return;
+        if (!Configuration.qolShortcutWardrobe) return;
         if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
         EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
 
         // Get the list of key binds
-        List<Integer> keyBinds = Configuration.wardrobeKeyBind.getKeyBinds();
+        List<Integer> keyBinds = Configuration.qolWardrobeKeyBind.getKeyBinds();
 
         // Check if all keys in the list are currently pressed
         boolean allKeysPressed = keyBinds.stream().allMatch(Keyboard::isKeyDown);
@@ -53,7 +52,7 @@ public class Wardrobe {
 
     @SubscribeEvent
     public void onKeyPressOnGui(GuiScreenEvent.KeyboardInputEvent event) {
-        if (!Configuration.shortcutWardrobe) return;
+        if (!Configuration.qolShortcutWardrobe) return;
         if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
         if(!(event.gui instanceof GuiChest)) return;
         GuiChest chest = (GuiChest) event.gui;
@@ -66,7 +65,7 @@ public class Wardrobe {
         EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
 
         // Get the list of key binds
-        List<Integer> keyBinds = Configuration.wardrobeKeyBind.getKeyBinds();
+        List<Integer> keyBinds = Configuration.qolWardrobeKeyBind.getKeyBinds();
 
         // Check if all keys in the list are currently pressed
         boolean allKeysPressed = keyBinds.stream().allMatch(Keyboard::isKeyDown);

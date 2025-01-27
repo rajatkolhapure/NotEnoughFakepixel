@@ -28,7 +28,7 @@ public class GuessBurrow {
 
     @SubscribeEvent
     public void onHarpSound(PlaySoundAtEntityEvent event) {
-        if (!Configuration.autoDropItems) return; // Check if the feature is enabled
+        if (!Configuration.dungeonsAutoDropItems) return; // Check if the feature is enabled
         if (!ScoreboardUtils.currentLocation.isHub()) return; // Check if the player is in a dungeon
         if (!event.name.equals("note.harp")) return;
         //event.entity.chunkCoordX

@@ -14,12 +14,12 @@ public abstract class MixinEntityRenderer implements IResourceManagerReloadListe
 
     @Inject(method = "hurtCameraEffect" , at = @At("HEAD") , cancellable = true)
     private void onHurtCam(float partialTicks, CallbackInfo ci){
-        if (Configuration.noHurtCam) ci.cancel();
+        if (Configuration.qolNoHurtCam) ci.cancel();
     }
 
     @Inject(method = "addRainParticles", at = @At("HEAD"), cancellable = true)
     private void disableRainRendering(CallbackInfo ci) {
-        if (Configuration.disableRain) { ci.cancel(); }
+        if (Configuration.qolDisableRain) { ci.cancel(); }
     }
 
 }

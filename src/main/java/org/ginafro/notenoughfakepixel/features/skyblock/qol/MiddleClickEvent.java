@@ -30,7 +30,7 @@ public class MiddleClickEvent {
 
     @SubscribeEvent
     public void onMouseClick(GuiScreenEvent.MouseInputEvent.Pre event) {
-        if (!Configuration.middleClickChests) return;
+        if (!Configuration.qolMiddleClickChests) return;
         if (Mouse.getEventButton() != 0 || !Mouse.getEventButtonState()) return;
 
         // Check if the current screen is a chest GUI

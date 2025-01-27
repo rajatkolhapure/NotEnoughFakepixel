@@ -24,13 +24,13 @@ public class ChatCleaner {
         if (Minecraft.getMinecraft().thePlayer == null) return;
         if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
         if (ChatUtils.middleBar.matcher(event.message.getFormattedText()).matches()) return;
-        cancelMessage(Configuration.disableSellingRanks, event, sellingRankPattern);
-        cancelMessage(Configuration.disableWatchdogInfo, event, watchdogPattern, true);
-        cancelMessage(Configuration.disableWatchdogInfo, event, infoPattern, true);
-        cancelMessage(Configuration.disableFriendJoin, event, friendJoinPattern, true);
-        cancelMessage(Configuration.disableZombieRareDrops, event, potatoDropPattern, true);
-        cancelMessage(Configuration.disableZombieRareDrops, event, poisonousPotatoDropPattern, true);
-        cancelMessage(Configuration.disableZombieRareDrops, event, carrotDropPattern, true);
+        cancelMessage(Configuration.qolDisableSellingRanks, event, sellingRankPattern);
+        cancelMessage(Configuration.qolDisableWatchdogInfo, event, watchdogPattern, true);
+        cancelMessage(Configuration.qolDisableWatchdogInfo, event, infoPattern, true);
+        cancelMessage(Configuration.qolDisableFriendJoin, event, friendJoinPattern, true);
+        cancelMessage(Configuration.qolDisableZombieRareDrops, event, potatoDropPattern, true);
+        cancelMessage(Configuration.qolDisableZombieRareDrops, event, poisonousPotatoDropPattern, true);
+        cancelMessage(Configuration.qolDisableZombieRareDrops, event, carrotDropPattern, true);
     }
 
     private void cancelMessage(boolean option, ClientChatReceivedEvent e, Pattern pattern, boolean formatted){

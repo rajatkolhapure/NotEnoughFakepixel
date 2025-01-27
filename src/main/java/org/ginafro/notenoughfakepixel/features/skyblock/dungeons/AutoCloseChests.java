@@ -14,7 +14,7 @@ public class AutoCloseChests {
 
     @SubscribeEvent
     public void onGuiBackgroundRender(GuiScreenEvent.BackgroundDrawnEvent event) {
-        if (!Configuration.autoCloseChests) return; // Check if the feature is enabled
+        if (!Configuration.dungeonsAutoCloseChests) return; // Check if the feature is enabled
         if (!ScoreboardUtils.currentLocation.isDungeon()) return; // Check if the player is in a dungeon
         if (event.gui == null) return;
 
