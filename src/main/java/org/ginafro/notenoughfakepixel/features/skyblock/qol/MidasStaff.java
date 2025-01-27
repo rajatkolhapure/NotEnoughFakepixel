@@ -1,7 +1,6 @@
 package org.ginafro.notenoughfakepixel.features.skyblock.qol;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S29PacketSoundEffect;
@@ -22,7 +21,7 @@ public class MidasStaff {
 
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event) {
-        if (!Configuration.disableMidaStaffAnimation) return;
+        if (!Configuration.qolDisableMidaStaffAnimation) return;
         if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
         if (InventoryUtils.getSlot("Midas Staff") == -1) return;
         AxisAlignedBB bb = Minecraft.getMinecraft().thePlayer.getEntityBoundingBox().expand(20, 20, 20);
@@ -36,7 +35,7 @@ public class MidasStaff {
 
     @SubscribeEvent
     public void onParticlePacketReceive(PacketReadEvent event) {
-        if (!Configuration.disableMidaStaffAnimation) return;
+        if (!Configuration.qolDisableMidaStaffAnimation) return;
         if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
         if (InventoryUtils.getSlot("Midas Staff") == -1) return;
         Packet packet = event.packet;
@@ -51,7 +50,7 @@ public class MidasStaff {
 
     @SubscribeEvent
     public void onSoundPacketReceive(PacketReadEvent event) {
-        if (!Configuration.disableMidaStaffAnimation) return;
+        if (!Configuration.qolDisableMidaStaffAnimation) return;
         if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
         if (InventoryUtils.getSlot("Midas Staff") == -1) return;
         Packet packet = event.packet;
@@ -69,7 +68,7 @@ public class MidasStaff {
 
     @SubscribeEvent
     public void handleClick(PlayerInteractEvent event) {
-        if (!Configuration.disableMidaStaffAnimation) return;
+        if (!Configuration.qolDisableMidaStaffAnimation) return;
         if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
         if (InventoryUtils.getSlot("Midas Staff") != -1) {
             if (!(event.action == PlayerInteractEvent.Action.RIGHT_CLICK_AIR || event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK)) return; // Check if right click on air

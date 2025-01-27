@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinRenderLightningBolt {
     @Inject(method = "doRender(Lnet/minecraft/entity/effect/EntityLightningBolt;DDDFF)V", at = @At("HEAD"), cancellable = true)
     private void cancelLightningBolt(CallbackInfo ci){
-        if(Configuration.disableThunderlordBolt) {
+        if(Configuration.qolDisableThunderlordBolt) {
             ci.cancel();
         }
     }

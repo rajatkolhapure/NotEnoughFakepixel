@@ -22,9 +22,9 @@ public class MiningOverlay extends TextHud {
         if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
         if (!ScoreboardUtils.currentLocation.equals(Location.DWARVEN)) return;
 
-        if (Configuration.abilityCooldown) {lines.add("\u00a77Ability Cooldown: \u00a7r" + AbilityNotifier.cdSecondsRemaining());}
-        if (Configuration.mithrilPowder) {lines.add(formatMithrilPowder(TablistParser.mithrilPowder));}
-        if (Configuration.drillFuel) {lines.add(DrillFuelParsing.getString());}
+        if (Configuration.miningAbilityCooldown) {lines.add("\u00a77Ability Cooldown: \u00a7r" + AbilityNotifier.cdSecondsRemaining());}
+        if (Configuration.miningMithrilPowder) {lines.add(formatMithrilPowder(TablistParser.mithrilPowder));}
+        if (Configuration.miningDrillFuel) {lines.add(DrillFuelParsing.getString());}
         for(String commission : TablistParser.commissions){
             lines.add(formatCommission(commission));
         }
@@ -35,7 +35,7 @@ public class MiningOverlay extends TextHud {
         if (!super.shouldShow()) {
             return false;
         }
-        return Configuration.miningOverlayEnabled;
+        return Configuration.miningOverlay;
     }
 
     @Override
@@ -47,9 +47,9 @@ public class MiningOverlay extends TextHud {
     @Override
     protected float getHeight(float scale, boolean example) {
         int LINE_HEIGHT = 11;
-        int variable = Configuration.drillFuel ? LINE_HEIGHT : 0;
-        variable = Configuration.mithrilPowder ? variable + LINE_HEIGHT : variable;
-        variable = Configuration.abilityCooldown ? variable + LINE_HEIGHT : variable;
+        int variable = Configuration.miningDrillFuel ? LINE_HEIGHT : 0;
+        variable = Configuration.miningMithrilPowder ? variable + LINE_HEIGHT : variable;
+        variable = Configuration.miningAbilityCooldown ? variable + LINE_HEIGHT : variable;
         return ( variable + (TablistParser.commissions.size()*LINE_HEIGHT)) * scale;
     }
 

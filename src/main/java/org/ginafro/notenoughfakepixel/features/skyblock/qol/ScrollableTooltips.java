@@ -37,7 +37,7 @@ public class ScrollableTooltips {
 
     @SubscribeEvent
     public void onMouse(GuiScreenEvent.MouseInputEvent.Pre event) {
-        if (!Configuration.scrollableTooltips) return;
+        if (!Configuration.qolScrollableTooltips) return;
         if (Mouse.getEventDWheel() < 0) {
             scrollOffset = Math.max(
                     lastRenderedTooltip == null ? 0 : -Math.max(lastRenderedTooltip.size() - 1, 0)

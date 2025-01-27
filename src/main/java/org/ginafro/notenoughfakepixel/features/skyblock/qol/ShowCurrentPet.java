@@ -1,10 +1,8 @@
 package org.ginafro.notenoughfakepixel.features.skyblock.qol;
 
 import cc.polyfrost.oneconfig.config.core.OneColor;
-import net.minecraft.block.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiChest;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ContainerChest;
 import net.minecraft.inventory.Slot;
@@ -16,16 +14,13 @@ import org.ginafro.notenoughfakepixel.Configuration;
 import org.ginafro.notenoughfakepixel.utils.ItemUtils;
 import org.ginafro.notenoughfakepixel.utils.RenderUtils;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
-import org.ginafro.notenoughfakepixel.variables.F7ColorsDict;
 import org.ginafro.notenoughfakepixel.variables.Gamemode;
-
-import java.awt.*;
 
 public class ShowCurrentPet {
 
     @SubscribeEvent
     public void onOpen(GuiScreenEvent.BackgroundDrawnEvent e){
-        if (!Configuration.showPetEquipped) return;
+        if (!Configuration.qolShowPetEquipped) return;
         if (ScoreboardUtils.currentGamemode != Gamemode.SKYBLOCK) return;
         if (!(e.gui instanceof GuiChest)) return;
 
@@ -56,7 +51,7 @@ public class ShowCurrentPet {
     }
 
     public static void highlightSlot(Slot slot, GuiChest chest){
-        OneColor color = Configuration.petEquippedColor;
+        OneColor color = Configuration.qolPetEquippedColor;
         RenderUtils.drawOnSlot(chest.inventorySlots.inventorySlots.size(), slot.xDisplayPosition, slot.yDisplayPosition, color.getRGB());
     }
 

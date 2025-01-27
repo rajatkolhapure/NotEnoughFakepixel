@@ -24,7 +24,7 @@ public class DungeonsMap {
                     MapData data = map1.getMapData(map , Minecraft.getMinecraft().theWorld);
                     if (data != null) {
                         GlStateManager.pushMatrix();
-                        drawMap(data,false,Configuration.dungeonMapScale);
+                        drawMap(data,false,Configuration.dungeonsMapScale);
                         GlStateManager.popMatrix();
                     }
 

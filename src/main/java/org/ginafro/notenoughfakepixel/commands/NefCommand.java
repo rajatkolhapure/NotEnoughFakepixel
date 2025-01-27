@@ -3,20 +3,42 @@ package org.ginafro.notenoughfakepixel.commands;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import org.ginafro.notenoughfakepixel.Configuration;
 import org.ginafro.notenoughfakepixel.NotEnoughFakepixel;
+import org.ginafro.notenoughfakepixel.features.skyblock.slayers.SlayerInfoGUI;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class NefCommand extends CommandBase {
+
     @Override
     public String getCommandName() {
         return "nef";
     }
 
     @Override
+    public List<String> addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
+        List<String> options = new ArrayList<>();
+        if (args == null || args.length == 0 || args.length == 1) {
+            options.add("help");
+            options.addAll(getCategoryNames());
+            options.add("default");
+        } else if (args.length == 2) {
+            if (getCategoryNames().contains(args[0])) {
+                options.add("help");
+                options.addAll(getFeatureNames(args[0]));
+            }
+        }
+        return options;
+    }
+
+    @Override
     public String getCommandUsage(ICommandSender sender) {
-        return "/" + getCommandName() + " <Category>";
+        return "/" + getCommandName();
     }
 
     @Override
@@ -26,214 +48,306 @@ public class NefCommand extends CommandBase {
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) throws CommandException {
+        String helpDisplay = EnumChatFormatting.YELLOW + "Commands:\n"
+                + EnumChatFormatting.WHITE + "/nef <category>" + EnumChatFormatting.GRAY + " : Enable/disable one entire category\n"
+                + EnumChatFormatting.WHITE + "/nef <category> help" + EnumChatFormatting.GRAY + " : Display all the features from given category\n"
+                + EnumChatFormatting.WHITE + "/nef <category> <feature>" + EnumChatFormatting.GRAY + " : Change the value from given feature\n"
+                + EnumChatFormatting.WHITE + "/nef default" + EnumChatFormatting.GRAY + " : Reset all settings to default\n"
+                + EnumChatFormatting.WHITE + "/nef help" + EnumChatFormatting.GRAY + " : Display all commands from NEF\n\n"
+                + EnumChatFormatting.WHITE + "Possible categories: qol, dungeons, fishing, diana, slayer, experimentation, mining, crimson.";
         if(args == null || args.length == 0){
-            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"+System.getProperty("os.name"));
+            //System.out.println("\n\n\n\n\n\n\n"+System.getProperty("os.name"));
+            // POJAV version
             if (System.getProperty("os.name").contains("Android") || System.getProperty("os.name").contains("Linux")) {
-                sender.addChatMessage(new ChatComponentText(EnumChatFormatting.YELLOW + "Usage: " + EnumChatFormatting.RESET + EnumChatFormatting.BOLD+EnumChatFormatting.GRAY + "/nef category "+EnumChatFormatting.RESET+EnumChatFormatting.GRAY+"- Enable/disable one entire category. Possible categories: qol, dungeons, fishing, diana, slayer, experimentation, mining, crimson.\n        " + EnumChatFormatting.BOLD+EnumChatFormatting.GRAY + "/nef default "+EnumChatFormatting.RESET+EnumChatFormatting.GRAY+"- Resets all settings to default\n        " + EnumChatFormatting.BOLD+EnumChatFormatting.GRAY + "/nef help"+EnumChatFormatting.RESET+EnumChatFormatting.GRAY+" - Display all commands from NEF"));
+                sender.addChatMessage(new ChatComponentText(helpDisplay));
+            // PC & others
             } else {
-                try {
-                    NotEnoughFakepixel.config.openGui();
-                } catch (Exception e) { sender.addChatMessage(new ChatComponentText(EnumChatFormatting.YELLOW + "Usage: " + EnumChatFormatting.RESET + EnumChatFormatting.BOLD+EnumChatFormatting.GRAY + "/nef category "+EnumChatFormatting.RESET+EnumChatFormatting.GRAY+"- Enable/disable one entire category. Possible categories: qol, dungeons, fishing, diana, slayer, experimentation, mining, crimson.\n        " + EnumChatFormatting.BOLD+EnumChatFormatting.GRAY + "/nef default "+EnumChatFormatting.RESET+EnumChatFormatting.GRAY+"- Resets all settings to default\n        " + EnumChatFormatting.BOLD+EnumChatFormatting.GRAY + "/nef help"+EnumChatFormatting.RESET+EnumChatFormatting.GRAY+" - Display all commands from NEF"));}
+                NotEnoughFakepixel.config.openGui();
             }
         } else if(args.length == 1){
-            switch (args[0]) {
-                case "help":
-                    sender.addChatMessage(new ChatComponentText(EnumChatFormatting.YELLOW + "Usage: "+EnumChatFormatting.RESET+EnumChatFormatting.BOLD+EnumChatFormatting.GRAY+"/nef category "+EnumChatFormatting.RESET+EnumChatFormatting.GRAY+"- Enable/disable one entire category. Possible categories: qol, dungeons, fishing, diana, slayer, experimentation, mining, crimson.\n        "+EnumChatFormatting.BOLD+EnumChatFormatting.GRAY+"/nef default "+EnumChatFormatting.RESET+EnumChatFormatting.GRAY+"- Resets all settings to default\n        "+EnumChatFormatting.BOLD+EnumChatFormatting.GRAY+"/nef help"+EnumChatFormatting.RESET+EnumChatFormatting.GRAY+" - Display all commands from NEF"));
-                    break;
-                case "qol":
-                    Configuration._qol = !Configuration._qol;
-                    sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "QOL configuration changed to " + Configuration._qol));
-                    Configuration.customFilters = Configuration._qol;
-                    Configuration.disableHyperionExplosions = Configuration._qol;
-                    Configuration.disableThunderlordBolt = Configuration._qol;
-                    Configuration.fullbright = Configuration._qol;
-                    Configuration.noHurtCam = Configuration._qol;
-                    Configuration.cropsHeight = Configuration._qol;
-                    Configuration.disablePotionEffects = Configuration._qol;
-                    Configuration.disableRain = Configuration._qol;
-                    Configuration.shortcutWardrobe = Configuration._qol;
-                    Configuration.showEnchantLevel = Configuration._qol;
-                    Configuration.middleClickChests = Configuration._qol;
-                    Configuration.showBestUpgrade = Configuration._qol;
-                    Configuration.chocolateEggWaypoints = Configuration._qol;
-                    Configuration.showPetEquipped = Configuration._qol;
-                    Configuration.disableWatchdogInfo = Configuration._qol;
-                    Configuration.disableFriendJoin = Configuration._qol;
-                    Configuration.disableSellingRanks = Configuration._qol;
-                    Configuration.scrollableTooltips = Configuration._qol;
-                    Configuration.disableJerryChineGunSounds = Configuration._qol;
-                    Configuration.disableAoteSounds = Configuration._qol;
-                    Configuration.disableMidaStaffAnimation = Configuration._qol;
-                    Configuration.dmgCommas = Configuration._qol;
-                    Configuration.dmgFormatter = Configuration._qol;
-                    break;
-                case "dungeons":
-                    Configuration._dungeons = !Configuration._dungeons;
-                    sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Dungeon configuration changed to " + Configuration._qol));
-                    Configuration.autoReadyDungeon = Configuration._dungeons;
-                    Configuration.autoCloseChests = Configuration._dungeons;
-                    Configuration.starredMobs = Configuration._dungeons;
-                    Configuration.batMobs = Configuration._dungeons;
-                    Configuration.felMob = Configuration._dungeons;
-                    Configuration.threeWeirdos = Configuration._dungeons;
-                    Configuration.dungeonsMap = Configuration._dungeons;
-                    Configuration.startsWith = Configuration._dungeons;
-                    Configuration.clickInOrder = Configuration._dungeons;
-                    Configuration.selectColors = Configuration._dungeons;
-                    Configuration.secretOverlay = Configuration._dungeons;
-                    Configuration.sPlusReminder = Configuration._dungeons;
-                    break;
-                case "fishing":
-                    Configuration._fishing = !Configuration._fishing;
-                    sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Fishing configuration changed to " + Configuration._qol));
-                    Configuration.legendaryCreatures = Configuration._fishing;
-                    Configuration.greatCatch = Configuration._fishing;
-                    Configuration.trophyFish = Configuration._fishing;
-                    break;
-                case "diana":
-                    Configuration._diana = !Configuration._diana;
-                    sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Diana configuration changed to " + Configuration._qol));
-                    Configuration.dianaShowWaypointsBurrows = Configuration._diana;
-                    Configuration.dianaGaiaConstruct = Configuration._diana;
-                    Configuration.dianaSiamese = Configuration._diana;
-                    Configuration.dianaMinosInquisitorAlert = Configuration._diana;
-                    Configuration.dianaWaypointSounds = Configuration._diana;
-                    Configuration.disableDianaExplosionSounds = Configuration._diana;
-                    Configuration.dianaCancelCooldownSpadeMessage = Configuration._diana;
-                    break;
-                case "slayer":
-                    Configuration._slayer = !Configuration._slayer;
-                    sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Slayer configuration changed to " + Configuration._qol));
-                    Configuration.slayerMinibosses = Configuration._slayer;
-                    Configuration.slayerBosses = Configuration._slayer;
-                    Configuration.slayerShowBeaconPath = Configuration._slayer;
-                    break;
-                case "experimentation":
-                    Configuration._enchanting = !Configuration._enchanting;
-                    sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Experimentation configuration changed to " + Configuration._qol));
-                    Configuration.chronomatronSolver = Configuration._enchanting;
-                    Configuration.ultraSequencerSolver = Configuration._enchanting;
-                    Configuration.preventMissclicksExperimentation = Configuration._enchanting;
-                    break;
-                case "mining":
-                    Configuration._mining = !Configuration._mining;
-                    sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Mining configuration changed to " + Configuration._qol));
-                    Configuration.miningAbilityNotifier = Configuration._mining;
-                    Configuration.disableDonEspresso = Configuration._mining;
-                    Configuration.drillFix = Configuration._mining;
-                    Configuration.puzzlerSolver = Configuration._mining;
-                    Configuration.showGhosts = Configuration._mining;
-                    Configuration.drillFuel = Configuration._mining;
-                    Configuration.mithrilPowder = Configuration._mining;
-                    Configuration.abilityCooldown = Configuration._mining;
-                    Configuration.miningOverlayEnabled = Configuration._mining;
-                    break;
-                case "crimson":
-                    Configuration._crimson = !Configuration._crimson;
-                    sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Crimson configuration changed to " + Configuration._qol));
-                    Configuration.bladesoulNotifier = Configuration._crimson;
-                    Configuration.mageOutlawNotifier = Configuration._crimson;
-                    Configuration.ashfangNotifier = Configuration._crimson;
-                    Configuration.barbarianDukeXNotifier = Configuration._crimson;
-                    Configuration.ashfangWaypoint = Configuration._crimson;
-                    Configuration.gravityOrbWaypoint = Configuration._crimson;
-                    Configuration.ashfangHitboxes = Configuration._crimson;
-                    Configuration.ashfangMuteChat = Configuration._crimson;
-                    Configuration.ashfangMuteSound = Configuration._crimson;
-                    Configuration.ashfangHurtSound = Configuration._crimson;
-                    Configuration.ashfangOverlay = Configuration._crimson;
-                    break;
-                case "default":
-                    sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Configuration changed to default"));
-                    // QOL
-                    Configuration._qol = true;
-                    Configuration.customFilters = true;
-                    Configuration.disableHyperionExplosions = true;
-                    Configuration.disableThunderlordBolt = true;
-                    Configuration.fullbright = true;
-                    Configuration.noHurtCam = true;
-                    Configuration.cropsHeight = false;
-                    Configuration.disablePotionEffects = true;
-                    Configuration.disableRain = true;
-                    Configuration.shortcutWardrobe = true;
-                    Configuration.showEnchantLevel = true;
-                    Configuration.middleClickChests = true;
-                    Configuration.showBestUpgrade = true;
-                    Configuration.chocolateEggWaypoints = true;
-                    Configuration.showPetEquipped = true;
-                    Configuration.disableWatchdogInfo = false;
-                    Configuration.disableFriendJoin = false;
-                    Configuration.chatCleaner = false;
-                    Configuration.disableSellingRanks = false;
-                    Configuration.scrollableTooltips = true;
-                    Configuration.disableJerryChineGunSounds = true;
-                    Configuration.disableAoteSounds = false;
-                    Configuration.disableMidaStaffAnimation = false;
-                    Configuration.dmgCommas = false;
-                    Configuration.dmgFormatter = false;
-                    // Dungeons
-                    Configuration._dungeons = true;
-                    Configuration.autoReadyDungeon = true;
-                    Configuration.autoCloseChests = true;
-                    Configuration.autoDropItems = false;
-                    Configuration.starredMobs = true;
-                    Configuration.batMobs = true;
-                    Configuration.felMob = true;
-                    Configuration.threeWeirdos = true;
-                    Configuration.dungeonsMap = true;
-                    Configuration.startsWith = true;
-                    Configuration.clickInOrder = true;
-                    Configuration.selectColors = true;
-                    Configuration.secretOverlay = true;
-                    Configuration.sPlusReminder = true;
-                    // Fishing
-                    Configuration._fishing = true;
-                    Configuration.legendaryCreatures = true;
-                    Configuration.greatCatch = true;
-                    Configuration.trophyFish = true;
-                    // Diana
-                    Configuration.dianaShowWaypointsBurrows = true;
-                    Configuration.dianaGaiaConstruct = true;
-                    Configuration.dianaSiamese = false;
-                    Configuration.dianaMinosInquisitorAlert = true;
-                    Configuration.dianaWaypointSounds = true;
-                    Configuration.disableDianaExplosionSounds = false;
-                    Configuration.dianaCancelCooldownSpadeMessage = true;
-                    // Slayer
-                    Configuration._slayer = true;
-                    Configuration.slayerMinibosses = true;
-                    Configuration.slayerBosses = true;
-                    Configuration.slayerShowBeaconPath = true;
-                    // Experimentation Table
-                    Configuration._enchanting = true;
-                    Configuration.chronomatronSolver = true;
-                    Configuration.ultraSequencerSolver = true;
-                    Configuration.preventMissclicksExperimentation = true;
-                    // Mining
-                    Configuration._mining = true;
-                    Configuration.miningAbilityNotifier = true;
-                    Configuration.disableDonEspresso = true;
-                    Configuration.drillFix = true;
-                    Configuration.puzzlerSolver = true;
-                    Configuration.showGhosts = true;
-                    Configuration.drillFuel = true;
-                    Configuration.mithrilPowder = true;
-                    Configuration.abilityCooldown = true;
-                    Configuration.miningOverlayEnabled = true;
-                    // Crimson
-                    Configuration._crimson = true;
-                    Configuration.bladesoulNotifier = true;
-                    Configuration.mageOutlawNotifier = true;
-                    Configuration.ashfangNotifier = true;
-                    Configuration.barbarianDukeXNotifier = true;
-                    Configuration.ashfangWaypoint = true;
-                    Configuration.gravityOrbWaypoint = true;
-                    Configuration.ashfangHitboxes = true;
-                    Configuration.ashfangMuteChat = true;
-                    Configuration.ashfangMuteSound = true;
-                    Configuration.ashfangHurtSound = true;
-                    Configuration.ashfangOverlay = true;
+            String category = args[0];
+
+            if (category.equals("help")) {
+                sender.addChatMessage(new ChatComponentText(helpDisplay));
+            } else if (!category.equals("default")) {
+                if (getBooleanVariable("_"+category) == null) return;
+                changeBooleanVariable(sender, "_"+category);
+                setCategoryVariables(sender, category, getBooleanVariable("_"+category));
+            } else {
+                setDefault(sender);
             }
+        } else if (args.length == 2) {
+            String category = args[0];
+            String variable = args[1];
+
+            if (variable.equalsIgnoreCase("help")) {
+                displayCategoryVariables(sender, category);
+                return;
+            }
+            if (getBooleanVariable("_"+category) == null) {
+                sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Unknown category: " + category + ". Use \\nef help to display a list of categories available."));
+                return;
+            }
+            updateCategoryVariable(sender, category, category+variable.substring(0, 1).toUpperCase()+variable.substring(1), getBooleanVariable("_"+category));
+        } else {
+            sender.addChatMessage(new ChatComponentText(helpDisplay));
         }
+    }
+
+    // Helper method to update variables based on category
+    private boolean updateCategoryVariable(ICommandSender sender, String categoryName, String variableName, boolean categoryEnabled) {
+        try {
+            if (!categoryEnabled) {
+                sender.addChatMessage(new ChatComponentText(EnumChatFormatting.YELLOW + "Category " + categoryName + " is not enabled"));
+                return false;
+            }
+            java.lang.reflect.Field field = Configuration.class.getDeclaredField(variableName);
+            if (field.getType() == boolean.class) {
+                boolean newValue = !field.getBoolean(null);
+                field.setBoolean(null, newValue);
+                sender.addChatMessage(new ChatComponentText(EnumChatFormatting.YELLOW + "Feature " + getDifference(categoryName, variableName).substring(0,1).toLowerCase()+getDifference(categoryName, variableName).substring(1) + " " + formatBoolean(newValue)));
+                return true;
+            }
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Feature " + getDifference(categoryName, variableName).substring(0,1).toLowerCase()+getDifference(categoryName, variableName).substring(1) + " not found in category " + categoryName + ". Use \\nef "+categoryName+" help to display a list of available features."));
+            return false;
+        }
+        sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Feature " + getDifference(categoryName, variableName).substring(0,1).toLowerCase()+getDifference(categoryName, variableName).substring(1) + " not found in category " + categoryName + ". Use \\nef "+categoryName+" help to display a list of available features."));
+        return false;
+    }
+
+    // Helper method to display all variables in a category
+    private void displayCategoryVariables(ICommandSender sender, String category) {
+        sender.addChatMessage(new ChatComponentText(EnumChatFormatting.YELLOW + "Available features in " + category + " category:"));
+
+        try {
+            for (java.lang.reflect.Field field : Configuration.class.getDeclaredFields()) {
+                if (field.getType() == boolean.class && field.getName().startsWith(category)) {
+                    if (isPojav() && field.getName().endsWith("Overlay")) continue;
+                    field.setAccessible(true);
+                    sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GRAY + "- " + getDifference(category, field.getName()) + " " + formatBoolean((Boolean)field.get(null))));
+                }
+            }
+        } catch (Exception e) {
+            sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Error retrieving variables for category " + category));
+        }
+    }
+
+    // Helper method to change the value of all boolean variables in a category
+    private void setCategoryVariables(ICommandSender sender, String category, boolean value) {
+        sender.addChatMessage(new ChatComponentText(EnumChatFormatting.YELLOW + "Category " + category + " and its features " + formatBoolean(value)));
+
+        try {
+            boolean newValue = false;
+            boolean isFirst = true; // Determine new value based on the first variable in the category
+
+            for (java.lang.reflect.Field field : Configuration.class.getDeclaredFields()) {
+                if (field.getType() == boolean.class && field.getName().startsWith(category)) {
+                    if (isPojav() && field.getName().endsWith("Overlay")) continue;
+                    if (isFirst) {
+                        field.setAccessible(true);
+                        newValue = value;
+                        isFirst = false;
+                    }
+
+                    field.setAccessible(true);
+                    field.set(null, newValue); // Update the variable value
+                }
+            }
+
+            if (isFirst) {
+                sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "No variables found for category " + category));
+            }
+        } catch (Exception e) {
+            sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Error toggling variables for category " + category));
+        }
+    }
+
+    // Helper method to retrieve a boolean variable by name from the Configuration class
+    private Boolean getBooleanVariable(String variableName) {
+        try {
+            // Iterate through all fields in the Configuration class
+            for (java.lang.reflect.Field field : Configuration.class.getDeclaredFields()) {
+                // Check if the field matches the variable name and is of type boolean
+                if (field.getType() == boolean.class && field.getName().equalsIgnoreCase(variableName)) {
+                    if (isPojav() && field.getName().endsWith("Overlay")) continue;
+                    field.setAccessible(true); // Allow access to private/protected fields
+                    return (Boolean) field.get(null); // Return the value of the field
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Error retrieving boolean variable: " + variableName);
+            e.printStackTrace();
+        }
+        return null; // Return null if the variable is not found or an error occurs
+    }
+
+    // Helper method to set a boolean variable by name in the Configuration class
+    private Boolean changeBooleanVariable(ICommandSender sender, String variableName) {
+        try {
+            // Iterate through all fields in the Configuration class
+            for (java.lang.reflect.Field field : Configuration.class.getDeclaredFields()) {
+                // Check if the field matches the variable name and is of type boolean
+                if (field.getType() == boolean.class && field.getName().equalsIgnoreCase(variableName)) {
+                    if (isPojav() && field.getName().endsWith("Overlay")) continue;
+                    field.setAccessible(true); // Allow access to private/protected fields
+                    // Toggle the current value of the boolean variable
+                    boolean currentValue = (Boolean) field.get(null);
+                    field.set(null, !currentValue); // Set the new value (toggle it)
+                    return true; // Return success
+                }
+            }
+            // If no matching field is found, notify the sender
+            sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Variable '"
+                    + variableName + "' not found."));
+        } catch (Exception e) {
+            // Handle exceptions and notify the sender
+            sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED
+                    + "An error occurred while updating the variable '" + variableName + "'."));
+            e.printStackTrace();
+        }
+        return false; // Return failure if the operation fails
+    }
+
+    private List<String> getCategoryNames() {
+        List<String> categoryNames = new ArrayList<>();
+        try {
+            for (java.lang.reflect.Field field : Configuration.class.getDeclaredFields()) {
+                if (field.getType() == boolean.class && field.getName().startsWith("_") && !field.getName().startsWith("_debug") && !field.getName().startsWith("_info") && !field.getName().startsWith("_general")) {
+                    if (isPojav() && field.getName().endsWith("Overlay")) continue;
+                    categoryNames.add(field.getName().substring(1));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return categoryNames;
+    }
+
+    private List<String> getFeatureNames(String category) {
+        List<String> featureNames = new ArrayList<>();
+        try {
+            for (java.lang.reflect.Field field : Configuration.class.getDeclaredFields()) {
+                if (field.getType() == boolean.class && field.getName().startsWith(category)) {
+                    if (isPojav() && field.getName().endsWith("Overlay")) continue;
+                    featureNames.add(getDifference(category, field.getName()));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return featureNames;
+    }
+
+    private String formatBoolean(boolean value) {
+        return value ? EnumChatFormatting.GREEN + "enabled" : EnumChatFormatting.RED + "disabled";
+    }
+
+    private void setDefault(ICommandSender sender) {
+        sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Configuration changed to default"));
+        // QOL
+        Configuration._qol = true;
+        Configuration.qolCustomFilters = true;
+        Configuration.qolDisableHyperionExplosions = true;
+        Configuration.qolDisableThunderlordBolt = true;
+        Configuration.qolFullbright = true;
+        Configuration.qolNoHurtCam = true;
+        Configuration.qolCropsHeight = false;
+        Configuration.qolDisablePotionEffects = true;
+        Configuration.qolDisableRain = true;
+        Configuration.qolShortcutWardrobe = true;
+        Configuration.qolShowEnchantLevel = true;
+        Configuration.qolMiddleClickChests = true;
+        Configuration.qolChocolateShowBestUpgrade = true;
+        Configuration.qolChocolateEggWaypoints = true;
+        Configuration.qolShowPetEquipped = true;
+        Configuration.qolDisableWatchdogInfo = true;
+        Configuration.qolDisableFriendJoin = false;
+        Configuration.qolChatCleaner = false;
+        Configuration.qolDisableSellingRanks = false;
+        Configuration.qolDisableZombieRareDrops = true;
+        Configuration.qolScrollableTooltips = true;
+        Configuration.qolDisableJerryChineGunSounds = true;
+        Configuration.qolDisableAoteSounds = false;
+        Configuration.qolDisableMidaStaffAnimation = false;
+        Configuration.qolDmgCommas = true;
+        Configuration.qolDmgFormatter = true;
+        // Dungeons
+        Configuration._dungeons = true;
+        Configuration.dungeonsAutoReady = true;
+        Configuration.dungeonsAutoCloseChests = true;
+        Configuration.dungeonsStarredMobs = true;
+        Configuration.dungeonsBatMobs = true;
+        Configuration.dungeonsFelMob = true;
+        Configuration.dungeonsThreeWeirdos = true;
+        Configuration.dungeonsMap = true;
+        Configuration.dungeonsStartsWith = true;
+        Configuration.dungeonsClickInOrder = true;
+        Configuration.dungeonsSelectColors = true;
+        Configuration.dungeonsSecretOverlay = true;
+        Configuration.dungeonsSPlusReminder = true;
+        // Fishing
+        Configuration._fishing = true;
+        Configuration.fishingLegendaryCreatures = true;
+        Configuration.fishingGreatCatch = true;
+        Configuration.fishingTrophyFish = true;
+        // Diana
+        Configuration.dianaShowWaypointsBurrows = true;
+        Configuration.dianaGaiaConstruct = true;
+        Configuration.dianaSiamese = true;
+        Configuration.dianaMinosInquisitorAlert = true;
+        Configuration.dianaWaypointSounds = true;
+        Configuration.dianaDisableDianaExplosionSounds = false;
+        Configuration.dianaCancelCooldownSpadeMessage = true;
+        // Slayer
+        Configuration._slayer = true;
+        Configuration.slayerMinibosses = true;
+        Configuration.slayerBosses = true;
+        Configuration.slayerShowBeaconPath = true;
+        // Experimentation Table
+        Configuration._experimentation = true;
+        Configuration.experimentationChronomatronSolver = true;
+        Configuration.experimentationUltraSequencerSolver = true;
+        Configuration.experimentationPreventMissclicks = true;
+        // Mining
+        Configuration._mining = true;
+        Configuration.miningAbilityNotifier = true;
+        Configuration.miningDisableDonEspresso = true;
+        Configuration.miningDrillFix = true;
+        Configuration.miningPuzzlerSolver = true;
+        Configuration.miningShowGhosts = true;
+        Configuration.miningDrillFuel = true;
+        Configuration.miningMithrilPowder = true;
+        Configuration.miningAbilityCooldown = true;
+        Configuration.miningOverlay = true;
+        // Crimson
+        Configuration._crimson = true;
+        Configuration.crimsonBladesoulNotifier = true;
+        Configuration.crimsonMageOutlawNotifier = true;
+        Configuration.crimsonAshfangNotifier = true;
+        Configuration.crimsonBarbarianDukeXNotifier = true;
+        Configuration.crimsonAshfangWaypoint = true;
+        Configuration.crimsonGravityOrbWaypoint = true;
+        Configuration.crimsonAshfangHitboxes = true;
+        Configuration.crimsonAshfangMuteChat = true;
+        Configuration.crimsonAshfangMuteSound = true;
+        Configuration.crimsonAshfangHurtSound = true;
+        Configuration.crimsonAshfangOverlay = true;
+
+        if (isPojav()) Configuration.hiddenOverlays();
+    }
+
+    private String getDifference(String category, String fieldName) {
+        if (fieldName.startsWith(category)) {
+            String difference = fieldName.substring(category.length());
+            return difference.substring(0, 1).toLowerCase() + difference.substring(1);
+        }
+        return fieldName; // Return the full fieldName if it doesn't start with category
+    }
+
+
+
+    private boolean isPojav() {
+        return (System.getProperty("os.name").contains("Android") || System.getProperty("os.name").contains("Linux"));
     }
 }

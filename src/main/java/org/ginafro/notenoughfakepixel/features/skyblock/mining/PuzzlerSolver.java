@@ -25,7 +25,7 @@ public class PuzzlerSolver {
 
     @SubscribeEvent
     public void onChatReceived(ClientChatReceivedEvent event) {
-        if (!Configuration.puzzlerSolver) {
+        if (!Configuration.miningPuzzlerSolver) {
             overlayLoc = null;
             return;
         }

@@ -26,7 +26,7 @@ public class DrillFuelParsing {
 
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent e){
-        if(!Configuration.drillFuel) return;
+        if(!Configuration.miningDrillFuel) return;
         if(lastRead < 20) {
             lastRead++;
             return;

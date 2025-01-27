@@ -43,14 +43,14 @@ public abstract class BlockCropsMixinHeight extends BlockMixinHitbox {
 
     @Override
     public void getSelectedBoundingBox(World worldIn, BlockPos pos, CallbackInfoReturnable<AxisAlignedBB> cir) {
-        if (Configuration.cropsHeight) {
+        if (Configuration.qolCropsHeight) {
             updateCropsMaxY(worldIn, pos, worldIn.getBlockState(pos).getBlock());
         }
     }
 
     @Override
     public void collisionRayTrace(World worldIn, BlockPos pos, Vec3 start, Vec3 end, CallbackInfoReturnable<MovingObjectPosition> cir) {
-        if (Configuration.cropsHeight) {
+        if (Configuration.qolCropsHeight) {
             updateCropsMaxY(worldIn, pos, worldIn.getBlockState(pos).getBlock());
         }
     }

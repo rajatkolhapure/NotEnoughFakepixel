@@ -15,14 +15,14 @@ public class SoundRemover {
             S29PacketSoundEffect soundEffect = (S29PacketSoundEffect) packet;
 
             if (soundEffect.getSoundName().equals("mob.villager.yes") || soundEffect.getSoundName().equals("mob.villager.haggle")) {
-                if (Configuration.disableJerryChineGunSounds && InventoryUtils.getSlot("Jerry-chine Gun") != -1) {
+                if (Configuration.qolDisableJerryChineGunSounds && InventoryUtils.getSlot("Jerry-chine Gun") != -1) {
                     if (event.isCancelable()) event.setCanceled(true);
                 }
                 return;
             }
 
             if (soundEffect.getSoundName().equals("mob.endermen.portal")) {
-                if (Configuration.disableAoteSounds && InventoryUtils.getSlot("Aspect of the End") != -1) {
+                if (Configuration.qolDisableAoteSounds && InventoryUtils.getSlot("Aspect of the End") != -1) {
                     if (event.isCancelable()) event.setCanceled(true);
                 }
                 return;

@@ -21,7 +21,7 @@ public class DrillFix {
 
     @SubscribeEvent
     public void onPacketRead(PacketReadEvent event) {
-        if (!Configuration.drillFix) return;
+        if (!Configuration.miningDrillFix) return;
         if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
         if (ScoreboardUtils.currentLocation != Location.DWARVEN) return;
 

@@ -50,7 +50,7 @@ public class SecretOverlay extends TextHud {
         if (!super.shouldShow()) return false;
         if (!ScoreboardUtils.currentLocation.isDungeon()) return false;
 
-        return Configuration.secretOverlay;
+        return Configuration.dungeonsSecretOverlay;
     }
 
     @Override

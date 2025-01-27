@@ -37,7 +37,7 @@ public class ThreeWeirdos {
 
     @SubscribeEvent
     public void onChatRecieve(ClientChatReceivedEvent e){
-       if (!Configuration.threeWeirdos) return;
+       if (!Configuration.dungeonsThreeWeirdos) return;
        if (mc.thePlayer == null) return;
        if (!ScoreboardUtils.currentGamemode.isSkyblock());
        if (!ScoreboardUtils.currentLocation.isDungeon()) return;
@@ -66,7 +66,7 @@ public class ThreeWeirdos {
 
     @SubscribeEvent
     public void onRenderLast(RenderWorldLastEvent event) {
-        if (!Configuration.threeWeirdos) return;
+        if (!Configuration.dungeonsThreeWeirdos) return;
         if (Minecraft.getMinecraft().theWorld == null) return;
         if (!foundResponse) return;
         if (correctName.isEmpty()) return;

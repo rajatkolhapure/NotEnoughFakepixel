@@ -34,7 +34,7 @@ public class sPlusReminder {
         if (e.phase == TickEvent.Phase.END ||
                 Minecraft.getMinecraft().thePlayer == null ||
                 Minecraft.getMinecraft().theWorld == null ||
-                !Configuration.sPlusReminder) return;
+                !Configuration.dungeonsSPlusReminder) return;
         reminder();
     }
 

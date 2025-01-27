@@ -16,7 +16,7 @@ public class BatMobDisplay {
 
     @SubscribeEvent
     public void onRenderLast(RenderWorldLastEvent event) {
-        if (!Configuration.batMobs) return;
+        if (!Configuration.dungeonsBatMobs) return;
         if (Minecraft.getMinecraft().thePlayer == null) return;
         if (Minecraft.getMinecraft().theWorld == null) return;
         if (!ScoreboardUtils.currentLocation.isDungeon()) return;
@@ -28,10 +28,10 @@ public class BatMobDisplay {
             if (entity.getName() == null) return;
             if (entity instanceof EntityBat){
                 Color color = new Color(
-                        Configuration.batColor.getRed(),
-                        Configuration.batColor.getGreen(),
-                        Configuration.batColor.getBlue(),
-                        Configuration.batColor.getAlpha()
+                        Configuration.dungeonsBatColor.getRed(),
+                        Configuration.dungeonsBatColor.getGreen(),
+                        Configuration.dungeonsBatColor.getBlue(),
+                        Configuration.dungeonsBatColor.getAlpha()
                 );
 
                 RenderUtils.renderEntityHitbox(

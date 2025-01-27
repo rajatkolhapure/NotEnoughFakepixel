@@ -17,7 +17,7 @@ public class AutoDropItems {
 
     @SubscribeEvent
     public void onPickupSound(PlaySoundAtEntityEvent event) {
-        if (!Configuration.autoDropItems) return; // Check if the feature is enabled
+        if (!Configuration.dungeonsAutoDropItems) return; // Check if the feature is enabled
         if (!ScoreboardUtils.currentLocation.isDungeon()) return; // Check if the player is in a dungeon
         if (!event.name.equals("random.pop")) return;
         int delayMs = 500;

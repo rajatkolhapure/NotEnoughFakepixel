@@ -19,7 +19,7 @@ public class FelMobDisplay {
 
     @SubscribeEvent
     public void onRenderLast(RenderWorldLastEvent event) {
-        if (!Configuration.felMob) return;
+        if (!Configuration.dungeonsFelMob) return;
         if (Minecraft.getMinecraft().thePlayer == null) return;
         if (Minecraft.getMinecraft().theWorld == null) return;
         if (!ScoreboardUtils.currentLocation.isDungeon()) return;
@@ -38,10 +38,10 @@ public class FelMobDisplay {
                 ItemStack head = armorStand.getEquipmentInSlot(4);
                 if(ItemUtils.hasSkinValue(Skins.ENDERMAN_HEAD.getSkin(), head)){
                     Color color = new Color(
-                            Configuration.felColor.getRed(),
-                            Configuration.felColor.getGreen(),
-                            Configuration.felColor.getBlue(),
-                            Configuration.felColor.getAlpha()
+                            Configuration.dungeonsFelColor.getRed(),
+                            Configuration.dungeonsFelColor.getGreen(),
+                            Configuration.dungeonsFelColor.getBlue(),
+                            Configuration.dungeonsFelColor.getAlpha()
                     );
 
                     RenderUtils.renderEntityHitbox(

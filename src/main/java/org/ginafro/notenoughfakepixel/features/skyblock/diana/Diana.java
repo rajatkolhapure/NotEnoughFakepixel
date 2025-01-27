@@ -74,15 +74,16 @@ public class Diana {
                  Entity closestSiamese = getClosestSiamese(new int[] {(int)particles.getXCoordinate(), (int)particles.getYCoordinate(), (int)particles.getZCoordinate()});
                  if (closestSiamese != null) {
                      for (SiameseLynx siamese : listSiameseAlive) {
-                         if (siamese.getEntity1().getUniqueID() == closestSiamese.getUniqueID()) {
+                         if (siamese.getEntity1() != null && siamese.getEntity1().getUniqueID() == closestSiamese.getUniqueID()) {
                              siamese.setHittable(closestSiamese);
                              //System.out.println("Ocelot 1 hittable");
                              break;
-                         } else if (siamese.getEntity2().getUniqueID() == closestSiamese.getUniqueID()) {
+                         } else if (siamese.getEntity2() != null && siamese.getEntity2().getUniqueID() == closestSiamese.getUniqueID()) {
                              siamese.setHittable(closestSiamese);
                              //System.out.println("Ocelot 2 hittable");
                              break;
                          }
+                         siamese.setHittable(closestSiamese);
                      }
                  }
              }
@@ -98,7 +99,6 @@ public class Diana {
             dianaMobCheck(); // Check entities on world, add to lists if not tracked
             dianaMobRemover(); // Remove mobs from lists if out of render distance
             dianaMobRender(event.partialTicks); // Check for mobs in entities and draw a hitbox
-            listSiameseAlive.clear();
         }
     }
 
@@ -188,9 +188,9 @@ public class Diana {
             for (Waypoint result : safeResults) {
                 if (result.isHidden()) continue;
                 Color newColor = white;
-                if (result.getType().equals("EMPTY")) newColor = emptyBurrowColor.toJavaColor();
-                if (result.getType().equals("MOB")) newColor = mobBurrowColor.toJavaColor();
-                if (result.getType().equals("TREASURE")) newColor = treasureBurrowColor.toJavaColor();
+                if (result.getType().equals("EMPTY")) newColor = dianaEmptyBurrowColor.toJavaColor();
+                if (result.getType().equals("MOB")) newColor = dianaMobBurrowColor.toJavaColor();
+                if (result.getType().equals("TREASURE")) newColor = dianaTreasureBurrowColor.toJavaColor();
                 if (result.getType().equals("MINOS")) newColor = new Color(243, 225, 107);
                 newColor = new Color(newColor.getRed(), newColor.getGreen(), newColor.getBlue(), 100);
                 AxisAlignedBB bb = new AxisAlignedBB(
@@ -235,14 +235,14 @@ public class Diana {
                             RenderUtils.renderEntityHitbox(
                                     gaiaEntity,
                                     partialTicks,
-                                    new Color(Configuration.gaiaHittableColor.getRed(), Configuration.gaiaHittableColor.getGreen(), Configuration.gaiaHittableColor.getBlue(), 150),
+                                    new Color(Configuration.dianaGaiaHittableColor.getRed(), Configuration.dianaGaiaHittableColor.getGreen(), Configuration.dianaGaiaHittableColor.getBlue(), 150),
                                     MobDisplayTypes.GAIA
                             );
                         } else {
                             RenderUtils.renderEntityHitbox(
                                     gaiaEntity,
                                     partialTicks,
-                                    new Color(gaiaUnhittableColor.getRed(), gaiaUnhittableColor.getGreen(), gaiaUnhittableColor.getBlue(), 150),
+                                    new Color(dianaGaiaUnhittableColor.getRed(), dianaGaiaUnhittableColor.getGreen(), dianaGaiaUnhittableColor.getBlue(), 150),
                                     MobDisplayTypes.GAIA
                             );
                         }
@@ -255,7 +255,7 @@ public class Diana {
                     RenderUtils.renderEntityHitbox(
                             siamese.getHittable(),
                             partialTicks,
-                            new Color(Configuration.siameseHittableColor.getRed(), Configuration.siameseHittableColor.getGreen(), Configuration.siameseHittableColor.getBlue(), 150),
+                            new Color(Configuration.dianaSiameseHittableColor.getRed(), Configuration.dianaSiameseHittableColor.getGreen(), Configuration.dianaSiameseHittableColor.getBlue(), 150),
                             MobDisplayTypes.SIAMESE
                     );
                 }
@@ -287,13 +287,13 @@ public class Diana {
                     if (siamese.getEntity1().getUniqueID() == entity.getUniqueID()) return;
                     if (siamese.getEntity2() == null) {
                         siamese.setEntity2(entity);
-                        //System.out.println("Ocelot2 added, "+listSiameseAlive.size());
+                        System.out.println("Ocelot2 added, "+listSiameseAlive.size());
                     }
                     if (siamese.getEntity2().getUniqueID() == entity.getUniqueID()) return;
                 }
                 // If this point reached, no occurrences, so new siamese added
                 listSiameseAlive.add(new SiameseLynx(entity));
-                //System.out.println("Siamese added, "+listSiameseAlive.size());
+                System.out.println("Siamese added, "+listSiameseAlive.size());
             }
         });
     }
@@ -311,21 +311,21 @@ public class Diana {
             // If both null = death, remove from list of siameses
             if (siamese.getEntity1() == null && siamese.getEntity2() == null) {
                 listSiameseAlive.remove(siamese);
-                //System.out.println("Siamese removed"+listSiameseAlive.size());
+                System.out.println("Siamese removed for distance"+listSiameseAlive.size());
                 return;
             }
             if (siamese.getEntity1() != null) {
                 int[] siamese1Coords = new int[]{siamese.getEntity1().getPosition().getX(), siamese.getEntity1().getPosition().getY(), siamese.getEntity1().getPosition().getZ()};
                 if (!processor.areCoordinatesClose(playerCoords, siamese1Coords, distanceRenderHitbox)) {
                     siamese.setEntity1(null);
-                    //System.out.println("Ocelot1 removed, "+listSiameseAlive.size());
+                    System.out.println("Ocelot1 removed for distance, "+listSiameseAlive.size());
                 }
             }
             if (siamese.getEntity2() != null) {
                 int[] siamese2Coords = new int[]{siamese.getEntity2().getPosition().getX(), siamese.getEntity2().getPosition().getY(), siamese.getEntity2().getPosition().getZ()};
                 if (!processor.areCoordinatesClose(playerCoords, siamese2Coords, distanceRenderHitbox)) {
                     siamese.setEntity2(null);
-                    //System.out.println("Ocelot2 removed, "+listSiameseAlive.size());
+                    System.out.println("Ocelot2 removed for distance, "+listSiameseAlive.size());
                 }
             }
         }
@@ -353,7 +353,7 @@ public class Diana {
             switch (soundName) {
                 // Remove explosion sound feature
                 case "random.explode":
-                    if (!Configuration.disableDianaExplosionSounds) return;
+                    if (!Configuration.dianaDisableDianaExplosionSounds) return;
                     if (Math.floor(soundEffect.getPitch()*1000)/1000 == 1.190) {
                         if (event.isCancelable()) event.setCanceled(true);
                     }

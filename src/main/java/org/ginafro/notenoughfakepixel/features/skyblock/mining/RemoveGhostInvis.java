@@ -16,7 +16,7 @@ public class RemoveGhostInvis {
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event) {
         if (event.phase != TickEvent.Phase.START) return;
-        if (!Configuration.showGhosts) return;
+        if (!Configuration.miningShowGhosts) return;
         if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
         if (ScoreboardUtils.currentLocation != Location.DWARVEN) return;
 
@@ -35,7 +35,7 @@ public class RemoveGhostInvis {
     }
 
     public static void resetGhostInvis() {
-        if (Configuration.showGhosts) return;
+        if (Configuration.miningShowGhosts) return;
         if (Minecraft.getMinecraft().thePlayer == null ) return;
 
         List<Entity> entities = Minecraft.getMinecraft().theWorld.loadedEntityList;

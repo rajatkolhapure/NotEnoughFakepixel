@@ -21,7 +21,7 @@ public class ClickInOrderSolver {
 
     @SubscribeEvent
     public void onOpen(GuiScreenEvent.BackgroundDrawnEvent e){
-        if(!Configuration.clickInOrder && ScoreboardUtils.currentGamemode != Gamemode.SKYBLOCK) return;
+        if(!Configuration.dungeonsClickInOrder && ScoreboardUtils.currentGamemode != Gamemode.SKYBLOCK) return;
         if(e.gui instanceof GuiChest){
             GuiChest chest = (GuiChest) e.gui;
             Container container = chest.inventorySlots;
@@ -35,7 +35,7 @@ public class ClickInOrderSolver {
                                 continue;
                             }if(item.getMetadata() == 14) {
                                 if (item.stackSize == stackCount) {
-                                    OneColor color = Configuration.terminalColor;
+                                    OneColor color = Configuration.dungeonsTerminalColor;
                                     color.setAlpha(102);
                                     RenderUtils.drawOnSlot(chest.inventorySlots.inventorySlots.size(), slot.xDisplayPosition, slot.yDisplayPosition, color.getRGB());
                                     stackCount++;
