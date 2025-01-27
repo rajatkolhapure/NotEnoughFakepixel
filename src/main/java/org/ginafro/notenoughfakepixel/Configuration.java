@@ -55,6 +55,12 @@ public class Configuration extends Config {
         this.addListener("_debug", () -> _debug2 = false);
         this.addListener("_debug2", () -> _debug = false);
 
+        if (System.getProperty("os.name").contains("Android") || System.getProperty("os.name").contains("Linux")) {
+            secretOverlay = false;
+            miningOverlayEnabled = false;
+            ashfangOverlay = false;
+        }
+
         save();
     }
 

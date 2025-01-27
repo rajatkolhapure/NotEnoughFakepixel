@@ -81,7 +81,7 @@ public class NefCommand extends CommandBase {
                     Configuration.startsWith = Configuration._dungeons;
                     Configuration.clickInOrder = Configuration._dungeons;
                     Configuration.selectColors = Configuration._dungeons;
-                    Configuration.secretOverlay = Configuration._dungeons;
+                    //Configuration.secretOverlay = Configuration._dungeons;
                     Configuration.sPlusReminder = Configuration._dungeons;
                     break;
                 case "fishing":
@@ -127,7 +127,7 @@ public class NefCommand extends CommandBase {
                     Configuration.drillFuel = Configuration._mining;
                     Configuration.mithrilPowder = Configuration._mining;
                     Configuration.abilityCooldown = Configuration._mining;
-                    Configuration.miningOverlayEnabled = Configuration._mining;
+                    //Configuration.miningOverlayEnabled = Configuration._mining;
                     break;
                 case "crimson":
                     Configuration._crimson = !Configuration._crimson;
@@ -142,7 +142,7 @@ public class NefCommand extends CommandBase {
                     Configuration.ashfangMuteChat = Configuration._crimson;
                     Configuration.ashfangMuteSound = Configuration._crimson;
                     Configuration.ashfangHurtSound = Configuration._crimson;
-                    Configuration.ashfangOverlay = Configuration._crimson;
+                    //Configuration.ashfangOverlay = Configuration._crimson;
                     break;
                 case "default":
                     sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Configuration changed to default"));
@@ -186,7 +186,7 @@ public class NefCommand extends CommandBase {
                     Configuration.startsWith = true;
                     Configuration.clickInOrder = true;
                     Configuration.selectColors = true;
-                    Configuration.secretOverlay = true;
+                    Configuration.secretOverlay = false;
                     Configuration.sPlusReminder = true;
                     // Fishing
                     Configuration._fishing = true;
@@ -221,7 +221,7 @@ public class NefCommand extends CommandBase {
                     Configuration.drillFuel = true;
                     Configuration.mithrilPowder = true;
                     Configuration.abilityCooldown = true;
-                    Configuration.miningOverlayEnabled = true;
+                    Configuration.miningOverlayEnabled = false;
                     // Crimson
                     Configuration._crimson = true;
                     Configuration.bladesoulNotifier = true;
@@ -234,7 +234,7 @@ public class NefCommand extends CommandBase {
                     Configuration.ashfangMuteChat = true;
                     Configuration.ashfangMuteSound = true;
                     Configuration.ashfangHurtSound = true;
-                    Configuration.ashfangOverlay = true;
+                    Configuration.ashfangOverlay = false;
             }
         }
     }

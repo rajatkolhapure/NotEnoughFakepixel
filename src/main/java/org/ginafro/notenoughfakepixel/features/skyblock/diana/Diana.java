@@ -346,7 +346,7 @@ public class Diana {
         Packet packet = event.packet;
         if (packet instanceof S29PacketSoundEffect) {
             S29PacketSoundEffect soundEffect = (S29PacketSoundEffect) packet;
-            System.out.println(soundEffect.getSoundName());
+            //System.out.println(soundEffect.getSoundName());
             int[] coordsSound = new int[] {(int)Math.floor(soundEffect.getX()), (int)Math.floor(soundEffect.getY()), (int)Math.floor(soundEffect.getZ())};
             String soundName = soundEffect.getSoundName();
             switch (soundName) {
