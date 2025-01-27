@@ -3,20 +3,42 @@ package org.ginafro.notenoughfakepixel.commands;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import org.ginafro.notenoughfakepixel.Configuration;
 import org.ginafro.notenoughfakepixel.NotEnoughFakepixel;
+import org.ginafro.notenoughfakepixel.features.skyblock.slayers.SlayerInfoGUI;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class NefCommand extends CommandBase {
+
     @Override
     public String getCommandName() {
         return "nef";
     }
 
     @Override
+    public List<String> addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
+        List<String> options = new ArrayList<>();
+        if (args == null || args.length == 0 || args.length == 1) {
+            options.add("help");
+            options.addAll(getCategoryNames());
+            options.add("default");
+        } else if (args.length == 2) {
+            if (getCategoryNames().contains(args[0])) {
+                options.add("help");
+                options.addAll(getFeatureNames(args[0]));
+            }
+        }
+        return options;
+    }
+
+    @Override
     public String getCommandUsage(ICommandSender sender) {
-        return "/" + getCommandName() + " <Category>";
+        return "/" + getCommandName();
     }
 
     @Override
@@ -185,6 +207,36 @@ public class NefCommand extends CommandBase {
             e.printStackTrace();
         }
         return false; // Return failure if the operation fails
+    }
+
+    private List<String> getCategoryNames() {
+        List<String> categoryNames = new ArrayList<>();
+        try {
+            for (java.lang.reflect.Field field : Configuration.class.getDeclaredFields()) {
+                if (field.getType() == boolean.class && field.getName().startsWith("_") && !field.getName().startsWith("_debug") && !field.getName().startsWith("_info") && !field.getName().startsWith("_general")) {
+                    if (isPojav() && field.getName().endsWith("Overlay")) continue;
+                    categoryNames.add(field.getName().substring(1));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return categoryNames;
+    }
+
+    private List<String> getFeatureNames(String category) {
+        List<String> featureNames = new ArrayList<>();
+        try {
+            for (java.lang.reflect.Field field : Configuration.class.getDeclaredFields()) {
+                if (field.getType() == boolean.class && field.getName().startsWith(category)) {
+                    if (isPojav() && field.getName().endsWith("Overlay")) continue;
+                    featureNames.add(getDifference(category, field.getName()));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return featureNames;
     }
 
     private String formatBoolean(boolean value) {

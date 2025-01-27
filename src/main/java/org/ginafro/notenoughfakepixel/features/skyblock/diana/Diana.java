@@ -74,15 +74,16 @@ public class Diana {
                  Entity closestSiamese = getClosestSiamese(new int[] {(int)particles.getXCoordinate(), (int)particles.getYCoordinate(), (int)particles.getZCoordinate()});
                  if (closestSiamese != null) {
                      for (SiameseLynx siamese : listSiameseAlive) {
-                         if (siamese.getEntity1().getUniqueID() == closestSiamese.getUniqueID()) {
+                         if (siamese.getEntity1() != null && siamese.getEntity1().getUniqueID() == closestSiamese.getUniqueID()) {
                              siamese.setHittable(closestSiamese);
                              //System.out.println("Ocelot 1 hittable");
                              break;
-                         } else if (siamese.getEntity2().getUniqueID() == closestSiamese.getUniqueID()) {
+                         } else if (siamese.getEntity2() != null && siamese.getEntity2().getUniqueID() == closestSiamese.getUniqueID()) {
                              siamese.setHittable(closestSiamese);
                              //System.out.println("Ocelot 2 hittable");
                              break;
                          }
+                         siamese.setHittable(closestSiamese);
                      }
                  }
              }
