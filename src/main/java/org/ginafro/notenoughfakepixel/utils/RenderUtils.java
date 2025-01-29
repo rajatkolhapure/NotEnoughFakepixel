@@ -1,7 +1,6 @@
 package org.ginafro.notenoughfakepixel.utils;
 
 import cc.polyfrost.oneconfig.libs.universal.UResolution;
-import com.sun.javafx.geom.Vec3d;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.FontRenderer;
