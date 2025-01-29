@@ -11,6 +11,7 @@ import org.ginafro.notenoughfakepixel.NotEnoughFakepixel;
 import org.ginafro.notenoughfakepixel.features.skyblock.slayers.SlayerInfoGUI;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class NefCommand extends CommandBase {
@@ -23,14 +24,46 @@ public class NefCommand extends CommandBase {
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
         List<String> options = new ArrayList<>();
-        if (args == null || args.length == 0 || args.length == 1) {
+        if (args == null || args.length == 0) {
             options.add("help");
             options.addAll(getCategoryNames());
             options.add("default");
+        } else if (args.length == 1) {
+            // Space char case
+            if (args[0].isEmpty()) {
+                options.add("help");
+                options.addAll(getCategoryNames());
+                options.add("default");
+                return options;
+            // Command half written
+            } else {
+                if ("help".startsWith(args[0]) && !"help".equals(args[0])) {
+                    options.add("help");
+                }
+                if ("default".startsWith(args[0]) && !"default".equals(args[0])) {
+                    options.add("default");
+                }
+                for (String category : getCategoryNames()) {
+                    if (category.startsWith(args[0]) && !category.equals(args[0])) {
+                        options.add(category);
+                    }
+                }
+            }
         } else if (args.length == 2) {
             if (getCategoryNames().contains(args[0])) {
-                options.add("help");
-                options.addAll(getFeatureNames(args[0]));
+                if (args[1].isEmpty()) {
+                    options.add("help");
+                    options.addAll(getFeatureNames(args[0]));
+                } else {
+                    if ("help".startsWith(args[1]) && !"help".equals(args[1])) {
+                        options.add("help");
+                    }
+                    for (String feature : getFeatureNames(args[0])) {
+                        if (feature.startsWith(args[1]) && !feature.equals(args[1])) {
+                            options.add(feature);
+                        }
+                    }
+                }
             }
         }
         return options;
@@ -58,7 +91,7 @@ public class NefCommand extends CommandBase {
         if(args == null || args.length == 0){
             //System.out.println("\n\n\n\n\n\n\n"+System.getProperty("os.name"));
             // POJAV version
-            if (System.getProperty("os.name").contains("Android") || System.getProperty("os.name").contains("Linux")) {
+            if (isPojav()) {
                 sender.addChatMessage(new ChatComponentText(helpDisplay));
             // PC & others
             } else {
@@ -78,9 +111,9 @@ public class NefCommand extends CommandBase {
             }
         } else if (args.length == 2) {
             String category = args[0];
-            String variable = args[1];
+            String feature = args[1];
 
-            if (variable.equalsIgnoreCase("help")) {
+            if (feature.equalsIgnoreCase("help")) {
                 displayCategoryVariables(sender, category);
                 return;
             }
@@ -88,7 +121,7 @@ public class NefCommand extends CommandBase {
                 sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Unknown category: " + category + ". Use \\nef help to display a list of categories available."));
                 return;
             }
-            updateCategoryVariable(sender, category, category+variable.substring(0, 1).toUpperCase()+variable.substring(1), getBooleanVariable("_"+category));
+            updateCategoryVariable(sender, category, category+feature.substring(0, 1).toUpperCase()+feature.substring(1), getBooleanVariable("_"+category));
         } else {
             sender.addChatMessage(new ChatComponentText(helpDisplay));
         }
@@ -105,7 +138,8 @@ public class NefCommand extends CommandBase {
             if (field.getType() == boolean.class) {
                 boolean newValue = !field.getBoolean(null);
                 field.setBoolean(null, newValue);
-                sender.addChatMessage(new ChatComponentText(EnumChatFormatting.YELLOW + "Feature " + getDifference(categoryName, variableName).substring(0,1).toLowerCase()+getDifference(categoryName, variableName).substring(1) + " " + formatBoolean(newValue)));
+                if (isDark(field)) sender.addChatMessage(new ChatComponentText(EnumChatFormatting.BLACK + "DARK "+EnumChatFormatting.YELLOW+"Feature " + getDifference(categoryName, variableName).substring(0,1).toLowerCase()+getDifference(categoryName, variableName).substring(1) + " " + formatBoolean(newValue)));
+                else sender.addChatMessage(new ChatComponentText(EnumChatFormatting.YELLOW + "Feature " + getDifference(categoryName, variableName).substring(0,1).toLowerCase()+getDifference(categoryName, variableName).substring(1) + " " + formatBoolean(newValue)));
                 return true;
             }
         } catch (NoSuchFieldException | IllegalAccessException e) {
@@ -124,6 +158,7 @@ public class NefCommand extends CommandBase {
             for (java.lang.reflect.Field field : Configuration.class.getDeclaredFields()) {
                 if (field.getType() == boolean.class && field.getName().startsWith(category)) {
                     if (isPojav() && field.getName().endsWith("Overlay")) continue;
+                    if (isDark(field)) continue;
                     field.setAccessible(true);
                     sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GRAY + "- " + getDifference(category, field.getName()) + " " + formatBoolean((Boolean)field.get(null))));
                 }
@@ -144,6 +179,7 @@ public class NefCommand extends CommandBase {
             for (java.lang.reflect.Field field : Configuration.class.getDeclaredFields()) {
                 if (field.getType() == boolean.class && field.getName().startsWith(category)) {
                     if (isPojav() && field.getName().endsWith("Overlay")) continue;
+                    if (isDark(field)) continue;
                     if (isFirst) {
                         field.setAccessible(true);
                         newValue = value;
@@ -221,6 +257,7 @@ public class NefCommand extends CommandBase {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Collections.sort(categoryNames);
         return categoryNames;
     }
 
@@ -230,12 +267,14 @@ public class NefCommand extends CommandBase {
             for (java.lang.reflect.Field field : Configuration.class.getDeclaredFields()) {
                 if (field.getType() == boolean.class && field.getName().startsWith(category)) {
                     if (isPojav() && field.getName().endsWith("Overlay")) continue;
+                    if (isDark(field)) continue;
                     featureNames.add(getDifference(category, field.getName()));
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Collections.sort(featureNames);
         return featureNames;
     }
 
@@ -293,6 +332,8 @@ public class NefCommand extends CommandBase {
         Configuration.fishingTrophyFish = true;
         // Diana
         Configuration.dianaShowWaypointsBurrows = true;
+        Configuration.dianaShowLabelsWaypoints = true;
+        Configuration.dianaShowTracersWaypoints = true;
         Configuration.dianaGaiaConstruct = true;
         Configuration.dianaSiamese = true;
         Configuration.dianaMinosInquisitorAlert = true;
@@ -345,7 +386,12 @@ public class NefCommand extends CommandBase {
         return fieldName; // Return the full fieldName if it doesn't start with category
     }
 
-
+    private boolean isDark(java.lang.reflect.Field field) {
+        return (field.getName().equals("dianaAutoEquipAncestralSpadeForDig") ||
+                field.getName().equals("dianaAutoEquipAncestralSpadeForParticles") ||
+                field.getName().equals("dungeonsAutoDropItems") ||
+                field.getName().equals("experimentationAutoSolver"));
+    }
 
     private boolean isPojav() {
         return (System.getProperty("os.name").contains("Android") || System.getProperty("os.name").contains("Linux"));

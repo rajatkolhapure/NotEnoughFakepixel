@@ -1,12 +1,16 @@
 package org.ginafro.notenoughfakepixel.utils;
 
 import cc.polyfrost.oneconfig.libs.universal.UResolution;
+import com.sun.javafx.geom.Vec3d;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.inventory.Slot;
@@ -192,10 +196,11 @@ public class RenderUtils {
         if (type == MobDisplayTypes.BAT || isBoss){
             GlStateManager.disableDepth();
         }
-
+        GlStateManager.pushMatrix();
+        GlStateManager.disableTexture2D();
+        GlStateManager.disableCull();
         GlStateManager.disableLighting();
         GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
-        GlStateManager.disableTexture2D();
 
         Entity player = mc.getRenderViewEntity();
         double playerX = player.lastTickPosX + (player.posX - player.lastTickPosX) * partialTicks;
@@ -337,8 +342,105 @@ public class RenderUtils {
         GlStateManager.enableLighting();
         GlStateManager.enableCull();
         GlStateManager.enableTexture2D();
-
+        GlStateManager.popMatrix();
     }
+
+    public static void drawTag(String str, double[] pos) {
+        FontRenderer fontrenderer = Minecraft.getMinecraft().fontRendererObj;
+        EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
+        double x = ((pos[0] - player.posX) + 0.5) ;
+        double y = ((pos[1] - player.posY) + 0.5);
+        double z = ((pos[2] - player.posZ) + 0.5);
+        RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
+        float f = 3F;
+        float f1 = 0.016666668F * f;
+        GlStateManager.pushMatrix();
+        //double[] vector = getNormalizedVector(pos, new double[] {player.posX, player.posY, player.posZ});
+        GlStateManager.translate((float)x, (float)y + 2.5, (float)z);
+        GL11.glNormal3f(0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(-renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
+        GlStateManager.scale(-f1, -f1, f1);
+        //GlStateManager.disableLighting();
+        GlStateManager.depthMask(false);
+        GlStateManager.disableDepth();
+        GlStateManager.enableBlend();
+        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+        int i = 0;
+        int j = fontrenderer.getStringWidth(str) / 2;
+        GlStateManager.disableTexture2D();
+        worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
+        worldrenderer.pos((double)(-j - 1), (double)(-1 + i), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+        worldrenderer.pos((double)(-j - 1), (double)(8 + i), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+        worldrenderer.pos((double)(j + 1), (double)(8 + i), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+        worldrenderer.pos((double)(j + 1), (double)(-1 + i), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+        tessellator.draw();
+        GlStateManager.enableTexture2D();
+        fontrenderer.drawString(str, -fontrenderer.getStringWidth(str) / 2, i, 553648127);
+        GlStateManager.depthMask(true);
+        fontrenderer.drawString(str, -fontrenderer.getStringWidth(str) / 2, i, -1);
+        GlStateManager.enableDepth();
+        //GlStateManager.enableLighting();
+        GlStateManager.disableBlend();
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.popMatrix();
+    }
+
+    public static void drawTracer(int[] targetPos, Color color) {
+        if (targetPos.length != 3) {
+            throw new IllegalArgumentException("Target position must be an array of exactly 3 integers (x, y, z).");
+        }
+
+        // Save and disable view bobbing
+        boolean userViewBobbing = Minecraft.getMinecraft().gameSettings.viewBobbing;
+        Minecraft.getMinecraft().gameSettings.viewBobbing = false;
+
+        // Restore view bobbing
+        Minecraft.getMinecraft().gameSettings.viewBobbing = userViewBobbing;
+
+        // Configure OpenGL state
+        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GlStateManager.enableBlend();
+        GlStateManager.disableTexture2D();
+        GlStateManager.disableDepth();
+        GlStateManager.depthMask(false);
+
+        // Set color
+        GlStateManager.color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
+
+        // Calculate player's eye position
+        EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
+        double eyeX = 0;
+        double eyeY = player.getEyeHeight();
+        double eyeZ = 1;
+
+        // Rotate based on player's pitch and yaw
+        double pitchRadians = Math.toRadians(-player.rotationPitch);
+        double yawRadians = Math.toRadians(-player.rotationYaw);
+
+        double rotatedX = eyeX * Math.cos(yawRadians) - eyeZ * Math.sin(yawRadians);
+        double rotatedZ = eyeX * Math.sin(yawRadians) + eyeZ * Math.cos(yawRadians);
+
+        double finalEyeX = rotatedX;
+        double finalEyeY = eyeY + eyeX * Math.sin(pitchRadians);
+        double finalEyeZ = rotatedZ;
+
+        // Draw the line
+        GL11.glBegin(GL11.GL_LINES);
+        GL11.glVertex3d(finalEyeX, finalEyeY, finalEyeZ); // Start at the player's eye position
+        GL11.glVertex3d(targetPos[0] + 0.5, targetPos[1] + 0.5, targetPos[2] + 0.5); // End at target position (center of the block)
+        GL11.glEnd();
+
+        // Restore OpenGL state
+        GlStateManager.enableTexture2D();
+        GlStateManager.enableDepth();
+        GlStateManager.depthMask(true);
+        GlStateManager.disableBlend();
+    }
+
+
 
     public static void highlightSlot(Slot slot, Color color){
         boolean lightingState = GL11.glIsEnabled(GL11.GL_LIGHTING);
@@ -362,15 +464,18 @@ public class RenderUtils {
             GlStateManager.enableLighting();
         }
     }
-
     public static void draw3DLine(Vec3 pos1, Vec3 pos2, Color color, int lineWidth, boolean depth, float partialTicks) {
+        draw3DLine(pos1, pos2, color, lineWidth, depth, partialTicks, false);
+    }
+
+    public static void draw3DLine(Vec3 pos1, Vec3 pos2, Color color, int lineWidth, boolean depth, float partialTicks, boolean fromHead) {
         Entity render = Minecraft.getMinecraft().getRenderViewEntity();
         WorldRenderer worldRenderer = Tessellator.getInstance().getWorldRenderer();
 
         double coordX = render.lastTickPosX + (render.posX - render.lastTickPosX) * partialTicks;
         double coordY = render.lastTickPosY + (render.posY - render.lastTickPosY) * partialTicks;
         double coordZ = render.lastTickPosZ + (render.posZ - render.lastTickPosZ) * partialTicks;
-
+        Vec3 pos2final = pos2;
         GlStateManager.pushMatrix();
         GlStateManager.translate(-coordX, -coordY, -coordZ);
         GlStateManager.disableTexture2D();
@@ -382,11 +487,14 @@ public class RenderUtils {
             GL11.glDisable(GL11.GL_DEPTH_TEST);
             GlStateManager.depthMask(false);
         }
+
+        if (fromHead) {
+            pos2final = new Vec3(0, 0, 1).rotatePitch(-(float) Math.toRadians(Minecraft.getMinecraft().thePlayer.rotationPitch)).rotateYaw(-(float) Math.toRadians(Minecraft.getMinecraft().thePlayer.rotationYaw));
+        }
         GlStateManager.color(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f);
         worldRenderer.begin(GL11.GL_LINE_STRIP, DefaultVertexFormats.POSITION);
-
         worldRenderer.pos(pos1.xCoord, pos1.yCoord, pos1.zCoord).endVertex();
-        worldRenderer.pos(pos2.xCoord, pos2.yCoord, pos2.zCoord).endVertex();
+        worldRenderer.pos(pos2final.xCoord, pos2final.yCoord, pos2final.zCoord).endVertex();
         Tessellator.getInstance().draw();
 
         GlStateManager.translate(coordX, coordY, coordZ);
@@ -421,16 +529,22 @@ public class RenderUtils {
     }
 
     public static void drawFilledBoundingBox(AxisAlignedBB p_181561_0_, float alpha, Color color) {
-        Color c = color;
-
+        GlStateManager.pushMatrix(); // Save the current state
+        GlStateManager.disableCull();
         GlStateManager.enableBlend();
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
         GlStateManager.disableTexture2D();
 
+        // Ensure consistent color and alpha
+        GlStateManager.color(
+                color.getRed() / 255f,
+                color.getGreen() / 255f,
+                color.getBlue() / 255f,
+                color.getAlpha() / 255f * alpha
+        );
+
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-
-        GlStateManager.color(c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f, c.getAlpha() / 255f * alpha);
 
         //vertical
         worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
@@ -447,10 +561,10 @@ public class RenderUtils {
         tessellator.draw();
 
         GlStateManager.color(
-                c.getRed() / 255f * 0.8f,
-                c.getGreen() / 255f * 0.8f,
-                c.getBlue() / 255f * 0.8f,
-                c.getAlpha() / 255f * alpha
+                color.getRed() / 255f * 0.8f,
+                color.getGreen() / 255f * 0.8f,
+                color.getBlue() / 255f * 0.8f,
+                color.getAlpha() / 255f * alpha
         );
 
         //x
@@ -468,10 +582,10 @@ public class RenderUtils {
         tessellator.draw();
 
         GlStateManager.color(
-                c.getRed() / 255f * 0.9f,
-                c.getGreen() / 255f * 0.9f,
-                c.getBlue() / 255f * 0.9f,
-                c.getAlpha() / 255f * alpha
+                color.getRed() / 255f * 0.9f,
+                color.getGreen() / 255f * 0.9f,
+                color.getBlue() / 255f * 0.9f,
+                color.getAlpha() / 255f * alpha
         );
         //z
         worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
@@ -486,6 +600,14 @@ public class RenderUtils {
         worldrenderer.pos(p_181561_0_.maxX, p_181561_0_.maxY, p_181561_0_.maxZ).endVertex();
         worldrenderer.pos(p_181561_0_.minX, p_181561_0_.maxY, p_181561_0_.maxZ).endVertex();
         tessellator.draw();
+
+        // Reset OpenGL state to ensure no side effects
+        GlStateManager.enableTexture2D();
+        GlStateManager.disableBlend();
+        GlStateManager.enableCull();
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F); // Reset to white
+        GlStateManager.popMatrix(); // Restore the saved state
     }
+
 
 }

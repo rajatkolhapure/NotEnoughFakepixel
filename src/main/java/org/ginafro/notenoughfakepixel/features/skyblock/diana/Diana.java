@@ -212,10 +212,17 @@ public class Diana {
                     ).expand(0.01f, 0.01f, 0.01f);
                 }
 
-                GlStateManager.disableCull();
                 RenderUtils.drawFilledBoundingBox(bb, 1f, newColor);
-                GlStateManager.enableCull();
-                GlStateManager.enableTexture2D();
+                EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
+                if (Configuration.dianaShowLabelsWaypoints) RenderUtils.drawTag(result.getType(), Arrays.stream(result.getCoordinates()).asDoubleStream().toArray());
+                if (Configuration.dianaShowLabelsWaypoints) RenderUtils.drawTag("("+Math.round(ParticleProcessor.getDistance(result.getCoordinates(), new int[] {player.getPosition().getX(), player.getPosition().getY(),player.getPosition().getZ()})*10)/10+"m)", new double[]{result.getCoordinates()[0],result.getCoordinates()[1]-0.5,result.getCoordinates()[2]});
+                //RenderUtils.drawTracer(result.getCoordinates(), new Color(0,0,0,255));
+                if (Configuration.dianaShowTracersWaypoints) RenderUtils.draw3DLine(new Vec3(result.getCoordinates()[0]+0.5,result.getCoordinates()[1],result.getCoordinates()[2]+0.5),
+                        player.getPositionEyes(partialTicks),
+                        newColor,
+                        4,
+                        true,
+                        partialTicks);
             }
         } catch (Exception ignored) {}
     }

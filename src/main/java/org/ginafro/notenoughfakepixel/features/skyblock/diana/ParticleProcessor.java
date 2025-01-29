@@ -203,7 +203,7 @@ public class ParticleProcessor {
         return distance < threshold;
     }
 
-    public float getDistance(int[] coords1, int[] coords2) {
+    public static float getDistance(int[] coords1, int[] coords2) {
         return (float) Math.sqrt(
                 Math.pow(coords1[0] - coords2[0], 2) +
                         Math.pow(coords1[1] - coords2[1], 2) +
