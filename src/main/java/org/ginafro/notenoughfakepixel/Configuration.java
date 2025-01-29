@@ -216,8 +216,12 @@ public class Configuration extends Config {
     public static boolean dianaShowWaypointsBurrows = true;
     @Color(name = "Empty Burrow Color", category = DIANA, subcategory = "Waypoints")
     public static OneColor dianaEmptyBurrowColor = new OneColor(0, 0, 255);
+    @Switch(name = "Show Labels on Waypoints" , category = DIANA, subcategory = "Waypoints", description = "IMPORTANT: this feature needs burrow waypoints active. Show labels on burrows when a waypoint is added, indicating the type of burrow and distance to it.")
+    public static boolean dianaShowLabelsWaypoints = true;
     @Color(name = "Mob Burrow Color", category = DIANA, subcategory = "Waypoints")
     public static OneColor dianaMobBurrowColor = new OneColor(255, 255, 255);
+    @Switch(name = "Show Tracers on Waypoints" , category = DIANA, subcategory = "Waypoints", description = "IMPORTANT: this feature needs burrow waypoints active. Show tracers on burrows when a waypoint is added.")
+    public static boolean dianaShowTracersWaypoints = true;
     @Color(name = "Treasure Burrow Color", category = DIANA, subcategory = "Waypoints")
     public static OneColor dianaTreasureBurrowColor = new OneColor(255, 0, 0);
     @Switch(name = "Track Gaia Hits" , category = DIANA, subcategory = "Mobs", description = "Turn off/on hitbox that represents when Gaia Construct can be damaged.")
@@ -275,6 +279,9 @@ public class Configuration extends Config {
     public static boolean experimentationUltraSequencerSolver = true;
     @Switch(name = "Prevent missclicks" , category = EXPERIMENTATION, description = "IMPORTANT: this feature doesn't work properly if your connection isn't stable or server has lag. Prevents clicking wrong answers when doing experiments.")
     public static boolean experimentationPreventMissclicks = true;
+    //@Switch(name = "Auto solver" , category = EXPERIMENTATION)
+    public static boolean experimentationAutoSolver = false;
+
 
     // Mining
 

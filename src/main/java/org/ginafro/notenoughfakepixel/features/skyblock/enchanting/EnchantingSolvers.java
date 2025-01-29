@@ -22,6 +22,8 @@ import org.lwjgl.input.Mouse;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class EnchantingSolvers {
 
@@ -34,6 +36,8 @@ public class EnchantingSolvers {
     private boolean resolving = false;
     private Color green = new Color(0, 255, 0);
     private int slotToClickUltrasequencer = 1;
+    private boolean clicked = false;
+    private int roundUltraSequencerSolver = 1;
 
     private class UltrasequencerSlot{
         public Slot slot;
@@ -80,6 +84,9 @@ public class EnchantingSolvers {
             currentSolverType = SolverTypes.NONE;
         }
         resolving = false;
+        clicked = false;
+        slotToClickUltrasequencer = 1;
+        roundUltraSequencerSolver = 1;
     }
 
     @SubscribeEvent
@@ -102,14 +109,14 @@ public class EnchantingSolvers {
 
             // if not clock, then remember the items
             if (!isClock){
+                if (roundUltraSequencerSolver == ultrasequencerSlots.size()) return;
+                if (resolving) ultrasequencerSlots.clear();
                 resolving = false;
-                ultrasequencerSlots = new ArrayList<>();
                 for(Slot slot : containerChest.inventorySlots) {
                     // select only the items in the chest
                     if (slot.inventory == Minecraft.getMinecraft().thePlayer.inventory) continue;
                     ItemStack item = slot.getStack();
                     if (item == null) continue;
-
 
                     if (item.getItem() == Items.dye) {
 
@@ -125,8 +132,21 @@ public class EnchantingSolvers {
                     ItemStack itemInSlot = containerChest.inventorySlots.get(slot.slot.slotNumber).getStack();
                     if (itemInSlot == null) continue;
                     if (itemInSlot.getItem() == Items.dye) continue;
-
-                    RenderUtils.drawOnSlot(containerChest.inventorySlots.size(), slot.slot.xDisplayPosition, slot.slot.yDisplayPosition, new Color(255, 0, 0).getRGB(), slot.quantity);
+                    Color color = new Color(255, 0, 0);
+                    if (slot.quantity == slotToClickUltrasequencer) color = new Color(0, 255, 0);
+                    RenderUtils.drawOnSlot(containerChest.inventorySlots.size(), slot.slot.xDisplayPosition, slot.slot.yDisplayPosition, color.getRGB(), slot.quantity);
+                    if (Configuration.experimentationAutoSolver && slotToClickUltrasequencer == slot.quantity && !clicked) {
+                        clicked = true;
+                        ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(1);
+                        exec.schedule(new Runnable() {
+                            public void run() {
+                                Minecraft.getMinecraft().playerController.windowClick(chest.inventorySlots.windowId, slot.slot.getSlotIndex(), 2, 3, Minecraft.getMinecraft().thePlayer);
+                                if (ultrasequencerSlots.size() == slotToClickUltrasequencer) roundUltraSequencerSolver++;
+                                slotToClickUltrasequencer++;
+                                clicked = false;
+                            }
+                        }, 400, TimeUnit.MILLISECONDS);
+                    }
                 }
             }
         } else if (Configuration.experimentationChronomatronSolver && currentSolverType == SolverTypes.CHRONOMATRON){
@@ -199,11 +219,22 @@ public class EnchantingSolvers {
                         if (resolved) {
                             chronomatronOrder.remove(0);
                             resolved = false;
+                            clicked = false;
                             return;
                         }
                         Slot slot1 = containerChest.inventorySlots.get(resultIndex);
                         Slot slot2 = containerChest.inventorySlots.get(resultIndex+9);
                         RenderUtils.drawOnSlot(containerChest.inventorySlots.size(), slot1.xDisplayPosition, slot1.yDisplayPosition, green.getRGB());
+                        if (Configuration.experimentationAutoSolver && !clicked) {
+                            clicked = true;
+                            ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(1);
+                            exec.schedule(new Runnable() {
+                                public void run() {
+                                    Minecraft.getMinecraft().playerController.windowClick(chest.inventorySlots.windowId, resultIndex, 2, 3, Minecraft.getMinecraft().thePlayer);
+                                    System.out.println("Clicked "+resultIndex);
+                                }
+                            }, 200, TimeUnit.MILLISECONDS);
+                        }
                         RenderUtils.drawOnSlot(containerChest.inventorySlots.size(), slot2.xDisplayPosition, slot2.yDisplayPosition, green.getRGB());
                         if (!TablistParser.currentOpenChestName.contains("Transcendent") && !TablistParser.currentOpenChestName.contains("Metaphysical")) {
                             Slot slot3 = containerChest.inventorySlots.get(resultIndex+18);
@@ -228,6 +259,7 @@ public class EnchantingSolvers {
             noteFinished = true;
             resolved = false;
             resolving = false;
+            clicked = false;
             slotToClickUltrasequencer = 1;
         }
     }
@@ -235,7 +267,6 @@ public class EnchantingSolvers {
     @SubscribeEvent
     public void onMouseClick(GuiScreenEvent.MouseInputEvent.Pre event) {
         if (!Mouse.getEventButtonState()) return;
-        if (!Configuration.experimentationPreventMissclicks) return;
         if (!(Minecraft.getMinecraft().currentScreen instanceof GuiChest)) return; // Check if the current screen is a chest GUI
         GuiChest chestGui = (GuiChest) Minecraft.getMinecraft().currentScreen;
         if (chestGui.getSlotUnderMouse() == null) return;
@@ -246,19 +277,20 @@ public class EnchantingSolvers {
                     (slotIndex == chronomatronOrder.get(0) + 18 && !TablistParser.currentOpenChestName.contains("Transcendent") && !TablistParser.currentOpenChestName.contains("Metaphysical"))) {
                 return; // Valid case, no need to cancel the event
             }
-            event.setCanceled(true);
+            if (Configuration.experimentationPreventMissclicks) event.setCanceled(true);
         } else if (Configuration.experimentationUltraSequencerSolver && currentSolverType == SolverTypes.ULTRASEQUENCER && resolving) {
             for(UltrasequencerSlot slot : ultrasequencerSlots){
                 //System.out.println(slotToClickUltrasequencer + ", " + slot.quantity);
                 ItemStack itemInSlot = chestGui.inventorySlots.getInventory().get(slotIndex);
                 if (slot.slot == chestGui.getSlotUnderMouse() && slotToClickUltrasequencer == slot.quantity) {
+                    if (ultrasequencerSlots.size() == slotToClickUltrasequencer) roundUltraSequencerSolver++;
                     slotToClickUltrasequencer++;
                     return;
                 }
                 if (itemInSlot == null) continue;
                 if (itemInSlot.getItem() == Items.dye) continue;
             }
-            event.setCanceled(true); // cancel click if not found
+            if (Configuration.experimentationPreventMissclicks) event.setCanceled(true); // cancel click if not found
         }
     }
 
