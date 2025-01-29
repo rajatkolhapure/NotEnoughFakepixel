@@ -9,6 +9,7 @@ import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+// THIS CLASS IS NOT USED ATM, ITS ONLY A REFERENCE FOR FUTURE IMPLEMENTATION
 public class GuessBurrow {
 
     int dingIndex = 0;
@@ -28,7 +29,6 @@ public class GuessBurrow {
 
     @SubscribeEvent
     public void onHarpSound(PlaySoundAtEntityEvent event) {
-        if (!Configuration.dungeonsAutoDropItems) return; // Check if the feature is enabled
         if (!ScoreboardUtils.currentLocation.isHub()) return; // Check if the player is in a dungeon
         if (!event.name.equals("note.harp")) return;
         //event.entity.chunkCoordX

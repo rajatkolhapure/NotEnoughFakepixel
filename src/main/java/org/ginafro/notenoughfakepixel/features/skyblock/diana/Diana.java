@@ -370,9 +370,6 @@ public class Diana {
                     if (Configuration.dianaShowWaypointsBurrows) {
                         deleteClosestWaypoint(coordsSound[0], coordsSound[1], coordsSound[2]);
                     }
-                    if (Configuration.dianaAutoEquipAncestralSpadeForParticles) { // Check if the feature is enabled
-                        counterTeleports = 0;
-                    }
 
                     break;
                 // Gaia track hits feature
@@ -401,7 +398,6 @@ public class Diana {
                     }
                     break;
                 case "mob.endermen.portal":
-                    if (!Configuration.dianaAutoEquipAncestralSpadeForParticles) return; // Check if the feature is enabled
                     counterTeleports++;
                     if (counterTeleports > 15) {
                         autoEquipShovelForParticles();
@@ -453,15 +449,6 @@ public class Diana {
         return returnedSiamese;
     }
 
-
-    @SubscribeEvent
-    public void handleClick(PlayerInteractEvent event) {
-        if (!ScoreboardUtils.currentLocation.isHub()) return; // Check if the player is in a hub
-        if (!Configuration.dianaAutoEquipAncestralSpadeForDig) return; // Check if the feature is enabled
-        if (event.action == PlayerInteractEvent.Action.RIGHT_CLICK_AIR) return; // Check if right click on air
-
-        autoEquipShovelForDig(event.face.getName(),event.pos.getX(),event.pos.getY(),event.pos.getZ());
-    }
 
     private void deleteClosestWaypoint(int x, int y, int z) {
         //int[] playerCoords = new int[] {(int)Minecraft.getMinecraft().thePlayer.posX, (int)Minecraft.getMinecraft().thePlayer.posY, (int)Minecraft.getMinecraft().thePlayer.posZ};
