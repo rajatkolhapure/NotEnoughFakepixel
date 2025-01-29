@@ -138,8 +138,7 @@ public class NefCommand extends CommandBase {
             if (field.getType() == boolean.class) {
                 boolean newValue = !field.getBoolean(null);
                 field.setBoolean(null, newValue);
-                if (isDark(field)) sender.addChatMessage(new ChatComponentText(EnumChatFormatting.BLACK + "DARK "+EnumChatFormatting.YELLOW+"Feature " + getDifference(categoryName, variableName).substring(0,1).toLowerCase()+getDifference(categoryName, variableName).substring(1) + " " + formatBoolean(newValue)));
-                else sender.addChatMessage(new ChatComponentText(EnumChatFormatting.YELLOW + "Feature " + getDifference(categoryName, variableName).substring(0,1).toLowerCase()+getDifference(categoryName, variableName).substring(1) + " " + formatBoolean(newValue)));
+                sender.addChatMessage(new ChatComponentText(EnumChatFormatting.YELLOW + "Feature " + getDifference(categoryName, variableName).substring(0,1).toLowerCase()+getDifference(categoryName, variableName).substring(1) + " " + formatBoolean(newValue)));
                 return true;
             }
         } catch (NoSuchFieldException | IllegalAccessException e) {
@@ -158,7 +157,6 @@ public class NefCommand extends CommandBase {
             for (java.lang.reflect.Field field : Configuration.class.getDeclaredFields()) {
                 if (field.getType() == boolean.class && field.getName().startsWith(category)) {
                     if (isPojav() && field.getName().endsWith("Overlay")) continue;
-                    if (isDark(field)) continue;
                     field.setAccessible(true);
                     sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GRAY + "- " + getDifference(category, field.getName()) + " " + formatBoolean((Boolean)field.get(null))));
                 }
@@ -179,7 +177,6 @@ public class NefCommand extends CommandBase {
             for (java.lang.reflect.Field field : Configuration.class.getDeclaredFields()) {
                 if (field.getType() == boolean.class && field.getName().startsWith(category)) {
                     if (isPojav() && field.getName().endsWith("Overlay")) continue;
-                    if (isDark(field)) continue;
                     if (isFirst) {
                         field.setAccessible(true);
                         newValue = value;
@@ -267,7 +264,6 @@ public class NefCommand extends CommandBase {
             for (java.lang.reflect.Field field : Configuration.class.getDeclaredFields()) {
                 if (field.getType() == boolean.class && field.getName().startsWith(category)) {
                     if (isPojav() && field.getName().endsWith("Overlay")) continue;
-                    if (isDark(field)) continue;
                     featureNames.add(getDifference(category, field.getName()));
                 }
             }
@@ -384,13 +380,6 @@ public class NefCommand extends CommandBase {
             return difference.substring(0, 1).toLowerCase() + difference.substring(1);
         }
         return fieldName; // Return the full fieldName if it doesn't start with category
-    }
-
-    private boolean isDark(java.lang.reflect.Field field) {
-        return (field.getName().equals("dianaAutoEquipAncestralSpadeForDig") ||
-                field.getName().equals("dianaAutoEquipAncestralSpadeForParticles") ||
-                field.getName().equals("dungeonsAutoDropItems") ||
-                field.getName().equals("experimentationAutoSolver"));
     }
 
     private boolean isPojav() {
