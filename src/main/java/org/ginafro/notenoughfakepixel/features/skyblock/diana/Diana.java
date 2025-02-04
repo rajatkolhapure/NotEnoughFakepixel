@@ -54,6 +54,7 @@ public class Diana {
     public void onParticlePacketReceive(PacketReadEvent event) {
         if (!Configuration.dianaShowWaypointsBurrows) return; // Check if the feature is enabled
         if (!ScoreboardUtils.currentLocation.isHub()) return; // Check if the player is in a hub
+        if (InventoryUtils.getSlot("Ancestral Spade") == -1) return;
         Packet packet = event.packet;
          if (packet instanceof S2APacketParticles) {
              S2APacketParticles particles = (S2APacketParticles) packet;
@@ -95,6 +96,7 @@ public class Diana {
     public void onRenderLast(RenderWorldLastEvent event) {
         if (!ScoreboardUtils.currentLocation.isHub()) return; // Check if the player is in a hub
         if (Configuration.dianaShowWaypointsBurrows) drawWaypoints(event.partialTicks);
+        if (InventoryUtils.getSlot("Ancestral Spade") == -1) return;
         if (Configuration.dianaGaiaConstruct || Configuration.dianaSiamese) {
             dianaMobCheck(); // Check entities on world, add to lists if not tracked
             dianaMobRemover(); // Remove mobs from lists if out of render distance
@@ -214,8 +216,8 @@ public class Diana {
 
                 RenderUtils.drawFilledBoundingBox(bb, 1f, newColor);
                 EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
-                if (Configuration.dianaShowLabelsWaypoints) RenderUtils.drawTag(result.getType(), Arrays.stream(result.getCoordinates()).asDoubleStream().toArray());
-                if (Configuration.dianaShowLabelsWaypoints) RenderUtils.drawTag("("+Math.round(ParticleProcessor.getDistance(result.getCoordinates(), new int[] {player.getPosition().getX(), player.getPosition().getY(),player.getPosition().getZ()})*10)/10+"m)", new double[]{result.getCoordinates()[0],result.getCoordinates()[1]-0.5,result.getCoordinates()[2]});
+                if (Configuration.dianaShowLabelsWaypoints) RenderUtils.drawTag(result.getType(), Arrays.stream(result.getCoordinates()).asDoubleStream().toArray(), new Color(255, 255, 255), partialTicks);
+                if (Configuration.dianaShowLabelsWaypoints) RenderUtils.drawTag("("+Math.round(ParticleProcessor.getDistance(result.getCoordinates(), new int[] {player.getPosition().getX(), player.getPosition().getY(),player.getPosition().getZ()})*10)/10+"m)", new double[]{result.getCoordinates()[0],result.getCoordinates()[1]-0.5,result.getCoordinates()[2]}, new Color(255, 255, 255), partialTicks);
                 //RenderUtils.drawTracer(result.getCoordinates(), new Color(0,0,0,255));
                 if (Configuration.dianaShowTracersWaypoints) RenderUtils.draw3DLine(new Vec3(result.getCoordinates()[0]+0.5,result.getCoordinates()[1],result.getCoordinates()[2]+0.5),
                         player.getPositionEyes(partialTicks),
@@ -354,9 +356,9 @@ public class Diana {
         Packet packet = event.packet;
         if (packet instanceof S29PacketSoundEffect) {
             S29PacketSoundEffect soundEffect = (S29PacketSoundEffect) packet;
-            //System.out.println(soundEffect.getSoundName());
             int[] coordsSound = new int[] {(int)Math.floor(soundEffect.getX()), (int)Math.floor(soundEffect.getY()), (int)Math.floor(soundEffect.getZ())};
             String soundName = soundEffect.getSoundName();
+            //System.out.println(soundName);
             switch (soundName) {
                 // Remove explosion sound feature
                 case "random.explode":
@@ -367,7 +369,8 @@ public class Diana {
                     break;
                 // Remove waypoint at pling sound
                 case "note.pling":
-                    if (Configuration.dianaShowWaypointsBurrows) {
+                    //System.out.println(soundEffect.getVolume() + ", " + soundEffect.getPitch());
+                    if (Configuration.dianaShowWaypointsBurrows && soundEffect.getVolume() == 8.0f) {
                         deleteClosestWaypoint(coordsSound[0], coordsSound[1], coordsSound[2]);
                     }
 
@@ -493,53 +496,6 @@ public class Diana {
         if (Configuration.dianaCancelCooldownSpadeMessage) {
             cancelMessage(true, event, cooldownPattern, true);
         }
-        /*if (Configuration.dianaMinosInquisitorAlert && minosInquisitor.matcher(event.message.getFormattedText()).matches()) {
-            String locationName = findNearestLocation(player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ());
-            Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc Minos Inquisitor found at " + locationName + ", x:"+player.getPosition().getX()+", y:"+player.getPosition().getY()+", z:"+player.getPosition().getZ() + " in HUB-"+getHubNumber());
-            //player.sendChatMessage("/pc Minos Inquisitor found at x:"+player.getPosition().getX()+", y:"+player.getPosition().getY()+", z:"+player.getPosition().getZ() + " in HUB-"+getHubNumber());
-            // vvvvv PENDING OF TESTING vvvvv
-            ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(8);
-            exec.schedule(new Runnable() {
-                public void run() {
-                    player.sendChatMessage("/pc 30 seconds left!");
-                }
-            }, 30, TimeUnit.SECONDS);
-            exec.schedule(new Runnable() {
-                public void run() {
-                    player.sendChatMessage("/pc 20 seconds left!");
-                }
-            }, 40, TimeUnit.SECONDS);
-            exec.schedule(new Runnable() {
-                public void run() {
-                    player.sendChatMessage("/pc 10 seconds left!");
-                }
-            }, 50, TimeUnit.SECONDS);
-            exec.schedule(new Runnable() {
-                public void run() {
-                    player.sendChatMessage("/pc 5");
-                }
-            }, 55, TimeUnit.SECONDS);
-            exec.schedule(new Runnable() {
-                public void run() {
-                    player.sendChatMessage("/pc 4");
-                }
-            }, 56, TimeUnit.SECONDS);
-            exec.schedule(new Runnable() {
-                public void run() {
-                    player.sendChatMessage("/pc 3");
-                }
-            }, 57, TimeUnit.SECONDS);
-            exec.schedule(new Runnable() {
-                public void run() {
-                    player.sendChatMessage("/pc 2");
-                }
-            }, 58, TimeUnit.SECONDS);
-            exec.schedule(new Runnable() {
-                public void run() {
-                    player.sendChatMessage("/pc 1");
-                }
-            }, 59, TimeUnit.SECONDS);
-        }*/
         if (Configuration.dianaMinosInquisitorAlert) {
             Matcher matcher = minosInquisitorPartyChat.matcher(event.message.getFormattedText());
             if (matcher.find()) {
@@ -557,8 +513,19 @@ public class Diana {
 
                 if (getHubNumber() == hubNumber) {
                     Waypoint wp = new Waypoint("MINOS", new int[]{x, y, z});
+                    processor.deleteWaypoint(processor.getClosestWaypoint(new int[] {x,y,z}));
                     processor.addWaypoint(wp);
-                    ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(1);
+                    ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(3);
+                    exec.schedule(new Runnable() {
+                        public void run() {
+                            Minecraft.getMinecraft().thePlayer.sendChatMessage(EnumChatFormatting.YELLOW+"30 seconds for despawn!");
+                        }
+                    }, 30, TimeUnit.SECONDS);
+                    exec.schedule(new Runnable() {
+                        public void run() {
+                            Minecraft.getMinecraft().thePlayer.sendChatMessage(EnumChatFormatting.YELLOW+"10 seconds for despawn!");
+                        }
+                    }, 50, TimeUnit.SECONDS);
                     exec.schedule(new Runnable() {
                         public void run() {
                             processor.deleteWaypoint(wp);

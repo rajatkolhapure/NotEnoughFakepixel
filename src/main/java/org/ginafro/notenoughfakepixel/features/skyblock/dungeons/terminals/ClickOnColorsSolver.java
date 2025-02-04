@@ -1,7 +1,6 @@
 package org.ginafro.notenoughfakepixel.features.skyblock.dungeons.terminals;
 
 
-import cc.polyfrost.oneconfig.config.core.OneColor;
 import net.minecraft.block.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiChest;
@@ -16,16 +15,15 @@ import org.ginafro.notenoughfakepixel.Configuration;
 import org.ginafro.notenoughfakepixel.utils.RenderUtils;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 import org.ginafro.notenoughfakepixel.variables.F7ColorsDict;
-import org.ginafro.notenoughfakepixel.variables.Gamemode;
-
+import org.lwjgl.input.Mouse;
 
 public class ClickOnColorsSolver {
 
     @SubscribeEvent
-    public void onOpen(GuiScreenEvent.BackgroundDrawnEvent e){
+    public void onGuiRender(GuiScreenEvent.BackgroundDrawnEvent e){
+        if(!Configuration.dungeonsSelectColors) return;
+        if(!ScoreboardUtils.currentGamemode.isSkyblock()) return;
         if(!ScoreboardUtils.currentLocation.isDungeon()) return;
-
-        if(!Configuration.dungeonsSelectColors && ScoreboardUtils.currentGamemode != Gamemode.SKYBLOCK) return;
         if(!(e.gui instanceof GuiChest)) return;
 
         GuiChest chest = (GuiChest) e.gui;
@@ -33,36 +31,86 @@ public class ClickOnColorsSolver {
 
         if(!(container instanceof ContainerChest)) return;
         String title = ((ContainerChest) container).getLowerChestInventory().getDisplayName().getUnformattedText();
-        if (!title.startsWith("Select all the ")) return;
+        if (!title.startsWith("Select all the")) return;
         String color = title.split("the ")[1].split(" items")[0].toLowerCase();
 
         ContainerChest containerChest = (ContainerChest) container;
         for(Slot slot : containerChest.inventorySlots) {
-            // select only the items in the chest
+            // Select only the items in the chest
             if (slot.inventory == Minecraft.getMinecraft().thePlayer.inventory) continue;
-            ItemStack item = slot.getStack();
-            if (item == null) continue;
-            if (item.isItemEnchanted()) continue;
 
-            if (item.getItem() == Items.dye) {
-                System.out.println(F7ColorsDict.getColorFromDye(item.getMetadata()).toString() + " " + color);
-                if (color.equals(F7ColorsDict.getColorFromDye(item.getMetadata()).toString())) {
-                    highlightSlot(slot, chest);
+            ItemStack itemStack = slot.getStack();
+            if (itemStack == null) continue;
+
+            if (containerChest.inventorySlots.indexOf(slot) == 49) {
+                if (!Configuration.dungeonsTerminalHideIncorrect) continue;
+                itemStack.setItem(containerChest.inventorySlots.get(0).getStack().getItem());
+                itemStack.getItem().setDamage(itemStack, 15);
+                continue;
+            }
+
+            // Hide already clicked
+            if (itemStack.isItemEnchanted()) {
+                if (!Configuration.dungeonsTerminalHideIncorrect) continue;
+                itemStack.setItem(containerChest.inventorySlots.get(0).getStack().getItem());
+                itemStack.getItem().setDamage(itemStack, 15);
+                continue;
+            }
+
+            // If its tint
+            if (itemStack.getItem() == Items.dye) {
+                //System.out.println(F7ColorsDict.getColorFromDye(itemStack.getMetadata()).toString() + " " + color);
+                if (color.equals(F7ColorsDict.getColorFromDye(itemStack.getMetadata()).toString())) {
+                    RenderUtils.drawOnSlot(chest.inventorySlots.inventorySlots.size(), slot.xDisplayPosition, slot.yDisplayPosition, Configuration.dungeonsCorrectColor.getRGB());
+                } else {
+                    // HIDE OTHER SLOTS
+                    if (!Configuration.dungeonsTerminalHideIncorrect) continue;
+                    // Hide unwanted slots
+                    itemStack.setItem(containerChest.inventorySlots.get(0).getStack().getItem());
+                    itemStack.getItem().setDamage(itemStack, 15);
                 }
-            } else if (Block.getBlockFromItem(item.getItem()) instanceof BlockStainedGlassPane ||
-                    Block.getBlockFromItem(item.getItem()) instanceof BlockStainedGlass ||
-                    Block.getBlockFromItem(item.getItem()) instanceof BlockColored ||
-                    Block.getBlockFromItem(item.getItem()) instanceof BlockCarpet) {
-                if (color.equals(F7ColorsDict.getColorFromMain(item.getMetadata()).toString())) {
-                    highlightSlot(slot, chest);
+            // If its glass type
+            } else if (Block.getBlockFromItem(itemStack.getItem()) instanceof BlockStainedGlassPane ||
+                    Block.getBlockFromItem(itemStack.getItem()) instanceof BlockStainedGlass ||
+                    Block.getBlockFromItem(itemStack.getItem()) instanceof BlockColored ||
+                    Block.getBlockFromItem(itemStack.getItem()) instanceof BlockCarpet) {
+                if (color.equals(F7ColorsDict.getColorFromMain(itemStack.getMetadata()).toString())) {
+                    //itemStack.getItem().setDamage(itemStack, 0);
+                    RenderUtils.drawOnSlot(chest.inventorySlots.inventorySlots.size(), slot.xDisplayPosition, slot.yDisplayPosition, Configuration.dungeonsCorrectColor.getRGB());
+                } else {
+                    // HIDE OTHER SLOTS
+                    if (!Configuration.dungeonsTerminalHideIncorrect) continue;
+                    if (itemStack.getMetadata() != 15) {
+                        itemStack.setItem(containerChest.inventorySlots.get(0).getStack().getItem());
+                        itemStack.getItem().setDamage(itemStack, 15);
+                    }
                 }
+            } else {
+                // HIDE OTHER SLOTS
+                if (!Configuration.dungeonsTerminalHideIncorrect) continue;
+                itemStack.setItem(containerChest.inventorySlots.get(0).getStack().getItem());
+                itemStack.getItem().setDamage(itemStack, 15);
             }
         }
     }
 
-    public static void highlightSlot(Slot slot, GuiChest chest){
-        OneColor color1 = Configuration.dungeonsTerminalColor;
-        RenderUtils.drawOnSlot(chest.inventorySlots.inventorySlots.size(), slot.xDisplayPosition, slot.yDisplayPosition, color1.getRGB());
+    @SubscribeEvent
+    public void onMouseClick(GuiScreenEvent.MouseInputEvent.Pre event) {
+        if (!Configuration.dungeonsPreventMissclicks) return;
+        if (!Configuration.dungeonsClickInOrder) return;
+        if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
+        if (!ScoreboardUtils.currentLocation.isDungeon()) return;
+        if (!Mouse.getEventButtonState()) return;
+        if (!(Minecraft.getMinecraft().currentScreen instanceof GuiChest)) return; // Check if the current screen is a chest GUI
+        GuiChest guiChest = (GuiChest) Minecraft.getMinecraft().currentScreen;
+        Container container = guiChest.inventorySlots;
+        if (!(container instanceof ContainerChest)) return;
+        String title = ((ContainerChest) container).getLowerChestInventory().getDisplayName().getUnformattedText();
+        if (!title.startsWith("Select all the")) return;
+        if (guiChest.getSlotUnderMouse() == null || guiChest.getSlotUnderMouse().getStack() == null) return;
+        if (Block.getBlockFromItem(guiChest.getSlotUnderMouse().getStack().getItem()) instanceof BlockStainedGlassPane && guiChest.getSlotUnderMouse().getStack().getMetadata() == 15) {
+            event.setCanceled(true);
+        }
     }
 
 }

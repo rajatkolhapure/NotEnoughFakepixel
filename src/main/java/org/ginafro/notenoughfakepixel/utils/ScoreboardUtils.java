@@ -224,11 +224,11 @@ public class ScoreboardUtils {
 
     @SubscribeEvent
     public void onWorldUnload(WorldEvent.Unload event) {
-        this.currentLocation = Location.NONE;
-        this.currentGamemode = Gamemode.LOBBY;
-        this.currentArea = Area.NONE;
-        this.currentFloor = DungeonFloor.NONE;
-        this.clearedPercentage = -1;
+        currentLocation = Location.NONE;
+        currentGamemode = Gamemode.LOBBY;
+        currentArea = Area.NONE;
+        currentFloor = DungeonFloor.NONE;
+        clearedPercentage = -1;
     }
 
 }

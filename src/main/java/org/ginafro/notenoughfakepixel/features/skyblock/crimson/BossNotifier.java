@@ -101,6 +101,7 @@ public class BossNotifier {
 
     @SubscribeEvent()
     public void onWorldUnload(WorldEvent.Unload event) {
+        if (Crimson.checkEssentials()) return;
         if (Configuration.crimsonBladesoulNotifier) {
             Arrays.fill(bladesoulScheduled, false);
             bladesoulReady = -1;

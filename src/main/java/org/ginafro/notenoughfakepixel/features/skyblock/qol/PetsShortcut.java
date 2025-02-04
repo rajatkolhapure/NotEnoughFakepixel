@@ -16,19 +16,18 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class Wardrobe {
-
+public class PetsShortcut {
     private final Set<Integer> activeKeySet = new HashSet<>();
 
 
     @SubscribeEvent
     public void onKeyPress(InputEvent.KeyInputEvent event) {
-        if (!Configuration.qolShortcutWardrobe) return;
+        if (!Configuration.qolShortcutPets) return;
         if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
         EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
 
         // Get the list of key binds
-        List<Integer> keyBinds = Configuration.qolWardrobeKeyBind.getKeyBinds();
+        List<Integer> keyBinds = Configuration.qolPetsKeyBind.getKeyBinds();
 
         // Check if all keys in the list are currently pressed
         boolean allKeysPressed = keyBinds.stream().allMatch(Keyboard::isKeyDown);
@@ -36,7 +35,7 @@ public class Wardrobe {
         // If all keys are pressed and they are not already active
         if (allKeysPressed && !activeKeySet.containsAll(keyBinds)) {
             // Execute the action
-            player.sendChatMessage("/wardrobe");
+            player.sendChatMessage("/pets");
 
             // Mark these keys as active
             activeKeySet.addAll(keyBinds);
@@ -60,12 +59,12 @@ public class Wardrobe {
 
         if(!(container instanceof ContainerChest)) return;
         String title = ((ContainerChest) container).getLowerChestInventory().getDisplayName().getUnformattedText();
-        if (!title.startsWith("Wardrobe")) return;
+        if (!title.startsWith("Pets")) return;
 
         EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
 
         // Get the list of key binds
-        List<Integer> keyBinds = Configuration.qolWardrobeKeyBind.getKeyBinds();
+        List<Integer> keyBinds = Configuration.qolPetsKeyBind.getKeyBinds();
 
         // Check if all keys in the list are currently pressed
         boolean allKeysPressed = keyBinds.stream().allMatch(Keyboard::isKeyDown);
