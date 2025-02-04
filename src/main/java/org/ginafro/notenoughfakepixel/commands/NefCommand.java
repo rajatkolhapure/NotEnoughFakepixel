@@ -282,7 +282,7 @@ public class NefCommand extends CommandBase {
         sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Configuration changed to default"));
         // QOL
         Configuration._qol = true;
-        Configuration.qolCustomFilters = true;
+        //Configuration.qolCustomFilters = true;
         Configuration.qolDisableHyperionExplosions = true;
         Configuration.qolDisableThunderlordBolt = true;
         Configuration.qolFullbright = true;
@@ -295,8 +295,6 @@ public class NefCommand extends CommandBase {
         Configuration.qolShortcutWarps = true;
         Configuration.qolShowEnchantLevel = true;
         Configuration.qolMiddleClickChests = true;
-        Configuration.qolChocolateShowBestUpgrade = true;
-        Configuration.qolChocolateEggWaypoints = true;
         Configuration.qolShowPetEquipped = true;
         Configuration.qolDisableWatchdogInfo = true;
         Configuration.qolDisableFriendJoin = false;
@@ -362,6 +360,9 @@ public class NefCommand extends CommandBase {
         Configuration.experimentationChronomatronSolver = true;
         Configuration.experimentationUltraSequencerSolver = true;
         Configuration.experimentationPreventMissclicks = true;
+        // Chocolate Factory
+        Configuration.chocolateChocolateShowBestUpgrade = true;
+        Configuration.chocolateChocolateEggWaypoints = true;
         // Mining
         Configuration._mining = true;
         Configuration.miningAbilityNotifier = true;

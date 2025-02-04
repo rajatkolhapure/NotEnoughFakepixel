@@ -24,6 +24,7 @@ public class Configuration extends Config {
     private transient static final String DIANA = "Diana";
     private transient static final String CRIMSON = "Crimson";
     private transient static final String EXPERIMENTATION = "Experimentation Table";
+    private transient static final String CHOCOLATEFACTORY = "Chocolate Factory";
 
     public Configuration(){
         super(new Mod("NotEnoughFakepixel", ModType.UTIL_QOL, "assets/notenoughfakepixel/logo.png"), "config.json");
@@ -52,8 +53,8 @@ public class Configuration extends Config {
             }
         });
 
-        this.addListener("_debug", () -> _debug2 = false);
-        this.addListener("_debug2", () -> _debug = false);
+        //this.addListener("_debug", () -> _debug2 = false);
+        //this.addListener("_debug2", () -> _debug = false);
 
         if (System.getProperty("os.name").contains("Android") || System.getProperty("os.name").contains("Linux")) {
             hiddenOverlays();
@@ -82,10 +83,9 @@ public class Configuration extends Config {
 
     @Header(text = "General" , category = QUALITY_OF_LIFE, size = 2)
     public static boolean _qol = true;
-    @Switch(name = "Custom Chat Filters" , description = "Add your own chat filters, by - /addfilter", category = QUALITY_OF_LIFE)
-    public static boolean qolCustomFilters = true;
-    @Switch(name = "Disable Hyperion Explosion" , category = QUALITY_OF_LIFE)
-    public static boolean qolDisableHyperionExplosions = true;
+    //@Switch(name = "Custom Chat Filters" , description = "Add your own chat filters, by - /addfilter", category = QUALITY_OF_LIFE)
+    //public static boolean qolCustomFilters = true;
+
     @Switch(name = "Disable Thunderlord Bolt" , category = QUALITY_OF_LIFE)
     public static boolean qolDisableThunderlordBolt = true;
     @Switch(name = "Fullbright" , category = QUALITY_OF_LIFE)
@@ -98,35 +98,27 @@ public class Configuration extends Config {
     public static boolean qolDisablePotionEffects = true;
     @Switch(name = "Disable rain" , category = QUALITY_OF_LIFE, description = "Disables rain rendering")
     public static boolean qolDisableRain = true;
-    @Switch(name = "Wardrobe Shortcut" , category = QUALITY_OF_LIFE)
-    public static boolean qolShortcutWardrobe = true;
-    @KeyBind(name = "Wardrobe Shortcut Key", category = QUALITY_OF_LIFE)
-    public static OneKeyBind qolWardrobeKeyBind = new OneKeyBind(UKeyboard.KEY_R);
-    @Switch(name = "Pets Shortcut" , category = QUALITY_OF_LIFE)
-    public static boolean qolShortcutPets = true;
-    @KeyBind(name = "Pets Shortcut Key", category = QUALITY_OF_LIFE)
-    public static OneKeyBind qolPetsKeyBind = new OneKeyBind(UKeyboard.KEY_P);
-    @Switch(name = "Warps Shortcuts" , category = QUALITY_OF_LIFE)
-    public static boolean qolShortcutWarps = true;
-    @KeyBind(name = "Warp Is Shortcut Key", category = QUALITY_OF_LIFE)
-    public static OneKeyBind qolShortcutWarpIs = new OneKeyBind(UKeyboard.KEY_F7);
-    @KeyBind(name = "Warp Hub Shortcut Key", category = QUALITY_OF_LIFE)
-    public static OneKeyBind qolShortcutWarpHub = new OneKeyBind(UKeyboard.KEY_F8);
-    @KeyBind(name = "Warp Dh Shortcut Key", category = QUALITY_OF_LIFE)
-    public static OneKeyBind qolShortcutWarpDh = new OneKeyBind(UKeyboard.KEY_F9);
-
     @Switch(name = "Show Enchant Level", category = QUALITY_OF_LIFE, description = "Show enchant level of an book on its icon")
     public static boolean qolShowEnchantLevel = true;
     @Switch(name = "Middle click on terminals and Enchanting" , category = QUALITY_OF_LIFE, description = "Middle clicks on terminals and enchanting gui.")
     public static boolean qolMiddleClickChests = true;
 
-    @Switch(name = "Show Best Upgrade" , category = QUALITY_OF_LIFE, subcategory = "Chocolate Factory")
-    public static boolean qolChocolateShowBestUpgrade = true;
-    @Switch(name = "Show Waypoints on Chocolate Eggs" , category = QUALITY_OF_LIFE, subcategory = "Chocolate Factory", description = "Show waypoints on chocolate eggs on Hoppity's Hunt event.")
-    public static boolean qolChocolateEggWaypoints = true;
-    @Color(name = "Chocolate Eggs Waypoints Color", category = QUALITY_OF_LIFE , subcategory = "Chocolate Factory", description = "Color of chocolate eggs' waypoints.")
-    public static OneColor qolChocolateEggWaypointsColor = new OneColor(210,105,30);
-
+    @Switch(name = "Wardrobe Shortcut" , category = QUALITY_OF_LIFE, subcategory = "Shortcuts")
+    public static boolean qolShortcutWardrobe = true;
+    @KeyBind(name = "Wardrobe Shortcut Key", category = QUALITY_OF_LIFE, subcategory = "Shortcuts")
+    public static OneKeyBind qolWardrobeKeyBind = new OneKeyBind(UKeyboard.KEY_R);
+    @Switch(name = "Pets Shortcut" , category = QUALITY_OF_LIFE, subcategory = "Shortcuts")
+    public static boolean qolShortcutPets = true;
+    @KeyBind(name = "Pets Shortcut Key", category = QUALITY_OF_LIFE, subcategory = "Shortcuts")
+    public static OneKeyBind qolPetsKeyBind = new OneKeyBind(UKeyboard.KEY_P);
+    @Switch(name = "Warps Shortcuts" , category = QUALITY_OF_LIFE, subcategory = "Shortcuts")
+    public static boolean qolShortcutWarps = true;
+    @KeyBind(name = "Warp Is Shortcut Key", category = QUALITY_OF_LIFE, subcategory = "Shortcuts")
+    public static OneKeyBind qolShortcutWarpIs = new OneKeyBind(UKeyboard.KEY_F7);
+    @KeyBind(name = "Warp Hub Shortcut Key", category = QUALITY_OF_LIFE, subcategory = "Shortcuts")
+    public static OneKeyBind qolShortcutWarpHub = new OneKeyBind(UKeyboard.KEY_F8);
+    @KeyBind(name = "Warp Dh Shortcut Key", category = QUALITY_OF_LIFE, subcategory = "Shortcuts")
+    public static OneKeyBind qolShortcutWarpDh = new OneKeyBind(UKeyboard.KEY_F9);
 
     @Switch(name = "Show pet equipped" , category = QUALITY_OF_LIFE, subcategory = "Pets")
     public static boolean qolShowPetEquipped = true;
@@ -152,6 +144,8 @@ public class Configuration extends Config {
     public static boolean qolDisableAoteSounds = false;
     @Switch(name = "Minimum Midas Staff animation and sounds" , category = "Quality of Life", subcategory = "Sounds", description = "Low-render gold blocks and set sound only at right click.")
     public static boolean qolDisableMidaStaffAnimation = false;
+    @Switch(name = "Disable Hyperion Explosion" , category = QUALITY_OF_LIFE,  subcategory = "Sounds")
+    public static boolean qolDisableHyperionExplosions = true;
 
 
     @Switch(name = "Damage Commas" , category = QUALITY_OF_LIFE, subcategory = "Damage Formatter")
@@ -188,7 +182,7 @@ public class Configuration extends Config {
     @Switch(name = "Starred Mobs Esp" , category = DUNGEONS, subcategory = "Starred Mobs", description = "Render starred mobs hitboxes through walls.")
     public static boolean dungeonsStarredMobsEsp = true;
     @Color(name = "Withermancer Color", category = DUNGEONS, subcategory = "Starred Mobs")
-    public static OneColor dungeonsWithermancerColor = new OneColor(0, 0, 0);
+    public static OneColor dungeonsWithermancerColor = new OneColor(169, 169, 169);
     @Color(name = "Zombie Commander Color", category = DUNGEONS, subcategory = "Starred Mobs")
     public static OneColor dungeonsZombieCommanderColor = new OneColor(255, 0, 0);
     @Color(name = "Skeleton Master Color", category = DUNGEONS, subcategory = "Starred Mobs")
@@ -210,7 +204,7 @@ public class Configuration extends Config {
     @Slider(name = "Dungeons Map Offset Y" ,category = DUNGEONS , subcategory = "Dungeon Map" , min = 0.0f,max=2000f)
     public static float dungeonsMapOffsetY = 0.0f;
     @Switch(name = "Dungeons Map Rotation" , category = DUNGEONS, subcategory = "Dungeon Map")
-    public static boolean dungeonsRotateMap = false;
+    public static boolean dungeonsRotateMap = true;
 
 
     @Switch(name = "Terminal Starts With Solver" , category = DUNGEONS , subcategory = "Floor 7 Terminals and Devices")
@@ -250,17 +244,6 @@ public class Configuration extends Config {
     public static boolean dungeonsItemSecretsBig = true;
     @Page(name = "Secret Overlay Options" , category = DUNGEONS, subcategory = "Secrets", location = PageLocation.BOTTOM)
     public static SecretOverlayPage dungeonsSecretOverlayPage = new SecretOverlayPage();
-
-    // Fishing
-
-    @Header(text = FISHING , category = FISHING , size = 2)
-    public static boolean _fishing = true;
-    @Switch(name = "Notify Legendary Creatures" , category = FISHING, description = "Notifies you when a legendary creature is catched.")
-    public static boolean fishingLegendaryCreatures = true;
-    //@Switch(name = "Notify on Great Catch (not working?)" , category = FISHING)
-    public static boolean fishingGreatCatch = true;
-    @Switch(name = "Notify on Trophy Fish" , category = FISHING)
-    public static boolean fishingTrophyFish = true;
 
     // Diana
     @Header(text = DIANA , category = DIANA , size = 2)
@@ -315,8 +298,10 @@ public class Configuration extends Config {
     public static OneColor slayerBossColor = new OneColor(92, 154, 255);
     @Dropdown(name = "Faster Maddox Calling", category = SLAYER,subcategory = "Quality of Life",options = {"Auto Open","Semi Auto","Disabled"})
     public static int slayerMaddoxCalling = 1;
-    @Switch(name = "showBeaconPath" , category = SLAYER , subcategory = "Voidgloom Seraph", description = ".")
+    @Switch(name = "Show Beacon Waypoint" , category = SLAYER , subcategory = "Voidgloom Seraph", description = ".")
     public static boolean slayerShowBeaconPath = true;
+    @Color(name = "Beacon Color", category = SLAYER , subcategory = "Voidgloom Seraph", description = "Color of the beacon's waypoint.")
+    public static OneColor slayerBeaconColor = new OneColor(128, 0, 128);
 
 
     // Enchanting
@@ -329,33 +314,17 @@ public class Configuration extends Config {
     @Switch(name = "Prevent missclicks" , category = EXPERIMENTATION, description = "IMPORTANT: this feature doesn't work properly if your connection isn't stable or server has lag. Prevents clicking wrong answers when doing experiments.")
     public static boolean experimentationPreventMissclicks = true;
 
+    // Chocolate Factory
+    @Header(text = CHOCOLATEFACTORY , category = CHOCOLATEFACTORY , size = 2)
+    public static boolean _chocolate = true;
+    @Switch(name = "Show Best Upgrade" , category = CHOCOLATEFACTORY, subcategory = "Chocolate Factory")
+    public static boolean chocolateChocolateShowBestUpgrade = true;
+    @Switch(name = "Show Waypoints on Chocolate Eggs" , category = CHOCOLATEFACTORY, subcategory = "Chocolate Factory", description = "Show waypoints on chocolate eggs on Hoppity's Hunt event.")
+    public static boolean chocolateChocolateEggWaypoints = true;
+    @Color(name = "Chocolate Eggs Waypoints Color", category = CHOCOLATEFACTORY , subcategory = "Chocolate Factory", description = "Color of chocolate eggs' waypoints.")
+    public static OneColor chocolateChocolateEggWaypointsColor = new OneColor(210,105,30);
 
-    // Mining
-
-    @Header(text = MINING , category = MINING , size = 2)
-    public static boolean _mining = true;
-    @Switch(name = "Enable mining ability Notifier" , category = MINING, subcategory = "", description = "Notifies you when your mining ability is ready.")
-    public static boolean miningAbilityNotifier = true;
-    @Switch(name = "Disable Don Espresso messages" , category = MINING, subcategory = "", description = "Disables Don Espresso event messages.")
-    public static boolean miningDisableDonEspresso = true;
-    @Switch(name = "Fix Drill Animation Reset" , category = MINING, subcategory = "" , description = "Fixes drill animation resetting when the fuel updates.")
-    public static boolean miningDrillFix = true;
-    @Switch(name = "Puzzler solver" , category = MINING, subcategory = "" , description = "Solves the Puzzler block.")
-    public static boolean miningPuzzlerSolver = true;
-    @Switch(name = "Remove Ghosts invisibility" , category = MINING, subcategory = "" , description = "Removes the invisibility of the ghosts")
-    public static boolean miningShowGhosts = true;
-
-    @Switch(name = "Drill Fuel Overlay" , category = MINING, subcategory = "Mining Overlay", description = "Shows the drill fuel in overlay.")
-    public static boolean miningDrillFuel = true;
-    @Switch(name = "Mithril Powder Overlay" , category = MINING, subcategory = "Mining Overlay", description = "Shows the mithril powder in overlay.")
-    public static boolean miningMithrilPowder = true;
-    @Switch(name = "Ability Cooldown Overlay" , category = MINING, subcategory = "Mining Overlay", description = "Shows the ability cooldown in overlay.")
-    public static boolean miningAbilityCooldown = true;
-    @Switch(name = "Commission overlay" , category = MINING, subcategory = "Mining Overlay", description = "Shows the commission in overlay.")
-    public static boolean miningOverlay = true;
-    @Page(name = "Mining Overlay Options" , category = MINING, subcategory = "Mining Overlay", location = PageLocation.BOTTOM)
-    public static MiningOverlayPage miningOverlayPage = new MiningOverlayPage();
-
+    // Crimson
     @Header(text = CRIMSON, category = CRIMSON, size = 2)
     public static boolean _crimson = true;
     @Switch(name = "Bladesoul notifier", category = CRIMSON, subcategory = "Bosses notifier", description = "Notifies you when Bladesoul boss spawns.")
@@ -387,6 +356,40 @@ public class Configuration extends Config {
     @Page(name = "Ashfang Overlay Options", category = CRIMSON, subcategory = "Ashfang", location = PageLocation.BOTTOM)
     public static AshfangOverlayPage crimsonAshfangOverlayPage = new AshfangOverlayPage();
 
+    // Mining
+    @Header(text = MINING , category = MINING , size = 2)
+    public static boolean _mining = true;
+    @Switch(name = "Enable mining ability Notifier" , category = MINING, subcategory = "", description = "Notifies you when your mining ability is ready.")
+    public static boolean miningAbilityNotifier = true;
+    @Switch(name = "Disable Don Espresso messages" , category = MINING, subcategory = "", description = "Disables Don Espresso event messages.")
+    public static boolean miningDisableDonEspresso = true;
+    @Switch(name = "Fix Drill Animation Reset" , category = MINING, subcategory = "" , description = "Fixes drill animation resetting when the fuel updates.")
+    public static boolean miningDrillFix = true;
+    @Switch(name = "Puzzler solver" , category = MINING, subcategory = "" , description = "Solves the Puzzler block.")
+    public static boolean miningPuzzlerSolver = true;
+    @Switch(name = "Remove Ghosts invisibility" , category = MINING, subcategory = "" , description = "Removes the invisibility of the ghosts")
+    public static boolean miningShowGhosts = true;
+
+    @Switch(name = "Drill Fuel Overlay" , category = MINING, subcategory = "Mining Overlay", description = "Shows the drill fuel in overlay.")
+    public static boolean miningDrillFuel = true;
+    @Switch(name = "Mithril Powder Overlay" , category = MINING, subcategory = "Mining Overlay", description = "Shows the mithril powder in overlay.")
+    public static boolean miningMithrilPowder = true;
+    @Switch(name = "Ability Cooldown Overlay" , category = MINING, subcategory = "Mining Overlay", description = "Shows the ability cooldown in overlay.")
+    public static boolean miningAbilityCooldown = true;
+    @Switch(name = "Commission overlay" , category = MINING, subcategory = "Mining Overlay", description = "Shows the commission in overlay.")
+    public static boolean miningOverlay = true;
+    @Page(name = "Mining Overlay Options" , category = MINING, subcategory = "Mining Overlay", location = PageLocation.BOTTOM)
+    public static MiningOverlayPage miningOverlayPage = new MiningOverlayPage();
+
+    // Fishing
+    @Header(text = FISHING , category = FISHING , size = 2)
+    public static boolean _fishing = true;
+    @Switch(name = "Notify Legendary Creatures" , category = FISHING, description = "Notifies you when a legendary creature is catched.")
+    public static boolean fishingLegendaryCreatures = true;
+    //@Switch(name = "Notify on Great Catch (not working?)" , category = FISHING)
+    public static boolean fishingGreatCatch = true;
+    @Switch(name = "Notify on Trophy Fish" , category = FISHING)
+    public static boolean fishingTrophyFish = true;
 
     // SKYBLOCK
 
@@ -400,7 +403,7 @@ public class Configuration extends Config {
 
     // DEBUG
 
-    @Header(text = "Debug" , category = "Debug" , size = 2)
+    /*@Header(text = "Debug" , category = "Debug" , size = 2)
     public boolean _debugHead = false;
     @Info(text = "Ignore this if you don't know what you are doing." , type = InfoType.WARNING , category = "Debug")
     public boolean _debugInfo = false;
@@ -412,6 +415,6 @@ public class Configuration extends Config {
     @Info(text = "info test \u00a7cTEST", type = InfoType.INFO, category = "Debug", subcategory = "Info")
     public static boolean _info = true;
     @Switch(name = "Enable logs" , category = "Debug", subcategory = "Logs")
-    public static boolean logs = false;
+    public static boolean logs = false;*/
 
 }

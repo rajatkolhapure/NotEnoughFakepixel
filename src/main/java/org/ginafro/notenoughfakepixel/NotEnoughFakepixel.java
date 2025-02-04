@@ -13,6 +13,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import org.ginafro.notenoughfakepixel.commands.NefCommand;
 import org.ginafro.notenoughfakepixel.features.duels.KDCounter;
+import org.ginafro.notenoughfakepixel.features.skyblock.chocolate.ChocolateFactory;
 import org.ginafro.notenoughfakepixel.features.skyblock.crimson.AshfangHelper;
 import org.ginafro.notenoughfakepixel.features.skyblock.crimson.BossNotifier;
 import org.ginafro.notenoughfakepixel.features.skyblock.crimson.AshfangOverlay;

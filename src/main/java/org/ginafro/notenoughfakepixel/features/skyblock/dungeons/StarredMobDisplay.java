@@ -14,6 +14,8 @@ import java.awt.*;
 
 public class StarredMobDisplay {
 
+    MobDisplayTypes mobDisplayType = MobDisplayTypes.NONE;
+
     @SubscribeEvent
     public void onRenderLast(RenderWorldLastEvent event) {
         if (!Configuration.dungeonsStarredMobs) return;
@@ -48,6 +50,7 @@ public class StarredMobDisplay {
                         Configuration.dungeonsWithermancerColor.getBlue(),
                         Configuration.dungeonsWithermancerColor.getAlpha()
                 );
+                mobDisplayType = MobDisplayTypes.WITHERMANCER;
             } else if (entity.getName().contains("Zombie Commander")) {
                 color = new Color(
                         Configuration.dungeonsZombieCommanderColor.getRed(),
@@ -70,9 +73,10 @@ public class StarredMobDisplay {
                     entity,
                     event.partialTicks,
                     color,
-                    MobDisplayTypes.NONE
+                    mobDisplayType
             );
             if (Configuration.dungeonsStarredMobsEsp) GlStateManager.enableDepth();
+            mobDisplayType = MobDisplayTypes.NONE;
         });
     }
 
