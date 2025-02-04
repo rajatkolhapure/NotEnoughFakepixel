@@ -1,7 +1,6 @@
 package org.ginafro.notenoughfakepixel.features.skyblock.dungeons.terminals;
 
 
-import cc.polyfrost.oneconfig.config.core.OneColor;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStainedGlassPane;
 import net.minecraft.client.Minecraft;
@@ -22,7 +21,7 @@ public class StartingWithSolver {
 
     @SubscribeEvent
     public void onGuiRender(GuiScreenEvent.BackgroundDrawnEvent e){
-        if(!Configuration.dungeonsStartsWith) return;
+        if(!Configuration.dungeonsTerminalStartsWithSolver) return;
         if(!ScoreboardUtils.currentGamemode.isSkyblock()) return;
         if(!ScoreboardUtils.currentLocation.isDungeon()) return;
         if(!(e.gui instanceof GuiChest)) return;
@@ -84,7 +83,7 @@ public class StartingWithSolver {
     @SubscribeEvent
     public void onMouseClick(GuiScreenEvent.MouseInputEvent.Pre event) {
         if (!Configuration.dungeonsPreventMissclicks) return;
-        if (!Configuration.dungeonsStartsWith) return;
+        if (!Configuration.dungeonsTerminalStartsWithSolver) return;
         if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
         if (!ScoreboardUtils.currentLocation.isDungeon()) return;
         if (!Mouse.getEventButtonState()) return;

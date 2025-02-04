@@ -208,15 +208,15 @@ public class Configuration extends Config {
 
 
     @Switch(name = "Terminal Starts With Solver" , category = DUNGEONS , subcategory = "Floor 7 Terminals and Devices")
-    public static boolean dungeonsStartsWith = true;
+    public static boolean dungeonsTerminalStartsWithSolver = true;
     @Switch(name = "Terminal Select colors Solver" , category = DUNGEONS , subcategory = "Floor 7 Terminals and Devices")
-    public static boolean dungeonsSelectColors = true;
+    public static boolean dungeonsTerminalSelectColorsSolver = true;
     @Switch(name = "Terminal Click In Order Solver" , category = DUNGEONS , subcategory = "Floor 7 Terminals and Devices")
-    public static boolean dungeonsClickInOrder = true;
+    public static boolean dungeonsTerminalClickInOrderSolver = true;
     @Switch(name = "Terminal Maze Solver" , category = DUNGEONS , subcategory = "Floor 7 Terminals and Devices")
-    public static boolean dungeonsMazeSolver = true;
+    public static boolean dungeonsTerminalMazeSolver = true;
     @Switch(name = "Terminal Correct Panes Solver" , category = DUNGEONS , subcategory = "Floor 7 Terminals and Devices")
-    public static boolean dungeonsCorrectPanesSolver = true;
+    public static boolean dungeonsTerminalCorrectPanesSolver = true;
     @Switch(name = "Hide Terminal Incorrect Slots" , category = DUNGEONS , subcategory = "Floor 7 Terminals and Devices")
     public static boolean dungeonsTerminalHideIncorrect = true;
     @Switch(name = "Prevent Terminal Missclicks" , category = DUNGEONS , subcategory = "Floor 7 Terminals and Devices")

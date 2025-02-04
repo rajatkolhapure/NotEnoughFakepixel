@@ -17,7 +17,7 @@ import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 public class CorrectPanesSolver {
     @SubscribeEvent
     public void onGuiRender(GuiScreenEvent.BackgroundDrawnEvent e){
-        if(!Configuration.dungeonsCorrectPanesSolver) return;
+        if(!Configuration.dungeonsTerminalCorrectPanesSolver) return;
         if(!ScoreboardUtils.currentGamemode.isSkyblock()) return;
         if(!ScoreboardUtils.currentLocation.isDungeon()) return;
         if(!(e.gui instanceof GuiChest)) return;

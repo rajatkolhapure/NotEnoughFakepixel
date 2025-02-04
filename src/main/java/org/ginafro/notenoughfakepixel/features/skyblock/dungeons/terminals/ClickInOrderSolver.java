@@ -23,7 +23,7 @@ public class ClickInOrderSolver {
 
     @SubscribeEvent
     public void onOpen(GuiOpenEvent e){
-        if (!Configuration.dungeonsClickInOrder) return;
+        if (!Configuration.dungeonsTerminalClickInOrderSolver) return;
         if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
         if (!ScoreboardUtils.currentLocation.isDungeon()) return;
         if(e.gui instanceof GuiChest){
@@ -39,7 +39,7 @@ public class ClickInOrderSolver {
 
     @SubscribeEvent
     public void onGuiRender(GuiScreenEvent.BackgroundDrawnEvent event) {
-        if (!Configuration.dungeonsClickInOrder) return;
+        if (!Configuration.dungeonsTerminalClickInOrderSolver) return;
         if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
         if (!ScoreboardUtils.currentLocation.isDungeon()) return;
         if(event.gui instanceof GuiChest) {
@@ -70,7 +70,7 @@ public class ClickInOrderSolver {
 
     @SubscribeEvent
     public void onMouseClick(GuiScreenEvent.MouseInputEvent.Pre event) {
-        if (!Configuration.dungeonsClickInOrder) return;
+        if (!Configuration.dungeonsTerminalClickInOrderSolver) return;
         if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
         if (!ScoreboardUtils.currentLocation.isDungeon()) return;
         if (!Mouse.getEventButtonState()) return;

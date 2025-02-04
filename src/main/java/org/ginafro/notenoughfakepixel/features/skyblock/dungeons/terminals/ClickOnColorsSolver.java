@@ -21,7 +21,7 @@ public class ClickOnColorsSolver {
 
     @SubscribeEvent
     public void onGuiRender(GuiScreenEvent.BackgroundDrawnEvent e){
-        if(!Configuration.dungeonsSelectColors) return;
+        if(!Configuration.dungeonsTerminalSelectColorsSolver) return;
         if(!ScoreboardUtils.currentGamemode.isSkyblock()) return;
         if(!ScoreboardUtils.currentLocation.isDungeon()) return;
         if(!(e.gui instanceof GuiChest)) return;
@@ -97,7 +97,7 @@ public class ClickOnColorsSolver {
     @SubscribeEvent
     public void onMouseClick(GuiScreenEvent.MouseInputEvent.Pre event) {
         if (!Configuration.dungeonsPreventMissclicks) return;
-        if (!Configuration.dungeonsClickInOrder) return;
+        if (!Configuration.dungeonsTerminalClickInOrderSolver) return;
         if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
         if (!ScoreboardUtils.currentLocation.isDungeon()) return;
         if (!Mouse.getEventButtonState()) return;

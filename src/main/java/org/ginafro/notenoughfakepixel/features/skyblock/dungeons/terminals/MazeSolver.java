@@ -23,7 +23,7 @@ public class MazeSolver {
     public void onRender(GuiScreenEvent.BackgroundDrawnEvent e){
         if(!ScoreboardUtils.currentGamemode.isSkyblock()) return;
         if(!ScoreboardUtils.currentLocation.isDungeon()) return;
-        if(!Configuration.dungeonsMazeSolver) return;
+        if(!Configuration.dungeonsTerminalMazeSolver) return;
         if(!(e.gui instanceof GuiChest)) return;
         GuiChest chest = (GuiChest) e.gui;
         Container container = chest.inventorySlots;
