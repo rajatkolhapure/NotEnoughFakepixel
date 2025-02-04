@@ -12,6 +12,9 @@ public enum MobDisplayTypes {
     SIAMESE,
     BLAZE,
     BLAZINGSOUL,
+    ITEM,
+    ITEMBIG,
+    WITHERESSENCE,
     NONE;
 
 }
