@@ -291,6 +291,8 @@ public class NefCommand extends CommandBase {
         Configuration.qolDisablePotionEffects = true;
         Configuration.qolDisableRain = true;
         Configuration.qolShortcutWardrobe = true;
+        Configuration.qolShortcutPets = true;
+        Configuration.qolShortcutWarps = true;
         Configuration.qolShowEnchantLevel = true;
         Configuration.qolMiddleClickChests = true;
         Configuration.qolChocolateShowBestUpgrade = true;
@@ -321,6 +323,18 @@ public class NefCommand extends CommandBase {
         Configuration.dungeonsSelectColors = true;
         Configuration.dungeonsSecretOverlay = true;
         Configuration.dungeonsSPlusReminder = true;
+        Configuration.dungeonsMuteBosses = true;
+        Configuration.dungeonsStarredMobsEsp = true;
+        Configuration.dungeonsRotateMap = true;
+        Configuration.dungeonsMazeSolver = true;
+        Configuration.dungeonsCorrectPanesSolver = true;
+        Configuration.dungeonsTerminalHideIncorrect = true;
+        Configuration.dungeonsPreventMissclicks = true;
+        Configuration.dungeonsHideTooltips = true;
+        Configuration.dungeonsFirstDeviceSolver = true;
+        Configuration.dungeonsThirdDeviceSolver = true;
+        Configuration.dungeonsItemSecretsDisplay = true;
+        Configuration.dungeonsItemSecretsBig = true;
         // Fishing
         Configuration._fishing = true;
         Configuration.fishingLegendaryCreatures = true;
@@ -336,6 +350,8 @@ public class NefCommand extends CommandBase {
         Configuration.dianaWaypointSounds = true;
         Configuration.dianaDisableDianaExplosionSounds = false;
         Configuration.dianaCancelCooldownSpadeMessage = true;
+        Configuration.dianaShowLabelsWaypoints = true;
+        Configuration.dianaShowTracersWaypoints = true;
         // Slayer
         Configuration._slayer = true;
         Configuration.slayerMinibosses = true;
