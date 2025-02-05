@@ -17,11 +17,20 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import org.ginafro.notenoughfakepixel.commands.NefCommand;
 import org.ginafro.notenoughfakepixel.features.duels.KDCounter;
+import org.ginafro.notenoughfakepixel.features.skyblock.chocolate.ChocolateFactory;
 import org.ginafro.notenoughfakepixel.features.skyblock.crimson.AshfangHelper;
 import org.ginafro.notenoughfakepixel.features.skyblock.crimson.BossNotifier;
 import org.ginafro.notenoughfakepixel.features.skyblock.crimson.AshfangOverlay;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.devices.*;
+import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.mobs.BatMobDisplay;
+import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.mobs.FelMobDisplay;
+import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.mobs.StarredMobDisplay;
+import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.puzzles.ThreeWeirdos;
+import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.score.DungeonClearedNotifier;
+import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.score.ScoreManager;
+import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.score.ScoreOverlay;
+import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.score.SPlusNotifier;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.terminals.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.enchanting.EnchantingSolvers;
 import org.ginafro.notenoughfakepixel.features.skyblock.fishing.GreatCatchNotifier;
@@ -60,6 +69,10 @@ public class NotEnoughFakepixel {
 
     private void registerModEvents() {
         // Dungeons
+        DungeonsMap map = new DungeonsMap();
+        MinecraftForge.EVENT_BUS.register(map);
+        EventManager.INSTANCE.register(map);
+
         MinecraftForge.EVENT_BUS.register(new StartingWithSolver());
         MinecraftForge.EVENT_BUS.register(new ClickOnColorsSolver());
         MinecraftForge.EVENT_BUS.register(new ClickInOrderSolver());
@@ -71,7 +84,6 @@ public class NotEnoughFakepixel {
 
         MinecraftForge.EVENT_BUS.register(new AutoReadyDungeon());
         MinecraftForge.EVENT_BUS.register(new AutoCloseChests());
-        MinecraftForge.EVENT_BUS.register(new sPlusReminder());
 
         MinecraftForge.EVENT_BUS.register(new StarredMobDisplay());
         MinecraftForge.EVENT_BUS.register(new BatMobDisplay());
@@ -80,9 +92,11 @@ public class NotEnoughFakepixel {
         MinecraftForge.EVENT_BUS.register(new MuteBosses());
 
         MinecraftForge.EVENT_BUS.register(new ThreeWeirdos());
-        MinecraftForge.EVENT_BUS.register(new SecretOverlay());
+        MinecraftForge.EVENT_BUS.register(new ScoreManager());
+        MinecraftForge.EVENT_BUS.register(new ScoreOverlay());
+        MinecraftForge.EVENT_BUS.register(new SPlusNotifier());
+        MinecraftForge.EVENT_BUS.register(new DungeonClearedNotifier());
 
-        EventManager.INSTANCE.register(new DungeonsMap());
         // Mining
         MinecraftForge.EVENT_BUS.register(new MiningOverlay());
         MinecraftForge.EVENT_BUS.register(new DrillFuelParsing());

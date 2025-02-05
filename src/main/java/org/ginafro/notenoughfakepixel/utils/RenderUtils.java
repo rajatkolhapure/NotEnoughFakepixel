@@ -316,6 +316,13 @@ public class RenderUtils {
             x2 = x + 0.3;
             z1 = z - 0.3;
             z2 = z + 0.3;
+        } else if (type == MobDisplayTypes.WITHERMANCER) {
+            y1 = y - 1.6;
+            y2 = y + 0.8;
+            x1 = x - 0.5;
+            x2 = x + 0.5;
+            z1 = z - 0.5;
+            z2 = z + 0.5;
         } else {
             y1 = y - 1;
             y2 = y + 1;

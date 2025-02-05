@@ -11,15 +11,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.ginafro.notenoughfakepixel.Configuration;
+import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.DungeonManager;
 import org.ginafro.notenoughfakepixel.utils.RenderUtils;
-import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 
 public class CorrectPanesSolver {
     @SubscribeEvent
     public void onGuiRender(GuiScreenEvent.BackgroundDrawnEvent e){
-        if(!Configuration.dungeonsCorrectPanesSolver) return;
-        if(!ScoreboardUtils.currentGamemode.isSkyblock()) return;
-        if(!ScoreboardUtils.currentLocation.isDungeon()) return;
+        if(!Configuration.dungeonsTerminalCorrectPanesSolver) return;
+        if (!DungeonManager.checkEssentialsF7()) return;
         if(!(e.gui instanceof GuiChest)) return;
 
         GuiChest chest = (GuiChest) e.gui;

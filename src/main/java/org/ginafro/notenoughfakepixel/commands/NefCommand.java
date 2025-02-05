@@ -8,7 +8,6 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import org.ginafro.notenoughfakepixel.Configuration;
 import org.ginafro.notenoughfakepixel.NotEnoughFakepixel;
-import org.ginafro.notenoughfakepixel.features.skyblock.slayers.SlayerInfoGUI;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -91,7 +90,7 @@ public class NefCommand extends CommandBase {
         if(args == null || args.length == 0){
             //System.out.println("\n\n\n\n\n\n\n"+System.getProperty("os.name"));
             // POJAV version
-            if (isPojav()) {
+            if (Configuration.isPojav()) {
                 sender.addChatMessage(new ChatComponentText(helpDisplay));
             // PC & others
             } else {
@@ -156,7 +155,7 @@ public class NefCommand extends CommandBase {
         try {
             for (java.lang.reflect.Field field : Configuration.class.getDeclaredFields()) {
                 if (field.getType() == boolean.class && field.getName().startsWith(category)) {
-                    if (isPojav() && field.getName().endsWith("Overlay")) continue;
+                    if (Configuration.isPojav() && field.getName().endsWith("Overlay")) continue;
                     field.setAccessible(true);
                     sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GRAY + "- " + getDifference(category, field.getName()) + " " + formatBoolean((Boolean)field.get(null))));
                 }
@@ -176,7 +175,7 @@ public class NefCommand extends CommandBase {
 
             for (java.lang.reflect.Field field : Configuration.class.getDeclaredFields()) {
                 if (field.getType() == boolean.class && field.getName().startsWith(category)) {
-                    if (isPojav() && field.getName().endsWith("Overlay")) continue;
+                    if (Configuration.isPojav() && field.getName().endsWith("Overlay")) continue;
                     if (isFirst) {
                         field.setAccessible(true);
                         newValue = value;
@@ -203,7 +202,7 @@ public class NefCommand extends CommandBase {
             for (java.lang.reflect.Field field : Configuration.class.getDeclaredFields()) {
                 // Check if the field matches the variable name and is of type boolean
                 if (field.getType() == boolean.class && field.getName().equalsIgnoreCase(variableName)) {
-                    if (isPojav() && field.getName().endsWith("Overlay")) continue;
+                    if (Configuration.isPojav() && field.getName().endsWith("Overlay")) continue;
                     field.setAccessible(true); // Allow access to private/protected fields
                     return (Boolean) field.get(null); // Return the value of the field
                 }
@@ -222,7 +221,7 @@ public class NefCommand extends CommandBase {
             for (java.lang.reflect.Field field : Configuration.class.getDeclaredFields()) {
                 // Check if the field matches the variable name and is of type boolean
                 if (field.getType() == boolean.class && field.getName().equalsIgnoreCase(variableName)) {
-                    if (isPojav() && field.getName().endsWith("Overlay")) continue;
+                    if (Configuration.isPojav() && field.getName().endsWith("Overlay")) continue;
                     field.setAccessible(true); // Allow access to private/protected fields
                     // Toggle the current value of the boolean variable
                     boolean currentValue = (Boolean) field.get(null);
@@ -247,7 +246,7 @@ public class NefCommand extends CommandBase {
         try {
             for (java.lang.reflect.Field field : Configuration.class.getDeclaredFields()) {
                 if (field.getType() == boolean.class && field.getName().startsWith("_") && !field.getName().startsWith("_debug") && !field.getName().startsWith("_info") && !field.getName().startsWith("_general")) {
-                    if (isPojav() && field.getName().endsWith("Overlay")) continue;
+                    if (Configuration.isPojav() && field.getName().endsWith("Overlay")) continue;
                     categoryNames.add(field.getName().substring(1));
                 }
             }
@@ -263,7 +262,7 @@ public class NefCommand extends CommandBase {
         try {
             for (java.lang.reflect.Field field : Configuration.class.getDeclaredFields()) {
                 if (field.getType() == boolean.class && field.getName().startsWith(category)) {
-                    if (isPojav() && field.getName().endsWith("Overlay")) continue;
+                    if (Configuration.isPojav() && field.getName().endsWith("Overlay")) continue;
                     featureNames.add(getDifference(category, field.getName()));
                 }
             }
@@ -282,7 +281,7 @@ public class NefCommand extends CommandBase {
         sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + "Configuration changed to default"));
         // QOL
         Configuration._qol = true;
-        Configuration.qolCustomFilters = true;
+        //Configuration.qolCustomFilters = true;
         Configuration.qolDisableHyperionExplosions = true;
         Configuration.qolDisableThunderlordBolt = true;
         Configuration.qolFullbright = true;
@@ -295,8 +294,6 @@ public class NefCommand extends CommandBase {
         Configuration.qolShortcutWarps = true;
         Configuration.qolShowEnchantLevel = true;
         Configuration.qolMiddleClickChests = true;
-        Configuration.qolChocolateShowBestUpgrade = true;
-        Configuration.qolChocolateEggWaypoints = true;
         Configuration.qolShowPetEquipped = true;
         Configuration.qolDisableWatchdogInfo = true;
         Configuration.qolDisableFriendJoin = false;
@@ -318,16 +315,16 @@ public class NefCommand extends CommandBase {
         Configuration.dungeonsFelMob = true;
         Configuration.dungeonsThreeWeirdos = true;
         Configuration.dungeonsMap = true;
-        Configuration.dungeonsStartsWith = true;
-        Configuration.dungeonsClickInOrder = true;
-        Configuration.dungeonsSelectColors = true;
-        Configuration.dungeonsSecretOverlay = true;
-        Configuration.dungeonsSPlusReminder = true;
+        Configuration.dungeonsTerminalStartsWithSolver = true;
+        Configuration.dungeonsTerminalClickInOrderSolver = true;
+        Configuration.dungeonsTerminalSelectColorsSolver = true;
+        Configuration.dungeonsScoreOverlay = true;
+        Configuration.dungeonsSPlusNotifier = true;
         Configuration.dungeonsMuteBosses = true;
         Configuration.dungeonsStarredMobsEsp = true;
         Configuration.dungeonsRotateMap = true;
-        Configuration.dungeonsMazeSolver = true;
-        Configuration.dungeonsCorrectPanesSolver = true;
+        Configuration.dungeonsTerminalMazeSolver = true;
+        Configuration.dungeonsTerminalCorrectPanesSolver = true;
         Configuration.dungeonsTerminalHideIncorrect = true;
         Configuration.dungeonsPreventMissclicks = true;
         Configuration.dungeonsHideTooltips = true;
@@ -350,8 +347,6 @@ public class NefCommand extends CommandBase {
         Configuration.dianaWaypointSounds = true;
         Configuration.dianaDisableDianaExplosionSounds = false;
         Configuration.dianaCancelCooldownSpadeMessage = true;
-        Configuration.dianaShowLabelsWaypoints = true;
-        Configuration.dianaShowTracersWaypoints = true;
         // Slayer
         Configuration._slayer = true;
         Configuration.slayerMinibosses = true;
@@ -362,6 +357,9 @@ public class NefCommand extends CommandBase {
         Configuration.experimentationChronomatronSolver = true;
         Configuration.experimentationUltraSequencerSolver = true;
         Configuration.experimentationPreventMissclicks = true;
+        // Chocolate Factory
+        Configuration.chocolateChocolateShowBestUpgrade = true;
+        Configuration.chocolateChocolateEggWaypoints = true;
         // Mining
         Configuration._mining = true;
         Configuration.miningAbilityNotifier = true;
@@ -387,7 +385,7 @@ public class NefCommand extends CommandBase {
         Configuration.crimsonAshfangHurtSound = true;
         Configuration.crimsonAshfangOverlay = true;
 
-        if (isPojav()) Configuration.hiddenOverlays();
+        if (Configuration.isPojav()) Configuration.hiddenOverlays();
     }
 
     private String getDifference(String category, String fieldName) {
@@ -398,7 +396,5 @@ public class NefCommand extends CommandBase {
         return fieldName; // Return the full fieldName if it doesn't start with category
     }
 
-    private boolean isPojav() {
-        return (System.getProperty("os.name").contains("Android") || System.getProperty("os.name").contains("Linux"));
-    }
+
 }

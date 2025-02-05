@@ -1,7 +1,6 @@
 package org.ginafro.notenoughfakepixel.features.skyblock.dungeons.terminals;
 
 
-import cc.polyfrost.oneconfig.config.core.OneColor;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStainedGlassPane;
 import net.minecraft.client.Minecraft;
@@ -14,17 +13,16 @@ import net.minecraft.util.StringUtils;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.ginafro.notenoughfakepixel.Configuration;
+import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.DungeonManager;
 import org.ginafro.notenoughfakepixel.utils.RenderUtils;
-import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 import org.lwjgl.input.Mouse;
 
 public class StartingWithSolver {
 
     @SubscribeEvent
     public void onGuiRender(GuiScreenEvent.BackgroundDrawnEvent e){
-        if(!Configuration.dungeonsStartsWith) return;
-        if(!ScoreboardUtils.currentGamemode.isSkyblock()) return;
-        if(!ScoreboardUtils.currentLocation.isDungeon()) return;
+        if(!Configuration.dungeonsTerminalStartsWithSolver) return;
+        if (!DungeonManager.checkEssentialsF7()) return;
         if(!(e.gui instanceof GuiChest)) return;
 
         GuiChest chest = (GuiChest) e.gui;
@@ -84,9 +82,8 @@ public class StartingWithSolver {
     @SubscribeEvent
     public void onMouseClick(GuiScreenEvent.MouseInputEvent.Pre event) {
         if (!Configuration.dungeonsPreventMissclicks) return;
-        if (!Configuration.dungeonsStartsWith) return;
-        if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
-        if (!ScoreboardUtils.currentLocation.isDungeon()) return;
+        if (!Configuration.dungeonsTerminalStartsWithSolver) return;
+        if (!DungeonManager.checkEssentialsF7()) return;
         if (!Mouse.getEventButtonState()) return;
         if (!(Minecraft.getMinecraft().currentScreen instanceof GuiChest)) return; // Check if the current screen is a chest GUI
         GuiChest guiChest = (GuiChest) Minecraft.getMinecraft().currentScreen;

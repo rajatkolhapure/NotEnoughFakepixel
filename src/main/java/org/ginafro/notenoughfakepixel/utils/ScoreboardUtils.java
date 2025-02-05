@@ -12,7 +12,6 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StringUtils;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.SecretOverlay;
 import org.ginafro.notenoughfakepixel.variables.DungeonFloor;
 import org.ginafro.notenoughfakepixel.variables.Gamemode;
 import org.ginafro.notenoughfakepixel.variables.Area;

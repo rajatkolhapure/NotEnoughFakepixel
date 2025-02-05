@@ -8,10 +8,12 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.ginafro.notenoughfakepixel.Configuration;
+import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.DungeonManager;
 import org.ginafro.notenoughfakepixel.utils.RenderUtils;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 
@@ -30,10 +32,10 @@ public class FirstDeviceSolver {
     @SubscribeEvent
     public void onRenderLast(RenderWorldLastEvent event) {
         if (!Configuration.dungeonsFirstDeviceSolver) return;
-        if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
-        if (!ScoreboardUtils.currentLocation.isDungeon()) return;
+        if (!DungeonManager.checkEssentialsF7()) return;
         // Check for sea lanterns
         if (startMemorising) {
+            if (positionsToSolve == null) return;
             for (int i = 0; i < positionsToSolve.length; i++) {
                 Block targetBlock = Minecraft.getMinecraft().theWorld.getBlockState(positionsToSolve[i]).getBlock();
                 if (targetBlock == Blocks.sea_lantern && positionsIndexSolved[round-1] == -1 && !checkIfAdded(positionsIndexSolved,i)) {
@@ -55,12 +57,16 @@ public class FirstDeviceSolver {
         }
     }
 
+    /*@SubscribeEvent
+    public void onBreak(PlayerDestroyItemEvent event) {
+        System.out.println(event.original.getUnlocalizedName());
+    }*/
+
     // Check for initial button interact
     @SubscribeEvent
     public void onInteract(PlayerInteractEvent event) {
         if (!Configuration.dungeonsFirstDeviceSolver) return;
-        if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
-        if (!ScoreboardUtils.currentLocation.isDungeon()) return;
+        if (!DungeonManager.checkEssentialsF7()) return;
         if (Minecraft.getMinecraft().thePlayer != event.entityPlayer) return;
         if (event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) {
             Block buttonBlock = Minecraft.getMinecraft().theWorld.getBlockState(event.pos).getBlock();

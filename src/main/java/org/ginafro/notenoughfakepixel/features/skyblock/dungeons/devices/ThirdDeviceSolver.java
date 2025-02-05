@@ -13,6 +13,7 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.ginafro.notenoughfakepixel.Configuration;
 import org.ginafro.notenoughfakepixel.events.PacketWriteEvent;
+import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.DungeonManager;
 import org.ginafro.notenoughfakepixel.utils.RenderUtils;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 
@@ -52,8 +53,7 @@ public class ThirdDeviceSolver {
     @SubscribeEvent
     public void onPacket(PacketWriteEvent event) {
         if (!Configuration.dungeonsThirdDeviceSolver) return;
-        if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
-        if (!ScoreboardUtils.currentLocation.isDungeon()) return;
+        if (!DungeonManager.checkEssentialsF7()) return;
 
         if (event.packet instanceof C02PacketUseEntity) {
             C02PacketUseEntity packet = (C02PacketUseEntity) event.packet;

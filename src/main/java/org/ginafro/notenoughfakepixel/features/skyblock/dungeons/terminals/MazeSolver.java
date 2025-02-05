@@ -11,8 +11,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.ginafro.notenoughfakepixel.Configuration;
+import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.DungeonManager;
 import org.ginafro.notenoughfakepixel.utils.RenderUtils;
-import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 
 import java.util.List;
 
@@ -21,9 +21,8 @@ public class MazeSolver {
 
     @SubscribeEvent
     public void onRender(GuiScreenEvent.BackgroundDrawnEvent e){
-        if(!ScoreboardUtils.currentGamemode.isSkyblock()) return;
-        if(!ScoreboardUtils.currentLocation.isDungeon()) return;
-        if(!Configuration.dungeonsMazeSolver) return;
+        if(!Configuration.dungeonsTerminalMazeSolver) return;
+        if (!DungeonManager.checkEssentialsF7()) return;
         if(!(e.gui instanceof GuiChest)) return;
         GuiChest chest = (GuiChest) e.gui;
         Container container = chest.inventorySlots;

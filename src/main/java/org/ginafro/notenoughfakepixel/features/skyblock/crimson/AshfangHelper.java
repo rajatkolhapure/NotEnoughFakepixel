@@ -258,7 +258,7 @@ public class AshfangHelper {
                 return number;
             } catch (NumberFormatException e) {
                 System.err.println("Error when converting " + numberString);
-                e.printStackTrace();
+                //e.printStackTrace();
                 return -1.0f;
             }
         }
