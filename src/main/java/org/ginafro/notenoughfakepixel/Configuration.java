@@ -10,7 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.ChatComponentText;
 import org.ginafro.notenoughfakepixel.config.pages.AshfangOverlayPage;
 import org.ginafro.notenoughfakepixel.config.pages.MiningOverlayPage;
-import org.ginafro.notenoughfakepixel.config.pages.SecretOverlayPage;
+import org.ginafro.notenoughfakepixel.config.pages.ScoreOverlayPage;
 import org.ginafro.notenoughfakepixel.features.skyblock.mining.RemoveGhostInvis;
 
 public class Configuration extends Config {
@@ -63,8 +63,12 @@ public class Configuration extends Config {
         save();
     }
 
+    public static boolean isPojav() {
+        return (System.getProperty("os.name").contains("Android") || System.getProperty("os.name").contains("Linux"));
+    }
+
     public static void hiddenOverlays() {
-        dungeonsSecretOverlay = false;
+        dungeonsScoreOverlay = false;
         miningOverlay = false;
         crimsonAshfangOverlay = false;
     }
@@ -167,6 +171,19 @@ public class Configuration extends Config {
     @Switch(name = "Mute Bosses", category = DUNGEONS, subcategory = "QOL", description = "Mutes bosses on chat.")
     public static boolean dungeonsMuteBosses = true;
 
+    @Switch(name = "Dungeons Map" , category = DUNGEONS, subcategory = "Dungeon Map")
+    public static boolean dungeonsMap = true;
+    @Color(name = "Dungeons Map Border Color", category = DUNGEONS , subcategory = "Dungeon Map")
+    public static OneColor dungeonsMapBorderColor = new OneColor(0,0,0);
+    @Slider(name = "Dungeons Map Scale" ,category = DUNGEONS , subcategory = "Dungeon Map" , min = 0.1f,max=10f)
+    public static float dungeonsMapScale = 1.0f;
+    @Slider(name = "Dungeons Map Offset X" ,category = DUNGEONS , subcategory = "Dungeon Map" , min = 0.0f,max=1800f)
+    public static float dungeonsMapOffsetX = 0.0f;
+    @Slider(name = "Dungeons Map Offset Y" ,category = DUNGEONS , subcategory = "Dungeon Map" , min = 0.0f,max=1250)
+    public static float dungeonsMapOffsetY = 0.0f;
+    @Switch(name = "Dungeons Map Rotation" , category = DUNGEONS, subcategory = "Dungeon Map")
+    public static boolean dungeonsRotateMap = true;
+
     @Switch(name = "Fel Mobs Display" , category = DUNGEONS, subcategory = "Starred Mobs")
     public static boolean dungeonsFelMob = true;
     @Color(name = "Fel Mob Color", category = DUNGEONS, subcategory = "Starred Mobs")
@@ -192,19 +209,6 @@ public class Configuration extends Config {
 
     @Switch(name = "Three Weirdos Solver" , category = DUNGEONS, subcategory = "Puzzles")
     public static boolean dungeonsThreeWeirdos = true;
-
-    @Switch(name = "Dungeons Map" , category = DUNGEONS, subcategory = "Dungeon Map")
-    public static boolean dungeonsMap = true;
-    @Color(name = "Dungeons Map Border Color", category = DUNGEONS , subcategory = "Dungeon Map")
-    public static OneColor dungeonsMapBorderColor = new OneColor(0,0,0);
-    @Slider(name = "Dungeons Map Scale" ,category = DUNGEONS , subcategory = "Dungeon Map" , min = 0.1f,max=10f)
-    public static float dungeonsMapScale = 1.0f;
-    @Slider(name = "Dungeons Map Offset X" ,category = DUNGEONS , subcategory = "Dungeon Map" , min = 0.0f,max=2000f)
-    public static float dungeonsMapOffsetX = 0.0f;
-    @Slider(name = "Dungeons Map Offset Y" ,category = DUNGEONS , subcategory = "Dungeon Map" , min = 0.0f,max=2000f)
-    public static float dungeonsMapOffsetY = 0.0f;
-    @Switch(name = "Dungeons Map Rotation" , category = DUNGEONS, subcategory = "Dungeon Map")
-    public static boolean dungeonsRotateMap = true;
 
 
     @Switch(name = "Terminal Starts With Solver" , category = DUNGEONS , subcategory = "Floor 7 Terminals and Devices")
@@ -232,18 +236,22 @@ public class Configuration extends Config {
     @Color(name = "Alternative Color", category = DUNGEONS , subcategory = "Floor 7 Terminals and Devices")
     public static OneColor dungeonsAlternativeColor = new OneColor(255,255,0);
 
-    @Switch(name = "Secret % Overlay" , category = DUNGEONS, subcategory = "Secrets")
-    public static boolean dungeonsSecretOverlay = true;
-    @Switch(name = "S+ Reminder" , category = DUNGEONS, subcategory = "Secrets", description = "Shows an S+ in screen when you have 100% secrets and 100% cleared.")
-    public static boolean dungeonsSPlusReminder = true;
-    @Switch(name = "Show Item Secrets and Wither Essences" , category = DUNGEONS, subcategory = "Secrets", description = "Show hitbox through walls of item secrets.")
+    @Switch(name = "Is Paul Active" , category = DUNGEONS, subcategory = "Score & Secrets")
+    public static boolean dungeonsIsPaul = false;
+    @Switch(name = "Score Overlay" , category = DUNGEONS, subcategory = "Score & Secrets")
+    public static boolean dungeonsScoreOverlay = true;
+    @Switch(name = "S+ Notifier" , category = DUNGEONS, subcategory = "Score & Secrets", description = "Shows an S+ in screen + chat message when virtually reached S+ (% secrets + 100% completion).")
+    public static boolean dungeonsSPlusNotifier = true;
+    @Switch(name = "Dungeon Cleared Notifier" , category = DUNGEONS, subcategory = "Score & Secrets", description = "Shows a message in screen when 100% completion.")
+    public static boolean dungeonsClearedNotifier = true;
+    @Switch(name = "Show Item Secrets and Wither Essences" , category = DUNGEONS, subcategory = "Score & Secrets", description = "Show hitbox through walls of item secrets.")
     public static boolean dungeonsItemSecretsDisplay = true;
-    @Color(name = "Item Secrets Color", category = DUNGEONS, subcategory = "Secrets")
+    @Color(name = "Item Secrets Color", category = DUNGEONS, subcategory = "Score & Secrets")
     public static OneColor dungeonsItemSecretsColor = new OneColor(255, 255, 0);
-    @Switch(name = "Make Item Secrets Big" , category = DUNGEONS, subcategory = "Secrets")
+    @Switch(name = "Make Item Secrets Big" , category = DUNGEONS, subcategory = "Score & Secrets")
     public static boolean dungeonsItemSecretsBig = true;
-    @Page(name = "Secret Overlay Options" , category = DUNGEONS, subcategory = "Secrets", location = PageLocation.BOTTOM)
-    public static SecretOverlayPage dungeonsSecretOverlayPage = new SecretOverlayPage();
+    @Page(name = "Secret Overlay Options" , category = DUNGEONS, subcategory = "Score & Secrets", location = PageLocation.BOTTOM)
+    public static ScoreOverlayPage dungeonsScoreOverlayPage = new ScoreOverlayPage();
 
     // Diana
     @Header(text = DIANA , category = DIANA , size = 2)

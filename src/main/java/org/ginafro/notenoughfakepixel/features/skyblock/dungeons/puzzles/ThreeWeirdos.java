@@ -1,4 +1,4 @@
-package org.ginafro.notenoughfakepixel.features.skyblock.dungeons;
+package org.ginafro.notenoughfakepixel.features.skyblock.dungeons.puzzles;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;

@@ -14,6 +14,7 @@ import org.ginafro.notenoughfakepixel.Configuration;
 import org.ginafro.notenoughfakepixel.utils.RenderUtils;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 import org.lwjgl.input.Mouse;
+import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.DungeonManager;
 
 import java.awt.*;
 
@@ -71,8 +72,8 @@ public class ClickInOrderSolver {
     @SubscribeEvent
     public void onMouseClick(GuiScreenEvent.MouseInputEvent.Pre event) {
         if (!Configuration.dungeonsTerminalClickInOrderSolver) return;
-        if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
-        if (!ScoreboardUtils.currentLocation.isDungeon()) return;
+        if (!DungeonManager.checkEssentialsF7()) return;
+
         if (!Mouse.getEventButtonState()) return;
         if (!(Minecraft.getMinecraft().currentScreen instanceof GuiChest)) return; // Check if the current screen is a chest GUI
         GuiChest guiChest = (GuiChest) Minecraft.getMinecraft().currentScreen;

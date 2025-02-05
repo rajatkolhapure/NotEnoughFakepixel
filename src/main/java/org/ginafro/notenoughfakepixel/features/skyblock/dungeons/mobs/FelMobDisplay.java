@@ -1,4 +1,4 @@
-package org.ginafro.notenoughfakepixel.features.skyblock.dungeons;
+package org.ginafro.notenoughfakepixel.features.skyblock.dungeons.mobs;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
