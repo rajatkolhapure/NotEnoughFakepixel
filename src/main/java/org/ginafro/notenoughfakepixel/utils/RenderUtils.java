@@ -295,6 +295,27 @@ public class RenderUtils {
             x2 = x + 0.3;
             z1 = z - 0.3;
             z2 = z + 0.3;
+        } else if (type == MobDisplayTypes.ITEM) {
+            y1 = y + 1.0;
+            y2 = y + 1.25;
+            x1 = x - 0.125;
+            x2 = x + 0.125;
+            z1 = z - 0.125;
+            z2 = z + 0.125;
+        } else if (type == MobDisplayTypes.ITEMBIG) {
+            y1 = y + 1.0;
+            y2 = y + 2;
+            x1 = x - 0.5;
+            x2 = x + 0.5;
+            z1 = z - 0.5;
+            z2 = z + 0.5;
+        } else if (type == MobDisplayTypes.WITHERESSENCE) {
+            y1 = y + 2.5;
+            y2 = y + 3.0;
+            x1 = x - 0.3;
+            x2 = x + 0.3;
+            z1 = z - 0.3;
+            z2 = z + 0.3;
         } else {
             y1 = y - 1;
             y2 = y + 1;
@@ -344,23 +365,25 @@ public class RenderUtils {
         GlStateManager.popMatrix();
     }
 
-    public static void drawTag(String str, double[] pos) {
+    public static void drawTag(String str, double[] pos, Color color, float partialTicks) {
         FontRenderer fontrenderer = Minecraft.getMinecraft().fontRendererObj;
         EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
-        double x = ((pos[0] - player.posX) + 0.5) ;
-        double y = ((pos[1] - player.posY) + 0.5);
-        double z = ((pos[2] - player.posZ) + 0.5);
+        double viewerX = player.lastTickPosX + (player.posX - player.lastTickPosX) * partialTicks;
+        double viewerY = player.lastTickPosY + (player.posY - player.lastTickPosY) * partialTicks;
+        double viewerZ = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * partialTicks;
+        double x = ((pos[0] - viewerX) + 0.5);
+        double y = ((pos[1] - viewerY) + 0.5);
+        double z = ((pos[2] - viewerZ) + 0.5);
         RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
         float f = 3F;
         float f1 = 0.016666668F * f;
         GlStateManager.pushMatrix();
-        //double[] vector = getNormalizedVector(pos, new double[] {player.posX, player.posY, player.posZ});
         GlStateManager.translate((float)x, (float)y + 2.5, (float)z);
         GL11.glNormal3f(0.0F, 1.0F, 0.0F);
         GlStateManager.rotate(-renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
         GlStateManager.rotate(renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
         GlStateManager.scale(-f1, -f1, f1);
-        //GlStateManager.disableLighting();
+        GlStateManager.disableLighting();
         GlStateManager.depthMask(false);
         GlStateManager.disableDepth();
         GlStateManager.enableBlend();
@@ -377,11 +400,9 @@ public class RenderUtils {
         worldrenderer.pos((double)(j + 1), (double)(-1 + i), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
         tessellator.draw();
         GlStateManager.enableTexture2D();
-        fontrenderer.drawString(str, -fontrenderer.getStringWidth(str) / 2, i, 553648127);
-        GlStateManager.depthMask(true);
-        fontrenderer.drawString(str, -fontrenderer.getStringWidth(str) / 2, i, -1);
+        fontrenderer.drawString(str, -fontrenderer.getStringWidth(str) / 2, i, colorToInt(color));
         GlStateManager.enableDepth();
-        //GlStateManager.enableLighting();
+        GlStateManager.enableLighting();
         GlStateManager.disableBlend();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.popMatrix();
@@ -508,7 +529,11 @@ public class RenderUtils {
         GlStateManager.popMatrix();
     }
 
-    public static void highlightBlock(BlockPos pos, Color color, float partialTicks) {
+    public static void highlightBlock(BlockPos pos, Color color, boolean disableDepth, float partialTicks) {
+        highlightBlock(pos,color,disableDepth,false,partialTicks);
+    }
+
+    public static void highlightBlock(BlockPos pos, Color color, boolean disableDepth, boolean isButton, float partialTicks) {
         Entity viewer = Minecraft.getMinecraft().getRenderViewEntity();
         double viewerX = viewer.lastTickPosX + (viewer.posX - viewer.lastTickPosX) * partialTicks;
         double viewerY = viewer.lastTickPosY + (viewer.posY - viewer.lastTickPosY) * partialTicks;
@@ -518,12 +543,26 @@ public class RenderUtils {
         double y = pos.getY() - viewerY;
         double z = pos.getZ() - viewerZ;
 
-        GlStateManager.disableDepth();
+        if (disableDepth) GlStateManager.disableDepth();
         GlStateManager.disableCull();
         GlStateManager.disableLighting();
-        RenderUtils.drawFilledBoundingBox(new AxisAlignedBB(x, y, z, x + 1, y + 1, z + 1), 1f, color);
+        double initialToAddX = 0;
+        if (!disableDepth) {
+            initialToAddX = .05;
+        }
+        if (!isButton) {
+            if (disableDepth) {
+                RenderUtils.drawFilledBoundingBox(new AxisAlignedBB(x, y, z, x + 1, y + 1, z + 1), 1f, color);
+            } else {
+                RenderUtils.drawFilledBoundingBox(new AxisAlignedBB(x - initialToAddX, y, z, x + 1 + initialToAddX, y + 1, z + 1), 1f, color);
+            }
+        } else {
+            RenderUtils.drawFilledBoundingBox(new AxisAlignedBB(x, y+0.5-0.13, z+0.5-0.191, x-.13, y+0.5+0.13, z+0.5+0.191), 1f, color);
+        }
+
+
         GlStateManager.enableLighting();
-        GlStateManager.enableDepth();
+        if (disableDepth) GlStateManager.enableDepth();
         GlStateManager.enableCull();
     }
 
@@ -606,6 +645,10 @@ public class RenderUtils {
         GlStateManager.enableCull();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F); // Reset to white
         GlStateManager.popMatrix(); // Restore the saved state
+    }
+
+    public static int colorToInt(Color color) {
+        return (color.getRed() << 16) | (color.getGreen() << 8) | color.getBlue();
     }
 
 

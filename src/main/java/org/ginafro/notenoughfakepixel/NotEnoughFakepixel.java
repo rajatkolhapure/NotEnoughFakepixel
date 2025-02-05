@@ -21,8 +21,8 @@ import org.ginafro.notenoughfakepixel.features.skyblock.crimson.AshfangHelper;
 import org.ginafro.notenoughfakepixel.features.skyblock.crimson.BossNotifier;
 import org.ginafro.notenoughfakepixel.features.skyblock.crimson.AshfangOverlay;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.*;
-import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.terminals.ClickOnColorsSolver;
-import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.terminals.StartingWithSolver;
+import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.devices.*;
+import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.terminals.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.enchanting.EnchantingSolvers;
 import org.ginafro.notenoughfakepixel.features.skyblock.fishing.GreatCatchNotifier;
 import org.ginafro.notenoughfakepixel.features.skyblock.mining.*;
@@ -30,7 +30,6 @@ import org.ginafro.notenoughfakepixel.features.skyblock.overlays.StorageOverlay;
 import org.ginafro.notenoughfakepixel.features.skyblock.qol.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.diana.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.slayers.AutoOpenMaddox;
-import org.ginafro.notenoughfakepixel.features.skyblock.slayers.SlayerInfoCommand;
 import org.ginafro.notenoughfakepixel.features.skyblock.slayers.SlayerMobsDisplay;
 import org.ginafro.notenoughfakepixel.events.Handlers.PacketHandler;
 import org.ginafro.notenoughfakepixel.features.skyblock.slayers.VoidgloomSeraph;
@@ -63,6 +62,12 @@ public class NotEnoughFakepixel {
         // Dungeons
         MinecraftForge.EVENT_BUS.register(new StartingWithSolver());
         MinecraftForge.EVENT_BUS.register(new ClickOnColorsSolver());
+        MinecraftForge.EVENT_BUS.register(new ClickInOrderSolver());
+        MinecraftForge.EVENT_BUS.register(new MazeSolver());
+        MinecraftForge.EVENT_BUS.register(new CorrectPanesSolver());
+        MinecraftForge.EVENT_BUS.register(new FirstDeviceSolver());
+        MinecraftForge.EVENT_BUS.register(new ThirdDeviceSolver());
+        MinecraftForge.EVENT_BUS.register(new HideTooltips());
 
         MinecraftForge.EVENT_BUS.register(new AutoReadyDungeon());
         MinecraftForge.EVENT_BUS.register(new AutoCloseChests());
@@ -71,6 +76,9 @@ public class NotEnoughFakepixel {
         MinecraftForge.EVENT_BUS.register(new StarredMobDisplay());
         MinecraftForge.EVENT_BUS.register(new BatMobDisplay());
         MinecraftForge.EVENT_BUS.register(new FelMobDisplay());
+        MinecraftForge.EVENT_BUS.register(new ItemSecretsDisplay());
+        MinecraftForge.EVENT_BUS.register(new MuteBosses());
+
         MinecraftForge.EVENT_BUS.register(new ThreeWeirdos());
         MinecraftForge.EVENT_BUS.register(new SecretOverlay());
 
@@ -100,8 +108,9 @@ public class NotEnoughFakepixel {
         MinecraftForge.EVENT_BUS.register(new StorageOverlay.StorageEvent());
         MinecraftForge.EVENT_BUS.register(new AutoOpenMaddox());
         MinecraftForge.EVENT_BUS.register(new MidasStaff());
-        MinecraftForge.EVENT_BUS.register(new Wardrobe());
-
+        MinecraftForge.EVENT_BUS.register(new WardrobeShortcut());
+        MinecraftForge.EVENT_BUS.register(new PetsShortcut());
+        MinecraftForge.EVENT_BUS.register(new WarpsShortcut());
 
         MinecraftForge.EVENT_BUS.register(new Fullbright());
         MinecraftForge.EVENT_BUS.register(new KDCounter());

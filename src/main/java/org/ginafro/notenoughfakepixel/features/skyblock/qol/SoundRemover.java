@@ -8,25 +8,41 @@ import org.ginafro.notenoughfakepixel.events.PacketReadEvent;
 import org.ginafro.notenoughfakepixel.utils.InventoryUtils;
 
 public class SoundRemover {
+    private float lastZombieDeath = -1;
     @SubscribeEvent
     public void onSoundPacketReceive(PacketReadEvent event) {
         Packet packet = event.packet;
         if (packet instanceof S29PacketSoundEffect) {
             S29PacketSoundEffect soundEffect = (S29PacketSoundEffect) packet;
 
-            if (soundEffect.getSoundName().equals("mob.villager.yes") || soundEffect.getSoundName().equals("mob.villager.haggle")) {
-                if (Configuration.qolDisableJerryChineGunSounds && InventoryUtils.getSlot("Jerry-chine Gun") != -1) {
-                    if (event.isCancelable()) event.setCanceled(true);
-                }
-                return;
+            switch (soundEffect.getSoundName()) {
+                case "mob.villager.yes":
+                case "mob.villager.haggle":
+                    if (Configuration.qolDisableJerryChineGunSounds && InventoryUtils.getSlot("Jerry-chine Gun") == InventoryUtils.getCurrentSlot()) {
+                        if (event.isCancelable()) event.setCanceled(true);
+                    }
+                    break;
+                case "mob.endermen.portal":
+                    if (Configuration.qolDisableAoteSounds && InventoryUtils.getSlot("Aspect of the End") == InventoryUtils.getCurrentSlot()) {
+                        if (event.isCancelable()) event.setCanceled(true);
+                    }
+                    break;
+                case "mob.zombie.death":
+                    if (Configuration.qolDisableZombieRareDrops) {
+                        lastZombieDeath = System.currentTimeMillis();
+                    }
+                    break;
+                case "note.pling":
+                    if (Configuration.qolDisableZombieRareDrops) {
+                        if (System.currentTimeMillis()-lastZombieDeath < 1000 && (soundEffect.getVolume() == 0.4f || soundEffect.getVolume() == 0.8f)) {
+                            if (event.isCancelable()) event.setCanceled(true);
+                        }
+                    }
             }
 
-            if (soundEffect.getSoundName().equals("mob.endermen.portal")) {
-                if (Configuration.qolDisableAoteSounds && InventoryUtils.getSlot("Aspect of the End") != -1) {
-                    if (event.isCancelable()) event.setCanceled(true);
-                }
-                return;
-            }
+
+
+
 
         }
     }

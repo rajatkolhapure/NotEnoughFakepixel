@@ -106,6 +106,19 @@ public class Configuration extends Config {
     public static boolean qolShortcutWardrobe = true;
     @KeyBind(name = "Wardrobe Shortcut Key", category = QUALITY_OF_LIFE)
     public static OneKeyBind qolWardrobeKeyBind = new OneKeyBind(UKeyboard.KEY_R);
+    @Switch(name = "Pets Shortcut" , category = QUALITY_OF_LIFE)
+    public static boolean qolShortcutPets = true;
+    @KeyBind(name = "Pets Shortcut Key", category = QUALITY_OF_LIFE)
+    public static OneKeyBind qolPetsKeyBind = new OneKeyBind(UKeyboard.KEY_P);
+    @Switch(name = "Warps Shortcuts" , category = QUALITY_OF_LIFE)
+    public static boolean qolShortcutWarps = true;
+    @KeyBind(name = "Warp Is Shortcut Key", category = QUALITY_OF_LIFE)
+    public static OneKeyBind qolShortcutWarpIs = new OneKeyBind(UKeyboard.KEY_F7);
+    @KeyBind(name = "Warp Hub Shortcut Key", category = QUALITY_OF_LIFE)
+    public static OneKeyBind qolShortcutWarpHub = new OneKeyBind(UKeyboard.KEY_F8);
+    @KeyBind(name = "Warp Dh Shortcut Key", category = QUALITY_OF_LIFE)
+    public static OneKeyBind qolShortcutWarpDh = new OneKeyBind(UKeyboard.KEY_F9);
+
     @Switch(name = "Show Enchant Level", category = QUALITY_OF_LIFE, description = "Show enchant level of an book on its icon")
     public static boolean qolShowEnchantLevel = true;
     @Switch(name = "Middle click on terminals and Enchanting" , category = QUALITY_OF_LIFE, description = "Middle clicks on terminals and enchanting gui.")
@@ -159,44 +172,86 @@ public class Configuration extends Config {
     public static boolean dungeonsAutoReady = true;
     @Text(name = "Auto Ready Name (if nicked)" , category = DUNGEONS, subcategory = "QOL", description = "The name this will search for when you are nicked")
     public static String dungeonsAutoReadyName = "your nicked name";
-    @Switch(name = "Auto close chests", category = DUNGEONS, subcategory = "QOL", description = "Automatically closes chests in dungeons.")
+    @Switch(name = "Auto Close Chests", category = DUNGEONS, subcategory = "QOL", description = "Automatically closes chests in dungeons.")
     public static boolean dungeonsAutoCloseChests = true;
+    @Switch(name = "Mute Bosses", category = DUNGEONS, subcategory = "QOL", description = "Mutes bosses on chat.")
+    public static boolean dungeonsMuteBosses = true;
 
-    @Switch(name = "Starred Mobs Helper" , category = DUNGEONS, subcategory = "Starred Mobs")
-    public static boolean dungeonsStarredMobs = true;
-    @Color(name = "Starred Mobs Color", category = DUNGEONS, subcategory = "Starred Mobs")
-    public static OneColor dungeonsStarredBoxColor = new OneColor(92, 154, 255);
-    @Switch(name = "Bat Mobs Display" , category = DUNGEONS, subcategory = "Starred Mobs")
-    public static boolean dungeonsBatMobs = true;
-    @Color(name = "Bat Mob Color", category = DUNGEONS, subcategory = "Starred Mobs")
-    public static OneColor dungeonsBatColor = new OneColor(92, 154, 255);
     @Switch(name = "Fel Mobs Display" , category = DUNGEONS, subcategory = "Starred Mobs")
     public static boolean dungeonsFelMob = true;
     @Color(name = "Fel Mob Color", category = DUNGEONS, subcategory = "Starred Mobs")
     public static OneColor dungeonsFelColor = new OneColor(92, 154, 255);
+    @Switch(name = "Bat Mobs Display" , category = DUNGEONS, subcategory = "Starred Mobs")
+    public static boolean dungeonsBatMobs = true;
+    @Color(name = "Bat Mob Color", category = DUNGEONS, subcategory = "Starred Mobs")
+    public static OneColor dungeonsBatColor = new OneColor(92, 154, 255);
+    @Switch(name = "Starred Mobs Display" , category = DUNGEONS, subcategory = "Starred Mobs")
+    public static boolean dungeonsStarredMobs = true;
+    @Color(name = "Starred Mobs Color", category = DUNGEONS, subcategory = "Starred Mobs")
+    public static OneColor dungeonsStarredBoxColor = new OneColor(92, 154, 255);
+    @Switch(name = "Starred Mobs Esp" , category = DUNGEONS, subcategory = "Starred Mobs", description = "Render starred mobs hitboxes through walls.")
+    public static boolean dungeonsStarredMobsEsp = true;
+    @Color(name = "Withermancer Color", category = DUNGEONS, subcategory = "Starred Mobs")
+    public static OneColor dungeonsWithermancerColor = new OneColor(0, 0, 0);
+    @Color(name = "Zombie Commander Color", category = DUNGEONS, subcategory = "Starred Mobs")
+    public static OneColor dungeonsZombieCommanderColor = new OneColor(255, 0, 0);
+    @Color(name = "Skeleton Master Color", category = DUNGEONS, subcategory = "Starred Mobs")
+    public static OneColor dungeonsSkeletonMasterColor = new OneColor(255, 100, 0);
+    @Color(name = "Stormy Color", category = DUNGEONS, subcategory = "Starred Mobs")
+    public static OneColor dungeonsStormyColor = new OneColor(173, 216, 230);
 
     @Switch(name = "Three Weirdos Solver" , category = DUNGEONS, subcategory = "Puzzles")
     public static boolean dungeonsThreeWeirdos = true;
 
     @Switch(name = "Dungeons Map" , category = DUNGEONS, subcategory = "Dungeon Map")
     public static boolean dungeonsMap = true;
+    @Color(name = "Dungeons Map Border Color", category = DUNGEONS , subcategory = "Dungeon Map")
+    public static OneColor dungeonsMapBorderColor = new OneColor(0,0,0);
     @Slider(name = "Dungeons Map Scale" ,category = DUNGEONS , subcategory = "Dungeon Map" , min = 0.1f,max=10f)
     public static float dungeonsMapScale = 1.0f;
+    @Slider(name = "Dungeons Map Offset X" ,category = DUNGEONS , subcategory = "Dungeon Map" , min = 0.0f,max=2000f)
+    public static float dungeonsMapOffsetX = 0.0f;
+    @Slider(name = "Dungeons Map Offset Y" ,category = DUNGEONS , subcategory = "Dungeon Map" , min = 0.0f,max=2000f)
+    public static float dungeonsMapOffsetY = 0.0f;
+    @Switch(name = "Dungeons Map Rotation" , category = DUNGEONS, subcategory = "Dungeon Map")
+    public static boolean dungeonsRotateMap = false;
 
-    @Switch(name = "Starts With Solver" , category = DUNGEONS , subcategory = "Floor 7")
+
+    @Switch(name = "Terminal Starts With Solver" , category = DUNGEONS , subcategory = "Floor 7 Terminals and Devices")
     public static boolean dungeonsStartsWith = true;
-    //@Switch(name = "Click In Order Solver" , category = DUNGEONS , subcategory = "Floor 7")
-    public static boolean dungeonsClickInOrder = true;
-    @Switch(name = "Select colors Solver" , category = DUNGEONS , subcategory = "Floor 7")
+    @Switch(name = "Terminal Select colors Solver" , category = DUNGEONS , subcategory = "Floor 7 Terminals and Devices")
     public static boolean dungeonsSelectColors = true;
-
-    @Color(name = "Terminal Overlay Color", category = DUNGEONS , subcategory = "Floor 7")
-    public static OneColor dungeonsTerminalColor = new OneColor(0,255,0);
+    @Switch(name = "Terminal Click In Order Solver" , category = DUNGEONS , subcategory = "Floor 7 Terminals and Devices")
+    public static boolean dungeonsClickInOrder = true;
+    @Switch(name = "Terminal Maze Solver" , category = DUNGEONS , subcategory = "Floor 7 Terminals and Devices")
+    public static boolean dungeonsMazeSolver = true;
+    @Switch(name = "Terminal Correct Panes Solver" , category = DUNGEONS , subcategory = "Floor 7 Terminals and Devices")
+    public static boolean dungeonsCorrectPanesSolver = true;
+    @Switch(name = "Hide Terminal Incorrect Slots" , category = DUNGEONS , subcategory = "Floor 7 Terminals and Devices")
+    public static boolean dungeonsTerminalHideIncorrect = true;
+    @Switch(name = "Prevent Terminal Missclicks" , category = DUNGEONS , subcategory = "Floor 7 Terminals and Devices")
+    public static boolean dungeonsPreventMissclicks = true;
+    @Switch(name = "Hide Tooltips" , category = DUNGEONS , subcategory = "Floor 7 Terminals and Devices")
+    public static boolean dungeonsHideTooltips = true;
+    @Switch(name = "First Device Solver" , category = DUNGEONS , subcategory = "Floor 7 Terminals and Devices")
+    public static boolean dungeonsFirstDeviceSolver = true;
+    @Switch(name = "Third Device Solver" , category = DUNGEONS , subcategory = "Floor 7 Terminals and Devices")
+    public static boolean dungeonsThirdDeviceSolver = true;
+    @Color(name = "Correct Color", category = DUNGEONS , subcategory = "Floor 7 Terminals and Devices")
+    public static OneColor dungeonsCorrectColor = new OneColor(128,255,255);
+    @Color(name = "Alternative Color", category = DUNGEONS , subcategory = "Floor 7 Terminals and Devices")
+    public static OneColor dungeonsAlternativeColor = new OneColor(255,255,0);
 
     @Switch(name = "Secret % Overlay" , category = DUNGEONS, subcategory = "Secrets")
     public static boolean dungeonsSecretOverlay = true;
     @Switch(name = "S+ Reminder" , category = DUNGEONS, subcategory = "Secrets", description = "Shows an S+ in screen when you have 100% secrets and 100% cleared.")
     public static boolean dungeonsSPlusReminder = true;
+    @Switch(name = "Show Item Secrets and Wither Essences" , category = DUNGEONS, subcategory = "Secrets", description = "Show hitbox through walls of item secrets.")
+    public static boolean dungeonsItemSecretsDisplay = true;
+    @Color(name = "Item Secrets Color", category = DUNGEONS, subcategory = "Secrets")
+    public static OneColor dungeonsItemSecretsColor = new OneColor(255, 255, 0);
+    @Switch(name = "Make Item Secrets Big" , category = DUNGEONS, subcategory = "Secrets")
+    public static boolean dungeonsItemSecretsBig = true;
     @Page(name = "Secret Overlay Options" , category = DUNGEONS, subcategory = "Secrets", location = PageLocation.BOTTOM)
     public static SecretOverlayPage dungeonsSecretOverlayPage = new SecretOverlayPage();
 
