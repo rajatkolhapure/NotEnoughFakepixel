@@ -84,6 +84,10 @@ public class Configuration extends Config {
     public static boolean _qol = true;
     @Switch(name = "Custom Chat Filters" , description = "Add your own chat filters, by - /addfilter", category = QUALITY_OF_LIFE)
     public static boolean qolCustomFilters = true;
+//    @Switch(name = "Chest Search Bar" , description = "Adds a Search bar in chests", category = QUALITY_OF_LIFE)
+//    public static boolean searchBar = true;
+    @Switch(name = "Visual Cooldowns", description = "Makes the durability of the weapon being used as cooldown timer for better info", category = QUALITY_OF_LIFE)
+    public static boolean visualCooldowns = true;
     @Switch(name = "Disable Hyperion Explosion" , category = QUALITY_OF_LIFE)
     public static boolean qolDisableHyperionExplosions = true;
     @Switch(name = "Disable Thunderlord Bolt" , category = QUALITY_OF_LIFE)
@@ -340,8 +344,8 @@ public class Configuration extends Config {
 //    @Switch(name = "Jacob/Auction Timer" , category = "Skyblock")
     public static boolean jATimer = true;
 
-    //@Switch(name = "Storage GUI Overlay" , category = "Skyblock" , subcategory = "GUI Overlays")
-    public static boolean storageOverlay = false;
+    @Switch(name = "Storage GUI Overlay" , category = QUALITY_OF_LIFE)
+    public static boolean storageOverlay = true;
 
     // DEBUG
 
