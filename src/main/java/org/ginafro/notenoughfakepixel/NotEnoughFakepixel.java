@@ -1,8 +1,12 @@
 package org.ginafro.notenoughfakepixel;
 
 import cc.polyfrost.oneconfig.events.EventManager;
+import com.google.gson.Gson;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.inventory.GuiChest;
+import net.minecraft.inventory.ContainerChest;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
@@ -40,11 +44,18 @@ import org.ginafro.notenoughfakepixel.events.Handlers.PacketHandler;
 import org.ginafro.notenoughfakepixel.features.skyblock.slayers.VoidgloomSeraph;
 import org.ginafro.notenoughfakepixel.utils.*;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 @Mod(modid = "notenoughfakepixel", useMetadata=true)
 public class NotEnoughFakepixel {
 
     public static Configuration config;
-
+    public File file;
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         config = new Configuration();
@@ -54,7 +65,7 @@ public class NotEnoughFakepixel {
 
         MinecraftForge.EVENT_BUS.register(this);
         registerModEvents();
-        }
+         }
 
     private void registerModEvents() {
         // Dungeons
@@ -103,6 +114,7 @@ public class NotEnoughFakepixel {
         // QOL
         MinecraftForge.EVENT_BUS.register(new ShowCurrentPet());
         MinecraftForge.EVENT_BUS.register(new ChatCleaner());
+        MinecraftForge.EVENT_BUS.register(new VisualCooldowns());
         MinecraftForge.EVENT_BUS.register(new MiddleClickEvent());
         MinecraftForge.EVENT_BUS.register(new SoundRemover());
         MinecraftForge.EVENT_BUS.register(new ScrollableTooltips());
@@ -170,6 +182,7 @@ public class NotEnoughFakepixel {
         }
 
         ScoreboardUtils.parseScoreboard();
+
     }
 
     @SubscribeEvent
