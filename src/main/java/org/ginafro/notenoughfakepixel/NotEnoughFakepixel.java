@@ -106,8 +106,6 @@ public class NotEnoughFakepixel {
         // Chocolate Factory
         MinecraftForge.EVENT_BUS.register(new ChocolateFactory());
         // QOL
-        MinecraftForge.EVENT_BUS.register(new Testing());
-
         MinecraftForge.EVENT_BUS.register(new ShowCurrentPet());
         MinecraftForge.EVENT_BUS.register(new ChatCleaner());
         MinecraftForge.EVENT_BUS.register(new VisualCooldowns());
