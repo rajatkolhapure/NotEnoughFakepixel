@@ -90,22 +90,24 @@ public class Configuration extends Config {
     //@Switch(name = "Custom Chat Filters" , description = "Add your own chat filters, by - /addfilter", category = QUALITY_OF_LIFE)
     //public static boolean qolCustomFilters = true;
 
-    @Switch(name = "Disable Thunderlord Bolt" , category = QUALITY_OF_LIFE)
-    public static boolean qolDisableThunderlordBolt = true;
     @Switch(name = "Fullbright" , category = QUALITY_OF_LIFE)
     public static boolean qolFullbright = true;
     @Switch(name = "No Hurt Camera" , category = QUALITY_OF_LIFE)
     public static boolean qolNoHurtCam = true;
+    @Switch(name = "Disable Thunderlord Bolt" , category = QUALITY_OF_LIFE)
+    public static boolean qolDisableThunderlordBolt = true;
     @Switch(name = "1.12 Crops height" , category = QUALITY_OF_LIFE)
     public static boolean qolCropsHeight = false;
-    @Switch(name = "Disable Potion Effects in Inventory" , category = QUALITY_OF_LIFE)
-    public static boolean qolDisablePotionEffects = true;
     @Switch(name = "Disable rain" , category = QUALITY_OF_LIFE, description = "Disables rain rendering")
     public static boolean qolDisableRain = true;
+    @Switch(name = "Disable Potion Effects in Inventory" , category = QUALITY_OF_LIFE)
+    public static boolean qolDisablePotionEffects = true;
     @Switch(name = "Show Enchant Level", category = QUALITY_OF_LIFE, description = "Show enchant level of an book on its icon")
     public static boolean qolShowEnchantLevel = true;
     @Switch(name = "Middle click on terminals and Enchanting" , category = QUALITY_OF_LIFE, description = "Middle clicks on terminals and enchanting gui.")
     public static boolean qolMiddleClickChests = true;
+    @Switch(name = "Visual Cooldowns", description = "Makes the durability of the weapon being used as cooldown timer for better info", category = QUALITY_OF_LIFE)
+    public static boolean visualCooldowns = true;
 
     @Switch(name = "Wardrobe Shortcut" , category = QUALITY_OF_LIFE, subcategory = "Shortcuts")
     public static boolean qolShortcutWardrobe = true;
@@ -209,7 +211,8 @@ public class Configuration extends Config {
 
     @Switch(name = "Three Weirdos Solver" , category = DUNGEONS, subcategory = "Puzzles")
     public static boolean dungeonsThreeWeirdos = true;
-
+    @Switch(name = "Water Solver" , category = DUNGEONS, subcategory = "Puzzles")
+    public static boolean dungeonsWaterSolver = true;
 
     @Switch(name = "Terminal Starts With Solver" , category = DUNGEONS , subcategory = "Floor 7 Terminals and Devices")
     public static boolean dungeonsTerminalStartsWithSolver = true;
@@ -242,6 +245,8 @@ public class Configuration extends Config {
     public static boolean dungeonsScoreOverlay = true;
     @Switch(name = "S+ Notifier" , category = DUNGEONS, subcategory = "Score & Secrets", description = "Shows an S+ in screen + chat message when virtually reached S+ (% secrets + 100% completion).")
     public static boolean dungeonsSPlusNotifier = true;
+    @Switch(name = "S+ Message on Chat" , category = DUNGEONS, subcategory = "Score & Secrets", description = "Send a message chat when dungeon is about to be done.")
+    public static boolean dungeonsSPlusMessage = true;
     @Switch(name = "Dungeon Cleared Notifier" , category = DUNGEONS, subcategory = "Score & Secrets", description = "Shows a message in screen when 100% completion.")
     public static boolean dungeonsClearedNotifier = true;
     @Switch(name = "Show Item Secrets and Wither Essences" , category = DUNGEONS, subcategory = "Score & Secrets", description = "Show hitbox through walls of item secrets.")

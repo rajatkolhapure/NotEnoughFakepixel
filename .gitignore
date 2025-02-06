@@ -3,4 +3,5 @@
 run/
 build/
 .gradle/
+src/main/java/org/ginafro/notenoughfakepixel/Testing.java
 

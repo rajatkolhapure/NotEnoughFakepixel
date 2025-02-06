@@ -573,6 +573,50 @@ public class RenderUtils {
         GlStateManager.enableCull();
     }
 
+    public static void drawLeverBoundingBox(BlockPos pos, EnumFacing facing, Color color, float partialTicks) {
+        // Get the player's camera position
+        Entity viewer = Minecraft.getMinecraft().getRenderViewEntity();
+        double viewerX = viewer.lastTickPosX + (viewer.posX - viewer.lastTickPosX) * partialTicks;
+        double viewerY = viewer.lastTickPosY + (viewer.posY - viewer.lastTickPosY) * partialTicks;
+        double viewerZ = viewer.lastTickPosZ + (viewer.posZ - viewer.lastTickPosZ) * partialTicks;
+
+        // Convert world position to render position
+        double x = pos.getX() - viewerX;
+        double y = pos.getY() - viewerY;
+        double z = pos.getZ() - viewerZ;
+
+        // Define bounding box relative to lever position
+        AxisAlignedBB boundingBox;
+        switch (facing) {
+            case NORTH:
+                boundingBox = new AxisAlignedBB(x - 0.125, y + 0.1875, z - 0.25, x + 0.125, y + 0.8125, z);
+                break;
+            case SOUTH:
+                boundingBox = new AxisAlignedBB(x - 0.125, y + 0.1875, z, x + 0.125, y + 0.8125, z + 0.25);
+                break;
+            case WEST:
+                boundingBox = new AxisAlignedBB(x + 0.75, y + 0.1875, z + 0.25, x + 1, y + 0.8125, z + 0.75);
+                break;
+            case EAST:
+                boundingBox = new AxisAlignedBB(x, y + 0.1875, z + 0.25, x + 0.25, y + 0.8125, z + 0.75);
+                break;
+            default:
+                boundingBox = new AxisAlignedBB(x - 0.125, y + 0.1875, z - 0.25, x + 0.125, y + 0.8125, z);
+                break;
+        }
+
+        // Disable culling and lighting for proper rendering
+        GlStateManager.disableCull();
+        GlStateManager.disableLighting();
+
+        // Render bounding box
+        RenderUtils.drawFilledBoundingBox(boundingBox, 1f, color);
+
+        // Restore rendering settings
+        GlStateManager.enableLighting();
+        GlStateManager.enableCull();
+    }
+
     public static void drawFilledBoundingBox(AxisAlignedBB p_181561_0_, float alpha, Color color) {
         GlStateManager.pushMatrix(); // Save the current state
         GlStateManager.disableCull();
