@@ -1,12 +1,8 @@
 package org.ginafro.notenoughfakepixel;
 
 import cc.polyfrost.oneconfig.events.EventManager;
-import com.google.gson.Gson;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.inventory.GuiChest;
-import net.minecraft.inventory.ContainerChest;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
@@ -27,6 +23,7 @@ import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.mobs.BatMobDisp
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.mobs.FelMobDisplay;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.mobs.StarredMobDisplay;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.puzzles.ThreeWeirdos;
+import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.puzzles.WaterSolver;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.score.DungeonClearedNotifier;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.score.ScoreManager;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.score.ScoreOverlay;
@@ -44,12 +41,7 @@ import org.ginafro.notenoughfakepixel.events.Handlers.PacketHandler;
 import org.ginafro.notenoughfakepixel.features.skyblock.slayers.VoidgloomSeraph;
 import org.ginafro.notenoughfakepixel.utils.*;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 @Mod(modid = "notenoughfakepixel", useMetadata=true)
 public class NotEnoughFakepixel {
@@ -92,6 +84,8 @@ public class NotEnoughFakepixel {
         MinecraftForge.EVENT_BUS.register(new MuteBosses());
 
         MinecraftForge.EVENT_BUS.register(new ThreeWeirdos());
+        MinecraftForge.EVENT_BUS.register(new WaterSolver());
+
         MinecraftForge.EVENT_BUS.register(new ScoreManager());
         MinecraftForge.EVENT_BUS.register(new ScoreOverlay());
         MinecraftForge.EVENT_BUS.register(new SPlusNotifier());
@@ -112,6 +106,8 @@ public class NotEnoughFakepixel {
         // Chocolate Factory
         MinecraftForge.EVENT_BUS.register(new ChocolateFactory());
         // QOL
+        MinecraftForge.EVENT_BUS.register(new Testing());
+
         MinecraftForge.EVENT_BUS.register(new ShowCurrentPet());
         MinecraftForge.EVENT_BUS.register(new ChatCleaner());
         MinecraftForge.EVENT_BUS.register(new VisualCooldowns());

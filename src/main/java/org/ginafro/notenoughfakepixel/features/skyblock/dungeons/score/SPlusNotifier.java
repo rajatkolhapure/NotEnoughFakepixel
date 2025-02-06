@@ -14,10 +14,23 @@ public class SPlusNotifier {
 
     public static void reminder() {
         if (reminded) return;
+        if (!Configuration.dungeonsSPlusNotifier && !Configuration.dungeonsSPlusMessage) return;
+
+        if (ScoreManager.getRequiredSecretNeeded() == -1) {
+            if (Configuration.dungeonsSPlusMessage) {
+                Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc S+ cannot be reached, restart");
+            }
+            reminded = true;
+            return;
+        }
 
         if (ScoreManager.getSecretPercentage() >= ScoreManager.getRequiredSecretNeeded()) {
-            Minecraft.getMinecraft().ingameGUI.displayTitle(EnumChatFormatting.GOLD + "S+", "", 2, 100, 2);
-            Minecraft.getMinecraft().thePlayer.sendChatMessage("S+ virtually reached, get 100% completion!");
+            if (Configuration.dungeonsSPlusNotifier) {
+                Minecraft.getMinecraft().ingameGUI.displayTitle(EnumChatFormatting.GOLD + "S+", "", 2, 100, 2);
+            }
+            if (Configuration.dungeonsSPlusMessage) {
+                Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc S+ virtually reached, get 100% completion and enter portal!");
+            }
             reminded = true;
         }
     }
@@ -27,8 +40,7 @@ public class SPlusNotifier {
         if (!DungeonManager.checkEssentials() ||
                 e.phase == TickEvent.Phase.END ||
                 Minecraft.getMinecraft().thePlayer == null ||
-                Minecraft.getMinecraft().theWorld == null ||
-                !Configuration.dungeonsSPlusNotifier) return;
+                Minecraft.getMinecraft().theWorld == null) return;
         reminder();
     }
 

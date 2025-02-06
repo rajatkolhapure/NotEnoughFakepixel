@@ -42,7 +42,7 @@ public class DungeonsMap {
     private static float othersMarkerScale = 1.25F;
     double playerPositionX, playerPositionY = 0;
     ArrayList<String> teammates = new ArrayList<>();
-    boolean firstTime = true;
+    //boolean firstTime = true;
     private static final Color[] colors = {Color.YELLOW, Color.BLUE, Color.RED, Color.ORANGE};
     private ResourceLocation mapIconsTexture = new ResourceLocation("textures/map/map_icons.png");
     Minecraft mc = Minecraft.getMinecraft();
@@ -65,10 +65,10 @@ public class DungeonsMap {
             ItemMap map1 = (ItemMap) map.getItem();
             MapData data = map1.getMapData(map , mc.theWorld);
             if (data != null) {
-                if (firstTime) {
-                    firstTime = false;
-                    teammates = getTeammates();
-                }
+                //if (firstTime) {
+                    //firstTime = false;
+                    //teammates = getTeammates();
+                //}
                 drawMap(data);
                 drawBorderMap();
                 drawMarkers(data.mapDecorations);
@@ -275,7 +275,7 @@ public class DungeonsMap {
     }
 
 
-    private ArrayList<String> getTeammates() {
+    /*private ArrayList<String> getTeammates() {
         ArrayList<String> teammates = new ArrayList<>();
         // Grab all the world player entities and try to correlate them to the map
         for (EntityPlayer player : mc.theWorld.playerEntities) {
@@ -284,7 +284,7 @@ public class DungeonsMap {
                     !Objects.equals(player.getName(), "?")) teammates.add(player.getName());
         }
         Collections.sort(teammates);
-        System.out.println(teammates);
+        //System.out.println(teammates);
         return teammates;
-    }
+    }*/
 }
