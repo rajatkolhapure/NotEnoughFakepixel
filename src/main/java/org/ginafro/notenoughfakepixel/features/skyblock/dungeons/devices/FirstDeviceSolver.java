@@ -69,7 +69,7 @@ public class FirstDeviceSolver {
     @SubscribeEvent
     public void onInteract(PlayerInteractEvent event) {
         if (!Configuration.dungeonsFirstDeviceSolver) return;
-        //if (!DungeonManager.checkEssentialsF7()) return;
+        if (!DungeonManager.checkEssentialsF7()) return;
         if (Minecraft.getMinecraft().thePlayer != event.entityPlayer) return;
         if (event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) {
             lastTimeClicked = System.currentTimeMillis(); // Update last clicked time
@@ -148,7 +148,7 @@ public class FirstDeviceSolver {
     @SubscribeEvent
     public void onDiggingPacket(PacketWriteEvent event) {
         if (!Configuration.dungeonsFirstDeviceSolver) return;
-        //if (!DungeonManager.checkEssentialsF7()) return;
+        if (!DungeonManager.checkEssentialsF7()) return;
         Packet packet = event.packet;
         if (packet instanceof C07PacketPlayerDigging) {
             C07PacketPlayerDigging packetPlayerDigging = (C07PacketPlayerDigging) packet;

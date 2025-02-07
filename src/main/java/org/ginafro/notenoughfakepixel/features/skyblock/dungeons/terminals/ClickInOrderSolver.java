@@ -57,18 +57,20 @@ public class ClickInOrderSolver {
                         if (slot == null ||slot.inventory == Minecraft.getMinecraft().thePlayer.inventory) continue;
                         if (slot.getStack() == null || !(Block.getBlockFromItem(slot.getStack().getItem()) instanceof BlockStainedGlassPane)) continue;
                         // Is stained glass
-                        if (slot.getStack().getItemDamage() == 14 && Configuration.dungeonsTerminalHideIncorrect) {
-                            slot.getStack().getItem().setDamage(slot.getStack(), 15);
-                        }
+                        //if (slot.getStack().getItemDamage() == 14 && Configuration.dungeonsTerminalHideIncorrect) {
+                        //    slot.getStack().getItem().setDamage(slot.getStack(), 15);
+                        //}
                         if (slot.getStack().stackSize == round) {
-                            slot.getStack().getItem().setDamage(slot.getStack(), 0);
+                            //slot.getStack().getItem().setDamage(slot.getStack(), 0);
                             RenderUtils.drawOnSlot(container.inventorySlots.size(), slot.xDisplayPosition, slot.yDisplayPosition, Configuration.dungeonsCorrectColor.getRGB());
                         } else if (slot.getStack().stackSize == round+1) {
-                            slot.getStack().getItem().setDamage(slot.getStack(), 0);
-                            RenderUtils.drawOnSlot(container.inventorySlots.size(), slot.xDisplayPosition, slot.yDisplayPosition, new Color(Configuration.dungeonsAlternativeColor.getRed(), Configuration.dungeonsAlternativeColor.getGreen(), Configuration.dungeonsAlternativeColor.getBlue(), 150).getRGB());
-                        } else if (slot.getStack().stackSize == round+2) {
-                            slot.getStack().getItem().setDamage(slot.getStack(), 0);
-                            RenderUtils.drawOnSlot(container.inventorySlots.size(), slot.xDisplayPosition, slot.yDisplayPosition, new Color(Configuration.dungeonsAlternativeColor.getRed(), Configuration.dungeonsAlternativeColor.getGreen(), Configuration.dungeonsAlternativeColor.getBlue(), 40).getRGB());
+                            //slot.getStack().getItem().setDamage(slot.getStack(), 0);
+                            RenderUtils.drawOnSlot(container.inventorySlots.size(), slot.xDisplayPosition, slot.yDisplayPosition, new Color(Configuration.dungeonsAlternativeColor.getRed(), Configuration.dungeonsAlternativeColor.getGreen(), Configuration.dungeonsAlternativeColor.getBlue()).getRGB());
+                        //} else if (slot.getStack().stackSize == round+2) {
+                            //slot.getStack().getItem().setDamage(slot.getStack(), 0);
+                            //RenderUtils.drawOnSlot(container.inventorySlots.size(), slot.xDisplayPosition, slot.yDisplayPosition, new Color(Configuration.dungeonsAlternativeColor.getRed(), Configuration.dungeonsAlternativeColor.getGreen(), Configuration.dungeonsAlternativeColor.getBlue(), 40).getRGB());
+                        } else {
+                            if (Configuration.dungeonsTerminalHideIncorrect) RenderUtils.drawOnSlot(container.inventorySlots.size(), slot.xDisplayPosition, slot.yDisplayPosition, new Color(Configuration.dungeonsAlternativeColor.getRed(), Configuration.dungeonsAlternativeColor.getGreen(), Configuration.dungeonsAlternativeColor.getBlue(), 40).getRGB());
                         }
 
                         // Set uncompleted non-highlighted slots to gray to hide
