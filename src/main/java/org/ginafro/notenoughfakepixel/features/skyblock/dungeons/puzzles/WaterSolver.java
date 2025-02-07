@@ -11,8 +11,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.ginafro.notenoughfakepixel.Configuration;
@@ -26,18 +28,20 @@ import java.util.List;
 
 public class WaterSolver {
 
+    private Minecraft mc = Minecraft.getMinecraft();
+    private EntityPlayerSP player = mc.thePlayer;
+    private World world = mc.theWorld;
+
     private static final List<EnumDyeColor> WOOL_ORDER = Arrays.asList(
             EnumDyeColor.LIME, EnumDyeColor.BLUE, EnumDyeColor.RED, EnumDyeColor.PURPLE, EnumDyeColor.ORANGE
     );
     private boolean inWaterRoom = false;
     private int tickCounter = 0;
-    Minecraft mc = Minecraft.getMinecraft();
-    EntityPlayerSP player = mc.thePlayer;
-    World world = mc.theWorld;
+
     private Set<EnumDyeColor> woolBlocks = new LinkedHashSet<>();
-    Map<String, BlockPos> leversPositions = new HashMap<>();
-    Color green = new Color(0,255,0);
-    Color red = new Color(255,0,0);
+    private Map<String, BlockPos> leversPositions = new HashMap<>();
+    private boolean[] correctLevers = new boolean[]{true,true,true,true,true,true};
+    private BlockPos waterLeverPos;
 
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event) {
@@ -67,6 +71,7 @@ public class WaterSolver {
         if (colorSolutions.length > 0) {
             for (int i = 0; i < colorSolutions.length; i++) {
                 int solution = colorSolutions[i];
+                correctLevers[i] = true;
                 BlockPos position = null;
                 switch (i) {
                     case 0:
@@ -91,16 +96,40 @@ public class WaterSolver {
                 if (position == null) continue;
                 if (world.getBlockState(position).getBlock() != Blocks.lever) continue;
                 boolean isLeverActive = world.getBlockState(position).getValue(BlockLever.POWERED);
-                Color newColor;
-                if (solution == -1 || (solution == 0 && !isLeverActive) || (solution == 1 && isLeverActive)) {
-                    newColor = red;
-                } else {
-                    newColor = green;
+                if (!(solution == -1 || (solution == 0 && !isLeverActive) || (solution == 1 && isLeverActive))) {
+                    RenderUtils.draw3DLine(new Vec3(position.getX(),position.getY(),position.getZ()),
+                            player.getPositionEyes(event.partialTicks),
+                            Color.green,
+                            4,
+                            true,
+                            event.partialTicks);
+                    correctLevers[i] = false;
+                    RenderUtils.drawLeverBoundingBox(position,world.getBlockState(position).getValue(BlockLever.FACING).getFacing(), Color.green, event.partialTicks);
                 }
-                RenderUtils.drawLeverBoundingBox(position,world.getBlockState(position).getValue(BlockLever.FACING).getFacing(), newColor, event.partialTicks);
+            }
+            if (allTrue(correctLevers) && waterLeverPos != null) {
+                RenderUtils.draw3DLine(new Vec3(waterLeverPos.getX(),waterLeverPos.getY(),waterLeverPos.getZ()),
+                        player.getPositionEyes(event.partialTicks),
+                        Color.blue,
+                        4,
+                        true,
+                        event.partialTicks,
+                        false,
+                        true,
+                        world.getBlockState(waterLeverPos).getValue(BlockLever.FACING).getFacing()
+                        );
             }
         }
     }
+
+    @SubscribeEvent()
+    public void onWorldUnload(WorldEvent.Load event) {
+        if (!Configuration.dungeonsWaterSolver) return;
+        if (!DungeonManager.checkEssentials()) return;
+        waterLeverPos = null;
+        correctLevers = new boolean[]{true,true,true,true,true,true};
+    }
+
 
     private void detectWaterRoom() {
         if (checkForBlock(Blocks.sticky_piston, 20, 57) == null) {
@@ -146,8 +175,8 @@ public class WaterSolver {
     private Map<String, BlockPos> detectLeverPositions(BlockPos posOrigin) {
         Map<String, BlockPos> leversPositions = new HashMap<>();
 
-        BlockPos scan1 = new BlockPos(posOrigin.getX() + 12, posOrigin.getY(), posOrigin.getZ() + 12);
-        BlockPos scan2 = new BlockPos(posOrigin.getX() - 12, posOrigin.getY(), posOrigin.getZ() - 12);
+        BlockPos scan1 = new BlockPos(posOrigin.getX() + 16, posOrigin.getY(), posOrigin.getZ() + 16);
+        BlockPos scan2 = new BlockPos(posOrigin.getX() - 16, posOrigin.getY()-1, posOrigin.getZ() - 16);
 
         for (BlockPos pos : BlockPos.getAllInBox(scan1, scan2)) {
             IBlockState blockState = world.getBlockState(pos);
@@ -156,7 +185,7 @@ public class WaterSolver {
             if (block == Blocks.lever) {
                 EnumFacing facing = blockState.getValue(BlockLever.FACING).getFacing();
                 BlockPos behindLever = getBlockBehindLever(pos, facing);
-
+                if (behindLever == null) continue;
                 // Get the block behind the lever
                 Block behindBlock = world.getBlockState(behindLever).getBlock();
                 String blockName = Block.blockRegistry.getNameForObject(behindBlock).toString();
@@ -164,6 +193,8 @@ public class WaterSolver {
                 // If it's one of the predefined blocks, store its position
                 if (isTargetBlock(blockName)) {
                     leversPositions.put(blockName, pos);
+                } else if (Objects.equals(blockName, "minecraft:stone")) {
+                    waterLeverPos = pos;
                 }
             }
         }
@@ -197,7 +228,7 @@ public class WaterSolver {
         }
     }
 
-    private static BlockPos getBlockBehindLever(BlockPos pos, EnumFacing facing) {
+    public static BlockPos getBlockBehindLever(BlockPos pos, EnumFacing facing) {
         switch (facing) {
             case NORTH:
                 return new BlockPos(pos.getX(), pos.getY(), pos.getZ() + 1);
@@ -207,6 +238,10 @@ public class WaterSolver {
                 return new BlockPos(pos.getX(), pos.getY(), pos.getZ() - 1);
             case WEST:
                 return new BlockPos(pos.getX() + 1, pos.getY(), pos.getZ());
+            case UP:
+                return new BlockPos(pos.getX(), pos.getY()-1, pos.getZ());
+            case DOWN:
+                return new BlockPos(pos.getX(), pos.getY()+1, pos.getZ());
             default:
                 return null;
         }
@@ -220,6 +255,15 @@ public class WaterSolver {
                 blockName.equals("minecraft:diamond_block") ||
                 blockName.equals("minecraft:emerald_block") ||
                 blockName.equals("minecraft:hardened_clay");
+    }
+
+    public static boolean allTrue(boolean[] array) {
+        for (boolean value : array) {
+            if (!value) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public enum WOOL_SOLUTIONS {

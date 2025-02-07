@@ -65,6 +65,8 @@ public class NotEnoughFakepixel {
         MinecraftForge.EVENT_BUS.register(map);
         EventManager.INSTANCE.register(map);
 
+        //MinecraftForge.EVENT_BUS.register(new Testing());
+
         MinecraftForge.EVENT_BUS.register(new StartingWithSolver());
         MinecraftForge.EVENT_BUS.register(new ClickOnColorsSolver());
         MinecraftForge.EVENT_BUS.register(new ClickInOrderSolver());
@@ -77,14 +79,14 @@ public class NotEnoughFakepixel {
         MinecraftForge.EVENT_BUS.register(new AutoReadyDungeon());
         MinecraftForge.EVENT_BUS.register(new AutoCloseChests());
 
+        MinecraftForge.EVENT_BUS.register(new ThreeWeirdos());
+        MinecraftForge.EVENT_BUS.register(new WaterSolver());
+
         MinecraftForge.EVENT_BUS.register(new StarredMobDisplay());
         MinecraftForge.EVENT_BUS.register(new BatMobDisplay());
         MinecraftForge.EVENT_BUS.register(new FelMobDisplay());
         MinecraftForge.EVENT_BUS.register(new ItemSecretsDisplay());
         MinecraftForge.EVENT_BUS.register(new MuteBosses());
-
-        MinecraftForge.EVENT_BUS.register(new ThreeWeirdos());
-        MinecraftForge.EVENT_BUS.register(new WaterSolver());
 
         MinecraftForge.EVENT_BUS.register(new ScoreManager());
         MinecraftForge.EVENT_BUS.register(new ScoreOverlay());

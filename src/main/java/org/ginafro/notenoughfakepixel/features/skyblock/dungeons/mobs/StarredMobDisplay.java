@@ -65,6 +65,8 @@ public class StarredMobDisplay {
                         Configuration.dungeonsSkeletonMasterColor.getBlue(),
                         Configuration.dungeonsSkeletonMasterColor.getAlpha()
                 );
+            } else if (entity.getName().contains("Fels")) {
+                mobDisplayType = MobDisplayTypes.FELALIVE;
             }
 
 

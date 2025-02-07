@@ -5,6 +5,8 @@ import net.minecraft.block.BlockButton;
 import net.minecraft.block.BlockButtonStone;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -13,6 +15,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.ginafro.notenoughfakepixel.Configuration;
+import org.ginafro.notenoughfakepixel.events.PacketWriteEvent;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.DungeonManager;
 import org.ginafro.notenoughfakepixel.utils.RenderUtils;
 
@@ -28,12 +31,12 @@ public class FirstDeviceSolver {
     private int positionInRound = 0;
     private int round = 1;
     private long lastTimeClicked = 0; // Track last break event timestamp
-    private static final long CLICK_COOLDOWN_MS = 700; // 700ms cooldown left-click
+    private static final long CLICK_COOLDOWN_MS = 1000; // 700ms cooldown left-click
 
     @SubscribeEvent
     public void onRenderLast(RenderWorldLastEvent event) {
         if (!Configuration.dungeonsFirstDeviceSolver) return;
-        if (!DungeonManager.checkEssentialsF7()) return;
+        //if (!DungeonManager.checkEssentialsF7()) return;
         // Check for sea lanterns
         if (startMemorising) {
             if (positionsToSolve == null) return;
@@ -69,6 +72,7 @@ public class FirstDeviceSolver {
         if (!DungeonManager.checkEssentialsF7()) return;
         if (Minecraft.getMinecraft().thePlayer != event.entityPlayer) return;
         if (event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) {
+            lastTimeClicked = System.currentTimeMillis(); // Update last clicked time
             Block buttonBlock = Minecraft.getMinecraft().theWorld.getBlockState(event.pos).getBlock();
             if (buttonBlock instanceof BlockButtonStone) {
                 EnumFacing enumfacing = Minecraft.getMinecraft().theWorld.getBlockState(event.pos).getValue(BlockButton.FACING);
@@ -81,7 +85,11 @@ public class FirstDeviceSolver {
                     startMemorising = true;
                 // Else if over obsidian
                 } else if (Objects.equals(blockClicked.getUnlocalizedName(), Blocks.obsidian.getUnlocalizedName())){
-                    if (!Objects.equals(getBlockUnderButton(event.pos, enumfacing), positionsToSolve[positionsIndexSolved[positionInRound]])) return;
+                    if (!resolving) return;
+                    if (!Objects.equals(getBlockUnderButton(event.pos, enumfacing), positionsToSolve[positionsIndexSolved[positionInRound]])) {
+                        reset();
+                        return;
+                    }
                     positionInRound++;
                     if (positionInRound == round) {
                         positionInRound = 0;
@@ -97,10 +105,10 @@ public class FirstDeviceSolver {
         }
     }
 
-    @SubscribeEvent
+    /*@SubscribeEvent
     public void onBreak(PlayerEvent.BreakSpeed event) {
         if (!Configuration.dungeonsFirstDeviceSolver) return;
-        if (!DungeonManager.checkEssentialsF7()) return;
+        //if (!DungeonManager.checkEssentialsF7()) return;
         if (Minecraft.getMinecraft().thePlayer != event.entityPlayer) return;
 
         long currentTime = System.currentTimeMillis();
@@ -132,6 +140,48 @@ public class FirstDeviceSolver {
                 }
                 if (round == 6) {
                     reset();
+                }
+            }
+        }
+    }*/
+
+    @SubscribeEvent
+    public void onDiggingPacket(PacketWriteEvent event) {
+        if (!Configuration.dungeonsFirstDeviceSolver) return;
+        if (!DungeonManager.checkEssentialsF7()) return;
+        Packet packet = event.packet;
+        if (packet instanceof C07PacketPlayerDigging) {
+            C07PacketPlayerDigging packetPlayerDigging = (C07PacketPlayerDigging) packet;
+            if (packetPlayerDigging.getStatus() != C07PacketPlayerDigging.Action.START_DESTROY_BLOCK) return;
+
+            Block buttonBlock = Minecraft.getMinecraft().theWorld.getBlockState(((C07PacketPlayerDigging) packet).getPosition()).getBlock();
+            if (buttonBlock instanceof BlockButtonStone) {
+                EnumFacing enumfacing = Minecraft.getMinecraft().theWorld.getBlockState(((C07PacketPlayerDigging) packet).getPosition()).getValue(BlockButton.FACING);
+                Block blockClicked = Minecraft.getMinecraft().theWorld.getBlockState(getBlockUnderButton(((C07PacketPlayerDigging) packet).getPosition(), enumfacing)).getBlock();
+
+                // Check if button is pressed over an emerald block
+                if (Objects.equals(blockClicked.getUnlocalizedName(), Blocks.emerald_block.getUnlocalizedName()) && !startMemorising) {
+                    BlockPos pos = getBlockUnderButton(((C07PacketPlayerDigging) packet).getPosition(), enumfacing);
+                    positionsToSolve = getSurroundingBlocks(pos, enumfacing);
+                    reset();
+                    startMemorising = true;
+                    // Else if over obsidian
+                } else if (Objects.equals(blockClicked.getUnlocalizedName(), Blocks.obsidian.getUnlocalizedName())) {
+                    if (!resolving) return;
+                    if (!Objects.equals(getBlockUnderButton(((C07PacketPlayerDigging) packet).getPosition(), enumfacing), positionsToSolve[positionsIndexSolved[positionInRound]])) {
+                        reset();
+                        return;
+                    }
+                    positionInRound++;
+                    if (positionInRound == round) {
+                        positionInRound = 0;
+                        round++;
+                        startMemorising = true;
+                        resolving = false;
+                    }
+                    if (round == 6) {
+                        reset();
+                    }
                 }
             }
         }

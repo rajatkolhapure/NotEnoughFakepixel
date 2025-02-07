@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.C02PacketUseEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.ginafro.notenoughfakepixel.Configuration;
 import org.ginafro.notenoughfakepixel.events.PacketWriteEvent;
@@ -50,7 +51,7 @@ public class ThirdDeviceSolver {
     }
 
     // Cancel click when sea lantern behind
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onPacket(PacketWriteEvent event) {
         if (!Configuration.dungeonsThirdDeviceSolver) return;
         if (!DungeonManager.checkEssentialsF7()) return;
