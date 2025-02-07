@@ -21,6 +21,7 @@
     "Accesors.AccessorGuiPlayerTabOverlay",
     "Accesors.BlockAccessor",
     "Accesors.SessionAccessor",
-    "RenderItemMixin"
+    "RenderItemMixin",
+    "MixinRenderEntityItem"
   ]
 }

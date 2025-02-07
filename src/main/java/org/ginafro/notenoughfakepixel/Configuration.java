@@ -259,6 +259,8 @@ public class Configuration extends Config {
     public static OneColor dungeonsItemSecretsColor = new OneColor(255, 255, 0);
     @Switch(name = "Make Item Secrets Big" , category = DUNGEONS, subcategory = "Score & Secrets")
     public static boolean dungeonsItemSecretsBig = true;
+    @Slider(name = "Item Secrets Scale" ,category = DUNGEONS , subcategory = "Score & Secrets", description = "Change the size of secret items.", min = 0.1f,max=5f)
+    public static float dungeonsScaleItemDrop = 3.0f;
     @Page(name = "Secret Overlay Options" , category = DUNGEONS, subcategory = "Score & Secrets", location = PageLocation.BOTTOM)
     public static ScoreOverlayPage dungeonsScoreOverlayPage = new ScoreOverlayPage();
 
