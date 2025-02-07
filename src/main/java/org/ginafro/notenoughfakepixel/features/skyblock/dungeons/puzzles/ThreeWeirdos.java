@@ -76,7 +76,7 @@ public class ThreeWeirdos {
     public void highlightNpc(String correctName, float partialTicks){
         for (Entity entity : Minecraft.getMinecraft().theWorld.loadedEntityList) {
             if(entity.getDisplayName().getUnformattedText().contains(correctName)){
-                RenderUtils.renderEntityHitbox(entity, partialTicks, new Color(90,255,90,198), MobDisplayTypes.NONE, false);
+                RenderUtils.renderEntityHitbox(entity, partialTicks, new Color(90,255,90,198), MobDisplayTypes.NONE);
             }
         }
     }
