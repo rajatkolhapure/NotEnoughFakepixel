@@ -91,13 +91,9 @@ public class WaterSolver {
                 if (position == null) continue;
                 if (world.getBlockState(position).getBlock() != Blocks.lever) continue;
                 boolean isLeverActive = world.getBlockState(position).getValue(BlockLever.POWERED);
-                Color newColor;
-                if (solution == -1 || (solution == 0 && !isLeverActive) || (solution == 1 && isLeverActive)) {
-                    newColor = red;
-                } else {
-                    newColor = green;
+                if (!(solution == -1 || (solution == 0 && !isLeverActive) || (solution == 1 && isLeverActive))) {
+                    RenderUtils.drawLeverBoundingBox(position,world.getBlockState(position).getValue(BlockLever.FACING).getFacing(), green, event.partialTicks);
                 }
-                RenderUtils.drawLeverBoundingBox(position,world.getBlockState(position).getValue(BlockLever.FACING).getFacing(), newColor, event.partialTicks);
             }
         }
     }

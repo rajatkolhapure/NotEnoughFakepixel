@@ -232,6 +232,13 @@ public class RenderUtils {
             x2 = x + 0.5;
             z1 = z - 0.5;
             z2 = z + 0.5;
+        } else if (type == MobDisplayTypes.FELALIVE) {
+            y1 = y - 1.75;
+            y2 = y + 1;
+            x1 = x - 0.5;
+            x2 = x + 0.5;
+            z1 = z - 0.5;
+            z2 = z + 0.5;
         } else if (type == MobDisplayTypes.WOLF) {
             y1 = y - 0.0;
             y2 = y + 1.0;
@@ -589,10 +596,10 @@ public class RenderUtils {
         AxisAlignedBB boundingBox;
         switch (facing) {
             case NORTH:
-                boundingBox = new AxisAlignedBB(x - 0.125, y + 0.1875, z - 0.25, x + 0.125, y + 0.8125, z);
+                boundingBox = new AxisAlignedBB(x + 0.25, y + 0.1875, z - 1.25, x + 0.75, y + 0.8125, z-1);
                 break;
             case SOUTH:
-                boundingBox = new AxisAlignedBB(x - 0.125, y + 0.1875, z, x + 0.125, y + 0.8125, z + 0.25);
+                boundingBox = new AxisAlignedBB(x + 0.25, y + 0.1875, z, x + 0.75, y + 0.8125, z + 0.25);
                 break;
             case WEST:
                 boundingBox = new AxisAlignedBB(x + 0.75, y + 0.1875, z + 0.25, x + 1, y + 0.8125, z + 0.75);
@@ -601,7 +608,7 @@ public class RenderUtils {
                 boundingBox = new AxisAlignedBB(x, y + 0.1875, z + 0.25, x + 0.25, y + 0.8125, z + 0.75);
                 break;
             default:
-                boundingBox = new AxisAlignedBB(x - 0.125, y + 0.1875, z - 0.25, x + 0.125, y + 0.8125, z);
+                boundingBox = new AxisAlignedBB(x + 0.25, y + 0.1875, z - 1.25, x + 0.75, y + 0.8125, z-1);
                 break;
         }
 
