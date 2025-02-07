@@ -121,8 +121,10 @@ public class ScoreOverlay extends TextHud {
         returnString.append(secretPercentage == 0 ? "\u00a7c0% / " :
                 (secretPercentage >= requiredSecretNeeded ? "\u00a7a" : "\u00a7c") + secretPercentage + "% / ");
 
-        returnString.append(requiredSecretNeeded == -1 ? "\u00a7c?% / " :
-                (secretPercentage >= requiredSecretNeeded ? "\u00a7a" : "\u00a7c") + requiredSecretNeeded + "% / ");
+        if (requiredSecretNeeded == -1) {
+            return returnString + "\u00a7c S+ UNREACHABLE!";
+        }
+        returnString.append(secretPercentage >= requiredSecretNeeded ? "\u00a7a" : "\u00a7c").append(requiredSecretNeeded).append("% / ");
 
         returnString.append(secretRequirement == 0 ? "\u00a7c?%" :
                 (secretPercentage >= requiredSecretNeeded ? "\u00a7a" : "\u00a7c") + secretRequirement + "%");

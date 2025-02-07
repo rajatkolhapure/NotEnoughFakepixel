@@ -18,7 +18,7 @@ public class SPlusNotifier {
 
         if (ScoreManager.getRequiredSecretNeeded() == -1) {
             if (Configuration.dungeonsSPlusMessage) {
-                Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc S+ cannot be reached, restart");
+                Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc [NEF] S+ cannot be reached, restart");
             }
             reminded = true;
             return;
@@ -29,7 +29,7 @@ public class SPlusNotifier {
                 Minecraft.getMinecraft().ingameGUI.displayTitle(EnumChatFormatting.GOLD + "S+", "", 2, 100, 2);
             }
             if (Configuration.dungeonsSPlusMessage) {
-                Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc S+ virtually reached, get 100% completion and enter portal!");
+                Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc [NEF] S+ virtually reached, get 100% completion and enter portal!");
             }
             reminded = true;
         }
