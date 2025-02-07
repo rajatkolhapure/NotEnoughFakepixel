@@ -260,7 +260,7 @@ public class Configuration extends Config {
     @Switch(name = "Make Item Secrets Big" , category = DUNGEONS, subcategory = "Score & Secrets")
     public static boolean dungeonsItemSecretsBig = true;
     @Slider(name = "Item Secrets Scale" ,category = DUNGEONS , subcategory = "Score & Secrets", description = "Change the size of secret items.", min = 0.1f,max=5f)
-    public static float dungeonsScaleItemDrop = 3.0f;
+    public static float dungeonsScaleItemDrop = 3.5f;
     @Page(name = "Secret Overlay Options" , category = DUNGEONS, subcategory = "Score & Secrets", location = PageLocation.BOTTOM)
     public static ScoreOverlayPage dungeonsScoreOverlayPage = new ScoreOverlayPage();
 
@@ -321,7 +321,7 @@ public class Configuration extends Config {
     public static boolean slayerShowBeaconPath = true;
     @Color(name = "Beacon Color", category = SLAYER , subcategory = "Voidgloom Seraph", description = "Color of the beacon's waypoint.")
     public static OneColor slayerBeaconColor = new OneColor(128, 0, 128);
-    @Switch(name = "Show Beacon Waypoint" , category = SLAYER , subcategory = "Inferno Demonlord", description = "Displays a text on the screen when a pillar is nearby.")
+    @Switch(name = "Display Pillar Title" , category = SLAYER , subcategory = "Inferno Demonlord", description = "Displays a text on the screen when a pillar is nearby.")
     public static boolean slayerFirePillarDisplay = true;
 
     // Enchanting
