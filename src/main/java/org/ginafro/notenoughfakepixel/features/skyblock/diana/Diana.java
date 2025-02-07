@@ -493,7 +493,7 @@ public class Diana {
         if (!ScoreboardUtils.currentLocation.isHub()) return;
         if (ChatUtils.middleBar.matcher(event.message.getFormattedText()).matches()) return;
         //System.out.println(event.message.getFormattedText());
-        if (Configuration.dianaCancelCooldownSpadeMessage) {
+        if (Configuration.dianaCancelCooldownSpadeMessage && InventoryUtils.getSlot("Ancestral Spade") == InventoryUtils.getCurrentSlot()) {
             cancelMessage(true, event, cooldownPattern, true);
         }
         if (Configuration.dianaMinosInquisitorAlert) {

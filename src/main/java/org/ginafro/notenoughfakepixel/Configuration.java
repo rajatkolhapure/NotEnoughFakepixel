@@ -109,7 +109,11 @@ public class Configuration extends Config {
     @Switch(name = "Middle click on terminals and Enchanting" , category = QUALITY_OF_LIFE, description = "Middle clicks on terminals and enchanting gui.")
     public static boolean qolMiddleClickChests = true;
     @Switch(name = "Visual Cooldowns", description = "Makes the durability of the weapon being used as cooldown timer for better info", category = QUALITY_OF_LIFE)
-    public static boolean visualCooldowns = true;
+    public static boolean qolVisualCooldowns = true;
+    @Switch(name = "Item Rarity Display", description = "Show visual circle on the item about its rarity.", category = QUALITY_OF_LIFE)
+    public static boolean qolItemRarity = true;
+    @Switch(name = "Disable Enderman Teleport", category = QUALITY_OF_LIFE)
+    public static boolean qolDisableEnderManTeleport = true;
 
     @Switch(name = "Wardrobe Shortcut" , category = QUALITY_OF_LIFE, subcategory = "Shortcuts")
     public static boolean qolShortcutWardrobe = true;
@@ -150,10 +154,10 @@ public class Configuration extends Config {
     public static boolean qolDisableJerryChineGunSounds = true;
     @Switch(name = "Disable AOTE teleport sounds" , category = "Quality of Life", subcategory = "Sounds", description = "Disable Aspect of the End teleport sounds.")
     public static boolean qolDisableAoteSounds = false;
-    @Switch(name = "Minimum Midas Staff animation and sounds" , category = "Quality of Life", subcategory = "Sounds", description = "Low-render gold blocks and set sound only at right click.")
-    public static boolean qolDisableMidaStaffAnimation = false;
     @Switch(name = "Disable Hyperion Explosion" , category = QUALITY_OF_LIFE,  subcategory = "Sounds")
     public static boolean qolDisableHyperionExplosions = true;
+    @Switch(name = "Minimum Midas Staff animation and sounds" , category = "Quality of Life", subcategory = "Sounds", description = "Low-render gold blocks and set sound only at right click.")
+    public static boolean qolDisableMidaStaffAnimation = false;
 
 
     @Switch(name = "Damage Commas" , category = QUALITY_OF_LIFE, subcategory = "Damage Formatter")
@@ -257,6 +261,8 @@ public class Configuration extends Config {
     public static OneColor dungeonsItemSecretsColor = new OneColor(255, 255, 0);
     @Switch(name = "Make Item Secrets Big" , category = DUNGEONS, subcategory = "Score & Secrets")
     public static boolean dungeonsItemSecretsBig = true;
+    @Slider(name = "Item Secrets Scale" ,category = DUNGEONS , subcategory = "Score & Secrets", description = "Change the size of secret items.", min = 0.1f,max=5f)
+    public static float dungeonsScaleItemDrop = 3.0f;
     @Page(name = "Secret Overlay Options" , category = DUNGEONS, subcategory = "Score & Secrets", location = PageLocation.BOTTOM)
     public static ScoreOverlayPage dungeonsScoreOverlayPage = new ScoreOverlayPage();
 
@@ -317,7 +323,8 @@ public class Configuration extends Config {
     public static boolean slayerShowBeaconPath = true;
     @Color(name = "Beacon Color", category = SLAYER , subcategory = "Voidgloom Seraph", description = "Color of the beacon's waypoint.")
     public static OneColor slayerBeaconColor = new OneColor(128, 0, 128);
-
+    @Switch(name = "Show Beacon Waypoint" , category = SLAYER , subcategory = "Inferno Demonlord", description = "Displays a text on the screen when a pillar is nearby.")
+    public static boolean slayerFirePillarDisplay = true;
 
     // Enchanting
     @Header(text = "Experimentation Table" , category = EXPERIMENTATION , size = 2)

@@ -102,9 +102,16 @@ public class WaterSolver {
                             Color.green,
                             4,
                             true,
-                            event.partialTicks);
+                            event.partialTicks,
+                            false,
+                            true,
+                            world.getBlockState(position).getValue(BlockLever.FACING).getFacing()
+                    );
                     correctLevers[i] = false;
-                    RenderUtils.drawLeverBoundingBox(position,world.getBlockState(position).getValue(BlockLever.FACING).getFacing(), Color.green, event.partialTicks);
+                    RenderUtils.drawLeverBoundingBox(position,
+                            world.getBlockState(position).getValue(BlockLever.FACING).getFacing(),
+                            Color.green,
+                            event.partialTicks);
                 }
             }
             if (allTrue(correctLevers) && waterLeverPos != null) {

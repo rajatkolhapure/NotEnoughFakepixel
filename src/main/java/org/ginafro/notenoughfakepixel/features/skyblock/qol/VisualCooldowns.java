@@ -4,7 +4,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
-import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -16,8 +15,6 @@ import org.ginafro.notenoughfakepixel.variables.Gamemode;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class VisualCooldowns {
 
@@ -26,13 +23,14 @@ public class VisualCooldowns {
     public long currentTime = 0;
     @SubscribeEvent
     public void onDraw(RenderGameOverlayEvent.Text e){
-        if(!Configuration.visualCooldowns) return;
+        if(!Configuration.qolVisualCooldowns) return;
         ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
         int xPos = sr.getScaledWidth() - 20;
         int yPos = 16;
         for(ItemStack stack : cooldowns.keySet()){
         Minecraft.getMinecraft().getRenderItem().renderItemAndEffectIntoGUI(stack,xPos,yPos);
         Minecraft.getMinecraft().fontRendererObj.drawString(String.valueOf(cooldowns.get(stack)), xPos - 16,yPos + 3,-1);
+        if (stack == null) return;
         int x = xPos + 12 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(stack.getDisplayName());
         Minecraft.getMinecraft().fontRendererObj.drawString(net.minecraft.util.StringUtils.stripControlCodes(stack.getDisplayName()),x,yPos + 17,-1);
         yPos += 20;
@@ -69,7 +67,7 @@ public class VisualCooldowns {
                     }
                 }
                 ItemStack item = Minecraft.getMinecraft().thePlayer.getHeldItem();
-                System.out.println(item);
+                //System.out.println(item);
                 for(ItemStack stack : cooldowns.keySet()){
                     if(stack.getDisplayName().equals(item.getDisplayName())){
                         cooldowns.replace(item,cooldownTime);
@@ -77,7 +75,7 @@ public class VisualCooldowns {
                     }
                 }
                 cooldowns.put(item,cooldownTime);
-                System.out.println(cooldowns);
+                //System.out.println(cooldowns);
             }
     }
 
