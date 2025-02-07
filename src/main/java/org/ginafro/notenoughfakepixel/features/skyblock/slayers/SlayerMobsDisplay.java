@@ -20,6 +20,7 @@ import org.ginafro.notenoughfakepixel.variables.MobDisplayTypes;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -64,15 +65,18 @@ public class SlayerMobsDisplay {
     }
 
     private void showHitboxSven(@NotNull RenderWorldLastEvent event, boolean isBoss) {
-        showHitbox(MobDisplayTypes.WOLF, Configuration.slayerColor, event.partialTicks, Constants.SVEN_SLAYER_MINIBOSSES, isBoss);
+        MobDisplayTypes type = isBoss ? MobDisplayTypes.WOLF_BOSS : MobDisplayTypes.WOLF;
+        showHitbox(type, Configuration.slayerColor, event.partialTicks, Constants.SVEN_SLAYER_MINIBOSSES, isBoss);
     }
 
     private void showHitboxTarantula(@NotNull RenderWorldLastEvent event, boolean isBoss) {
-        showHitbox(MobDisplayTypes.SPIDER, Configuration.slayerColor, event.partialTicks, Constants.TARANTULA_SLAYER_MINIBOSSES, isBoss);
+        MobDisplayTypes type = isBoss ? MobDisplayTypes.SPIDER_BOSS : MobDisplayTypes.SPIDER;
+        showHitbox(type, Configuration.slayerColor, event.partialTicks, Constants.TARANTULA_SLAYER_MINIBOSSES, isBoss);
     }
 
     private void showHitboxVoidgloom(@NotNull RenderWorldLastEvent event, boolean isBoss) {
-        showHitbox(MobDisplayTypes.ENDERMAN, Configuration.slayerColor, event.partialTicks, Constants.VOIDGLOOM_SLAYER_MINIBOSSES, isBoss);
+        MobDisplayTypes type = isBoss ? MobDisplayTypes.ENDERMAN_BOSS : MobDisplayTypes.ENDERMAN;
+        showHitbox(type, Configuration.slayerColor, event.partialTicks, Constants.VOIDGLOOM_SLAYER_MINIBOSSES, isBoss);
     }
 
     private void showHitboxBlaze(@NotNull RenderWorldLastEvent event, boolean isBoss) {
@@ -86,20 +90,7 @@ public class SlayerMobsDisplay {
             if (!(entity instanceof EntityArmorStand)) return;
 
             String[] names = isBoss ? Constants.SLAYER_BOSSES : namesList;
-            Color color = new Color(
-                    configColor.getRed(),
-                    configColor.getGreen(),
-                    configColor.getBlue(),
-                    configColor.getAlpha()
-            );
-            if (isBoss) {
-                color = new Color(
-                        Configuration.slayerBossColor.getRed(),
-                        Configuration.slayerBossColor.getGreen(),
-                        Configuration.slayerBossColor.getBlue(),
-                        Configuration.slayerBossColor.getAlpha()
-                );
-            }
+            Color color = getColor(configColor, isBoss);
 
             for (String name : names) {
                 if (entity.getName().contains(name)) {
@@ -107,13 +98,26 @@ public class SlayerMobsDisplay {
                             entity,
                             partialTicks,
                             color,
-                            type,
-                            isBoss
+                            type
                     );
                 }
             }
         });
 
+    }
+
+    private static @NotNull Color getColor(OneColor configColor, boolean isBoss) {
+        return isBoss ? new Color(
+                Configuration.slayerBossColor.getRed(),
+                Configuration.slayerBossColor.getGreen(),
+                Configuration.slayerBossColor.getBlue(),
+                Configuration.slayerBossColor.getAlpha()
+        ) : new Color(
+                configColor.getRed(),
+                configColor.getGreen(),
+                configColor.getBlue(),
+                configColor.getAlpha()
+        );
     }
 
     private void showHitboxFromHub(MobDisplayTypes type, OneColor configColor, float partialTicks) {
@@ -140,8 +144,7 @@ public class SlayerMobsDisplay {
                                     Configuration.slayerBossColor.getBlue(),
                                     Configuration.slayerBossColor.getAlpha()
                             ),
-                            entityType,
-                            true
+                            entityType
                     );
                     return;
                 }
@@ -154,31 +157,20 @@ public class SlayerMobsDisplay {
                     Configuration.slayerColor.getAlpha()
             );
 
-            for (String name : Constants.SVEN_SLAYER_MINIBOSSES) {
-                if (entity.getName().contains(name)) {
-                    RenderUtils.renderEntityHitbox(
-                            entity,
-                            partialTicks,
-                            color,
-                            MobDisplayTypes.WOLF,
-                            false
-                    );
-                    return;
-                }
-            }
+            Arrays.stream(Constants.SVEN_SLAYER_MINIBOSSES)
+                .filter(name -> entity.getName().contains(name))
+                .findFirst()
+                .ifPresent(name -> {
+                    RenderUtils.renderEntityHitbox(entity, partialTicks, color, MobDisplayTypes.WOLF);
+                });
 
-            for (String name : Constants.REVENANT_SLAYER_MINIBOSSES){
-                if (entity.getName().contains(name)) {
-                    RenderUtils.renderEntityHitbox(
-                            entity,
-                            partialTicks,
-                            color,
-                            MobDisplayTypes.NONE,
-                            false
-                    );
-                    return;
-                }
-            }
+
+            Arrays.stream(Constants.REVENANT_SLAYER_MINIBOSSES)
+                    .filter(name -> entity.getName().contains(name))
+                    .findFirst()
+                    .ifPresent(name -> {
+                        RenderUtils.renderEntityHitbox(entity, partialTicks, color, MobDisplayTypes.NONE);
+                    });
         });
     }
 

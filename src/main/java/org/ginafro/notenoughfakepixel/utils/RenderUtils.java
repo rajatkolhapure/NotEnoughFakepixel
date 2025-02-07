@@ -182,19 +182,19 @@ public class RenderUtils {
     }
 
     public static void renderEntityHitbox(Entity entity, float partialTicks, Color color, MobDisplayTypes type) {
-        renderEntityHitbox(entity, partialTicks, color, type, false);
-    }
-
-    public static void renderEntityHitbox(Entity entity, float partialTicks, Color color, MobDisplayTypes type, boolean isBoss) {
 
         Vector3f loc = new Vector3f(
                 (float) entity.posX - 0.5f,
                 (float) entity.posY - 0.5f,
                 (float) entity.posZ - 0.5f);
 
-        if (type == MobDisplayTypes.BAT || isBoss){
+        if (type == MobDisplayTypes.BAT ||
+            type == MobDisplayTypes.ENDERMAN_BOSS ||
+            type == MobDisplayTypes.WOLF_BOSS ||
+            type == MobDisplayTypes.SPIDER_BOSS ) {
             GlStateManager.disableDepth();
         }
+
         GlStateManager.pushMatrix();
         GlStateManager.disableTexture2D();
         GlStateManager.disableCull();
@@ -218,126 +218,12 @@ public class RenderUtils {
         // IF the mob is a bat make the hitbox smaller
         double y1, y2, x1, x2, z1, z2;
 
-        if (type == MobDisplayTypes.BAT) {
-            y1 = y - 0.3;
-            y2 = y + 0.3;
-            x1 = x - 0.3;
-            x2 = x + 0.3;
-            z1 = z - 0.3;
-            z2 = z + 0.3;
-        } else if (type == MobDisplayTypes.FEL) {
-            y1 = y - 0.5;
-            y2 = y + 3.0;
-            x1 = x - 0.5;
-            x2 = x + 0.5;
-            z1 = z - 0.5;
-            z2 = z + 0.5;
-        } else if (type == MobDisplayTypes.FELALIVE) {
-            y1 = y - 2;
-            y2 = y + 1;
-            x1 = x - 0.5;
-            x2 = x + 0.5;
-            z1 = z - 0.5;
-            z2 = z + 0.5;
-        } else if (type == MobDisplayTypes.WOLF) {
-            y1 = y - 0.0;
-            y2 = y + 1.0;
-            x1 = x - 0.5;
-            x2 = x + 0.5;
-            z1 = z - 0.5;
-            z2 = z + 0.5;
-        } else if (type == MobDisplayTypes.SPIDER && Boolean.TRUE == isBoss) {
-            y1 = y - 1.0;
-            y2 = y + 0.0;
-            x1 = x - 0.75;
-            x2 = x + 0.75;
-            z1 = z - 0.75;
-            z2 = z + 0.75;
-        } else if (type == MobDisplayTypes.SPIDER) {
-            y1 = y - 0.0;
-            y2 = y + 1.0;
-            x1 = x - 0.75;
-            x2 = x + 0.75;
-            z1 = z - 0.75;
-            z2 = z + 0.75;
-        } else if (type == MobDisplayTypes.ENDERMAN && Boolean.TRUE == isBoss){
-            y1 = y - 2.75;
-            y2 = y + 0.0;
-            x1 = x - 0.5;
-            x2 = x + 0.5;
-            z1 = z - 0.5;
-            z2 = z + 0.5;
-        } else if (type == MobDisplayTypes.ENDERMAN){
-            y1 = y - 2.0;
-            y2 = y + 1.0;
-            x1 = x - 0.5;
-            x2 = x + 0.5;
-            z1 = z - 0.5;
-            z2 = z + 0.5;
-        } else if (type == MobDisplayTypes.GAIA) {
-            y1 = y + 1.0;
-            y2 = y + 4.0;
-            x1 = x - 0.75;
-            x2 = x + 0.75;
-            z1 = z - 0.75;
-            z2 = z + 0.75;
-        } else if (type == MobDisplayTypes.SIAMESE) {
-            y1 = y + 0.0;
-            y2 = y + 0.7;
-            x1 = x - 0.3;
-            x2 = x + 0.3;
-            z1 = z - 0.3;
-            z2 = z + 0.3;
-        }  else if (type == MobDisplayTypes.BLAZE) {
-            y1 = y - 1.0;
-            y2 = y + 0.8;
-            x1 = x - 0.3;
-            x2 = x + 0.3;
-            z1 = z - 0.3;
-            z2 = z + 0.3;
-        } else if (type == MobDisplayTypes.BLAZINGSOUL) {
-            y1 = y + 0.2;
-            y2 = y + 0.785;
-            x1 = x - 0.3;
-            x2 = x + 0.3;
-            z1 = z - 0.3;
-            z2 = z + 0.3;
-        } else if (type == MobDisplayTypes.ITEM) {
-            y1 = y + 1.0;
-            y2 = y + 1.25;
-            x1 = x - 0.125;
-            x2 = x + 0.125;
-            z1 = z - 0.125;
-            z2 = z + 0.125;
-        } else if (type == MobDisplayTypes.ITEMBIG) {
-            y1 = y + 1.0;
-            y2 = y + 2;
-            x1 = x - 0.5;
-            x2 = x + 0.5;
-            z1 = z - 0.5;
-            z2 = z + 0.5;
-        } else if (type == MobDisplayTypes.WITHERESSENCE) {
-            y1 = y + 2.5;
-            y2 = y + 3.0;
-            x1 = x - 0.3;
-            x2 = x + 0.3;
-            z1 = z - 0.3;
-            z2 = z + 0.3;
-        } else if (type == MobDisplayTypes.WITHERMANCER) {
-            y1 = y - 1.6;
-            y2 = y + 0.8;
-            x1 = x - 0.5;
-            x2 = x + 0.5;
-            z1 = z - 0.5;
-            z2 = z + 0.5;
-        } else {
-            y1 = y - 1;
-            y2 = y + 1;
-            x1 = x - 0.5;
-            x2 = x + 0.5;
-            z1 = z - 0.5;
-            z2 = z + 0.5;
-        }
+        y1 = y + type.getY1();
+        y2 = y + type.getY2();
+        x1 = x + type.getX1();
+        x2 = x + type.getX2();
+        z1 = z + type.getZ1();
+        z2 = z + type.getZ2();
 
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldRenderer = tessellator.getWorldRenderer();

@@ -82,6 +82,8 @@ public class Configuration extends Config {
     public boolean _general = true;
     @Dropdown(name = "Theme" , size = 2 , options = {"Default" , "Dark" , "Ocean"})
     public static int theme = 1;
+    @Switch(name = "Debug" , description = "Enable debug mode")
+    public static boolean debug = false;
 
     // Quality Of Life
 
@@ -413,21 +415,5 @@ public class Configuration extends Config {
 
     //@Switch(name = "Storage GUI Overlay" , category = "Skyblock" , subcategory = "GUI Overlays")
     public static boolean storageOverlay = false;
-
-    // DEBUG
-
-    /*@Header(text = "Debug" , category = "Debug" , size = 2)
-    public boolean _debugHead = false;
-    @Info(text = "Ignore this if you don't know what you are doing." , type = InfoType.WARNING , category = "Debug")
-    public boolean _debugInfo = false;
-
-    @Switch(name = "one" , category = "Debug")
-    public static boolean _debug = false;
-    @Switch(name = "two" , category = "Debug")
-    public static boolean _debug2 = false;
-    @Info(text = "info test \u00a7cTEST", type = InfoType.INFO, category = "Debug", subcategory = "Info")
-    public static boolean _info = true;
-    @Switch(name = "Enable logs" , category = "Debug", subcategory = "Logs")
-    public static boolean logs = false;*/
 
 }
