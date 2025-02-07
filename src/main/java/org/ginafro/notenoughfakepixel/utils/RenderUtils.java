@@ -233,7 +233,7 @@ public class RenderUtils {
             z1 = z - 0.5;
             z2 = z + 0.5;
         } else if (type == MobDisplayTypes.FELALIVE) {
-            y1 = y - 1.75;
+            y1 = y - 2;
             y2 = y + 1;
             x1 = x - 0.5;
             x2 = x + 0.5;
@@ -499,17 +499,18 @@ public class RenderUtils {
         }
     }
     public static void draw3DLine(Vec3 pos1, Vec3 pos2, Color color, int lineWidth, boolean depth, float partialTicks) {
-        draw3DLine(pos1, pos2, color, lineWidth, depth, partialTicks, false);
+        draw3DLine(pos1, pos2, color, lineWidth, depth, partialTicks, false, false, null);
     }
 
-    public static void draw3DLine(Vec3 pos1, Vec3 pos2, Color color, int lineWidth, boolean depth, float partialTicks, boolean fromHead) {
+    public static void draw3DLine(Vec3 pos1, Vec3 pos2, Color color, int lineWidth, boolean depth, float partialTicks, boolean fromHead, boolean isLever, EnumFacing facing) {
         Entity render = Minecraft.getMinecraft().getRenderViewEntity();
         WorldRenderer worldRenderer = Tessellator.getInstance().getWorldRenderer();
 
         double coordX = render.lastTickPosX + (render.posX - render.lastTickPosX) * partialTicks;
         double coordY = render.lastTickPosY + (render.posY - render.lastTickPosY) * partialTicks;
         double coordZ = render.lastTickPosZ + (render.posZ - render.lastTickPosZ) * partialTicks;
-        Vec3 pos2final = pos2;
+
+
         GlStateManager.pushMatrix();
         GlStateManager.translate(-coordX, -coordY, -coordZ);
         GlStateManager.disableTexture2D();
@@ -518,22 +519,54 @@ public class RenderUtils {
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
         GL11.glLineWidth(lineWidth);
         if (!depth) {
-            GL11.glDisable(GL11.GL_DEPTH_TEST);
+            GlStateManager.disableDepth();
             GlStateManager.depthMask(false);
         }
-
+        Vec3 pos1final = pos1;
+        Vec3 pos2final = pos2;
+        if (isLever && facing != null) {
+            double midX = 0,midY=0,midZ=0;
+            switch (facing) {
+                case NORTH:
+                    midX = pos1final.xCoord + (0.25 + 0.75) / 2;
+                    midY = pos1final.yCoord + (0.1875 + 0.8125) / 2;
+                    midZ = pos1final.zCoord + (0.75 + 1) / 2;
+                    break;
+                case SOUTH:
+                    midX = pos1final.xCoord + (0.25 + 0.75) / 2;
+                    midY = pos1final.yCoord + (0.1875 + 0.8125) / 2;
+                    midZ = pos1final.zCoord + (0 + 0.25) / 2;
+                    break;
+                case WEST:
+                    midX = pos1final.xCoord + (0.75 + 1) / 2;
+                    midY = pos1final.yCoord + (0.1875 + 0.8125) / 2;
+                    midZ = pos1final.zCoord + (0.25 + 0.75) / 2;
+                    break;
+                case EAST:
+                    midX = pos1final.xCoord + (0 + 0.25) / 2;
+                    midY = pos1final.yCoord + (0.1875 + 0.8125) / 2;
+                    midZ = pos1final.zCoord + (0.25 + 0.75) / 2;
+                    break;
+                default:
+                    midX = pos1final.xCoord + (0.25 + 0.75) / 2;
+                    midY = pos1final.yCoord + (0.1875 + 0.8125) / 2;
+                    midZ = pos1final.zCoord - (1.25 + 1) / 2;
+                    break;
+            }
+            pos1final = new Vec3(midX,midY,midZ);
+        }
         if (fromHead) {
             pos2final = new Vec3(0, 0, 1).rotatePitch(-(float) Math.toRadians(Minecraft.getMinecraft().thePlayer.rotationPitch)).rotateYaw(-(float) Math.toRadians(Minecraft.getMinecraft().thePlayer.rotationYaw));
         }
         GlStateManager.color(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f);
         worldRenderer.begin(GL11.GL_LINE_STRIP, DefaultVertexFormats.POSITION);
-        worldRenderer.pos(pos1.xCoord, pos1.yCoord, pos1.zCoord).endVertex();
+        worldRenderer.pos(pos1final.xCoord, pos1final.yCoord, pos1final.zCoord).endVertex();
         worldRenderer.pos(pos2final.xCoord, pos2final.yCoord, pos2final.zCoord).endVertex();
         Tessellator.getInstance().draw();
 
         GlStateManager.translate(coordX, coordY, coordZ);
         if (!depth) {
-            GL11.glEnable(GL11.GL_DEPTH_TEST);
+            GlStateManager.enableDepth();
             GlStateManager.depthMask(true);
         }
         GlStateManager.disableBlend();
@@ -596,7 +629,7 @@ public class RenderUtils {
         AxisAlignedBB boundingBox;
         switch (facing) {
             case NORTH:
-                boundingBox = new AxisAlignedBB(x + 0.25, y + 0.1875, z - 1.25, x + 0.75, y + 0.8125, z-1);
+                boundingBox = new AxisAlignedBB(x + 0.25, y + 0.1875, z + 0.75, x + 0.75, y + 0.8125, z+1);
                 break;
             case SOUTH:
                 boundingBox = new AxisAlignedBB(x + 0.25, y + 0.1875, z, x + 0.75, y + 0.8125, z + 0.25);

@@ -59,11 +59,12 @@ public class ClickInOrderSolver {
                         // Is stained glass
                         if (slot.getStack().stackSize == round) {
                             RenderUtils.drawOnSlot(container.inventorySlots.size(), slot.xDisplayPosition, slot.yDisplayPosition, Configuration.dungeonsCorrectColor.getRGB());
+                            RenderUtils.drawOnSlot(container.inventorySlots.size(), slot.xDisplayPosition, slot.yDisplayPosition, Configuration.dungeonsCorrectColor.getRGB());
                         } else if (slot.getStack().stackSize == round+1) {
-                            RenderUtils.drawOnSlot(container.inventorySlots.size(), slot.xDisplayPosition, slot.yDisplayPosition, new Color(Configuration.dungeonsAlternativeColor.getRed(), Configuration.dungeonsAlternativeColor.getGreen(), Configuration.dungeonsAlternativeColor.getBlue()).getRGB());
-                        } else {
-                            if (Configuration.dungeonsTerminalHideIncorrect && slot.getStack().getItemDamage() == 14) RenderUtils.drawOnSlot(container.inventorySlots.size(), slot.xDisplayPosition, slot.yDisplayPosition, new Color(113, 113, 113).getRGB());
+                            RenderUtils.drawOnSlot(container.inventorySlots.size(), slot.xDisplayPosition, slot.yDisplayPosition, Configuration.dungeonsAlternativeColor.getRGB());
                         }
+                        // Set uncompleted slots to gray to hide
+                        if (Configuration.dungeonsTerminalHideIncorrect && slot.getStack().stackSize > round+1 && slot.getStack().getItemDamage() == 14) RenderUtils.drawOnSlot(container.inventorySlots.size(), slot.xDisplayPosition, slot.yDisplayPosition, new Color(113, 113, 113).getRGB());
                         // Set completed slots to gray to hide && round+1
                         if (slot.getStack().getItemDamage() == 5) {
                             if (Configuration.dungeonsTerminalHideIncorrect) slot.getStack().getItem().setDamage(slot.getStack(), 15);
