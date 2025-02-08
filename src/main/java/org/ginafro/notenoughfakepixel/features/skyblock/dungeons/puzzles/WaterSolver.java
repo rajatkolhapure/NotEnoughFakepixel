@@ -14,6 +14,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -42,6 +43,25 @@ public class WaterSolver {
     private Map<String, BlockPos> leversPositions = new HashMap<>();
     private boolean[] correctLevers = new boolean[]{true,true,true,true,true,true};
     private BlockPos waterLeverPos;
+
+    /*@SubscribeEvent
+    public void onInteract(PlayerInteractEvent event) {
+        System.out.println("CLICK");
+        if (Minecraft.getMinecraft().thePlayer != event.entityPlayer) return;
+        if (waterLeverPos == null) return;
+        System.out.println(waterLeverPos);
+        Block blockLever = world.getBlockState(waterLeverPos).getBlock();
+        if (!(blockLever instanceof BlockLever)) return;
+        BlockLever.EnumOrientation enumOrientation = world.getBlockState(waterLeverPos).getValue(BlockLever.FACING);
+        System.out.println(enumOrientation);
+        switch (enumOrientation) {
+            case UP_X:
+                break;
+            case UP_Z:
+                //+2
+                break;
+        }
+    }*/
 
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event) {
@@ -105,7 +125,7 @@ public class WaterSolver {
                             event.partialTicks,
                             false,
                             true,
-                            world.getBlockState(position).getValue(BlockLever.FACING).getFacing()
+                            world.getBlockState(position).getValue(BlockLever.FACING)
                     );
                     correctLevers[i] = false;
                     RenderUtils.drawLeverBoundingBox(position,
@@ -123,7 +143,7 @@ public class WaterSolver {
                         event.partialTicks,
                         false,
                         true,
-                        world.getBlockState(waterLeverPos).getValue(BlockLever.FACING).getFacing()
+                        world.getBlockState(waterLeverPos).getValue(BlockLever.FACING)
                         );
             }
         }

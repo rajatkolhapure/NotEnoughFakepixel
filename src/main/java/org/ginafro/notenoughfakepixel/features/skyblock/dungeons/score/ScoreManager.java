@@ -12,6 +12,7 @@ import org.ginafro.notenoughfakepixel.variables.DungeonFloor;
 
 public class ScoreManager {
     static int failedPuzzles = 0;
+    public static int currentSeconds = -1;
 
     @SubscribeEvent
     public void onChatReceived(ClientChatReceivedEvent event) {
@@ -29,6 +30,11 @@ public class ScoreManager {
 
     private void reset() {
         failedPuzzles = 0;
+        currentSeconds = -1;
+    }
+
+    public static int getTotalScore() {
+        return getSkillScore() + getExplorationScore() + getSpeedScore() + getBonusScore();
     }
 
     public static int getSkillScore() {
@@ -53,7 +59,7 @@ public class ScoreManager {
 
     public static int getSpeedScore() {
         String currentTimeString = TablistParser.time;
-        int currentSeconds = convertToSeconds(currentTimeString);
+        currentSeconds = convertToSeconds(currentTimeString);
         if (currentSeconds == -1) {
             return 100;
         }

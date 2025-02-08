@@ -65,7 +65,7 @@ public class NotEnoughFakepixel {
         MinecraftForge.EVENT_BUS.register(map);
         EventManager.INSTANCE.register(map);
 
-        //MinecraftForge.EVENT_BUS.register(new Testing());
+        MinecraftForge.EVENT_BUS.register(new Testing());
 
         MinecraftForge.EVENT_BUS.register(new StartingWithSolver());
         MinecraftForge.EVENT_BUS.register(new ClickOnColorsSolver());

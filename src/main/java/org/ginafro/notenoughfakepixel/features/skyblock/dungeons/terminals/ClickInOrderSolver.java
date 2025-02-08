@@ -26,8 +26,7 @@ public class ClickInOrderSolver {
     @SubscribeEvent
     public void onOpen(GuiOpenEvent e){
         if (!Configuration.dungeonsTerminalClickInOrderSolver) return;
-        if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
-        if (!ScoreboardUtils.currentLocation.isDungeon()) return;
+        if (!DungeonManager.checkEssentialsF7()) return;
         if(e.gui instanceof GuiChest){
             GuiChest chest = (GuiChest) e.gui;
             Container container = chest.inventorySlots;
@@ -42,8 +41,7 @@ public class ClickInOrderSolver {
     @SubscribeEvent
     public void onGuiRender(GuiScreenEvent.BackgroundDrawnEvent event) {
         if (!Configuration.dungeonsTerminalClickInOrderSolver) return;
-        if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
-        if (!ScoreboardUtils.currentLocation.isDungeon()) return;
+        if (!DungeonManager.checkEssentialsF7()) return;
         if(event.gui instanceof GuiChest) {
             GuiChest chest = (GuiChest) event.gui;
             Container container = chest.inventorySlots;
