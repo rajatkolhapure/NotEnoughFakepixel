@@ -170,12 +170,16 @@ public class Configuration extends Config {
     @Header(text = "Dungeons", category = DUNGEONS, size = 2)
     public static boolean _dungeons = true;
 
+    @Switch(name = "Is Paul Active" , category = DUNGEONS, subcategory = "QOL", description = "Check/uncheck this if Paul is active as mayor with EZPZ perk. Needed for correct score calculation.")
+    public static boolean dungeonsIsPaul = false;
+    @Switch(name = "Auto Close Chests", category = DUNGEONS, subcategory = "QOL", description = "Automatically closes chests in dungeons.")
+    public static boolean dungeonsAutoCloseChests = true;
     @Switch(name = "Auto Ready Dungeon" , category = DUNGEONS, subcategory = "QOL", description = "Automatically ready up in dungeons.")
     public static boolean dungeonsAutoReady = true;
     @Text(name = "Auto Ready Name (if nicked)" , category = DUNGEONS, subcategory = "QOL", description = "The name this will search for when you are nicked")
     public static String dungeonsAutoReadyName = "your nicked name";
-    @Switch(name = "Auto Close Chests", category = DUNGEONS, subcategory = "QOL", description = "Automatically closes chests in dungeons.")
-    public static boolean dungeonsAutoCloseChests = true;
+    @Switch(name = "Wither&Blood Keys Tracers", category = DUNGEONS, subcategory = "QOL", description = "Show tracer on wither and blood keys.")
+    public static boolean dungeonsKeyTracers = true;
     @Switch(name = "Mute Bosses", category = DUNGEONS, subcategory = "QOL", description = "Mutes bosses on chat.")
     public static boolean dungeonsMuteBosses = true;
 
@@ -191,6 +195,11 @@ public class Configuration extends Config {
     public static float dungeonsMapOffsetY = 0.0f;
     @Switch(name = "Dungeons Map Rotation" , category = DUNGEONS, subcategory = "Dungeon Map")
     public static boolean dungeonsRotateMap = true;
+
+    @Switch(name = "Three Weirdos Solver" , category = DUNGEONS, subcategory = "Puzzles")
+    public static boolean dungeonsThreeWeirdos = true;
+    @Switch(name = "Water Solver" , category = DUNGEONS, subcategory = "Puzzles")
+    public static boolean dungeonsWaterSolver = true;
 
     @Switch(name = "Fel Mobs Display" , category = DUNGEONS, subcategory = "Starred Mobs")
     public static boolean dungeonsFelMob = true;
@@ -214,11 +223,6 @@ public class Configuration extends Config {
     public static OneColor dungeonsSkeletonMasterColor = new OneColor(255, 100, 0);
     @Color(name = "Stormy Color", category = DUNGEONS, subcategory = "Starred Mobs")
     public static OneColor dungeonsStormyColor = new OneColor(173, 216, 230);
-
-    @Switch(name = "Three Weirdos Solver" , category = DUNGEONS, subcategory = "Puzzles")
-    public static boolean dungeonsThreeWeirdos = true;
-    @Switch(name = "Water Solver" , category = DUNGEONS, subcategory = "Puzzles")
-    public static boolean dungeonsWaterSolver = true;
 
     @Switch(name = "Terminal Starts With Solver" , category = DUNGEONS , subcategory = "Floor 7 Terminals and Devices")
     public static boolean dungeonsTerminalStartsWithSolver = true;
@@ -245,8 +249,6 @@ public class Configuration extends Config {
     @Color(name = "Alternative Color", category = DUNGEONS , subcategory = "Floor 7 Terminals and Devices")
     public static OneColor dungeonsAlternativeColor = new OneColor(255,255,0);
 
-    @Switch(name = "Is Paul Active" , category = DUNGEONS, subcategory = "Score & Secrets")
-    public static boolean dungeonsIsPaul = false;
     @Switch(name = "Score Overlay" , category = DUNGEONS, subcategory = "Score & Secrets")
     public static boolean dungeonsScoreOverlay = true;
     @Switch(name = "S+ Notifier" , category = DUNGEONS, subcategory = "Score & Secrets", description = "Shows an S+ in screen + chat message when virtually reached S+ (% secrets + 100% completion).")
@@ -263,8 +265,9 @@ public class Configuration extends Config {
     public static boolean dungeonsItemSecretsBig = true;
     @Slider(name = "Item Secrets Scale" ,category = DUNGEONS , subcategory = "Score & Secrets", description = "Change the size of secret items.", min = 0.1f,max=5f)
     public static float dungeonsScaleItemDrop = 3.5f;
-    @Page(name = "Secret Overlay Options" , category = DUNGEONS, subcategory = "Score & Secrets", location = PageLocation.BOTTOM)
+    @Page(name = "Score Overlay Options" , category = DUNGEONS, subcategory = "Score & Secrets", location = PageLocation.BOTTOM)
     public static ScoreOverlayPage dungeonsScoreOverlayPage = new ScoreOverlayPage();
+
 
     // Diana
     @Header(text = DIANA , category = DIANA , size = 2)
@@ -339,12 +342,12 @@ public class Configuration extends Config {
     // Chocolate Factory
     @Header(text = CHOCOLATEFACTORY , category = CHOCOLATEFACTORY , size = 2)
     public static boolean _chocolate = true;
-    @Switch(name = "Show Best Upgrade" , category = CHOCOLATEFACTORY, subcategory = "Chocolate Factory")
-    public static boolean chocolateChocolateShowBestUpgrade = true;
-    @Switch(name = "Show Waypoints on Chocolate Eggs" , category = CHOCOLATEFACTORY, subcategory = "Chocolate Factory", description = "Show waypoints on chocolate eggs on Hoppity's Hunt event.")
+    @Switch(name = "Show Waypoints on Chocolate Eggs" , category = CHOCOLATEFACTORY, description = "Show waypoints on chocolate eggs on Hoppity's Hunt event.")
     public static boolean chocolateChocolateEggWaypoints = true;
-    @Color(name = "Chocolate Eggs Waypoints Color", category = CHOCOLATEFACTORY , subcategory = "Chocolate Factory", description = "Color of chocolate eggs' waypoints.")
+    @Color(name = "Chocolate Eggs Waypoints Color", category = CHOCOLATEFACTORY, description = "Color of chocolate eggs' waypoints.")
     public static OneColor chocolateChocolateEggWaypointsColor = new OneColor(210,105,30);
+    @Switch(name = "Show Best Upgrade" , category = CHOCOLATEFACTORY)
+    public static boolean chocolateChocolateShowBestUpgrade = true;
 
     // Crimson
     @Header(text = CRIMSON, category = CRIMSON, size = 2)

@@ -31,7 +31,7 @@ public class SPlusNotifier {
         if (remindedSPlus) return;
         if (!Configuration.dungeonsSPlusNotifier && !Configuration.dungeonsSPlusMessage) return;
 
-        if (ScoreManager.getSecretPercentage() >= ScoreManager.getRequiredSecretNeeded()) {
+        if (ScoreManager.getSecretPercentage() >= ScoreManager.getRequiredSecretNeeded() && ScoreManager.getRequiredSecretNeeded() != -1) {
             if (Configuration.dungeonsSPlusNotifier) {
                 Minecraft.getMinecraft().ingameGUI.displayTitle(EnumChatFormatting.GOLD + "S+", "", 2, 100, 2);
             }

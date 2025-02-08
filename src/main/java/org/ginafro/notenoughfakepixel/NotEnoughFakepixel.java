@@ -21,6 +21,7 @@ import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.devices.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.mobs.BatMobDisplay;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.mobs.FelMobDisplay;
+import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.mobs.ShowInvisibleMobs;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.mobs.StarredMobDisplay;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.puzzles.ThreeWeirdos;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.puzzles.WaterSolver;
@@ -82,12 +83,15 @@ public class NotEnoughFakepixel {
         MinecraftForge.EVENT_BUS.register(new ThreeWeirdos());
         MinecraftForge.EVENT_BUS.register(new WaterSolver());
 
+        MinecraftForge.EVENT_BUS.register(new WitherBloodKeysTracers());
+        MinecraftForge.EVENT_BUS.register(new ShowInvisibleMobs());
         MinecraftForge.EVENT_BUS.register(new StarredMobDisplay());
         MinecraftForge.EVENT_BUS.register(new BatMobDisplay());
         MinecraftForge.EVENT_BUS.register(new FelMobDisplay());
         MinecraftForge.EVENT_BUS.register(new ItemSecretsDisplay());
         MinecraftForge.EVENT_BUS.register(new MuteBosses());
 
+        MinecraftForge.EVENT_BUS.register(new DungeonManager());
         MinecraftForge.EVENT_BUS.register(new ScoreManager());
         MinecraftForge.EVENT_BUS.register(new ScoreOverlay());
         MinecraftForge.EVENT_BUS.register(new SPlusNotifier());

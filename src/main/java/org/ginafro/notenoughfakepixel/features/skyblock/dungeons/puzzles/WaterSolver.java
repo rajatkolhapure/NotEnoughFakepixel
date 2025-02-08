@@ -7,6 +7,7 @@ import net.minecraft.block.BlockPistonExtension;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.BlockPos;
@@ -87,37 +88,30 @@ public class WaterSolver {
         if (!DungeonManager.checkEssentials()) return;
         if (!inWaterRoom || woolBlocks == null || woolBlocks.isEmpty()) return;
         if (!woolBlocks.iterator().hasNext()) return;
+
         int[] colorSolutions = WOOL_SOLUTIONS.getArraySolutions(woolBlocks.iterator().next().getName());
+        List<BlockPos> boundingBoxPositions = new ArrayList<>();
+
         if (colorSolutions.length > 0) {
             for (int i = 0; i < colorSolutions.length; i++) {
                 int solution = colorSolutions[i];
                 correctLevers[i] = true;
                 BlockPos position = null;
                 switch (i) {
-                    case 0:
-                        position = leversPositions.get("minecraft:quartz_block");
-                        break;
-                    case 1:
-                        position = leversPositions.get("minecraft:diamond_block");
-                        break;
-                    case 2:
-                        position = leversPositions.get("minecraft:gold_block");
-                        break;
-                    case 3:
-                        position = leversPositions.get("minecraft:emerald_block");
-                        break;
-                    case 4:
-                        position = leversPositions.get("minecraft:coal_block");
-                        break;
-                    case 5:
-                        position = leversPositions.get("minecraft:hardened_clay");
-                        break;
+                    case 0: position = leversPositions.get("minecraft:quartz_block"); break;
+                    case 1: position = leversPositions.get("minecraft:diamond_block"); break;
+                    case 2: position = leversPositions.get("minecraft:gold_block"); break;
+                    case 3: position = leversPositions.get("minecraft:emerald_block"); break;
+                    case 4: position = leversPositions.get("minecraft:coal_block"); break;
+                    case 5: position = leversPositions.get("minecraft:hardened_clay"); break;
                 }
                 if (position == null) continue;
                 if (world.getBlockState(position).getBlock() != Blocks.lever) continue;
+
                 boolean isLeverActive = world.getBlockState(position).getValue(BlockLever.POWERED);
                 if (!(solution == -1 || (solution == 0 && !isLeverActive) || (solution == 1 && isLeverActive))) {
-                    RenderUtils.draw3DLine(new Vec3(position.getX(),position.getY(),position.getZ()),
+                    RenderUtils.draw3DLine(
+                            new Vec3(position.getX(), position.getY(), position.getZ()),
                             player.getPositionEyes(event.partialTicks),
                             Color.green,
                             4,
@@ -128,14 +122,24 @@ public class WaterSolver {
                             world.getBlockState(position).getValue(BlockLever.FACING)
                     );
                     correctLevers[i] = false;
-                    RenderUtils.drawLeverBoundingBox(position,
-                            world.getBlockState(position).getValue(BlockLever.FACING).getFacing(),
-                            Color.green,
-                            event.partialTicks);
+                    boundingBoxPositions.add(position);
                 }
             }
+
+            // Now draw all bounding boxes AFTER all 3D lines
+            for (BlockPos position : boundingBoxPositions) {
+                RenderUtils.drawLeverBoundingBox(
+                        position,
+                        world.getBlockState(position).getValue(BlockLever.FACING).getFacing(),
+                        Color.green,
+                        event.partialTicks
+                );
+            }
+
+            // Draw final water lever line after everything
             if (allTrue(correctLevers) && waterLeverPos != null) {
-                RenderUtils.draw3DLine(new Vec3(waterLeverPos.getX(),waterLeverPos.getY(),waterLeverPos.getZ()),
+                RenderUtils.draw3DLine(
+                        new Vec3(waterLeverPos.getX(), waterLeverPos.getY(), waterLeverPos.getZ()),
                         player.getPositionEyes(event.partialTicks),
                         Color.blue,
                         4,
@@ -144,10 +148,11 @@ public class WaterSolver {
                         false,
                         true,
                         world.getBlockState(waterLeverPos).getValue(BlockLever.FACING)
-                        );
+                );
             }
         }
     }
+
 
     @SubscribeEvent()
     public void onWorldUnload(WorldEvent.Load event) {

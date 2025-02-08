@@ -53,7 +53,7 @@ public class ScoreOverlay extends TextHud {
 
     private String getRankingDisplay() {
         int totalScore = ScoreManager.getTotalScore();
-        if (DungeonManager.isFinalStage() && ScoreManager.getExplorationClearScore() != 60) return EnumChatFormatting.RED + "Unknown score";
+        if (DungeonManager.isFinalStage() && ScoreManager.getExplorationClearScore() != 60) return EnumChatFormatting.RED + "UNKNOWN SCORE";
         //if (DungeonManager.isFinalStage() && ) totalScore = (int) (0.7 * ScoreManager.getTotalScore());
         String returnString = "\u00a77Total score: ";
         if (totalScore < 100) returnString = returnString + EnumChatFormatting.RED + totalScore + EnumChatFormatting.RED + " (D)";
@@ -81,6 +81,7 @@ public class ScoreOverlay extends TextHud {
 
     private String getSkillDisplay() {
         EnumChatFormatting enumChatFormatting;
+        if (DungeonManager.isFinalStage() && ScoreManager.getExplorationClearScore() != 60) return "\u00a77Exploration: " + EnumChatFormatting.RED + "Not all puzzles done";
         int skillScore = ScoreManager.getSkillScore();
         if (skillScore == 100) enumChatFormatting = EnumChatFormatting.GREEN;
         else if (skillScore >= 94) enumChatFormatting = EnumChatFormatting.YELLOW;

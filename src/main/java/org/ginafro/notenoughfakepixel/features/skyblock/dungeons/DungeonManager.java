@@ -24,14 +24,19 @@ public class DungeonManager {
     @SubscribeEvent
     public void onChatReceived(ClientChatReceivedEvent event) {
         if (!DungeonManager.checkEssentials()) return;
-        if (event.message.getUnformattedText().contains("EXTRA STATS")) {
+        if (event.message.getUnformattedText().contains("> EXTRA STATS <")) {
             isFinalStage = true;
         }
     }
 
     @SubscribeEvent()
     public void onWorldUnload(WorldEvent.Unload event) {
-        if (!Configuration.isPojav()) return;
+        if (!DungeonManager.checkEssentials()) return;
+        isFinalStage = false;
+    }
+
+    @SubscribeEvent()
+    public void onWorldLoad(WorldEvent.Load event) {
         if (!DungeonManager.checkEssentials()) return;
         isFinalStage = false;
     }
