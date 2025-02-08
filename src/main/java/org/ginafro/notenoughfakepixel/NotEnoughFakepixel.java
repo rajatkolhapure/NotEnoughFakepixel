@@ -21,7 +21,6 @@ import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.devices.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.mobs.BatMobDisplay;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.mobs.FelMobDisplay;
-import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.mobs.ShowInvisibleMobs;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.mobs.StarredMobDisplay;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.puzzles.ThreeWeirdos;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.puzzles.WaterSolver;
