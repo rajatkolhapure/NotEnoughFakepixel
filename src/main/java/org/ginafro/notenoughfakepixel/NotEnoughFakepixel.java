@@ -84,7 +84,6 @@ public class NotEnoughFakepixel {
         MinecraftForge.EVENT_BUS.register(new WaterSolver());
 
         MinecraftForge.EVENT_BUS.register(new WitherBloodKeysTracers());
-        MinecraftForge.EVENT_BUS.register(new ShowInvisibleMobs());
         MinecraftForge.EVENT_BUS.register(new StarredMobDisplay());
         MinecraftForge.EVENT_BUS.register(new BatMobDisplay());
         MinecraftForge.EVENT_BUS.register(new FelMobDisplay());
