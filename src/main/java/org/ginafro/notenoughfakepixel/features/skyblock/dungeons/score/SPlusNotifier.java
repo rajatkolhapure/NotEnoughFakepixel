@@ -48,7 +48,7 @@ public class SPlusNotifier {
 
         if (ScoreManager.getRequiredSecretNeeded() == -1) {
             if (Configuration.dungeonsSPlusMessage) {
-                Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc [NEF] S+ cannot be reached by only secrets, do crypts or restart");
+                Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc [NEF] S+ may not be reached by secrets only, do crypts or restart");
             }
             remindedUnreachable = true;
             return;

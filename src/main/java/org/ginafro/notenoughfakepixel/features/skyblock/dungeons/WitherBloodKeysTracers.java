@@ -25,7 +25,7 @@ public class WitherBloodKeysTracers {
                 RenderUtils.draw3DLine(new Vec3(entity.posX,entity.posY+1.75,entity.posZ),
                         Minecraft.getMinecraft().thePlayer.getPositionEyes(event.partialTicks),
                         color,
-                        4,
+                        8,
                         true,
                         event.partialTicks
                 );

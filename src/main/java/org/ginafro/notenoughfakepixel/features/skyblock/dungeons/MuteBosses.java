@@ -8,9 +8,8 @@ import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 public class MuteBosses {
     @SubscribeEvent
     public void onChat(ClientChatReceivedEvent event){
-        if (!Configuration.dungeonsMuteBosses) return;
-        if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
         if (!ScoreboardUtils.currentLocation.isDungeon()) return;
+        if (!Configuration.dungeonsMuteBosses) return;
         if (event.message.getUnformattedText().contains("[BOSS]")) event.setCanceled(true);
     }
 }

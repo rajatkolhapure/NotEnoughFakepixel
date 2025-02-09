@@ -7,7 +7,6 @@ import net.minecraft.block.BlockPistonExtension;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.BlockPos;
@@ -15,7 +14,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -42,27 +40,9 @@ public class WaterSolver {
 
     private Set<EnumDyeColor> woolBlocks = new LinkedHashSet<>();
     private Map<String, BlockPos> leversPositions = new HashMap<>();
-    private boolean[] correctLevers = new boolean[]{true,true,true,true,true,true};
+    //private boolean[] correctLevers = new boolean[]{true,true,true,true,true,true};
+    private ArrayList<boolean[]> correctLevers = new ArrayList<>();
     private BlockPos waterLeverPos;
-
-    /*@SubscribeEvent
-    public void onInteract(PlayerInteractEvent event) {
-        System.out.println("CLICK");
-        if (Minecraft.getMinecraft().thePlayer != event.entityPlayer) return;
-        if (waterLeverPos == null) return;
-        System.out.println(waterLeverPos);
-        Block blockLever = world.getBlockState(waterLeverPos).getBlock();
-        if (!(blockLever instanceof BlockLever)) return;
-        BlockLever.EnumOrientation enumOrientation = world.getBlockState(waterLeverPos).getValue(BlockLever.FACING);
-        System.out.println(enumOrientation);
-        switch (enumOrientation) {
-            case UP_X:
-                break;
-            case UP_Z:
-                //+2
-                break;
-        }
-    }*/
 
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event) {
@@ -89,83 +69,91 @@ public class WaterSolver {
         if (!inWaterRoom || woolBlocks == null || woolBlocks.isEmpty()) return;
         if (!woolBlocks.iterator().hasNext()) return;
 
-        int[] colorSolutions = WOOL_SOLUTIONS.getArraySolutions(woolBlocks.iterator().next().getName());
-        List<BlockPos> boundingBoxPositions = new ArrayList<>();
-
-        if (colorSolutions.length > 0) {
-            for (int i = 0; i < colorSolutions.length; i++) {
-                int solution = colorSolutions[i];
-                correctLevers[i] = true;
-                BlockPos position = null;
-                switch (i) {
-                    case 0: position = leversPositions.get("minecraft:quartz_block"); break;
-                    case 1: position = leversPositions.get("minecraft:diamond_block"); break;
-                    case 2: position = leversPositions.get("minecraft:gold_block"); break;
-                    case 3: position = leversPositions.get("minecraft:emerald_block"); break;
-                    case 4: position = leversPositions.get("minecraft:coal_block"); break;
-                    case 5: position = leversPositions.get("minecraft:hardened_clay"); break;
-                }
-                if (position == null) continue;
-                if (world.getBlockState(position).getBlock() != Blocks.lever) continue;
-
-                boolean isLeverActive = world.getBlockState(position).getValue(BlockLever.POWERED);
-                if (!(solution == -1 || (solution == 0 && !isLeverActive) || (solution == 1 && isLeverActive))) {
-                    RenderUtils.draw3DLine(
-                            new Vec3(position.getX(), position.getY(), position.getZ()),
-                            player.getPositionEyes(event.partialTicks),
-                            Color.green,
-                            4,
-                            true,
-                            event.partialTicks,
-                            false,
-                            true,
-                            world.getBlockState(position).getValue(BlockLever.FACING)
-                    );
-                    correctLevers[i] = false;
-                    boundingBoxPositions.add(position);
-                }
-            }
-
-            // Now draw all bounding boxes AFTER all 3D lines
-            for (BlockPos position : boundingBoxPositions) {
-                RenderUtils.drawLeverBoundingBox(
-                        position,
-                        world.getBlockState(position).getValue(BlockLever.FACING).getFacing(),
-                        Color.green,
-                        event.partialTicks
-                );
-            }
-
-            // Draw final water lever line after everything
-            if (allTrue(correctLevers) && waterLeverPos != null) {
-                RenderUtils.draw3DLine(
-                        new Vec3(waterLeverPos.getX(), waterLeverPos.getY(), waterLeverPos.getZ()),
-                        player.getPositionEyes(event.partialTicks),
-                        Color.blue,
-                        4,
-                        true,
-                        event.partialTicks,
-                        false,
-                        true,
-                        world.getBlockState(waterLeverPos).getValue(BlockLever.FACING)
-                );
-            }
+        List<EnumDyeColor> woolList = new ArrayList<>(woolBlocks);
+        for (int i = 0; i < woolList.size(); i++) {
+            int[] colorSolutions = WOOL_SOLUTIONS.getArraySolutions(woolList.get(i).getName());
+            drawFeatures(colorSolutions, i, event.partialTicks);
         }
     }
 
+    private void drawFeatures (int[] colorSolutions, float offsetY, float partialTicks) {
+        int solutionNumber = (int)(offsetY);
+        List<BlockPos> boundingBoxPositions = new ArrayList<>();
+        for (int i = 0; i < colorSolutions.length; i++) {
+            int solution = colorSolutions[i];
+            correctLevers.get(solutionNumber)[i] = true;
+            BlockPos position = null;
+            switch (i) {
+                case 0: position = leversPositions.get("minecraft:quartz_block"); break;
+                case 1: position = leversPositions.get("minecraft:diamond_block"); break;
+                case 2: position = leversPositions.get("minecraft:gold_block"); break;
+                case 3: position = leversPositions.get("minecraft:emerald_block"); break;
+                case 4: position = leversPositions.get("minecraft:coal_block"); break;
+                case 5: position = leversPositions.get("minecraft:hardened_clay"); break;
+            }
+            if (position == null) continue;
+            if (world.getBlockState(position).getBlock() != Blocks.lever) continue;
+
+            boolean isLeverActive = world.getBlockState(position).getValue(BlockLever.POWERED);
+            if (!(solution == -1 || (solution == 0 && !isLeverActive) || (solution == 1 && isLeverActive))) {
+                if (offsetY == 0) RenderUtils.draw3DLine(
+                        new Vec3(position.getX(), position.getY(), position.getZ()),
+                        player.getPositionEyes(partialTicks),
+                        Color.green,
+                        4,
+                        true,
+                        partialTicks,
+                        false,
+                        true,
+                        world.getBlockState(position).getValue(BlockLever.FACING)
+                );
+                correctLevers.get(solutionNumber)[i] = false;
+                boundingBoxPositions.add(position);
+            }
+        }
+
+        // Draw final water lever tracer
+        if (offsetY == 0 && allTrue(correctLevers.get(solutionNumber)) && waterLeverPos != null) {
+            RenderUtils.draw3DLine(
+                    new Vec3(waterLeverPos.getX(), waterLeverPos.getY(), waterLeverPos.getZ()),
+                    player.getPositionEyes(partialTicks),
+                    Color.blue,
+                    4,
+                    true,
+                    partialTicks,
+                    false,
+                    true,
+                    world.getBlockState(waterLeverPos).getValue(BlockLever.FACING)
+            );
+        }
+
+        Color color = Color.green;
+        if (offsetY != 0) color = Color.yellow;
+        // Now draw all bounding boxes AFTER all 3D lines
+        for (BlockPos position : boundingBoxPositions) {
+            RenderUtils.drawLeverBoundingBox(
+                    new BlockPos(position.getX(), position.getY()+offsetY, position.getZ()),
+                    world.getBlockState(position).getValue(BlockLever.FACING).getFacing(),
+                    color,
+                    partialTicks
+            );
+        }
+    }
 
     @SubscribeEvent()
     public void onWorldUnload(WorldEvent.Load event) {
         if (!Configuration.dungeonsWaterSolver) return;
         if (!DungeonManager.checkEssentials()) return;
         waterLeverPos = null;
-        correctLevers = new boolean[]{true,true,true,true,true,true};
+        //correctLevers = new boolean[]{true,true,true,true,true,true};
+        correctLevers = new ArrayList<>();
     }
 
 
     private void detectWaterRoom() {
         if (checkForBlock(Blocks.sticky_piston, 20, 57) == null) {
             woolBlocks = null;
+            correctLevers = new ArrayList<>();
             return;
         }
         BlockPos foundPistonHead = checkForBlock(Blocks.piston_head, 18, 57);
@@ -173,6 +161,9 @@ public class WaterSolver {
             //System.out.println("Found piston head");
             inWaterRoom = true;
             woolBlocks = detectWoolBlocks(foundPistonHead);
+            for (int i = 0; i < woolBlocks.size(); i++) {
+                correctLevers.add(new boolean[]{true,true,true,true,true,true});
+            }
             leversPositions = detectLeverPositions(new BlockPos(foundPistonHead.getX(), foundPistonHead.getY()+4, foundPistonHead.getZ()));
         }
     }

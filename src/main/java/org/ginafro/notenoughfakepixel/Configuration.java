@@ -125,11 +125,11 @@ public class Configuration extends Config {
     public static OneKeyBind qolPetsKeyBind = new OneKeyBind(UKeyboard.KEY_P);
     @Switch(name = "Warps Shortcuts" , category = QUALITY_OF_LIFE, subcategory = "Shortcuts")
     public static boolean qolShortcutWarps = true;
-    @KeyBind(name = "Warp Is Shortcut Key", category = QUALITY_OF_LIFE, subcategory = "Shortcuts")
+    @KeyBind(name = "Warp Island Shortcut Key", category = QUALITY_OF_LIFE, subcategory = "Shortcuts")
     public static OneKeyBind qolShortcutWarpIs = new OneKeyBind(UKeyboard.KEY_F7);
     @KeyBind(name = "Warp Hub Shortcut Key", category = QUALITY_OF_LIFE, subcategory = "Shortcuts")
     public static OneKeyBind qolShortcutWarpHub = new OneKeyBind(UKeyboard.KEY_F8);
-    @KeyBind(name = "Warp Dh Shortcut Key", category = QUALITY_OF_LIFE, subcategory = "Shortcuts")
+    @KeyBind(name = "Warp Dungeon Hub Shortcut Key", category = QUALITY_OF_LIFE, subcategory = "Shortcuts")
     public static OneKeyBind qolShortcutWarpDh = new OneKeyBind(UKeyboard.KEY_F9);
 
     @Switch(name = "Show pet equipped" , category = QUALITY_OF_LIFE, subcategory = "Pets")
@@ -336,6 +336,10 @@ public class Configuration extends Config {
     public static boolean experimentationChronomatronSolver = true;
     @Switch(name = "Ultrasequencer solver" , category = EXPERIMENTATION, description = "Enables Ultrasequencer solver.")
     public static boolean experimentationUltraSequencerSolver = true;
+    @Switch(name = "Hide Tooltips" , category = EXPERIMENTATION, description = "Hide tooltips when doing experiments.")
+    public static boolean experimentationHideTooltips = true;
+    //@Switch(name = "Superpairs solver" , category = EXPERIMENTATION, description = "Enables Superpairs solver.")
+    //public static boolean experimentationSuperpairsSolver = true;
     @Switch(name = "Prevent missclicks" , category = EXPERIMENTATION, description = "IMPORTANT: this feature doesn't work properly if your connection isn't stable or server has lag. Prevents clicking wrong answers when doing experiments.")
     public static boolean experimentationPreventMissclicks = true;
 
