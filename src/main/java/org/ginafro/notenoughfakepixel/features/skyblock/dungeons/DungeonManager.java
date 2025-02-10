@@ -9,7 +9,7 @@ import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.score.ScoreMana
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 
 public class DungeonManager {
-    private static boolean isBossStage = false;
+    private static boolean isBossStage = false; // This includes blood room
     private static boolean isFinalStage = false;
 
     @SubscribeEvent

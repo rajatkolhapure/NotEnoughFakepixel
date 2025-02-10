@@ -60,7 +60,6 @@ public class FirePillarDisplay {
 
         int seconds = Integer.parseInt(cleanName.split(" ")[0].replace("s", ""));
 
-
         mc.ingameGUI.displayTitle(
                 trackedPillar.getDisplayName().getFormattedText(),
                 "",

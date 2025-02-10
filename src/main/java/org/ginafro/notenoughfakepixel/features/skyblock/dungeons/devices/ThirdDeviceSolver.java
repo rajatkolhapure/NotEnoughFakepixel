@@ -86,8 +86,7 @@ public class ThirdDeviceSolver {
     @SubscribeEvent
     public void onRenderLast(RenderWorldLastEvent event) {
         if (!Configuration.dungeonsThirdDeviceSolver) return;
-        if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
-        if (!ScoreboardUtils.currentLocation.isDungeon()) return;
+        if (!DungeonManager.checkEssentialsF7()) return;
 
         mc.theWorld.loadedEntityList.forEach(entity -> {
             if (entity instanceof EntityItemFrame) {

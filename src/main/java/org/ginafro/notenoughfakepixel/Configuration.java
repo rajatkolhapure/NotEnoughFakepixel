@@ -143,10 +143,10 @@ public class Configuration extends Config {
     public static boolean qolDisableFriendJoin = false;
     //@Switch(name = "Chat Cleaner" , category = "Quality of Life", subcategory = "Chat")
     public static boolean qolChatCleaner = false;
-    @Switch(name = "Disable 'Selling ranks' messages" , category = QUALITY_OF_LIFE, subcategory = "Chat")
-    public static boolean qolDisableSellingRanks = false;
     @Switch(name = "Disable zombie rare drops messages" , category = QUALITY_OF_LIFE, subcategory = "Chat", description = "Disable drops carrot, potato and poisonous potato chat messages.")
     public static boolean qolDisableZombieRareDrops = true;
+    @Switch(name = "Disable 'Selling ranks' messages" , category = QUALITY_OF_LIFE, subcategory = "Chat")
+    public static boolean qolDisableSellingRanks = false;
     @Switch(name = "Scrollable tooltips" , category = QUALITY_OF_LIFE, subcategory = "Items", description = "Scroll through the item lore")
     public static boolean qolScrollableTooltips = true;
 
@@ -180,8 +180,10 @@ public class Configuration extends Config {
     public static String dungeonsAutoReadyName = "your nicked name";
     @Switch(name = "Wither&Blood Keys Tracers", category = DUNGEONS, subcategory = "QOL", description = "Show tracer on wither and blood keys.")
     public static boolean dungeonsKeyTracers = true;
-    @Switch(name = "Mute Bosses", category = DUNGEONS, subcategory = "QOL", description = "Mutes bosses on chat.")
-    public static boolean dungeonsMuteBosses = true;
+    @Switch(name = "Mute Irrelevant Messages", category = DUNGEONS, subcategory = "QOL", description = "Mutes bosses and crowd dialogs on chat.")
+    public static boolean dungeonsMuteIrrelevantMessages = true;
+    @Switch(name = "Salvage Items Saver", category = DUNGEONS, subcategory = "QOL", description = "Prevents you from salvaging legendary+ items.")
+    public static boolean dungeonsSalvageItemsPrevention = true;
 
     @Switch(name = "Dungeons Map" , category = DUNGEONS, subcategory = "Dungeon Map")
     public static boolean dungeonsMap = true;
@@ -245,17 +247,18 @@ public class Configuration extends Config {
     @Switch(name = "Third Device Solver" , category = DUNGEONS , subcategory = "Floor 7 Terminals and Devices")
     public static boolean dungeonsThirdDeviceSolver = true;
     @Color(name = "Correct Color", category = DUNGEONS , subcategory = "Floor 7 Terminals and Devices")
-    public static OneColor dungeonsCorrectColor = new OneColor(128,255,255);
+    public static OneColor dungeonsCorrectColor = new OneColor(0,255,0);
+    //public static OneColor dungeonsCorrectColor = new OneColor(128,255,255);
     @Color(name = "Alternative Color", category = DUNGEONS , subcategory = "Floor 7 Terminals and Devices")
     public static OneColor dungeonsAlternativeColor = new OneColor(255,255,0);
 
     @Switch(name = "Score Overlay" , category = DUNGEONS, subcategory = "Score & Secrets")
     public static boolean dungeonsScoreOverlay = true;
-    @Switch(name = "S+ Notifier" , category = DUNGEONS, subcategory = "Score & Secrets", description = "Shows an S+ in screen + chat message when virtually reached S+ (% secrets + 100% completion).")
+    @Switch(name = "S+ Notifier" , category = DUNGEONS, subcategory = "Score & Secrets", description = "Shows an S+ in screen when virtually reached S+ (% secrets + X% completion).")
     public static boolean dungeonsSPlusNotifier = true;
     @Switch(name = "S+ Message on Chat" , category = DUNGEONS, subcategory = "Score & Secrets", description = "Send a message chat when dungeon is about to be done.")
     public static boolean dungeonsSPlusMessage = true;
-    @Switch(name = "Dungeon Cleared Notifier" , category = DUNGEONS, subcategory = "Score & Secrets", description = "Shows a message in screen when 100% completion.")
+    @Switch(name = "Dungeon Cleared Notifier" , category = DUNGEONS, subcategory = "Score & Secrets", description = "Shows a message in screen + party message chat when 100% completion.")
     public static boolean dungeonsClearedNotifier = true;
     @Switch(name = "Show Item Secrets and Wither Essences" , category = DUNGEONS, subcategory = "Score & Secrets", description = "Show hitbox through walls of item secrets.")
     public static boolean dungeonsItemSecretsDisplay = true;

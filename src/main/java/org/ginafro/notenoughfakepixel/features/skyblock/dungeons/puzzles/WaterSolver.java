@@ -40,9 +40,10 @@ public class WaterSolver {
 
     private Set<EnumDyeColor> woolBlocks = new LinkedHashSet<>();
     private Map<String, BlockPos> leversPositions = new HashMap<>();
-    //private boolean[] correctLevers = new boolean[]{true,true,true,true,true,true};
+
     private ArrayList<boolean[]> correctLevers = new ArrayList<>();
     private BlockPos waterLeverPos;
+    private boolean waterLeverPowered = false;
 
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event) {
@@ -56,9 +57,9 @@ public class WaterSolver {
         mc = Minecraft.getMinecraft();
         player = mc.thePlayer;
         world = mc.theWorld;
-
         if (player == null || world == null) return;
 
+        if (waterLeverPos != null && world.getBlockState(waterLeverPos).getBlock() == Blocks.lever) waterLeverPowered = world.getBlockState(waterLeverPos).getValue(BlockLever.POWERED);
         new Thread(this::detectWaterRoom).start();
     }
 
@@ -77,6 +78,7 @@ public class WaterSolver {
     }
 
     private void drawFeatures (int[] colorSolutions, float offsetY, float partialTicks) {
+        if (correctLevers == null || correctLevers.isEmpty()) return;
         int solutionNumber = (int)(offsetY);
         List<BlockPos> boundingBoxPositions = new ArrayList<>();
         for (int i = 0; i < colorSolutions.length; i++) {
@@ -125,6 +127,7 @@ public class WaterSolver {
                     true,
                     world.getBlockState(waterLeverPos).getValue(BlockLever.FACING)
             );
+
         }
 
         Color color = Color.green;

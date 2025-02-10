@@ -67,7 +67,10 @@ public class NotEnoughFakepixel {
         MinecraftForge.EVENT_BUS.register(map);
         EventManager.INSTANCE.register(map);
 
-        MinecraftForge.EVENT_BUS.register(new Testing());
+        //MinecraftForge.EVENT_BUS.register(new Testing());
+
+        MinecraftForge.EVENT_BUS.register(new WelcomeMessage());
+        MinecraftForge.EVENT_BUS.register(new SalvageItemsSaver());
 
         MinecraftForge.EVENT_BUS.register(new StartingWithSolver());
         MinecraftForge.EVENT_BUS.register(new ClickOnColorsSolver());
@@ -95,7 +98,7 @@ public class NotEnoughFakepixel {
         MinecraftForge.EVENT_BUS.register(new ScoreOverlay());
         MinecraftForge.EVENT_BUS.register(new SPlusNotifier());
         MinecraftForge.EVENT_BUS.register(new DungeonClearedNotifier());
-        MinecraftForge.EVENT_BUS.register(new MuteBosses());
+        MinecraftForge.EVENT_BUS.register(new MuteIrrelevantMessages());
 
         // Mining
         MinecraftForge.EVENT_BUS.register(new MiningOverlay());
