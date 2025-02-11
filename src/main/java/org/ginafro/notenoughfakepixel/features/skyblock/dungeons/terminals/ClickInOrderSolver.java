@@ -65,11 +65,11 @@ public class ClickInOrderSolver {
                                 slot.getStack().getItem().setDamage(slot.getStack(), 0);
                             }
                             RenderUtils.drawOnSlot(container.inventorySlots.size(), slot.xDisplayPosition, slot.yDisplayPosition, Configuration.dungeonsAlternativeColor.getRGB());
-                        }  else if (slot.getStack().stackSize == round+2) {
+                        /*}  else if (slot.getStack().stackSize == round+2) {
                             if (slot.getStack().getItemDamage() == 14 || slot.getStack().getItemDamage() == 15) {
                                 slot.getStack().getItem().setDamage(slot.getStack(), 0);
                             }
-                            RenderUtils.drawOnSlot(container.inventorySlots.size(), slot.xDisplayPosition, slot.yDisplayPosition, new Color(Configuration.dungeonsAlternativeColor.getRed(), Configuration.dungeonsAlternativeColor.getGreen(), Configuration.dungeonsAlternativeColor.getBlue(), 150).getRGB());
+                            RenderUtils.drawOnSlot(container.inventorySlots.size(), slot.xDisplayPosition, slot.yDisplayPosition, new Color(Configuration.dungeonsAlternativeColor.getRed(), Configuration.dungeonsAlternativeColor.getGreen(), Configuration.dungeonsAlternativeColor.getBlue(), 150).getRGB());*/
                         }
                         // Set uncompleted slots to gray to hide
                         if (Configuration.dungeonsTerminalHideIncorrect && slot.getStack().stackSize > round+1 && slot.getStack().getItemDamage() == 14) {
