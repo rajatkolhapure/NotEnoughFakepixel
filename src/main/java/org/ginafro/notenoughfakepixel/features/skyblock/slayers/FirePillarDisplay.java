@@ -38,7 +38,7 @@ public class FirePillarDisplay {
 
 
         String rawName = armorStand.getDisplayName().getUnformattedText();
-        String cleanName = rawName.trim().replaceAll("ยง.", "");
+        String cleanName = rawName.trim().replaceAll("§.", "");
 
         String[] parts = cleanName.split(" ");
         if (parts.length != 3) return;
