@@ -51,13 +51,13 @@ This is a fork and remaster of official NotEnoughFakepixel mod from GinaFro.
 
 ### Dungeons
 - General
-  - Show Starred mobs
   - Dungeon Map
   - Three Weirdos Solver
   - Auto Ready FIX **(NEW)**
   - Auto close secret chests **(NEW)**
   - "Unable to locate sign" hidden **(NEW)**
   - S+ reminder BETA **(NEW)**
+  - Score overlay BETA **(NEW)**
   - Secret overlay BETA **(NEW)**
 - Starred mobs
   - Starred mob display
