@@ -150,14 +150,16 @@ public class Configuration extends Config {
     @Switch(name = "Scrollable tooltips" , category = QUALITY_OF_LIFE, subcategory = "Items", description = "Scroll through the item lore")
     public static boolean qolScrollableTooltips = true;
 
-    @Switch(name = "Disable Jerry-chine Gun sounds" , category = "Quality of Life", subcategory = "Sounds", description = "Disable Jerry-chine gun sounds.")
+    @Switch(name = "Disable Jerry-chine Gun sounds" , category = "Quality of Life", subcategory = "Sounds & Animations", description = "Disable Jerry-chine gun sounds.")
     public static boolean qolDisableJerryChineGunSounds = true;
-    @Switch(name = "Disable AOTE teleport sounds" , category = "Quality of Life", subcategory = "Sounds", description = "Disable Aspect of the End teleport sounds.")
+    @Switch(name = "Disable AOTE teleport sounds" , category = "Quality of Life", subcategory = "Sounds & Animations", description = "Disable Aspect of the End teleport sounds.")
     public static boolean qolDisableAoteSounds = false;
-    @Switch(name = "Disable Hyperion Explosion" , category = QUALITY_OF_LIFE,  subcategory = "Sounds")
+    @Switch(name = "Disable Hyperion Explosion" , category = QUALITY_OF_LIFE,  subcategory = "Sounds & Animations")
     public static boolean qolDisableHyperionExplosions = true;
-    @Switch(name = "Minimum Midas Staff animation and sounds" , category = "Quality of Life", subcategory = "Sounds", description = "Low-render gold blocks and set sound only at right click.")
+    @Switch(name = "Minimum Midas Staff animation and sounds" , category = "Quality of Life", subcategory = "Sounds & Animations", description = "Low-render gold blocks and set sound only at right click.")
     public static boolean qolDisableMidaStaffAnimation = false;
+    @Switch(name = "Hide Flaming Fists" , category = "Quality of Life", subcategory = "Sounds & Animations")
+    public static boolean qolHideFlamingFists = false;
 
 
     @Switch(name = "Damage Commas" , category = QUALITY_OF_LIFE, subcategory = "Damage Formatter")
@@ -182,8 +184,10 @@ public class Configuration extends Config {
     public static boolean dungeonsKeyTracers = true;
     @Switch(name = "Mute Irrelevant Messages", category = DUNGEONS, subcategory = "QOL", description = "Mutes bosses and crowd dialogs on chat.")
     public static boolean dungeonsMuteIrrelevantMessages = true;
-    @Switch(name = "Salvage Items Saver", category = DUNGEONS, subcategory = "QOL", description = "Prevents you from salvaging legendary+ items.")
+    @Switch(name = "Salvage Items Saver", category = DUNGEONS, subcategory = "QOL", description = "Prevents you from salvaging important and legendary+ items.")
     public static boolean dungeonsSalvageItemsPrevention = true;
+    @Switch(name = "Show Correct Livid", category = DUNGEONS, subcategory = "QOL")
+    public static boolean dungeonsLividFinder = true;
 
     @Switch(name = "Dungeons Map" , category = DUNGEONS, subcategory = "Dungeon Map")
     public static boolean dungeonsMap = true;
