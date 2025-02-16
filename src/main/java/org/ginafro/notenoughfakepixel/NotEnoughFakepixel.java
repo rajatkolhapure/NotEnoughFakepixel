@@ -21,6 +21,7 @@ import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.devices.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.mobs.BatMobDisplay;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.mobs.FelMobDisplay;
+import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.mobs.LividDisplay;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.mobs.StarredMobDisplay;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.puzzles.ThreeWeirdos;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.puzzles.WaterSolver;
@@ -93,6 +94,7 @@ public class NotEnoughFakepixel {
         MinecraftForge.EVENT_BUS.register(new BatMobDisplay());
         MinecraftForge.EVENT_BUS.register(new FelMobDisplay());
         MinecraftForge.EVENT_BUS.register(new ItemSecretsDisplay());
+        MinecraftForge.EVENT_BUS.register(new LividDisplay());
 
         MinecraftForge.EVENT_BUS.register(new DungeonManager());
         MinecraftForge.EVENT_BUS.register(new ScoreManager());
@@ -133,6 +135,8 @@ public class NotEnoughFakepixel {
         MinecraftForge.EVENT_BUS.register(new WardrobeShortcut());
         MinecraftForge.EVENT_BUS.register(new PetsShortcut());
         MinecraftForge.EVENT_BUS.register(new WarpsShortcut());
+        MinecraftForge.EVENT_BUS.register(new DisableEndermanTeleport());
+        MinecraftForge.EVENT_BUS.register(new HideFlamingFists());
 
         MinecraftForge.EVENT_BUS.register(new Fullbright());
         MinecraftForge.EVENT_BUS.register(new KDCounter());

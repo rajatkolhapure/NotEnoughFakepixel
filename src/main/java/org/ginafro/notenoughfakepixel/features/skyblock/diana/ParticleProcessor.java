@@ -129,10 +129,9 @@ public class ParticleProcessor {
         particleDripLavaQueue.clear();
 
         Waypoint waypoint = classifyGroup(combinedParticles);
-        if (waypoint == null) return null;
 
         // Check if dev pet is close
-        if (isDevPetClose(waypoint.getCoordinates())) return null;
+        if (waypoint != null && isDevPetClose(waypoint.getCoordinates())) return null;
 
         // Calculate the average position and classify the group
         return waypoint;
