@@ -71,6 +71,7 @@ public class NotEnoughFakepixel {
 
         MinecraftForge.EVENT_BUS.register(new WelcomeMessage());
         MinecraftForge.EVENT_BUS.register(new SalvageItemsSaver());
+        MinecraftForge.EVENT_BUS.register(new ShowNotOpenedChests());
 
         MinecraftForge.EVENT_BUS.register(new StartingWithSolver());
         MinecraftForge.EVENT_BUS.register(new ClickOnColorsSolver());

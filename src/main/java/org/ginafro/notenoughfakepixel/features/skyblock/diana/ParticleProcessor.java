@@ -5,6 +5,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.network.play.server.S2APacketParticles;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.ChatComponentText;
 import org.ginafro.notenoughfakepixel.Configuration;
 import org.ginafro.notenoughfakepixel.utils.SoundUtils;
 import org.ginafro.notenoughfakepixel.utils.Waypoint;
@@ -128,9 +129,10 @@ public class ParticleProcessor {
         particleDripLavaQueue.clear();
 
         Waypoint waypoint = classifyGroup(combinedParticles);
+        if (waypoint == null) return null;
 
         // Check if dev pet is close
-        if (isDevPetClose(waypoint.getCoordinates())) return  null;
+        if (isDevPetClose(waypoint.getCoordinates())) return null;
 
         // Calculate the average position and classify the group
         return waypoint;

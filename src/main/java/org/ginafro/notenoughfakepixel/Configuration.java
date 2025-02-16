@@ -188,6 +188,8 @@ public class Configuration extends Config {
     public static boolean dungeonsSalvageItemsPrevention = true;
     @Switch(name = "Show Correct Livid", category = DUNGEONS, subcategory = "QOL")
     public static boolean dungeonsLividFinder = true;
+    @Switch(name = "Show Opened chests in Croesus", category = DUNGEONS, subcategory = "QOL")
+    public static boolean dungeonsShowOpenedChests = true;
 
     @Switch(name = "Dungeons Map" , category = DUNGEONS, subcategory = "Dungeon Map")
     public static boolean dungeonsMap = true;
