@@ -95,8 +95,10 @@ public class Diana {
     @SubscribeEvent
     public void onRenderLast(RenderWorldLastEvent event) {
         if (!ScoreboardUtils.currentLocation.isHub()) return; // Check if the player is in a hub
-        if (Configuration.dianaShowWaypointsBurrows) drawWaypoints(event.partialTicks);
         if (InventoryUtils.getSlot("Ancestral Spade") == -1) return;
+        if (Configuration.dianaShowWaypointsBurrows) drawWaypoints(event.partialTicks);
+        if (Configuration.dianaShowTracersWaypoints) drawTracers(event.partialTicks);
+        if (Configuration.dianaShowLabelsWaypoints) drawLabels(event.partialTicks);
         if (Configuration.dianaGaiaConstruct || Configuration.dianaSiamese) {
             dianaMobCheck(); // Check entities on world, add to lists if not tracked
             dianaMobRemover(); // Remove mobs from lists if out of render distance
@@ -215,16 +217,54 @@ public class Diana {
                 }
 
                 RenderUtils.drawFilledBoundingBox(bb, 1f, newColor);
+            }
+        } catch (Exception ignored) {}
+    }
+
+    private void drawTracers(float partialTicks) {
+        List<Waypoint> safeResults = new ArrayList<>();
+        synchronized (processor.getWaypoints()) {
+            try {
+                safeResults = new ArrayList<>(processor.getWaypoints());
+            } catch (Exception ignored) {}
+        }
+        try {
+            for (Waypoint result : safeResults) {
+                if (result.isHidden()) continue;
+                Color newColor = white;
+                if (result.getType().equals("EMPTY")) newColor = dianaEmptyBurrowColor.toJavaColor();
+                if (result.getType().equals("MOB")) newColor = dianaMobBurrowColor.toJavaColor();
+                if (result.getType().equals("TREASURE")) newColor = dianaTreasureBurrowColor.toJavaColor();
+                if (result.getType().equals("MINOS")) newColor = new Color(243, 225, 107);
                 EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
-                if (Configuration.dianaShowLabelsWaypoints) RenderUtils.drawTag(result.getType(), Arrays.stream(result.getCoordinates()).asDoubleStream().toArray(), new Color(255, 255, 255), partialTicks);
-                if (Configuration.dianaShowLabelsWaypoints) RenderUtils.drawTag("("+Math.round(ParticleProcessor.getDistance(result.getCoordinates(), new int[] {player.getPosition().getX(), player.getPosition().getY(),player.getPosition().getZ()})*10)/10+"m)", new double[]{result.getCoordinates()[0],result.getCoordinates()[1]-0.5,result.getCoordinates()[2]}, new Color(255, 255, 255), partialTicks);
-                //RenderUtils.drawTracer(result.getCoordinates(), new Color(0,0,0,255));
-                if (Configuration.dianaShowTracersWaypoints) RenderUtils.draw3DLine(new Vec3(result.getCoordinates()[0]+0.5,result.getCoordinates()[1],result.getCoordinates()[2]+0.5),
+                RenderUtils.draw3DLine(new Vec3(result.getCoordinates()[0]+0.5,result.getCoordinates()[1],result.getCoordinates()[2]+0.5),
                         player.getPositionEyes(partialTicks),
                         newColor,
                         4,
                         true,
                         partialTicks);
+            }
+        } catch (Exception ignored) {}
+    }
+
+    private void drawLabels(float partialTicks) {
+        List<Waypoint> safeResults = new ArrayList<>();
+        synchronized (processor.getWaypoints()) {
+            try {
+                safeResults = new ArrayList<>(processor.getWaypoints());
+            } catch (Exception ignored) {}
+        }
+        try {
+            for (Waypoint result : safeResults) {
+                if (result.isHidden()) continue;
+                Color newColor = white;
+                if (result.getType().equals("EMPTY")) newColor = dianaEmptyBurrowColor.toJavaColor();
+                if (result.getType().equals("MOB")) newColor = dianaMobBurrowColor.toJavaColor();
+                if (result.getType().equals("TREASURE")) newColor = dianaTreasureBurrowColor.toJavaColor();
+                if (result.getType().equals("MINOS")) newColor = new Color(243, 225, 107);
+                EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
+                RenderUtils.drawTag(result.getType(), Arrays.stream(result.getCoordinates()).asDoubleStream().toArray(), new Color(255, 255, 255), partialTicks);
+                RenderUtils.drawTag("("+Math.round(ParticleProcessor.getDistance(result.getCoordinates(), new int[] {player.getPosition().getX(), player.getPosition().getY(),player.getPosition().getZ()})*10)/10+"m)", new double[]{result.getCoordinates()[0],result.getCoordinates()[1]-0.5,result.getCoordinates()[2]}, new Color(255, 255, 255), partialTicks);
             }
         } catch (Exception ignored) {}
     }
@@ -369,7 +409,7 @@ public class Diana {
                     break;
                 // Remove waypoint at pling sound
                 case "note.pling":
-                    //System.out.println(soundEffect.getVolume() + ", " + soundEffect.getPitch());
+                    System.out.println(soundName + ", " + soundEffect.getVolume() + ", " + soundEffect.getPitch());
                     if (Configuration.dianaShowWaypointsBurrows && soundEffect.getVolume() == 8.0f) {
                         deleteClosestWaypoint(coordsSound[0], coordsSound[1], coordsSound[2]);
                     }
@@ -518,12 +558,12 @@ public class Diana {
                     ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(3);
                     exec.schedule(new Runnable() {
                         public void run() {
-                            Minecraft.getMinecraft().thePlayer.sendChatMessage(EnumChatFormatting.YELLOW+"30 seconds for despawn!");
+                            Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc " + EnumChatFormatting.YELLOW+"30 seconds for despawn!");
                         }
                     }, 30, TimeUnit.SECONDS);
                     exec.schedule(new Runnable() {
                         public void run() {
-                            Minecraft.getMinecraft().thePlayer.sendChatMessage(EnumChatFormatting.YELLOW+"10 seconds for despawn!");
+                            Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc " + EnumChatFormatting.YELLOW+"10 seconds for despawn!");
                         }
                     }, 50, TimeUnit.SECONDS);
                     exec.schedule(new Runnable() {
