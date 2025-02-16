@@ -121,7 +121,7 @@ public class Diana {
         String entityName = event.entity.getDisplayName().getUnformattedText();
         if (entityName.contains("Minos Inquisitor")) {
             Instant now = Instant.now();
-            if (now.isAfter(lastCaptureTime.plusSeconds(61))) {
+            if (now.isAfter(lastCaptureTime.plusSeconds(63))) {
                 Minecraft.getMinecraft().ingameGUI.displayTitle("Inquisitor detected!", null, 10, 40, 20);
                 double x = Math.floor(event.entity.posX);
                 double y = Math.floor(event.entity.posY);
@@ -129,10 +129,10 @@ public class Diana {
                 //Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc Minos Inquisitor found at x:"+event.entity.getPosition().getX()+", y:"+event.entity.getPosition().getY()+", z:"+event.entity.getPosition().getZ() + " in HUB-"+getHubNumber());
                 String locationName = findNearestLocation((int) x, (int) y, (int) z);
                 if (locationName != null) {
-                    System.out.println("/pc Minos Inquisitor found at " + locationName + ", x:"+event.entity.getPosition().getX()+", y:"+(event.entity.getPosition().getY()-2)+", z:"+event.entity.getPosition().getZ() + " in HUB-"+getHubNumber());
+                    //System.out.println("/pc Minos Inquisitor found at " + locationName + ", x:"+event.entity.getPosition().getX()+", y:"+(event.entity.getPosition().getY()-2)+", z:"+event.entity.getPosition().getZ() + " in HUB-"+getHubNumber());
                     Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc Minos Inquisitor found at " + locationName + ", x:"+event.entity.getPosition().getX()+", y:"+(event.entity.getPosition().getY()-2)+", z:"+event.entity.getPosition().getZ() + " in HUB-"+getHubNumber());
                 } else {
-                    System.out.println("/pc Minos Inquisitor found at x:"+event.entity.getPosition().getX()+", y:"+(event.entity.getPosition().getY()-2)+", z:"+event.entity.getPosition().getZ() + " in HUB-"+getHubNumber());
+                    //System.out.println("/pc Minos Inquisitor found at x:"+event.entity.getPosition().getX()+", y:"+(event.entity.getPosition().getY()-2)+", z:"+event.entity.getPosition().getZ() + " in HUB-"+getHubNumber());
                     Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc Minos Inquisitor found at x:"+event.entity.getPosition().getX()+", y:"+(event.entity.getPosition().getY()-2)+", z:"+event.entity.getPosition().getZ() + " in HUB-"+getHubNumber());
                 }
                 lastCaptureTime = now;
@@ -411,7 +411,7 @@ public class Diana {
                     break;
                 // Remove waypoint at pling sound
                 case "note.pling":
-                    System.out.println(soundName + ", " + soundEffect.getVolume() + ", " + soundEffect.getPitch());
+                    //System.out.println(soundName + ", " + soundEffect.getVolume() + ", " + soundEffect.getPitch());
                     if (Configuration.dianaShowWaypointsBurrows) {
                         deleteClosestWaypoint(coordsSound[0], coordsSound[1], coordsSound[2]);
                     }
@@ -440,13 +440,6 @@ public class Diana {
                                 //System.out.println("Gaia removed, " + listGaiaAlive.size());
                             }
                         }, 1, TimeUnit.SECONDS);
-                    }
-                    break;
-                case "mob.endermen.portal":
-                    counterTeleports++;
-                    if (counterTeleports > 15) {
-                        autoEquipShovelForParticles();
-                        counterTeleports = 0;
                     }
                     break;
                 case "note.harp":
@@ -502,7 +495,7 @@ public class Diana {
 
         if (res == null) return;
         if (processor.areCoordinatesClose(res.getCoordinates(), coords, 3)) {
-            if (res.getType().equals("MINOS")) return;
+            //if (res.getType().equals("MINOS")) return;
             res.setHidden(true);
             ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(1);
             exec.schedule(new Runnable() {
@@ -511,21 +504,6 @@ public class Diana {
                 }
             }, 30000, TimeUnit.MILLISECONDS);
         }
-    }
-
-    private void autoEquipShovelForDig(String face, int x, int y, int z) {
-        if (!face.equals("up")) return;
-        EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
-        int[] playerCoords = new int[] {(int)player.posX, (int)player.posY, (int)player.posZ};
-        Waypoint res = processor.getClosestWaypoint(playerCoords);
-        if (res == null) return;
-        if (res.isHidden() || res.getType().equals("MINOS")) return;
-        int[] coordsBurrowClicked = new int[]{x, y+1, z};
-        if (processor.areCoordinatesClose(res.getCoordinates(),coordsBurrowClicked,2.5f)) InventoryUtils.autoEquipItem("Ancestral Spade");
-    }
-
-    private void autoEquipShovelForParticles() {
-        InventoryUtils.autoEquipItem("Ancestral Spade", 250);
     }
 
     @SubscribeEvent
