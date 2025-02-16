@@ -178,7 +178,11 @@ public class TablistParser {
                 }*/
                 // Extract Crypts count
                 if (cleanLine.startsWith("Crypts: ")) {
-                    crypts = Integer.parseInt(cleanLine.substring(8).trim());
+                    if (cleanLine.substring(8).trim().contains("/")) {
+                        crypts = 0;
+                    } else {
+                        crypts = Integer.parseInt(cleanLine.substring(8).trim());
+                    }
                 }
             // ACCOUNT INFO SECTION
             } else if (isAccountInfo) {

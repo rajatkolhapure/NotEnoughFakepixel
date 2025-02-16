@@ -54,7 +54,7 @@ public class Diana {
     public void onParticlePacketReceive(PacketReadEvent event) {
         if (!Configuration.dianaShowWaypointsBurrows) return; // Check if the feature is enabled
         if (!ScoreboardUtils.currentLocation.isHub()) return; // Check if the player is in a hub
-        if (InventoryUtils.getSlot("Ancestral Spade") == -1) return;
+        //if (InventoryUtils.getSlot("Ancestral Spade") == -1) return;
         Packet packet = event.packet;
          if (packet instanceof S2APacketParticles) {
              S2APacketParticles particles = (S2APacketParticles) packet;
@@ -95,7 +95,7 @@ public class Diana {
     @SubscribeEvent
     public void onRenderLast(RenderWorldLastEvent event) {
         if (!ScoreboardUtils.currentLocation.isHub()) return; // Check if the player is in a hub
-        if (InventoryUtils.getSlot("Ancestral Spade") == -1) return;
+        //if (InventoryUtils.getSlot("Ancestral Spade") == -1) return;
         if (Configuration.dianaShowWaypointsBurrows) drawWaypoints(event.partialTicks);
         if (Configuration.dianaShowTracersWaypoints) drawTracers(event.partialTicks);
         if (Configuration.dianaShowLabelsWaypoints) drawLabels(event.partialTicks);
