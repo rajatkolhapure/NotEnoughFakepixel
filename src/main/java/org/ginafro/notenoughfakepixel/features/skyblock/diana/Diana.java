@@ -129,8 +129,10 @@ public class Diana {
                 //Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc Minos Inquisitor found at x:"+event.entity.getPosition().getX()+", y:"+event.entity.getPosition().getY()+", z:"+event.entity.getPosition().getZ() + " in HUB-"+getHubNumber());
                 String locationName = findNearestLocation((int) x, (int) y, (int) z);
                 if (locationName != null) {
+                    System.out.println("/pc Minos Inquisitor found at " + locationName + ", x:"+event.entity.getPosition().getX()+", y:"+(event.entity.getPosition().getY()-2)+", z:"+event.entity.getPosition().getZ() + " in HUB-"+getHubNumber());
                     Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc Minos Inquisitor found at " + locationName + ", x:"+event.entity.getPosition().getX()+", y:"+(event.entity.getPosition().getY()-2)+", z:"+event.entity.getPosition().getZ() + " in HUB-"+getHubNumber());
                 } else {
+                    System.out.println("/pc Minos Inquisitor found at x:"+event.entity.getPosition().getX()+", y:"+(event.entity.getPosition().getY()-2)+", z:"+event.entity.getPosition().getZ() + " in HUB-"+getHubNumber());
                     Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc Minos Inquisitor found at x:"+event.entity.getPosition().getX()+", y:"+(event.entity.getPosition().getY()-2)+", z:"+event.entity.getPosition().getZ() + " in HUB-"+getHubNumber());
                 }
                 lastCaptureTime = now;
@@ -410,7 +412,7 @@ public class Diana {
                 // Remove waypoint at pling sound
                 case "note.pling":
                     System.out.println(soundName + ", " + soundEffect.getVolume() + ", " + soundEffect.getPitch());
-                    if (Configuration.dianaShowWaypointsBurrows && soundEffect.getVolume() == 8.0f) {
+                    if (Configuration.dianaShowWaypointsBurrows) {
                         deleteClosestWaypoint(coordsSound[0], coordsSound[1], coordsSound[2]);
                     }
 
@@ -558,12 +560,12 @@ public class Diana {
                     ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(3);
                     exec.schedule(new Runnable() {
                         public void run() {
-                            Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc " + EnumChatFormatting.YELLOW+"30 seconds for despawn!");
+                            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.YELLOW+"30 seconds for despawn!"));
                         }
                     }, 30, TimeUnit.SECONDS);
                     exec.schedule(new Runnable() {
                         public void run() {
-                            Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc " + EnumChatFormatting.YELLOW+"10 seconds for despawn!");
+                            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.YELLOW+"10 seconds for despawn!"));
                         }
                     }, 50, TimeUnit.SECONDS);
                     exec.schedule(new Runnable() {
