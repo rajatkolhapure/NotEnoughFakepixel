@@ -38,10 +38,8 @@ import org.ginafro.notenoughfakepixel.features.skyblock.mining.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.overlays.StorageOverlay;
 import org.ginafro.notenoughfakepixel.features.skyblock.qol.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.diana.*;
-import org.ginafro.notenoughfakepixel.features.skyblock.slayers.AutoOpenMaddox;
-import org.ginafro.notenoughfakepixel.features.skyblock.slayers.SlayerMobsDisplay;
+import org.ginafro.notenoughfakepixel.features.skyblock.slayers.*;
 import org.ginafro.notenoughfakepixel.events.Handlers.PacketHandler;
-import org.ginafro.notenoughfakepixel.features.skyblock.slayers.VoidgloomSeraph;
 import org.ginafro.notenoughfakepixel.utils.*;
 
 import java.io.File;
@@ -102,6 +100,8 @@ public class NotEnoughFakepixel {
         MinecraftForge.EVENT_BUS.register(new SPlusNotifier());
         MinecraftForge.EVENT_BUS.register(new DungeonClearedNotifier());
         MinecraftForge.EVENT_BUS.register(new MuteIrrelevantMessages());
+        MinecraftForge.EVENT_BUS.register(new SpiritLeapHandler());
+        MinecraftForge.EVENT_BUS.register(new SpiritLeapHandler.ChestGuiOverlayHandler());
 
         // Mining
         MinecraftForge.EVENT_BUS.register(new MiningOverlay());
@@ -149,7 +149,9 @@ public class NotEnoughFakepixel {
         // Slayer
         MinecraftForge.EVENT_BUS.register(new SlayerMobsDisplay());
         MinecraftForge.EVENT_BUS.register(new VoidgloomSeraph());
-      
+        MinecraftForge.EVENT_BUS.register(new FirePillarDisplay());
+        MinecraftForge.EVENT_BUS.register(new MinibossAlert());
+
         // Parsers
         MinecraftForge.EVENT_BUS.register(new TablistParser());
         MinecraftForge.EVENT_BUS.register(new ScoreboardUtils());

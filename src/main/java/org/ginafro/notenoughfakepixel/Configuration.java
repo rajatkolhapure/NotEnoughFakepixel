@@ -190,6 +190,10 @@ public class Configuration extends Config {
     public static boolean dungeonsLividFinder = true;
     @Switch(name = "Show Opened chests in Croesus", category = DUNGEONS, subcategory = "QOL")
     public static boolean dungeonsShowOpenedChests = true;
+    @Switch(name = "Custom Spirit Leap GUI", category = DUNGEONS, subcategory = "QOL")
+    public static boolean dungeonsSpiritLeapGUI = true;
+    @Switch(name = "Announces Leaped to Player in party chat!", category = DUNGEONS, subcategory = "QOL")
+    public static boolean dungeonsLeapAnnounce = true;
 
     @Switch(name = "Dungeons Map" , category = DUNGEONS, subcategory = "Dungeon Map")
     public static boolean dungeonsMap = true;
@@ -323,6 +327,12 @@ public class Configuration extends Config {
     public static boolean _slayer = true;
     @Switch(name = "Slayer Minibosses Display" , category = SLAYER , subcategory = "Slayer Mobs", description = "Draws a box around slayer minibosses.")
     public static boolean slayerMinibosses = true;
+
+    @Switch(name = "Miniboss spawn title" , category = SLAYER , subcategory = "Slayer Mobs", description = "Shows a title on the screen after a Miniboss is spawned.")
+    public static boolean slayerMinibossTitle = true;
+    @Switch(name = "Miniboss sound notification" , category = SLAYER , subcategory = "Slayer Mobs", description = "Plays a sound on Miniboss spawning.")
+    public static boolean slayerMinibossSound = true;
+
     @Color(name = "Slayer Minibosses Color", category = SLAYER , subcategory = "Slayer Mobs", description = "Color of the slayer minibosses.")
     public static OneColor slayerColor = new OneColor(92, 154, 255);
     @Switch(name = "Slayer Bosses Display" , category = SLAYER , subcategory = "Slayer Mobs", description = "Draws a box around slayer bosses.")
@@ -335,7 +345,7 @@ public class Configuration extends Config {
     public static boolean slayerShowBeaconPath = true;
     @Color(name = "Beacon Color", category = SLAYER , subcategory = "Voidgloom Seraph", description = "Color of the beacon's waypoint.")
     public static OneColor slayerBeaconColor = new OneColor(128, 0, 128);
-    @Switch(name = "Display Pillar Title" , category = SLAYER , subcategory = "Inferno Demonlord", description = "Displays a text on the screen when a pillar is nearby.")
+    @Switch(name = "Display Blaze Pillar Title" , category = SLAYER , subcategory = "Inferno Demonlord", description = "Displays a text on the screen when a pillar is nearby.")
     public static boolean slayerFirePillarDisplay = true;
 
     // Enchanting
