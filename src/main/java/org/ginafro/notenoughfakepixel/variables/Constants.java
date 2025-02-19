@@ -43,7 +43,7 @@ public class Constants {
 
     public static final String[] BLAZE_SLAYER_MINIBOSSES = {
         "Flare Demon",
-        "Kindleheart demon",
+        "Kindleheart Demon",
         "Burningsoul Demon"
     };
 

@@ -1,21 +1,25 @@
 package org.ginafro.notenoughfakepixel.features.skyblock.slayers;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.World;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.ginafro.notenoughfakepixel.Configuration;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
-import org.ginafro.notenoughfakepixel.variables.Location;
 
 public class FirePillarDisplay {
     private static final Minecraft mc = Minecraft.getMinecraft();
     private EntityArmorStand trackedPillar;
     private long lastSoundTime;
+    private static String displayText = "";
+    private static long endTime = 0;
 
     @SubscribeEvent
     public void onRenderLiving(RenderLivingEvent.Pre<EntityLivingBase> event) {
@@ -23,7 +27,6 @@ public class FirePillarDisplay {
         if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
         if (!ScoreboardUtils.currentLocation.isCrimson()) return;
 
-        // check armor stands every 5 ticks to reduce load
         if (mc.theWorld.getTotalWorldTime() % 5 != 0) return;
 
         mc.theWorld.getLoadedEntityList().stream()
@@ -60,20 +63,55 @@ public class FirePillarDisplay {
 
         int seconds = Integer.parseInt(cleanName.split(" ")[0].replace("s", ""));
 
-        mc.ingameGUI.displayTitle(
+
+        showCustomOverlay(
                 trackedPillar.getDisplayName().getFormattedText(),
-                "",
-                0,
-                20,
-                10
+                1000
         );
 
-        // play pling sound every X seconds
-        if (System.currentTimeMillis() - lastSoundTime > seconds * 1000) {
+        if (System.currentTimeMillis() - lastSoundTime > seconds * 150L) {
             mc.getSoundHandler().playSound(
-                    PositionedSoundRecord.create(new ResourceLocation("note.pling"), 1.0F)
+                    new PositionedSoundRecord(
+                            new ResourceLocation("note.pling"),
+                            1.0F,  // Volume
+                            1.0F,  // Pitch
+                            (float) mc.thePlayer.posX, // X position
+                            (float) mc.thePlayer.posY, // Y position
+                            (float) mc.thePlayer.posZ  // Z position
+                    )
             );
             lastSoundTime = System.currentTimeMillis();
+        }
+    }
+
+    private void showCustomOverlay(String text, int durationMillis) {
+        displayText = text;
+        endTime = System.currentTimeMillis() + durationMillis;
+    }
+
+    @SubscribeEvent
+    public void onRenderOverlay(RenderGameOverlayEvent.Post event) {
+        if (event.type != RenderGameOverlayEvent.ElementType.TEXT) return;
+        if (System.currentTimeMillis() > endTime) return;
+
+        FontRenderer fr = mc.fontRendererObj;
+
+        int screenWidth = event.resolution.getScaledWidth();
+        int screenHeight = event.resolution.getScaledHeight();
+
+        GlStateManager.pushMatrix();
+        GlStateManager.scale(4.0F, 4.0F, 4.0F);
+        int textWidth = fr.getStringWidth(displayText);
+        int x = (screenWidth / 8) - (textWidth / 2);
+        int y = (screenHeight / 8) - 10;
+        fr.drawStringWithShadow(displayText, x, y, 0xFF5555);
+        GlStateManager.popMatrix();
+    }
+
+    @SubscribeEvent
+    public void onClientTick(TickEvent.ClientTickEvent event) {
+        if (mc.theWorld == null) {
+            displayText = "";
         }
     }
 }
