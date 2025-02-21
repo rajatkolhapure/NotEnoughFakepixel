@@ -12,7 +12,6 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StringUtils;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.SecretOverlay;
 import org.ginafro.notenoughfakepixel.variables.DungeonFloor;
 import org.ginafro.notenoughfakepixel.variables.Gamemode;
 import org.ginafro.notenoughfakepixel.variables.Area;
@@ -150,7 +149,7 @@ public class ScoreboardUtils {
 
     public static int getHubNumber() {
         if (Minecraft.getMinecraft().getNetHandler() != null) {
-            System.out.println("Point 1 reached");
+            //System.out.println("Point 1 reached");
             for (NetworkPlayerInfo playerInfo : Minecraft.getMinecraft().getNetHandler().getPlayerInfoMap()) {
                 IChatComponent s1 = playerInfo.getDisplayName();
                 if (s1 != null) {

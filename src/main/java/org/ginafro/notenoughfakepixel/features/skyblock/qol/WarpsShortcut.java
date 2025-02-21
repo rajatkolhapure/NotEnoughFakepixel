@@ -31,7 +31,8 @@ public class WarpsShortcut {
         // Get the list of key binds
         List<Integer> keyBindsWarpIs = Configuration.qolShortcutWarpIs.getKeyBinds();
         // Check if all keys in the list are currently pressed
-        boolean allKeysPressedWarpIs = keyBindsWarpIs.stream().allMatch(Keyboard::isKeyDown);
+        boolean allKeysPressedWarpIs = keyBindsWarpIs.stream()
+                .allMatch(key -> key >= 0 && key < Keyboard.KEYBOARD_SIZE && Keyboard.isKeyDown(key));
         // If all keys are pressed and they are not already active
         if (allKeysPressedWarpIs && !activeKeySet.containsAll(keyBindsWarpIs)) {
             // Execute the action
@@ -52,9 +53,10 @@ public class WarpsShortcut {
         // Get the list of key binds
         List<Integer> keyBindsWarpHub = Configuration.qolShortcutWarpHub.getKeyBinds();
         // Check if all keys in the list are currently pressed
-        boolean allKeysPressedWarpIs = keyBindsWarpHub.stream().allMatch(Keyboard::isKeyDown);
+        boolean allKeysPressedWarpHub = keyBindsWarpHub.stream()
+                .allMatch(key -> key >= 0 && key < Keyboard.KEYBOARD_SIZE && Keyboard.isKeyDown(key));
         // If all keys are pressed and they are not already active
-        if (allKeysPressedWarpIs && !activeKeySet.containsAll(keyBindsWarpHub)) {
+        if (allKeysPressedWarpHub && !activeKeySet.containsAll(keyBindsWarpHub)) {
             // Execute the action
             player.sendChatMessage("/warp hub");
 
@@ -71,19 +73,20 @@ public class WarpsShortcut {
 
     private void checkWarpDh(EntityPlayerSP player) {
         // Get the list of key binds
-        List<Integer> keyBindsWarpHub = Configuration.qolShortcutWarpDh.getKeyBinds();
+        List<Integer> keyBindsWarpDungeonHub = Configuration.qolShortcutWarpDh.getKeyBinds();
         // Check if all keys in the list are currently pressed
-        boolean allKeysPressedWarpIs = keyBindsWarpHub.stream().allMatch(Keyboard::isKeyDown);
+        boolean allKeysPressedWarpDungeonHub = keyBindsWarpDungeonHub.stream()
+                .allMatch(key -> key >= 0 && key < Keyboard.KEYBOARD_SIZE && Keyboard.isKeyDown(key));
         // If all keys are pressed and they are not already active
-        if (allKeysPressedWarpIs && !activeKeySet.containsAll(keyBindsWarpHub)) {
+        if (allKeysPressedWarpDungeonHub && !activeKeySet.containsAll(keyBindsWarpDungeonHub)) {
             // Execute the action
             player.sendChatMessage("/warp dh");
 
             // Mark these keys as active
-            activeKeySet.addAll(keyBindsWarpHub);
+            activeKeySet.addAll(keyBindsWarpDungeonHub);
         }
         // Clear keys from activeKeySet when released
-        keyBindsWarpHub.forEach(key -> {
+        keyBindsWarpDungeonHub.forEach(key -> {
             if (!Keyboard.isKeyDown(key)) {
                 activeKeySet.remove(key);
             }

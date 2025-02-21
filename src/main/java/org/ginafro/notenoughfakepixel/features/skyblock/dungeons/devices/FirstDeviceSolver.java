@@ -5,15 +5,20 @@ import net.minecraft.block.BlockButton;
 import net.minecraft.block.BlockButtonStone;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.ginafro.notenoughfakepixel.Configuration;
+import org.ginafro.notenoughfakepixel.events.PacketWriteEvent;
+import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.DungeonManager;
 import org.ginafro.notenoughfakepixel.utils.RenderUtils;
-import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 
 import java.awt.*;
 import java.util.Objects;
@@ -24,16 +29,18 @@ public class FirstDeviceSolver {
     private int[] positionsIndexSolved = new int[]{-1,-1,-1,-1,-1};
     private boolean startMemorising = false;
     private boolean resolving = false;
-    private int round = 1;
     private int positionInRound = 0;
+    private int round = 1;
+    //private long lastTimeClicked = 0; // Track last break event timestamp
+    //private static final long CLICK_COOLDOWN_MS = 1000; // 700ms cooldown left-click
 
     @SubscribeEvent
     public void onRenderLast(RenderWorldLastEvent event) {
         if (!Configuration.dungeonsFirstDeviceSolver) return;
-        if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
-        if (!ScoreboardUtils.currentLocation.isDungeon()) return;
+        //if (!DungeonManager.checkEssentialsF7()) return;
         // Check for sea lanterns
         if (startMemorising) {
+            if (positionsToSolve == null) return;
             for (int i = 0; i < positionsToSolve.length; i++) {
                 Block targetBlock = Minecraft.getMinecraft().theWorld.getBlockState(positionsToSolve[i]).getBlock();
                 if (targetBlock == Blocks.sea_lantern && positionsIndexSolved[round-1] == -1 && !checkIfAdded(positionsIndexSolved,i)) {
@@ -43,38 +50,44 @@ public class FirstDeviceSolver {
                 }
             }
         }
-        // Show highligted button and next button
+        // Show highligted button and next buttons
         if (resolving) {
             for (int i=0; i<round;i++) {
+                if (positionsIndexSolved[i] == -1) {
+                    reset();
+                    return;
+                }
                 if (i == positionInRound) {
                     RenderUtils.highlightBlock(positionsToSolve[positionsIndexSolved[i]], new Color(Configuration.dungeonsCorrectColor.getRed(), Configuration.dungeonsCorrectColor.getGreen(), Configuration.dungeonsCorrectColor.getBlue(), 200), false, true, event.partialTicks);
                 } else if (i == positionInRound+1) {
                     RenderUtils.highlightBlock(positionsToSolve[positionsIndexSolved[i]], new Color(Configuration.dungeonsAlternativeColor.getRed(), Configuration.dungeonsAlternativeColor.getGreen(), Configuration.dungeonsAlternativeColor.getBlue(), 150), false, true, event.partialTicks);
+                } else if (i == positionInRound+2) {
+                    RenderUtils.highlightBlock(positionsToSolve[positionsIndexSolved[i]], new Color(Configuration.dungeonsAlternativeColor.getRed(), Configuration.dungeonsAlternativeColor.getGreen(), Configuration.dungeonsAlternativeColor.getBlue(), 50), false, true, event.partialTicks);
                 }
             }
         }
     }
 
     // Check for initial button interact
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGH)
     public void onInteract(PlayerInteractEvent event) {
         if (!Configuration.dungeonsFirstDeviceSolver) return;
-        if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
-        if (!ScoreboardUtils.currentLocation.isDungeon()) return;
+        if (!DungeonManager.checkEssentialsF7()) return;
         if (Minecraft.getMinecraft().thePlayer != event.entityPlayer) return;
         if (event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) {
+            //lastTimeClicked = System.currentTimeMillis(); // Update last clicked time
             Block buttonBlock = Minecraft.getMinecraft().theWorld.getBlockState(event.pos).getBlock();
             if (buttonBlock instanceof BlockButtonStone) {
                 EnumFacing enumfacing = Minecraft.getMinecraft().theWorld.getBlockState(event.pos).getValue(BlockButton.FACING);
                 Block blockClicked = Minecraft.getMinecraft().theWorld.getBlockState(getBlockUnderButton(event.pos, enumfacing)).getBlock();
-                // Check if button is pressed over an emerald block
-                if (Objects.equals(blockClicked.getUnlocalizedName(), Blocks.emerald_block.getUnlocalizedName()) && !startMemorising) {
-                    BlockPos pos = getBlockUnderButton(event.pos, enumfacing);
-                    positionsToSolve = getSurroundingBlocks(pos, enumfacing);
-                    reset();
-                    startMemorising = true;
-                // Else if over obsidian
-                } else if (Objects.equals(blockClicked.getUnlocalizedName(), Blocks.obsidian.getUnlocalizedName())){
+                // Check if button is pressed over an obsidian block
+                if (Objects.equals(blockClicked.getUnlocalizedName(), Blocks.obsidian.getUnlocalizedName())){
+                    if (!resolving) return;
+                    if (!Objects.equals(getBlockUnderButton(event.pos, enumfacing), positionsToSolve[positionsIndexSolved[positionInRound]])) {
+                        event.setCanceled(true);
+                        //reset();
+                        return;
+                    }
                     positionInRound++;
                     if (positionInRound == round) {
                         positionInRound = 0;
@@ -85,13 +98,68 @@ public class FirstDeviceSolver {
                     if (round == 6) {
                         reset();
                     }
+                // Else if over an emerald block
+                } else if (Objects.equals(blockClicked.getUnlocalizedName(), Blocks.emerald_block.getUnlocalizedName()) ) {//&& !startMemorising) {
+                    BlockPos pos = getBlockUnderButton(event.pos, enumfacing);
+                    positionsToSolve = getSurroundingBlocks(pos, enumfacing);
+                    reset();
+                    startMemorising = true;
                 }
             }
         }
     }
 
+    @SubscribeEvent
+    public void onDiggingPacket(PacketWriteEvent event) {
+        if (!Configuration.dungeonsFirstDeviceSolver) return;
+        if (!DungeonManager.checkEssentialsF7()) return;
+        Packet packet = event.packet;
+        if (packet instanceof C07PacketPlayerDigging) {
+            C07PacketPlayerDigging packetPlayerDigging = (C07PacketPlayerDigging) packet;
+            if (packetPlayerDigging.getStatus() != C07PacketPlayerDigging.Action.START_DESTROY_BLOCK) return;
+
+            Block buttonBlock = Minecraft.getMinecraft().theWorld.getBlockState(((C07PacketPlayerDigging) packet).getPosition()).getBlock();
+            if (buttonBlock instanceof BlockButtonStone) {
+                EnumFacing enumfacing = Minecraft.getMinecraft().theWorld.getBlockState(((C07PacketPlayerDigging) packet).getPosition()).getValue(BlockButton.FACING);
+                Block blockClicked = Minecraft.getMinecraft().theWorld.getBlockState(getBlockUnderButton(((C07PacketPlayerDigging) packet).getPosition(), enumfacing)).getBlock();
+
+                // Check if button is pressed over an obsidian block
+                if (Objects.equals(blockClicked.getUnlocalizedName(), Blocks.obsidian.getUnlocalizedName())) {
+                    if (!resolving) return;
+                    if (!Objects.equals(getBlockUnderButton(((C07PacketPlayerDigging) packet).getPosition(), enumfacing), positionsToSolve[positionsIndexSolved[positionInRound]])) {
+                        // TODO TO TEST
+                        event.setCanceled(true);
+                        //reset();
+                        return;
+                    }
+                    positionInRound++;
+                    if (positionInRound == round) {
+                        positionInRound = 0;
+                        round++;
+                        startMemorising = true;
+                        resolving = false;
+                    }
+                    if (round == 6) {
+                        reset();
+                    }
+                // Else if over an emerald block
+                } else if (Objects.equals(blockClicked.getUnlocalizedName(), Blocks.emerald_block.getUnlocalizedName()) && !startMemorising) {
+                    BlockPos pos = getBlockUnderButton(((C07PacketPlayerDigging) packet).getPosition(), enumfacing);
+                    positionsToSolve = getSurroundingBlocks(pos, enumfacing);
+                    reset();
+                    startMemorising = true;
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent()
+    public void onWorldUnload(WorldEvent.Unload event) {
+        if (Configuration.dungeonsFirstDeviceSolver) reset();
+    }
+
     private static BlockPos getBlockUnderButton(BlockPos pos, EnumFacing facing) {
-        System.out.println(facing);
+        //System.out.println(facing);
         switch (facing) {
             case NORTH:
                 return new BlockPos(pos.getX(), pos.getY(), pos.getZ() + 1);
@@ -150,10 +218,4 @@ public class FirstDeviceSolver {
         positionInRound = 0;
         round = 1;
     }
-
-    @SubscribeEvent()
-    public void onWorldUnload(WorldEvent.Unload event) {
-        if (Configuration.dungeonsFirstDeviceSolver) reset();
-    }
-
 }

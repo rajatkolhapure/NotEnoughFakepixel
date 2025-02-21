@@ -19,6 +19,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec4b;
 import net.minecraft.world.storage.MapData;
+import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.ginafro.notenoughfakepixel.Configuration;
@@ -41,10 +42,11 @@ public class DungeonsMap {
     private static float othersMarkerScale = 1.25F;
     double playerPositionX, playerPositionY = 0;
     ArrayList<String> teammates = new ArrayList<>();
-    boolean firstTime = true;
+    //boolean firstTime = true;
     private static final Color[] colors = {Color.YELLOW, Color.BLUE, Color.RED, Color.ORANGE};
     private ResourceLocation mapIconsTexture = new ResourceLocation("textures/map/map_icons.png");
     Minecraft mc = Minecraft.getMinecraft();
+    private boolean finalScreen = false;
 
     float mapBorderWidth = 2.0F;
     public DungeonsMap() {
@@ -56,22 +58,44 @@ public class DungeonsMap {
     @Subscribe
     public void onRender(HudRenderEvent e){
         if(!Configuration.dungeonsMap) return;
-        if(!ScoreboardUtils.currentLocation.isDungeon()) return;
+        if(!DungeonManager.checkEssentials()) return;
         ItemStack map = mc.thePlayer.inventory.getStackInSlot(8);
         if(map == null && map.getItem() == null) return;
         if(map.getItem() instanceof ItemMap){
             ItemMap map1 = (ItemMap) map.getItem();
             MapData data = map1.getMapData(map , mc.theWorld);
             if (data != null) {
-                if (firstTime) {
-                    firstTime = false;
-                    teammates = getTeammates();
-                }
+                //if (firstTime) {
+                    //firstTime = false;
+                    //teammates = getTeammates();
+                //}
                 drawMap(data);
                 drawBorderMap();
                 drawMarkers(data.mapDecorations);
             }
         }
+    }
+
+    @SubscribeEvent
+    public void onChatReceived(ClientChatReceivedEvent event) {
+        if (!DungeonManager.checkEssentials()) return;
+        if (event.message.getUnformattedText().contains("> EXTRA STATS <")) {
+            finalScreen = true;
+        } else if (event.message.getUnformattedText().equals("[NPC] Mort: Good luck.")) {
+            finalScreen = false;
+        }
+    }
+
+    @SubscribeEvent()
+    public void onWorldLoad(WorldEvent.Load event) {
+        if (!DungeonManager.checkEssentials()) return;
+        finalScreen = false;
+    }
+
+    @SubscribeEvent()
+    public void onWorldUnload(WorldEvent.Unload event) {
+        if (!DungeonManager.checkEssentials()) return;
+        finalScreen = false;
     }
 
     private void drawMap(MapData data) {
@@ -99,7 +123,7 @@ public class DungeonsMap {
 
         // Move map to the correct screen position
         GlStateManager.translate(Configuration.dungeonsMapOffsetX, Configuration.dungeonsMapOffsetY, 0);
-        if (Configuration.dungeonsRotateMap) {
+        if (Configuration.dungeonsRotateMap && !finalScreen) {
             float angle = -MathHelper.wrapAngleTo180_float(mc.thePlayer.rotationYaw);
             GlStateManager.translate(64, 64, 0);
             GlStateManager.rotate(angle + 180, 0, 0, 1);
@@ -180,7 +204,7 @@ public class DungeonsMap {
                 playerPositionY = markerY;
             }
 
-            if (!Configuration.dungeonsRotateMap) {
+            if (!Configuration.dungeonsRotateMap || finalScreen) {
                 GlStateManager.translate((Configuration.dungeonsMapOffsetX + markerX) * Configuration.dungeonsMapScale,
                         (Configuration.dungeonsMapOffsetY + markerY) * Configuration.dungeonsMapScale,
                         0.0);
@@ -203,9 +227,9 @@ public class DungeonsMap {
             }
 
             float angle = 180F;
-            if (!Configuration.dungeonsRotateMap && iconType == 1) angle = playerAngle;
+            if ((!Configuration.dungeonsRotateMap || finalScreen) && iconType == 1) angle = playerAngle;
             if (iconType == 0) angle = (float) (entry.getValue().func_176111_d() * 360) / 16.0F;
-            if (Configuration.dungeonsRotateMap && iconType == 0) angle = angle + 180 - playerAngle;
+            if ((Configuration.dungeonsRotateMap && !finalScreen) && iconType == 0) angle = angle + 180 - playerAngle;
 
             GlStateManager.rotate(angle, 0.0F, 0.0F, 1.0F);
             if (iconType == 1) GlStateManager.scale(Configuration.dungeonsMapScale * 4 * playerMarkerScale,
@@ -230,7 +254,10 @@ public class DungeonsMap {
                     case 2: GlStateManager.color(1.0F, 0.5F, 0.0F, 1.0F); break; // Naranja
                     case 3: GlStateManager.color(1.0F, 0.0F, 0.0F, 1.0F); break; // Rojo
                 }
-                colorIndex = (colorIndex + 1) % (mapDecorations.size() - 1);
+                if (mapDecorations.size() > 1)
+                    colorIndex = (colorIndex + 1) % (mapDecorations.size() - 1);
+                else colorIndex = 0;
+
             }
 
             worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
@@ -248,7 +275,7 @@ public class DungeonsMap {
     }
 
 
-    private ArrayList<String> getTeammates() {
+    /*private ArrayList<String> getTeammates() {
         ArrayList<String> teammates = new ArrayList<>();
         // Grab all the world player entities and try to correlate them to the map
         for (EntityPlayer player : mc.theWorld.playerEntities) {
@@ -257,7 +284,7 @@ public class DungeonsMap {
                     !Objects.equals(player.getName(), "?")) teammates.add(player.getName());
         }
         Collections.sort(teammates);
-        System.out.println(teammates);
+        //System.out.println(teammates);
         return teammates;
-    }
+    }*/
 }

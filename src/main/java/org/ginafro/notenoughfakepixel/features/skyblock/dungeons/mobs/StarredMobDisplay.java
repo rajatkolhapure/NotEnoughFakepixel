@@ -1,4 +1,4 @@
-package org.ginafro.notenoughfakepixel.features.skyblock.dungeons;
+package org.ginafro.notenoughfakepixel.features.skyblock.dungeons.mobs;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -13,6 +13,8 @@ import org.ginafro.notenoughfakepixel.variables.MobDisplayTypes;
 import java.awt.*;
 
 public class StarredMobDisplay {
+
+    MobDisplayTypes mobDisplayType = MobDisplayTypes.NONE;
 
     @SubscribeEvent
     public void onRenderLast(RenderWorldLastEvent event) {
@@ -48,6 +50,7 @@ public class StarredMobDisplay {
                         Configuration.dungeonsWithermancerColor.getBlue(),
                         Configuration.dungeonsWithermancerColor.getAlpha()
                 );
+                mobDisplayType = MobDisplayTypes.WITHERMANCER;
             } else if (entity.getName().contains("Zombie Commander")) {
                 color = new Color(
                         Configuration.dungeonsZombieCommanderColor.getRed(),
@@ -62,6 +65,8 @@ public class StarredMobDisplay {
                         Configuration.dungeonsSkeletonMasterColor.getBlue(),
                         Configuration.dungeonsSkeletonMasterColor.getAlpha()
                 );
+            } else if (entity.getName().contains("Fels")) {
+                mobDisplayType = MobDisplayTypes.FELALIVE;
             }
 
 
@@ -70,9 +75,10 @@ public class StarredMobDisplay {
                     entity,
                     event.partialTicks,
                     color,
-                    MobDisplayTypes.NONE
+                    mobDisplayType
             );
             if (Configuration.dungeonsStarredMobsEsp) GlStateManager.enableDepth();
+            mobDisplayType = MobDisplayTypes.NONE;
         });
     }
 

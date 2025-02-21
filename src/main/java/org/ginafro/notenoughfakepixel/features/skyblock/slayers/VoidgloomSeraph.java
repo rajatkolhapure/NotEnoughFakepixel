@@ -23,7 +23,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import static org.ginafro.notenoughfakepixel.Configuration.qolChocolateEggWaypointsColor;
+import static org.ginafro.notenoughfakepixel.Configuration.slayerBeaconColor;
 
 public class VoidgloomSeraph {
     ArrayList<EntityFallingBlock> fallingBlocks = new ArrayList<>();
@@ -113,7 +113,7 @@ public class VoidgloomSeraph {
         double viewerZ = viewer.lastTickPosZ + (viewer.posZ - viewer.lastTickPosZ) * partialTicks;
         for (Waypoint waypoint : waypoints) {
             if (waypoint == null || waypoint.isHidden()) continue;
-            Color colorDrawWaypoint = qolChocolateEggWaypointsColor.toJavaColor();
+            Color colorDrawWaypoint = slayerBeaconColor.toJavaColor();
             colorDrawWaypoint = new Color(colorDrawWaypoint.getRed(), colorDrawWaypoint.getGreen(), colorDrawWaypoint.getBlue(), 150);
             AxisAlignedBB bb = new AxisAlignedBB(
                     waypoint.getCoordinates()[0] - viewerX,

@@ -67,7 +67,7 @@ public class UnicodeFontRenderer {
         try {
             this.unicodeFont = new UnicodeFont(getFontByName(fontName).deriveFont(fontSize * this.antiAliasingFactor));
         } catch (FontFormatException | IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         this.kerning = kerning;
 
@@ -77,7 +77,7 @@ public class UnicodeFontRenderer {
         try {
             this.unicodeFont.loadGlyphs();
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
         for (int i = 0; i < 32; i++) {
@@ -111,7 +111,7 @@ public class UnicodeFontRenderer {
         try {
             this.unicodeFont.loadGlyphs();
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
         for (int i = 0; i < 32; i++) {

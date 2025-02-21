@@ -29,7 +29,11 @@ public class TablistParser {
     public static int mithrilPowder = 0;
     public static List<String> commissions = new ArrayList<>();
 
-    public static int secretPercentage = -1;
+    public static int secretPercentage = 0;
+    public static int deaths = 0;
+    public static String time = "";
+    //public static int secretsFound = 0;
+    public static int crypts = 0;
 
     public static String currentOpenChestName = "";
     public static String lastOpenChestName = "";
@@ -95,6 +99,7 @@ public class TablistParser {
         List<String> accountInfo = new ArrayList<>();
 
         // Flags to track sections
+        boolean isPlayerStats = false;
         boolean isServerInfo = false;
         boolean isAccountInfo = false;
         boolean foundCommisions = false;
@@ -109,16 +114,28 @@ public class TablistParser {
             if (line.contains("§3§l Server Info§r")) {
                 isServerInfo = true;
                 isAccountInfo = false;
+                isPlayerStats = false;
                 continue;
             } else if (line.contains("§6§lAccount Info§r")) {
                 isServerInfo = false;
                 isAccountInfo = true;
+                isPlayerStats = false;
+                continue;
+            } else if (line.contains("§2§lPlayer Stats§r")) {
+                isServerInfo = false;
+                isAccountInfo = false;
+                isPlayerStats = true;
                 continue;
             }
 
+            String cleanLine = formatPattern.matcher(line).replaceAll("").trim();
+
             // SERVER INFO SECTION
             if (isServerInfo) {
-                String cleanLine = formatPattern.matcher(line).replaceAll("").trim();
+                // Extract Server Time
+                if (cleanLine.startsWith("Time: ")) {
+                    time = cleanLine.substring(6); // Extract after "Time: "
+                }
 
                 // Parsing mithril powder
                 if (cleanLine.contains("Mithril Powder: ")) {
@@ -126,12 +143,11 @@ public class TablistParser {
                 }
 
                 // Parsing secrets percentage
-                // line is "Secrets Found: 0%"
                 if (cleanLine.contains("Secrets Found: ")) {
                     secretPercentage = Integer.parseInt(cleanLine.split(" ")[2].replace("%", ""));
                 }
 
-                // Parsing commisions
+                // Parsing commissions
                 if (foundCommisions) {
                     if (cleanLine.isEmpty()) {
                         foundCommisions = false;
@@ -140,15 +156,37 @@ public class TablistParser {
                     }
                 }
 
-                if(cleanLine.contains("Commissions")) {
+                if (cleanLine.contains("Commissions")) {
                     foundCommisions = true;
                 }
 
                 serverInfo.add(cleanLine);
 
+            // PLAYER STATS SECTION
+            } else if (isPlayerStats) {
+                // Extract Deaths count (in brackets)
+                if (cleanLine.startsWith("Deaths: ")) {
+                    String[] parts = cleanLine.split("\\(");
+                    if (parts.length > 1) {
+                        deaths = Integer.parseInt(parts[1].replace(")", "").trim());
+                    }
+                }
+                /*
+                // Extract Secrets Found
+                if (cleanLine.startsWith("Secrets Found: ")) {
+                    secretsFound = Integer.parseInt(cleanLine.substring(14).trim());
+                }*/
+                // Extract Crypts count
+                if (cleanLine.startsWith("Crypts: ")) {
+                    if (cleanLine.substring(8).trim().contains("/")) {
+                        crypts = 0;
+                    } else {
+                        crypts = Integer.parseInt(cleanLine.substring(8).trim());
+                    }
+                }
             // ACCOUNT INFO SECTION
             } else if (isAccountInfo) {
-                accountInfo.add(formatPattern.matcher(line).replaceAll("").trim());
+                accountInfo.add(cleanLine);
             }
         }
 

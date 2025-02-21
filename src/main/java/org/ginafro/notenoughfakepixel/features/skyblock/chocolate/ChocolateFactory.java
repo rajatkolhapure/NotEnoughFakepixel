@@ -1,4 +1,4 @@
-package org.ginafro.notenoughfakepixel.features.skyblock.qol;
+package org.ginafro.notenoughfakepixel.features.skyblock.chocolate;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiChest;
@@ -29,8 +29,6 @@ import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.ginafro.notenoughfakepixel.Configuration.*;
-
 public class ChocolateFactory {
 
     private Pattern upgradeCostPattern = Pattern.compile("(\u00A7.)(?<cost>[0-9,]+) Chocolate");
@@ -52,14 +50,15 @@ public class ChocolateFactory {
     @SubscribeEvent
     public void onRenderLast(RenderWorldLastEvent event) {
         if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
-        if (!Configuration.qolChocolateEggWaypoints) return;
+        if (!Configuration.chocolateChocolateEggWaypoints) return;
         checkForEggs();
         drawWaypoints(event.partialTicks);
+        drawTags(event.partialTicks);
     }
 
     @SubscribeEvent()
     public void onGuiOpen(GuiScreenEvent.BackgroundDrawnEvent event) {
-        if (!Configuration.qolChocolateShowBestUpgrade || !(event.gui instanceof GuiChest)) return;
+        if (!Configuration.chocolateChocolateShowBestUpgrade || !(event.gui instanceof GuiChest)) return;
 
         TreeMap<Float, Slot> upgradeCosts = new TreeMap<>();
         GuiChest chest = (GuiChest) event.gui;
@@ -92,7 +91,7 @@ public class ChocolateFactory {
 
     @SubscribeEvent
     public void onChat(@NotNull ClientChatReceivedEvent e){
-        if (!Configuration.qolChocolateEggWaypoints) return;
+        if (!Configuration.chocolateChocolateEggWaypoints) return;
         if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
         if (ChatUtils.middleBar.matcher(e.message.getFormattedText()).matches()) return;
         Matcher matcher = Pattern.compile("HOPPITY'S HUNT You found").matcher(e.message.getUnformattedText());
@@ -119,7 +118,7 @@ public class ChocolateFactory {
 
     @SubscribeEvent()
     public void onWorldUnload(WorldEvent.Unload event) {
-        if (Configuration.qolChocolateEggWaypoints) waypoints.clear();
+        if (Configuration.chocolateChocolateEggWaypoints) waypoints.clear();
     }
 
     private void checkForEggs() {
@@ -154,7 +153,7 @@ public class ChocolateFactory {
         double viewerZ = viewer.lastTickPosZ + (viewer.posZ - viewer.lastTickPosZ) * partialTicks;
         for (Waypoint waypoint : waypoints) {
             if (waypoint == null || waypoint.isHidden()) continue;
-            Color colorDrawWaypoint = qolChocolateEggWaypointsColor.toJavaColor();
+            Color colorDrawWaypoint = Configuration.chocolateChocolateEggWaypointsColor.toJavaColor();
             colorDrawWaypoint = new Color(colorDrawWaypoint.getRed(), colorDrawWaypoint.getGreen(), colorDrawWaypoint.getBlue(), 150);
             AxisAlignedBB bb = new AxisAlignedBB(
                     waypoint.getCoordinates()[0] - viewerX,
@@ -166,6 +165,16 @@ public class ChocolateFactory {
             ).expand(0.01f, 0.01f, 0.01f);
             GlStateManager.disableCull();
             RenderUtils.drawFilledBoundingBox(bb, 1f, colorDrawWaypoint);
+            GlStateManager.enableCull();
+            GlStateManager.enableTexture2D();
+        }
+    }
+
+    private void drawTags(float partialTicks) {
+        for (Waypoint waypoint : waypoints) {
+            if (waypoint == null || waypoint.isHidden()) continue;
+            GlStateManager.disableCull();
+            RenderUtils.drawTag("Egg",new double[]{waypoint.getCoordinates()[0],waypoint.getCoordinates()[1],waypoint.getCoordinates()[2]},Color.WHITE, partialTicks);
             GlStateManager.enableCull();
             GlStateManager.enableTexture2D();
         }

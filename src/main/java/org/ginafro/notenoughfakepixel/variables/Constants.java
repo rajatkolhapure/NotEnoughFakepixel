@@ -2,7 +2,7 @@ package org.ginafro.notenoughfakepixel.variables;
 
 public class Constants {
 
-    public static final String PREFIX = "\u00a7f[\u00a79NEF\u00a7f] \u00a7c";
+    public static final String PREFIX = "\u00a7f[\u00a79NEF DEBUG\u00a7f] \u00a7c";
 
     public static final String[] EVENT_PACKAGES = {
         "dungeons",
@@ -43,7 +43,7 @@ public class Constants {
 
     public static final String[] BLAZE_SLAYER_MINIBOSSES = {
         "Flare Demon",
-        "Kindleheart demon",
+        "Kindleheart Demon",
         "Burningsoul Demon"
     };
 

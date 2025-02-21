@@ -20,6 +20,8 @@
     "bugfixes.NetHandlerPlayClientMixin",
     "Accesors.AccessorGuiPlayerTabOverlay",
     "Accesors.BlockAccessor",
-    "Accesors.SessionAccessor"
+    "Accesors.SessionAccessor",
+    "RenderItemMixin",
+    "MixinRenderEntityItem"
   ]
 }

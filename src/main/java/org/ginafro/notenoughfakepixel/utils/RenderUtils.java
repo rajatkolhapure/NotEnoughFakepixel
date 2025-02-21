@@ -1,6 +1,7 @@
 package org.ginafro.notenoughfakepixel.utils;
 
 import cc.polyfrost.oneconfig.libs.universal.UResolution;
+import net.minecraft.block.BlockLever;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.FontRenderer;
@@ -14,6 +15,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.inventory.Slot;
 import net.minecraft.util.*;
+import org.ginafro.notenoughfakepixel.Configuration;
 import org.ginafro.notenoughfakepixel.variables.MobDisplayTypes;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
@@ -202,19 +204,23 @@ public class RenderUtils {
     }
 
     public static void renderEntityHitbox(Entity entity, float partialTicks, Color color, MobDisplayTypes type) {
-        renderEntityHitbox(entity, partialTicks, color, type, false);
-    }
-
-    public static void renderEntityHitbox(Entity entity, float partialTicks, Color color, MobDisplayTypes type, boolean isBoss) {
+        if (type == MobDisplayTypes.ITEMBIG) {
+            renderItemBigHitbox(entity, partialTicks, color);
+            return;
+        }
 
         Vector3f loc = new Vector3f(
                 (float) entity.posX - 0.5f,
                 (float) entity.posY - 0.5f,
                 (float) entity.posZ - 0.5f);
 
-        if (type == MobDisplayTypes.BAT || isBoss){
+        if (type == MobDisplayTypes.BAT ||
+                type == MobDisplayTypes.ENDERMAN_BOSS ||
+                type == MobDisplayTypes.WOLF_BOSS ||
+                type == MobDisplayTypes.SPIDER_BOSS) {
             GlStateManager.disableDepth();
         }
+
         GlStateManager.pushMatrix();
         GlStateManager.disableTexture2D();
         GlStateManager.disableCull();
@@ -228,130 +234,91 @@ public class RenderUtils {
 
         double x = loc.x - playerX + 0.5;
         double y = loc.y - playerY - 0.5;
-        if (type == MobDisplayTypes.BAT){
+        if (type == MobDisplayTypes.BAT) {
             y = (loc.y - playerY) + 1;
-        } else if (type == MobDisplayTypes.FEL){
+        } else if (type == MobDisplayTypes.FEL) {
             y = loc.y - playerY + 2.3;
         }
         double z = loc.z - playerZ + 0.5;
 
-        // IF the mob is a bat make the hitbox smaller
-        double y1, y2, x1, x2, z1, z2;
+        double y1 = y + type.getY1();
+        double y2 = y + type.getY2();
+        double x1 = x + type.getX1();
+        double x2 = x + type.getX2();
+        double z1 = z + type.getZ1();
+        double z2 = z + type.getZ2();
 
-        if (type == MobDisplayTypes.BAT) {
-            y1 = y - 0.3;
-            y2 = y + 0.3;
-            x1 = x - 0.3;
-            x2 = x + 0.3;
-            z1 = z - 0.3;
-            z2 = z + 0.3;
-        } else if (type == MobDisplayTypes.FEL) {
-            y1 = y - 0.5;
-            y2 = y + 3.0;
-            x1 = x - 0.5;
-            x2 = x + 0.5;
-            z1 = z - 0.5;
-            z2 = z + 0.5;
-        } else if (type == MobDisplayTypes.WOLF) {
-            y1 = y - 0.0;
-            y2 = y + 1.0;
-            x1 = x - 0.5;
-            x2 = x + 0.5;
-            z1 = z - 0.5;
-            z2 = z + 0.5;
-        } else if (type == MobDisplayTypes.SPIDER && Boolean.TRUE == isBoss) {
-            y1 = y - 1.0;
-            y2 = y + 0.0;
-            x1 = x - 0.75;
-            x2 = x + 0.75;
-            z1 = z - 0.75;
-            z2 = z + 0.75;
-        } else if (type == MobDisplayTypes.SPIDER) {
-            y1 = y - 0.0;
-            y2 = y + 1.0;
-            x1 = x - 0.75;
-            x2 = x + 0.75;
-            z1 = z - 0.75;
-            z2 = z + 0.75;
-        } else if (type == MobDisplayTypes.ENDERMAN && Boolean.TRUE == isBoss){
-            y1 = y - 2.75;
-            y2 = y + 0.0;
-            x1 = x - 0.5;
-            x2 = x + 0.5;
-            z1 = z - 0.5;
-            z2 = z + 0.5;
-        } else if (type == MobDisplayTypes.ENDERMAN){
-            y1 = y - 2.0;
-            y2 = y + 1.0;
-            x1 = x - 0.5;
-            x2 = x + 0.5;
-            z1 = z - 0.5;
-            z2 = z + 0.5;
-        } else if (type == MobDisplayTypes.GAIA) {
-            y1 = y + 1.0;
-            y2 = y + 4.0;
-            x1 = x - 0.75;
-            x2 = x + 0.75;
-            z1 = z - 0.75;
-            z2 = z + 0.75;
-        } else if (type == MobDisplayTypes.SIAMESE) {
-            y1 = y + 0.0;
-            y2 = y + 0.7;
-            x1 = x - 0.3;
-            x2 = x + 0.3;
-            z1 = z - 0.3;
-            z2 = z + 0.3;
-        }  else if (type == MobDisplayTypes.BLAZE) {
-            y1 = y - 1.0;
-            y2 = y + 0.8;
-            x1 = x - 0.3;
-            x2 = x + 0.3;
-            z1 = z - 0.3;
-            z2 = z + 0.3;
-        } else if (type == MobDisplayTypes.BLAZINGSOUL) {
-            y1 = y + 0.2;
-            y2 = y + 0.785;
-            x1 = x - 0.3;
-            x2 = x + 0.3;
-            z1 = z - 0.3;
-            z2 = z + 0.3;
-        } else if (type == MobDisplayTypes.ITEM) {
-            y1 = y + 1.0;
-            y2 = y + 1.25;
-            x1 = x - 0.125;
-            x2 = x + 0.125;
-            z1 = z - 0.125;
-            z2 = z + 0.125;
-        } else if (type == MobDisplayTypes.ITEMBIG) {
-            y1 = y + 1.0;
-            y2 = y + 2;
-            x1 = x - 0.5;
-            x2 = x + 0.5;
-            z1 = z - 0.5;
-            z2 = z + 0.5;
-        } else if (type == MobDisplayTypes.WITHERESSENCE) {
-            y1 = y + 2.5;
-            y2 = y + 3.0;
-            x1 = x - 0.3;
-            x2 = x + 0.3;
-            z1 = z - 0.3;
-            z2 = z + 0.3;
-        } else {
-            y1 = y - 1;
-            y2 = y + 1;
-            x1 = x - 0.5;
-            x2 = x + 0.5;
-            z1 = z - 0.5;
-            z2 = z + 0.5;
-        }
+        drawHitbox(x1, x2, y1, y2, z1, z2, color, type);
 
+        GlStateManager.enableDepth();
+        GlStateManager.enableLighting();
+        GlStateManager.enableCull();
+        GlStateManager.enableTexture2D();
+        GlStateManager.popMatrix();
+    }
+
+    private static void renderItemBigHitbox(Entity entity, float partialTicks, Color color) {
+        AxisAlignedBB bb = entity.getEntityBoundingBox();
+        if (bb == null) return;
+
+        double scale = Configuration.dungeonsScaleItemDrop;
+
+        Entity player = mc.getRenderViewEntity();
+        double playerX = player.lastTickPosX + (player.posX - player.lastTickPosX) * partialTicks;
+        double playerY = player.lastTickPosY + (player.posY - player.lastTickPosY) * partialTicks;
+        double playerZ = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * partialTicks;
+
+        // Compute original box coordinates relative to player
+        double x1 = bb.minX - playerX;
+        double x2 = bb.maxX - playerX;
+        double y1 = bb.minY - playerY;
+        double y2 = bb.maxY - playerY;
+        double z1 = bb.minZ - playerZ;
+        double z2 = bb.maxZ - playerZ;
+
+        // Compute the center of the bounding box
+        double centerX = (x1 + x2) / 2;
+        double centerY = (y1 + y2) / 2;
+        double centerZ = (z1 + z2) / 2;
+
+        // Scale bounding box relative to center
+        x1 = centerX + (x1 - centerX) * scale;
+        x2 = centerX + (x2 - centerX) * scale;
+        y1 = centerY + (y1 - centerY) * scale;
+        y2 = centerY + (y2 - centerY) * scale;
+        z1 = centerZ + (z1 - centerZ) * scale;
+        z2 = centerZ + (z2 - centerZ) * scale;
+
+        double yOffset = (Configuration.dungeonsScaleItemDrop - 1f) * (entity.height/2f);
+        y1 += yOffset;
+        y2 += yOffset;
+
+        GlStateManager.pushMatrix();
+        GlStateManager.disableTexture2D();
+        GlStateManager.disableCull();
+        GlStateManager.disableLighting();
+        GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
+
+        drawHitbox(x1, x2, y1, y2, z1, z2, color, MobDisplayTypes.ITEMBIG);
+
+        GlStateManager.enableDepth();
+        GlStateManager.enableLighting();
+        GlStateManager.enableCull();
+        GlStateManager.enableTexture2D();
+        GlStateManager.popMatrix();
+    }
+
+
+
+    private static void drawHitbox(double x1, double x2, double y1, double y2, double z1, double z2, Color color, MobDisplayTypes type) {
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldRenderer = tessellator.getWorldRenderer();
         worldRenderer.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
-        GL11.glLineWidth(3.0f);
 
         if (type == MobDisplayTypes.GAIA) {
             GL11.glLineWidth(5.0f);
+        } else {
+            GL11.glLineWidth(3.0f);
         }
 
         int red = color.getRed();
@@ -378,12 +345,8 @@ public class RenderUtils {
         }
 
         tessellator.draw();
-        GlStateManager.enableDepth();
-        GlStateManager.enableLighting();
-        GlStateManager.enableCull();
-        GlStateManager.enableTexture2D();
-        GlStateManager.popMatrix();
     }
+
 
     public static void drawTag(String str, double[] pos, Color color, float partialTicks) {
         FontRenderer fontrenderer = Minecraft.getMinecraft().fontRendererObj;
@@ -505,17 +468,18 @@ public class RenderUtils {
         }
     }
     public static void draw3DLine(Vec3 pos1, Vec3 pos2, Color color, int lineWidth, boolean depth, float partialTicks) {
-        draw3DLine(pos1, pos2, color, lineWidth, depth, partialTicks, false);
+        draw3DLine(pos1, pos2, color, lineWidth, depth, partialTicks, false, false, null);
     }
 
-    public static void draw3DLine(Vec3 pos1, Vec3 pos2, Color color, int lineWidth, boolean depth, float partialTicks, boolean fromHead) {
+    public static void draw3DLine(Vec3 pos1, Vec3 pos2, Color color, int lineWidth, boolean depth, float partialTicks, boolean fromHead, boolean isLever, BlockLever.EnumOrientation orientation) {
         Entity render = Minecraft.getMinecraft().getRenderViewEntity();
         WorldRenderer worldRenderer = Tessellator.getInstance().getWorldRenderer();
 
         double coordX = render.lastTickPosX + (render.posX - render.lastTickPosX) * partialTicks;
         double coordY = render.lastTickPosY + (render.posY - render.lastTickPosY) * partialTicks;
         double coordZ = render.lastTickPosZ + (render.posZ - render.lastTickPosZ) * partialTicks;
-        Vec3 pos2final = pos2;
+
+
         GlStateManager.pushMatrix();
         GlStateManager.translate(-coordX, -coordY, -coordZ);
         GlStateManager.disableTexture2D();
@@ -524,22 +488,64 @@ public class RenderUtils {
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
         GL11.glLineWidth(lineWidth);
         if (!depth) {
-            GL11.glDisable(GL11.GL_DEPTH_TEST);
+            GlStateManager.disableDepth();
             GlStateManager.depthMask(false);
         }
-
+        Vec3 pos1final = pos1;
+        Vec3 pos2final = pos2;
+        if (isLever && orientation != null) {
+            double midX = 0,midY=0,midZ=0;
+            switch (orientation) {
+                case UP_X:
+                    midX = pos1final.xCoord + 0.5;
+                    midY = pos1final.yCoord + 0.1;
+                    midZ = pos1final.zCoord + 0.5;
+                    break;
+                case UP_Z:
+                    midX = pos1final.xCoord + 0.5;
+                    midY = pos1final.yCoord + 0.1;
+                    midZ = pos1final.zCoord + 0.5;
+                    break;
+                case NORTH:
+                    midX = pos1final.xCoord + (0.25 + 0.75) / 2;
+                    midY = pos1final.yCoord + (0.1875 + 0.8125) / 2;
+                    midZ = pos1final.zCoord + (0.75 + 1) / 2;
+                    break;
+                case SOUTH:
+                    midX = pos1final.xCoord + (0.25 + 0.75) / 2;
+                    midY = pos1final.yCoord + (0.1875 + 0.8125) / 2;
+                    midZ = pos1final.zCoord + (0 + 0.25) / 2;
+                    break;
+                case WEST:
+                    midX = pos1final.xCoord + (0.75 + 1) / 2;
+                    midY = pos1final.yCoord + (0.1875 + 0.8125) / 2;
+                    midZ = pos1final.zCoord + (0.25 + 0.75) / 2;
+                    break;
+                case EAST:
+                    midX = pos1final.xCoord + (0 + 0.25) / 2;
+                    midY = pos1final.yCoord + (0.1875 + 0.8125) / 2;
+                    midZ = pos1final.zCoord + (0.25 + 0.75) / 2;
+                    break;
+                default:
+                    midX = pos1final.xCoord + (0.25 + 0.75) / 2;
+                    midY = pos1final.yCoord + (0.1875 + 0.8125) / 2;
+                    midZ = pos1final.zCoord - (1.25 + 1) / 2;
+                    break;
+            }
+            pos1final = new Vec3(midX,midY,midZ);
+        }
         if (fromHead) {
             pos2final = new Vec3(0, 0, 1).rotatePitch(-(float) Math.toRadians(Minecraft.getMinecraft().thePlayer.rotationPitch)).rotateYaw(-(float) Math.toRadians(Minecraft.getMinecraft().thePlayer.rotationYaw));
         }
         GlStateManager.color(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f);
         worldRenderer.begin(GL11.GL_LINE_STRIP, DefaultVertexFormats.POSITION);
-        worldRenderer.pos(pos1.xCoord, pos1.yCoord, pos1.zCoord).endVertex();
+        worldRenderer.pos(pos1final.xCoord, pos1final.yCoord, pos1final.zCoord).endVertex();
         worldRenderer.pos(pos2final.xCoord, pos2final.yCoord, pos2final.zCoord).endVertex();
         Tessellator.getInstance().draw();
 
         GlStateManager.translate(coordX, coordY, coordZ);
         if (!depth) {
-            GL11.glEnable(GL11.GL_DEPTH_TEST);
+            GlStateManager.enableDepth();
             GlStateManager.depthMask(true);
         }
         GlStateManager.disableBlend();
@@ -583,6 +589,50 @@ public class RenderUtils {
 
         GlStateManager.enableLighting();
         if (disableDepth) GlStateManager.enableDepth();
+        GlStateManager.enableCull();
+    }
+
+    public static void drawLeverBoundingBox(BlockPos pos, EnumFacing facing, Color color, float partialTicks) {
+        // Get the player's camera position
+        Entity viewer = Minecraft.getMinecraft().getRenderViewEntity();
+        double viewerX = viewer.lastTickPosX + (viewer.posX - viewer.lastTickPosX) * partialTicks;
+        double viewerY = viewer.lastTickPosY + (viewer.posY - viewer.lastTickPosY) * partialTicks;
+        double viewerZ = viewer.lastTickPosZ + (viewer.posZ - viewer.lastTickPosZ) * partialTicks;
+
+        // Convert world position to render position
+        double x = pos.getX() - viewerX;
+        double y = pos.getY() - viewerY;
+        double z = pos.getZ() - viewerZ;
+
+        // Define bounding box relative to lever position
+        AxisAlignedBB boundingBox;
+        switch (facing) {
+            case NORTH:
+                boundingBox = new AxisAlignedBB(x + 0.25, y + 0.1875, z + 0.75, x + 0.75, y + 0.8125, z+1);
+                break;
+            case SOUTH:
+                boundingBox = new AxisAlignedBB(x + 0.25, y + 0.1875, z, x + 0.75, y + 0.8125, z + 0.25);
+                break;
+            case WEST:
+                boundingBox = new AxisAlignedBB(x + 0.75, y + 0.1875, z + 0.25, x + 1, y + 0.8125, z + 0.75);
+                break;
+            case EAST:
+                boundingBox = new AxisAlignedBB(x, y + 0.1875, z + 0.25, x + 0.25, y + 0.8125, z + 0.75);
+                break;
+            default:
+                boundingBox = new AxisAlignedBB(x + 0.25, y + 0.1875, z - 1.25, x + 0.75, y + 0.8125, z-1);
+                break;
+        }
+
+        // Disable culling and lighting for proper rendering
+        GlStateManager.disableCull();
+        GlStateManager.disableLighting();
+
+        // Render bounding box
+        RenderUtils.drawFilledBoundingBox(boundingBox, 1f, color);
+
+        // Restore rendering settings
+        GlStateManager.enableLighting();
         GlStateManager.enableCull();
     }
 
