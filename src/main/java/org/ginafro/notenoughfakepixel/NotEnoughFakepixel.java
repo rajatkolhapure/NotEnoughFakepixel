@@ -130,6 +130,7 @@ public class NotEnoughFakepixel {
         MinecraftForge.EVENT_BUS.register(new SoundRemover());
         MinecraftForge.EVENT_BUS.register(new ScrollableTooltips());
         //MinecraftForge.EVENT_BUS.register(new SlotLocking());
+        MinecraftForge.EVENT_BUS.register(new FairySouls());
         MinecraftForge.EVENT_BUS.register(new StorageOverlay.StorageEvent());
         MinecraftForge.EVENT_BUS.register(new AutoOpenMaddox());
         MinecraftForge.EVENT_BUS.register(new MidasStaff());
