@@ -23,6 +23,7 @@ public class Configuration extends Config {
     private transient static final String SLAYER = "Slayer";
     private transient static final String DIANA = "Diana";
     private transient static final String CRIMSON = "Crimson";
+    private transient static final String END = "The End";
     private transient static final String EXPERIMENTATION = "Experimentation Table";
 
     public Configuration(){
@@ -82,6 +83,10 @@ public class Configuration extends Config {
 
     @Header(text = "General" , category = QUALITY_OF_LIFE, size = 2)
     public static boolean _qol = true;
+    @Switch(name = "Fairy Soul Waypoints", description = "Highlight all fairy souls", category = QUALITY_OF_LIFE)
+    public static boolean fairysouls = true;
+    @Color(name = "Fairy Soul Waypoint Color", category = QUALITY_OF_LIFE)
+    public static OneColor fairySoulColor = new OneColor(42,214,32);
     @Switch(name = "Custom Chat Filters" , description = "Add your own chat filters, by - /addfilter", category = QUALITY_OF_LIFE)
     public static boolean qolCustomFilters = true;
 //    @Switch(name = "Chest Search Bar" , description = "Adds a Search bar in chests", category = QUALITY_OF_LIFE)
@@ -333,6 +338,18 @@ public class Configuration extends Config {
     @Switch(name = "Prevent missclicks" , category = EXPERIMENTATION, description = "IMPORTANT: this feature doesn't work properly if your connection isn't stable or server has lag. Prevents clicking wrong answers when doing experiments.")
     public static boolean experimentationPreventMissclicks = true;
 
+
+    // End
+    @Header(text = "Zealots", category = END)
+    public static boolean _zealot = true;
+    @Switch(name = "Zealot Color Changer", category = END)
+    public static boolean zealotChanger = true;
+    @Color(name = "Zealot Color", category = END, allowAlpha = false)
+    public static OneColor zealotColor = new OneColor(java.awt.Color.GREEN);
+    @Switch(name = "Special Zealot Color Changer", category = END)
+    public static boolean sZealotChanger = true;
+    @Color(name = "Special Zealot Color", category = END, allowAlpha = false)
+    public static OneColor sZealotColor = new OneColor(java.awt.Color.GREEN);
 
     // Mining
 

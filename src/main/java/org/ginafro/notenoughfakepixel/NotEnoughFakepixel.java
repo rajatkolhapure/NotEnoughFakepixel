@@ -2,6 +2,7 @@ package org.ginafro.notenoughfakepixel;
 
 import cc.polyfrost.oneconfig.events.EventManager;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiChest;
@@ -24,6 +25,7 @@ import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.devices.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.terminals.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.enchanting.EnchantingSolvers;
+import org.ginafro.notenoughfakepixel.features.skyblock.end.ZealotColorChanger;
 import org.ginafro.notenoughfakepixel.features.skyblock.fishing.GreatCatchNotifier;
 import org.ginafro.notenoughfakepixel.features.skyblock.mining.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.overlays.StorageOverlay;
@@ -35,10 +37,7 @@ import org.ginafro.notenoughfakepixel.events.Handlers.PacketHandler;
 import org.ginafro.notenoughfakepixel.features.skyblock.slayers.VoidgloomSeraph;
 import org.ginafro.notenoughfakepixel.utils.*;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +45,7 @@ import java.util.List;
 public class NotEnoughFakepixel {
 
     public static Configuration config;
-    public File file;
+    public static File nefFolder = new File(Minecraft.getMinecraft().mcDataDir, "NotEnoughFakepixel");
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         config = new Configuration();
@@ -105,6 +104,7 @@ public class NotEnoughFakepixel {
         MinecraftForge.EVENT_BUS.register(new SoundRemover());
         MinecraftForge.EVENT_BUS.register(new ScrollableTooltips());
         //MinecraftForge.EVENT_BUS.register(new SlotLocking());
+        MinecraftForge.EVENT_BUS.register(new FairySouls());
         MinecraftForge.EVENT_BUS.register(new StorageOverlay.StorageEvent());
         MinecraftForge.EVENT_BUS.register(new AutoOpenMaddox());
         MinecraftForge.EVENT_BUS.register(new MidasStaff());
