@@ -354,6 +354,9 @@ public class Configuration extends Config {
     @Switch(name = "Display Blaze Pillar Title" , category = SLAYER , subcategory = "Inferno Demonlord", description = "Displays a text on the screen when a pillar is nearby.")
     public static boolean slayerFirePillarDisplay = true;
 
+    @Switch(name = "Blaze Attunements display" , category = SLAYER , subcategory = "Inferno Demonlord")
+    public static boolean slayerBlazeAttunements = true;
+
     // Enchanting
     @Header(text = "Experimentation Table" , category = EXPERIMENTATION , size = 2)
     public static boolean _experimentation = true;

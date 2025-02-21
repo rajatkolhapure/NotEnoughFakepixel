@@ -153,6 +153,7 @@ public class NotEnoughFakepixel {
         MinecraftForge.EVENT_BUS.register(new VoidgloomSeraph());
         MinecraftForge.EVENT_BUS.register(new FirePillarDisplay());
         MinecraftForge.EVENT_BUS.register(new MinibossAlert());
+        MinecraftForge.EVENT_BUS.register(new BlazeAttunements());
 
         // Parsers
         MinecraftForge.EVENT_BUS.register(new TablistParser());

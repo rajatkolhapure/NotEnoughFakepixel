@@ -713,13 +713,86 @@ public class RenderUtils {
         GlStateManager.enableTexture2D();
         GlStateManager.disableBlend();
         GlStateManager.enableCull();
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F); // Reset to white
-        GlStateManager.popMatrix(); // Restore the saved state
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.popMatrix();
     }
 
     public static int colorToInt(Color color) {
         return (color.getRed() << 16) | (color.getGreen() << 8) | color.getBlue();
     }
 
+    public static void drawFilledBoundingBoxEntity(AxisAlignedBB aabb, float alpha, Color color, float partialTicks) {
+        // Used for BlazeAttunements
+        Entity render = Minecraft.getMinecraft().getRenderViewEntity();
 
+        double coordX = render.lastTickPosX + (render.posX - render.lastTickPosX) * partialTicks;
+        double coordY = render.lastTickPosY + (render.posY - render.lastTickPosY) * partialTicks;
+        double coordZ = render.lastTickPosZ + (render.posZ - render.lastTickPosZ) * partialTicks;
+
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(-coordX, -coordY, -coordZ);
+
+        GlStateManager.disableTexture2D();
+        GlStateManager.enableBlend();
+        GlStateManager.disableLighting();
+        GlStateManager.disableAlpha();
+        GlStateManager.disableCull();
+        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+
+        GlStateManager.color(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, (color.getAlpha() / 255f) * alpha);
+
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+
+        // Draw the six faces of the box
+        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+        worldrenderer.pos(aabb.minX, aabb.minY, aabb.minZ).endVertex();
+        worldrenderer.pos(aabb.maxX, aabb.minY, aabb.minZ).endVertex();
+        worldrenderer.pos(aabb.maxX, aabb.minY, aabb.maxZ).endVertex();
+        worldrenderer.pos(aabb.minX, aabb.minY, aabb.maxZ).endVertex();
+        tessellator.draw();
+
+        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+        worldrenderer.pos(aabb.minX, aabb.maxY, aabb.minZ).endVertex();
+        worldrenderer.pos(aabb.maxX, aabb.maxY, aabb.minZ).endVertex();
+        worldrenderer.pos(aabb.maxX, aabb.maxY, aabb.maxZ).endVertex();
+        worldrenderer.pos(aabb.minX, aabb.maxY, aabb.maxZ).endVertex();
+        tessellator.draw();
+
+        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+        worldrenderer.pos(aabb.minX, aabb.minY, aabb.minZ).endVertex();
+        worldrenderer.pos(aabb.maxX, aabb.minY, aabb.minZ).endVertex();
+        worldrenderer.pos(aabb.maxX, aabb.maxY, aabb.minZ).endVertex();
+        worldrenderer.pos(aabb.minX, aabb.maxY, aabb.minZ).endVertex();
+        tessellator.draw();
+
+        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+        worldrenderer.pos(aabb.minX, aabb.minY, aabb.maxZ).endVertex();
+        worldrenderer.pos(aabb.maxX, aabb.minY, aabb.maxZ).endVertex();
+        worldrenderer.pos(aabb.maxX, aabb.maxY, aabb.maxZ).endVertex();
+        worldrenderer.pos(aabb.minX, aabb.maxY, aabb.maxZ).endVertex();
+        tessellator.draw();
+
+        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+        worldrenderer.pos(aabb.minX, aabb.minY, aabb.minZ).endVertex();
+        worldrenderer.pos(aabb.minX, aabb.minY, aabb.maxZ).endVertex();
+        worldrenderer.pos(aabb.minX, aabb.maxY, aabb.maxZ).endVertex();
+        worldrenderer.pos(aabb.minX, aabb.maxY, aabb.minZ).endVertex();
+        tessellator.draw();
+
+        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+        worldrenderer.pos(aabb.maxX, aabb.minY, aabb.minZ).endVertex();
+        worldrenderer.pos(aabb.maxX, aabb.minY, aabb.maxZ).endVertex();
+        worldrenderer.pos(aabb.maxX, aabb.maxY, aabb.maxZ).endVertex();
+        worldrenderer.pos(aabb.maxX, aabb.maxY, aabb.minZ).endVertex();
+        tessellator.draw();
+
+        // Restore OpenGL state
+        GlStateManager.enableTexture2D();
+        GlStateManager.enableAlpha();
+        GlStateManager.disableBlend();
+        GlStateManager.enableCull();
+        GlStateManager.enableLighting();
+        GlStateManager.popMatrix();
+    }
 }
