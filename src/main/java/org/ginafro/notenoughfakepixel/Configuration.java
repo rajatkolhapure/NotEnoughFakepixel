@@ -94,7 +94,7 @@ public class Configuration extends Config {
     
     @Switch(name = "Fairy Soul Waypoints" , category = QUALITY_OF_LIFE, subcategory = "Fairy Souls")
     public static boolean fairySoulWaypoints = true;
-    @Color(name = "Fairy Soul Waypoints Color", category = DUNGEONS, subcategory = "Dungeon Map")
+    @Color(name = "Fairy Soul Waypoints Color",  category = QUALITY_OF_LIFE, subcategory = "Fairy Souls")
     public static OneColor fairySoulWaypointsColor = new OneColor(0,0,0);
 
     @Switch(name = "Fullbright" , category = QUALITY_OF_LIFE)
