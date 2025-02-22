@@ -47,10 +47,16 @@ import java.io.File;
 @Mod(modid = "notenoughfakepixel", useMetadata=true)
 public class NotEnoughFakepixel {
 
+    public static final File nefFolder = new File(Minecraft.getMinecraft().mcDataDir, "NotEnoughFakepixel");
+
     public static Configuration config;
     public File file;
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
+
+        if (!nefFolder.exists()) {
+            nefFolder.mkdirs();
+        }
         config = new Configuration();
         //ClientCommandHandler.instance.registerCommand(new TestCommand());
         //ClientCommandHandler.instance.registerCommand(new SlayerInfoCommand());
