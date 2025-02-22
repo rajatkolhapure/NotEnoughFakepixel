@@ -164,6 +164,8 @@ public class Configuration extends Config {
     @Switch(name = "Hide Flaming Fists" , category = "Quality of Life", subcategory = "Sounds & Animations")
     public static boolean qolHideFlamingFists = false;
 
+    @Switch(name = "Hide dead mobs" , category = "Quality of Life", subcategory = "Sounds & Animations")
+    public static boolean qolHideDyingMobs = true;
 
     @Switch(name = "Damage Commas" , category = QUALITY_OF_LIFE, subcategory = "Damage Formatter")
     public static boolean qolDmgCommas = true;

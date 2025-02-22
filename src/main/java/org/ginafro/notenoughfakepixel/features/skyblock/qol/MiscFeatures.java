@@ -3,9 +3,12 @@ package org.ginafro.notenoughfakepixel.features.skyblock.qol;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import java.util.regex.Pattern;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.client.event.RenderLivingEvent;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.ginafro.notenoughfakepixel.Configuration;
@@ -42,6 +45,33 @@ public class MiscFeatures {
             }
 
             if (Configuration.qolBlockPlacingItems && item.getItem() == Item.getItemFromBlock(Blocks.hopper) && item.getDisplayName().contains("Weird Tuba")) {
+                event.setCanceled(true);
+            }
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public void onRenderLivingSpecialsPre(RenderLivingEvent.Specials.Pre<EntityLivingBase> event) {
+        if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
+        if (Configuration.qolHideDyingMobs) {
+            EntityLivingBase entity = event.entity;
+            String name = entity.getDisplayName().getUnformattedText();
+
+            Pattern pattern1 = Pattern.compile("^§.\\[§.Lv\\d+§.\\] §.+ (?:§.)+0§f/.+§c❤$");
+            Pattern pattern2 = Pattern.compile("^.+ (?:§.)+0§c❤$");
+
+            if (pattern1.matcher(name).matches() || pattern2.matcher(name).matches()) {
+                event.setCanceled(true);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onRenderLivingPre(RenderLivingEvent.Pre<EntityLivingBase> event) {
+        if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
+        if (Configuration.qolHideDyingMobs) {
+            EntityLivingBase entity = event.entity;
+            if (entity.getHealth() <= 0 || entity.isDead) {
                 event.setCanceled(true);
             }
         }
