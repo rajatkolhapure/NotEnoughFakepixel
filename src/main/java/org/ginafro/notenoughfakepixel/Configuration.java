@@ -205,6 +205,11 @@ public class Configuration extends Config {
     @Switch(name = "Announces Leaped to Player in party chat!", category = DUNGEONS, subcategory = "QOL")
     public static boolean dungeonsLeapAnnounce = true;
 
+    @Switch(name = "Custom Terminal GUI", category = DUNGEONS, subcategory = "QOL")
+    public static boolean dungeonsCustomGui = true;
+    @Slider(name = "Custom Terminal Scale", category = DUNGEONS, subcategory = "QOL", min = 1.0f, max = 5.0f)
+    public static float terminalsScale = 1.0f;
+
     @Switch(name = "Announces when Blood room is done spawning", category = DUNGEONS, subcategory = "QOL")
     public static boolean dungeonsBloodReady = true;
 
