@@ -220,7 +220,7 @@ public class MazeSolver {
         if (!DungeonManager.checkEssentialsF7()) return;
 
         int button = Mouse.getEventButton();
-        if (button == -1 || !Mouse.getEventButtonState()) return;
+        if (button != 0 || !Mouse.getEventButtonState()) return; // Only register left click
 
         Minecraft mc = Minecraft.getMinecraft();
         if (!(mc.currentScreen instanceof GuiChest)) return;
@@ -262,12 +262,18 @@ public class MazeSolver {
 
             Slot slot = container.inventorySlots.get(slotId);
             if (targetSlots.contains(slot)) {
-                int clickMode = (button == 0) ? 2 : 0;
                 mc.playerController.windowClick(
                         container.windowId,
                         slot.slotNumber,
-                        clickMode,
-                        button,
+                        0,
+                        0,
+                        mc.thePlayer
+                );
+                mc.playerController.windowClick(
+                        container.windowId,
+                        slot.slotNumber,
+                        0,
+                        0,
                         mc.thePlayer
                 );
                 event.setCanceled(true);
@@ -278,8 +284,15 @@ public class MazeSolver {
                 mc.playerController.windowClick(
                         container.windowId,
                         hoveredSlot.slotNumber,
-                        button == 2 ? 2 : 0,
-                        button,
+                        0,
+                        0,
+                        mc.thePlayer
+                );
+                mc.playerController.windowClick(
+                        container.windowId,
+                        hoveredSlot.slotNumber,
+                        0,
+                        0,
                         mc.thePlayer
                 );
             }

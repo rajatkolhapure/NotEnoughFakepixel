@@ -242,7 +242,7 @@ public class StartingWithSolver {
             ScaledResolution sr = new ScaledResolution(mc);
             float scale = Configuration.terminalsScale;
             int button = Mouse.getEventButton();
-            if (button == -1) return;
+            if (button != 0) return; // Only handle left clicks
 
             int mouseX = (Mouse.getEventX() * sr.getScaledWidth()) / mc.displayWidth;
             int mouseY = sr.getScaledHeight() - (Mouse.getEventY() * sr.getScaledHeight()) / mc.displayHeight - 1;
@@ -271,11 +271,18 @@ public class StartingWithSolver {
 
                 if (relX >= x && relX <= x + SLOT_SIZE &&
                         relY >= y && relY <= y + SLOT_SIZE) {
-                    int mode = (button == 0) ? 2 : 0;
+                    // Send two left clicks
                     mc.playerController.windowClick(
                             containerChest.windowId,
                             slot.slotNumber,
-                            mode,
+                            0, // 0 for left-click action
+                            button,
+                            mc.thePlayer
+                    );
+                    mc.playerController.windowClick(
+                            containerChest.windowId,
+                            slot.slotNumber,
+                            0, // 0 for left-click action
                             button,
                             mc.thePlayer
                     );

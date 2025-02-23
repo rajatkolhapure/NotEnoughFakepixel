@@ -217,8 +217,6 @@ public class ClickInOrderSolver {
 
         if (Configuration.dungeonsCustomGui) {
             ScaledResolution sr = new ScaledResolution(mc);
-            int button = Mouse.getEventButton();
-            if (button == -1 || !Mouse.getEventButtonState()) return;
             float scale = Configuration.terminalsScale;
             int guiWidth = (int) (REGION_COLS * SLOT_SIZE * scale);
             int guiHeight = (int) (REGION_ROWS * SLOT_SIZE * scale);
@@ -252,12 +250,18 @@ public class ClickInOrderSolver {
             }
             if (slot.getStack().stackSize == round) {
                 slot.getStack().getItem().setDamage(slot.getStack(), 14);
-                int mode = (button == 0) ? 2 : 0;
                 mc.playerController.windowClick(
                         ((ContainerChest) container).windowId,
                         slot.slotNumber,
-                        mode,
-                        button,
+                        0,
+                        0,
+                        mc.thePlayer
+                );
+                mc.playerController.windowClick(
+                        ((ContainerChest) container).windowId,
+                        slot.slotNumber,
+                        0,
+                        0,
                         mc.thePlayer
                 );
                 round++;
@@ -270,6 +274,12 @@ public class ClickInOrderSolver {
             if (hoveredSlot != null && hoveredSlot.getStack() != null) {
                 if (hoveredSlot.getStack().stackSize == round) {
                     hoveredSlot.getStack().getItem().setDamage(hoveredSlot.getStack(), 14);
+                    mc.playerController.windowClick(
+                            ((ContainerChest) container).windowId,
+                            hoveredSlot.slotNumber,
+                            0,
+                            0,
+                            mc.thePlayer);
                     mc.playerController.windowClick(
                             ((ContainerChest) container).windowId,
                             hoveredSlot.slotNumber,

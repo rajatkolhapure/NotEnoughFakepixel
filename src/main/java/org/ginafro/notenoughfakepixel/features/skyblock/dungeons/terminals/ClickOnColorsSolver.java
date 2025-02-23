@@ -264,8 +264,6 @@ public class ClickOnColorsSolver {
             final int COLUMNS = 9;
             final int ROWS = 6;
 
-            int button = Mouse.getEventButton();
-
             ScaledResolution sr = new ScaledResolution(mc);
             float scale = Configuration.terminalsScale;
             int guiWidth = (int) (INNER_COLUMNS * SLOT_SIZE * scale);
@@ -324,12 +322,18 @@ public class ClickOnColorsSolver {
 
                 if (relX >= innerX && relX < innerX + SLOT_SIZE &&
                         relY >= innerY && relY < innerY + SLOT_SIZE) {
-                    int mode = (button == 0) ? 2 : 0;
                     mc.playerController.windowClick(
                             ((ContainerChest) container).windowId,
                             slot.slotNumber,
-                            mode,
-                            button,
+                            2, // Left click
+                            0,
+                            mc.thePlayer
+                    );
+                    mc.playerController.windowClick(
+                            ((ContainerChest) container).windowId,
+                            slot.slotNumber,
+                            2, // Left click again
+                            0,
                             mc.thePlayer
                     );
                     validClick = true;
