@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 public class MazeSolver {
-    private static final int SLOT_SIZE = 18;
+    private static final int SLOT_SIZE = 16;
     private static final int COLUMNS = 9;
     private static final int ROWS = 6;
     private static final int[] ADJACENT_OFFSETS = {1, -1, 9, -9};
@@ -163,7 +163,7 @@ public class MazeSolver {
                     0x80000000);
 
             Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(
-                    "§8[§bNEF§8] §aMaze Solver!",
+                    "§8[§bNEF§8] §aMaze!",
                     0,
                     -10,
                     0xFFFFFF
@@ -184,7 +184,7 @@ public class MazeSolver {
             targetSlots.forEach(slot -> {
                 int x = (slot.slotNumber % COLUMNS) * SLOT_SIZE;
                 int y = (slot.slotNumber / COLUMNS) * SLOT_SIZE;
-                Gui.drawRect(x, y, x + SLOT_SIZE, y + SLOT_SIZE,
+                Gui.drawRect(x + 1, y + 1, x + SLOT_SIZE - 1, y + SLOT_SIZE - 1,
                         Configuration.dungeonsCorrectColor.getRGB());
             });
 

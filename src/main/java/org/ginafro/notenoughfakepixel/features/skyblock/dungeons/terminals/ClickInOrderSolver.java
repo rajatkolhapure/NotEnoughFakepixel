@@ -24,13 +24,14 @@ import java.awt.*;
 public class ClickInOrderSolver {
 
     public int round = 1;
-    private static final int SLOT_SIZE = 18;
+    private static final int SLOT_SIZE = 16;
     private static final int REGION_COLS = 7;
     private static final int REGION_ROWS = 2;
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onDrawScreenPre(GuiScreenEvent.DrawScreenEvent.Pre event) {
         if (!(event.gui instanceof GuiChest)) return;
+        if (!DungeonManager.checkEssentialsF7()) return;
         Container container = ((GuiChest) event.gui).inventorySlots;
         if (!(container instanceof ContainerChest)) return;
         String title = ((ContainerChest) container).getLowerChestInventory().getDisplayName().getUnformattedText();
@@ -204,6 +205,7 @@ public class ClickInOrderSolver {
     @SubscribeEvent
     public void onMouseClick(GuiScreenEvent.MouseInputEvent.Pre event) {
         if (!Configuration.dungeonsTerminalClickInOrderSolver) return;
+        if (!DungeonManager.checkEssentialsF7()) return;
         if (!Configuration.dungeonsTerminalHideIncorrect) return;
         if (!Mouse.getEventButtonState() || Mouse.getEventButton() != 0) return;
         Minecraft mc = Minecraft.getMinecraft();

@@ -27,7 +27,7 @@ import java.util.Map;
 
 public class StartingWithSolver {
 
-    private static final int SLOT_SIZE = 18;
+    private static final int SLOT_SIZE = 16;
     private static final int COLUMNS = 9;
     private static final int ROWS = 6;
 
@@ -153,9 +153,9 @@ public class StartingWithSolver {
                 int x = innerCol * SLOT_SIZE;
                 int y = innerRow * SLOT_SIZE;
 
-                drawRect(x, y,
-                        x + SLOT_SIZE,
-                        y + SLOT_SIZE,
+                drawRect(x + 1, y + 1,
+                        x + SLOT_SIZE - 1,
+                        y + SLOT_SIZE - 1,
                         Configuration.dungeonsCorrectColor.getRGB()
                 );
             }

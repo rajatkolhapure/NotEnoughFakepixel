@@ -29,7 +29,7 @@ import java.util.List;
 
 public class ClickOnColorsSolver {
 
-    private static final int SLOT_SIZE = 18;
+    private static final int SLOT_SIZE = 16;
     private static final int COLUMNS = 9;
     private static final int INNER_COLUMNS = 7;
     private static final int INNER_ROWS = 4;
@@ -37,7 +37,7 @@ public class ClickOnColorsSolver {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onDrawScreenPre(GuiScreenEvent.DrawScreenEvent.Pre event) {
         if (!(event.gui instanceof GuiChest)) return;
-        if (!DungeonManager.checkEssentialsF7()) return;
+        //if (!DungeonManager.checkEssentialsF7()) return;
         Container container = ((GuiChest) event.gui).inventorySlots;
         if (!(container instanceof ContainerChest)) return;
         String title = ((ContainerChest) container).getLowerChestInventory().getDisplayName().getUnformattedText();
@@ -126,9 +126,9 @@ public class ClickOnColorsSolver {
                 int innerX = (col - 1) * SLOT_SIZE;
                 int innerY = (row - 1) * SLOT_SIZE;
 
-                drawRect(innerX, innerY,
-                        innerX + SLOT_SIZE,
-                        innerY + SLOT_SIZE,
+                drawRect(innerX + 1, innerY + 1,
+                        innerX + SLOT_SIZE - 1,
+                        innerY + SLOT_SIZE - 1,
                         Configuration.dungeonsCorrectColor.getRGB());
             }
             GlStateManager.popMatrix();

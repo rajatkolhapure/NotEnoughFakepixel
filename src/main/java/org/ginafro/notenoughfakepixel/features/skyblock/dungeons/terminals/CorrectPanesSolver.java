@@ -26,7 +26,7 @@ import java.util.Map;
 
 public class CorrectPanesSolver {
 
-    private static final int SLOT_SIZE = 18;
+    private static final int SLOT_SIZE = 16;
     private static final int COLUMNS = 9;
     private static final int ROWS = 6;
 
@@ -137,7 +137,7 @@ public class CorrectPanesSolver {
             for (Slot slot : lastCorrectSlots) {
                 SlotPosition pos = slotPositions.get(containerChest.inventorySlots.indexOf(slot));
                 if (pos != null) {
-                    drawRect(pos.x, pos.y, pos.x + SLOT_SIZE, pos.y + SLOT_SIZE, Configuration.dungeonsCorrectColor.getRGB());
+                    drawRect(pos.x + 1, pos.y + 1, pos.x + SLOT_SIZE - 1, pos.y + SLOT_SIZE - 1, Configuration.dungeonsCorrectColor.getRGB());
                 }
             }
             GlStateManager.popMatrix();
