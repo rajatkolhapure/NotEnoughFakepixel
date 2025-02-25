@@ -20,6 +20,8 @@ import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.DungeonManager;
 import org.lwjgl.input.Mouse;
 
 import java.awt.*;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ClickInOrderSolver {
 
@@ -27,6 +29,9 @@ public class ClickInOrderSolver {
     private static final int SLOT_SIZE = 16;
     private static final int REGION_COLS = 7;
     private static final int REGION_ROWS = 2;
+
+    // Timer used to schedule the re-check
+    private final Timer recheckTimer = new Timer("ClickRecheckTimer", true);
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onDrawScreenPre(GuiScreenEvent.DrawScreenEvent.Pre event) {
@@ -250,7 +255,8 @@ public class ClickInOrderSolver {
                 event.setCanceled(true);
                 return;
             }
-            if (slot.getStack().stackSize == round) {
+            int clickedRound = round;
+            if (slot.getStack().stackSize == clickedRound) {
                 slot.getStack().getItem().setDamage(slot.getStack(), 14);
                 mc.playerController.windowClick(
                         ((ContainerChest) container).windowId,
@@ -266,15 +272,18 @@ public class ClickInOrderSolver {
                         0,
                         mc.thePlayer
                 );
+                // Schedule a re-check after 100ms
+                scheduleRecheck(slotIndex, clickedRound);
                 round++;
             } else {
                 event.setCanceled(true);
             }
         } else {
-            GuiChest gui = (GuiChest) mc.currentScreen;
-            Slot hoveredSlot = gui.getSlotUnderMouse();
+            // Non-custom GUI branch
+            Slot hoveredSlot = guiChest.getSlotUnderMouse();
             if (hoveredSlot != null && hoveredSlot.getStack() != null) {
-                if (hoveredSlot.getStack().stackSize == round) {
+                int clickedRound = round;
+                if (hoveredSlot.getStack().stackSize == clickedRound) {
                     hoveredSlot.getStack().getItem().setDamage(hoveredSlot.getStack(), 14);
                     mc.playerController.windowClick(
                             ((ContainerChest) container).windowId,
@@ -288,10 +297,46 @@ public class ClickInOrderSolver {
                             0,
                             0,
                             mc.thePlayer);
+                    // Schedule re-check for this slot number
+                    scheduleRecheck(hoveredSlot.slotNumber, clickedRound);
                     round++;
                 }
             }
         }
+    }
+
+    /**
+     * Schedules a re-check 100ms later. If the slot’s stack is still unchanged
+     * (its stackSize equals the clickedRound) then the click is re‑sent.
+     *
+     * @param slotNumber   the index of the slot that was clicked
+     * @param clickedRound the expected stack size (i.e. the round value at the time of click)
+     */
+    private void scheduleRecheck(final int slotNumber, final int clickedRound) {
+        final Minecraft mc = Minecraft.getMinecraft();
+        recheckTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                // Schedule on the main thread
+                mc.addScheduledTask(() -> {
+                    if (mc.currentScreen instanceof GuiChest) {
+                        GuiChest currentGui = (GuiChest) mc.currentScreen;
+                        Container container = currentGui.inventorySlots;
+                        if (container instanceof ContainerChest) {
+                            ContainerChest cc = (ContainerChest) container;
+                            Slot recheckSlot = cc.getSlot(slotNumber);
+                            if (recheckSlot != null && recheckSlot.getStack() != null &&
+                                    recheckSlot.getStack().stackSize == clickedRound) {
+                                // Re-send the click since the slot still shows the old state
+                                recheckSlot.getStack().getItem().setDamage(recheckSlot.getStack(), 14);
+                                mc.playerController.windowClick(cc.windowId, recheckSlot.slotNumber, 0, 0, mc.thePlayer);
+                                mc.playerController.windowClick(cc.windowId, recheckSlot.slotNumber, 0, 0, mc.thePlayer);
+                            }
+                        }
+                    }
+                });
+            }
+        }, 100);
     }
 
     private static void drawRect(int left, int top, int right, int bottom, int color) {
