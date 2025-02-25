@@ -280,6 +280,9 @@ public class Configuration extends Config {
     @Color(name = "Alternative Color", category = DUNGEONS, subcategory = "Floor 7 Terminals and Devices")
     public static OneColor dungeonsAlternativeColor = new OneColor(255,255,0);
 
+    @Switch(name = "Terminal waypoints", category = DUNGEONS, subcategory = "Floor 7 Terminals and Devices")
+    public static boolean dungeonsTerminalWaypoints = true;
+
     @Switch(name = "Score Overlay" ,category = DUNGEONS, subcategory = "Score & Secrets")
     public static boolean dungeonsScoreOverlay = true;
     @Switch(name = "S+ Notifier" ,category = DUNGEONS, subcategory = "Score & Secrets", description = "Shows an S+ in screen when virtually reached S+ (% secrets + X% completion).")

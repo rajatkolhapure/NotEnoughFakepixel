@@ -109,6 +109,7 @@ public class NotEnoughFakepixel {
         MinecraftForge.EVENT_BUS.register(new SpiritLeapHandler());
         MinecraftForge.EVENT_BUS.register(new SpiritLeapHandler.ChestGuiOverlayHandler());
         MinecraftForge.EVENT_BUS.register(new MiscDungFeatures());
+        MinecraftForge.EVENT_BUS.register(new TerminalWaypoints());
 
         // Mining
         MinecraftForge.EVENT_BUS.register(new MiningOverlay());
