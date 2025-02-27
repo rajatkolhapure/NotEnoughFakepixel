@@ -239,8 +239,10 @@ public class Configuration extends Config {
     public static boolean dungeonsBatMobs = true;
     @Color(name = "Bat Mob Color", category = DUNGEONS, subcategory = "Starred Mobs")
     public static OneColor dungeonsBatColor = new OneColor(92, 154, 255);
-    @Switch(name = "Starred Mobs Display", category = DUNGEONS, subcategory = "Starred Mobs")
-    public static boolean dungeonsStarredMobs = true;
+
+    @Dropdown(name = "Starred Mobs Display", category = DUNGEONS, subcategory = "Starred Mobs", options = {"Box","Outline","Disabled"})
+    public static int dungeonsStarredMobs = 0;
+
     @Color(name = "Starred Mobs Color", category = DUNGEONS, subcategory = "Starred Mobs")
     public static OneColor dungeonsStarredBoxColor = new OneColor(92, 154, 255);
     @Switch(name = "Starred Mobs Esp", category = DUNGEONS, subcategory = "Starred Mobs", description = "Render starred mobs hitboxes through walls.")
