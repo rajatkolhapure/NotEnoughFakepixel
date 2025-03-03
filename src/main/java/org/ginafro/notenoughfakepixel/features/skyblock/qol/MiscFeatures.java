@@ -356,6 +356,7 @@ public class MiscFeatures {
     private void drawFilledBoundingBox(AxisAlignedBB box, Color color) {
         GlStateManager.pushMatrix();
         GlStateManager.enableBlend();
+        GlStateManager.disableLighting();
         GlStateManager.disableTexture2D();
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
         GlStateManager.disableCull(); // Render all faces
@@ -410,6 +411,7 @@ public class MiscFeatures {
 
         GlStateManager.enableCull();
         GlStateManager.enableTexture2D();
+        GlStateManager.enableLighting();
         GlStateManager.disableBlend();
         GlStateManager.popMatrix();
     }

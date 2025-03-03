@@ -114,7 +114,7 @@ public class ThreeWeirdos {
         if (riddleChest != null) {
             drawFilled3DBox(new AxisAlignedBB(riddleChest.getX() - 0.05, riddleChest.getY(), riddleChest.getZ() - 0.05,
                             riddleChest.getX() + 1.05, riddleChest.getY() + 1, riddleChest.getZ() + 1.05),
-                    0x00FF00, false, true, event.partialTicks);
+                    0x00FF00, true, true, event.partialTicks);
         }
     }
 
@@ -152,6 +152,7 @@ public class ThreeWeirdos {
         GlStateManager.translate(-realX, -realY, -realZ);
         GlStateManager.disableTexture2D();
         GlStateManager.enableBlend();
+        GlStateManager.disableLighting();
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
         GlStateManager.disableCull();
 
@@ -209,6 +210,7 @@ public class ThreeWeirdos {
 
         GlStateManager.enableCull();
         GlStateManager.disableBlend();
+        GlStateManager.enableLighting();
         GlStateManager.enableTexture2D();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.popAttrib();

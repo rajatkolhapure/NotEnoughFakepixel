@@ -33,6 +33,65 @@ public class ClickInOrderSolver {
     // Timer used to schedule the re-check
     private final Timer recheckTimer = new Timer("ClickRecheckTimer", true);
 
+    public ClickInOrderSolver() {
+        // Schedule a periodic check to validate the current round
+        recheckTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Minecraft mc = Minecraft.getMinecraft();
+                if (mc != null) {
+                    mc.addScheduledTask(() -> validateCurrentRound());
+                }
+            }
+        }, 0, 500); // Check every 500ms
+    }
+
+    /**
+     * Validates the current round by checking if the expected slot exists.
+     * If not, finds the lowest valid round from the slots and updates `round`.
+     */
+    private void validateCurrentRound() {
+        if (!Configuration.dungeonsTerminalClickInOrderSolver) return;
+        if (!DungeonManager.checkEssentialsF7()) return;
+        Minecraft mc = Minecraft.getMinecraft();
+        if (mc.currentScreen instanceof GuiChest) {
+            GuiChest guiChest = (GuiChest) mc.currentScreen;
+            Container container = guiChest.inventorySlots;
+            if (container instanceof ContainerChest) {
+                String title = ((ContainerChest) container).getLowerChestInventory().getDisplayName().getUnformattedText();
+                if (!title.startsWith("Click in")) return;
+
+                ContainerChest containerChest = (ContainerChest) container;
+                boolean currentRoundExists = false;
+                int lowestValidRound = Integer.MAX_VALUE;
+
+                // Scan all slots to check for the current round and find the lowest valid
+                for (int row = 1; row <= REGION_ROWS; row++) {
+                    for (int col = 1; col <= REGION_COLS; col++) {
+                        int slotIndex = row * 9 + col;
+                        Slot slot = containerChest.getSlot(slotIndex);
+                        if (slot == null || slot.getStack() == null) continue;
+                        Block block = Block.getBlockFromItem(slot.getStack().getItem());
+                        if (!(block instanceof BlockStainedGlassPane)) continue;
+
+                        int stackSize = slot.getStack().stackSize;
+                        if (stackSize == round) {
+                            currentRoundExists = true;
+                        }
+                        if (stackSize < lowestValidRound && stackSize >= round) {
+                            lowestValidRound = stackSize;
+                        }
+                    }
+                }
+
+                // Adjust the round if the current one is missing
+                if (!currentRoundExists && lowestValidRound != Integer.MAX_VALUE) {
+                    round = lowestValidRound;
+                }
+            }
+        }
+    }
+
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onDrawScreenPre(GuiScreenEvent.DrawScreenEvent.Pre event) {
         if (!(event.gui instanceof GuiChest)) return;
