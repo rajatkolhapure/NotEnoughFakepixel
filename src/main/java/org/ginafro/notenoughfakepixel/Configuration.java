@@ -388,6 +388,8 @@ public class Configuration extends Config {
     public static OneColor slayerBossColor = new OneColor(92, 154, 255);
     @Dropdown(name = "Faster Maddox Calling", category = SLAYER,subcategory = "Quality of Life",options = {"Auto Open","Semi Auto","Disabled"})
     public static int slayerMaddoxCalling = 1;
+    @Switch(name = "Slayer boss time", category = SLAYER, subcategory = "Quality of Life")
+    public static boolean slayerBossTimer = true;
     @Switch(name = "Show Beacon Waypoint" , category = SLAYER , subcategory = "Voidgloom Seraph", description = ".")
     public static boolean slayerShowBeaconPath = true;
     @Color(name = "Beacon Color", category = SLAYER , subcategory = "Voidgloom Seraph", description = "Color of the beacon's waypoint.")

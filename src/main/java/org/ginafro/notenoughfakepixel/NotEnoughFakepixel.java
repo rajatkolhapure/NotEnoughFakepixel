@@ -166,6 +166,8 @@ public class NotEnoughFakepixel {
         MinecraftForge.EVENT_BUS.register(new FirePillarDisplay());
         MinecraftForge.EVENT_BUS.register(new MinibossAlert());
         MinecraftForge.EVENT_BUS.register(new BlazeAttunements());
+        //MinecraftForge.EVENT_BUS.register(new SlayerHealthDisplay());
+        MinecraftForge.EVENT_BUS.register(new SlayerTimer());
 
         // Parsers
         MinecraftForge.EVENT_BUS.register(new TablistParser());
