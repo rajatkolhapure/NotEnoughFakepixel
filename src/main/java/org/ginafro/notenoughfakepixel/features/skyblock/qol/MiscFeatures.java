@@ -121,7 +121,7 @@ public class MiscFeatures {
                 Blocks.wall_sign, Blocks.snow_layer, Blocks.double_plant,
                 Blocks.redstone_torch, Blocks.wooden_button, Blocks.stone_button,
                 Blocks.carpet, Blocks.tallgrass, Blocks.red_flower, Blocks.yellow_flower,
-                Blocks.ladder
+                Blocks.ladder, Blocks.flowing_lava, Blocks.lava
         );
 
         BlockPos target = raycastBlocks(player.worldObj, startVec, endVec, excludedBlocks);
@@ -343,7 +343,7 @@ public class MiscFeatures {
                 Blocks.wall_sign, Blocks.snow_layer, Blocks.double_plant,
                 Blocks.redstone_torch, Blocks.wooden_button, Blocks.stone_button,
                 Blocks.carpet, Blocks.tallgrass, Blocks.red_flower, Blocks.yellow_flower,
-                Blocks.ladder
+                Blocks.ladder, Blocks.flowing_lava, Blocks.lava
         );
 
         BlockPos target = raycastBlocks(mc.theWorld, startVec, endVec, excludedBlocks);

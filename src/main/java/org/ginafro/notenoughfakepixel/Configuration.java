@@ -101,6 +101,8 @@ public class Configuration extends Config {
     public static boolean qolFullbright = true;
     @Switch(name = "1.12 Crops height" , category = QUALITY_OF_LIFE)
     public static boolean qolCropsHeight = false;
+    @Switch(name = "Disable block breaking particles" , category = QUALITY_OF_LIFE)
+    public static boolean qolHideBlockBreakingParticles = false;
     @Switch(name = "Disable rain", category = QUALITY_OF_LIFE, description = "Disables rain rendering")
     public static boolean qolDisableRain = true;
     @Switch(name = "Disable Potion Effects in Inventory" , category = QUALITY_OF_LIFE)
