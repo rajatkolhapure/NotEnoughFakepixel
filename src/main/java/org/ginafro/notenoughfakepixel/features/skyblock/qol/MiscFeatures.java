@@ -10,13 +10,19 @@ import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.event.ClickEvent;
+import net.minecraft.event.HoverEvent;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 import net.minecraft.network.play.server.S29PacketSoundEffect;
 import net.minecraft.util.*;
+import net.minecraftforge.client.event.ClientChatReceivedEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
@@ -27,9 +33,12 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.ginafro.notenoughfakepixel.Configuration;
 import org.ginafro.notenoughfakepixel.events.PacketReadEvent;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -108,10 +117,11 @@ public class MiscFeatures {
         );
 
         List<Block> excludedBlocks = Arrays.asList(
-                Blocks.torch, Blocks.flowing_water, Blocks.standing_sign,
+                Blocks.torch, Blocks.flowing_water, Blocks.water, Blocks.standing_sign,
                 Blocks.wall_sign, Blocks.snow_layer, Blocks.double_plant,
                 Blocks.redstone_torch, Blocks.wooden_button, Blocks.stone_button,
-                Blocks.carpet, Blocks.tallgrass, Blocks.red_flower, Blocks.yellow_flower
+                Blocks.carpet, Blocks.tallgrass, Blocks.red_flower, Blocks.yellow_flower,
+                Blocks.ladder
         );
 
         BlockPos target = raycastBlocks(player.worldObj, startVec, endVec, excludedBlocks);
@@ -216,9 +226,55 @@ public class MiscFeatures {
     @SubscribeEvent
     public void onRenderLivingPre(RenderLivingEvent.Pre<EntityLivingBase> event) {
         if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
+
         if (Configuration.qolHideDyingMobs) {
             EntityLivingBase entity = event.entity;
+
             if (entity.getHealth() <= 0 || entity.isDead) {
+                double playerX = Minecraft.getMinecraft().thePlayer.posX;
+                double playerZ = Minecraft.getMinecraft().thePlayer.posZ;
+
+                double teleportY = -64.0;
+                entity.setPositionAndUpdate(playerX, teleportY, playerZ);
+
+                event.setCanceled(true);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onRenderLivingPost(RenderLivingEvent.Post<EntityLivingBase> event) {
+        if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
+
+        if (Configuration.qolHideDyingMobs) {
+            EntityLivingBase entity = event.entity;
+
+            if (entity.getHealth() <= 0 || entity.isDead) {
+                double playerX = Minecraft.getMinecraft().thePlayer.posX;
+                double playerZ = Minecraft.getMinecraft().thePlayer.posZ;
+
+                double teleportY = -64.0;
+                entity.setPositionAndUpdate(playerX, teleportY, playerZ);
+
+                event.setCanceled(true);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onRenderLivingSpecials(RenderLivingEvent.Specials.Pre<EntityLivingBase> event) {
+        if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
+
+        if (Configuration.qolHideDyingMobs) {
+            EntityLivingBase entity = event.entity;
+
+            if (entity.getHealth() <= 0 || entity.isDead) {
+                double playerX = Minecraft.getMinecraft().thePlayer.posX;
+                double playerZ = Minecraft.getMinecraft().thePlayer.posZ;
+
+                double teleportY = -64.0;
+                entity.setPositionAndUpdate(playerX, teleportY, playerZ);
+
                 event.setCanceled(true);
             }
         }
@@ -283,10 +339,11 @@ public class MiscFeatures {
         );
 
         List<Block> excludedBlocks = Arrays.asList(
-                Blocks.torch, Blocks.flowing_water, Blocks.standing_sign,
+                Blocks.torch, Blocks.flowing_water, Blocks.water, Blocks.standing_sign,
                 Blocks.wall_sign, Blocks.snow_layer, Blocks.double_plant,
                 Blocks.redstone_torch, Blocks.wooden_button, Blocks.stone_button,
-                Blocks.carpet, Blocks.tallgrass, Blocks.red_flower, Blocks.yellow_flower
+                Blocks.carpet, Blocks.tallgrass, Blocks.red_flower, Blocks.yellow_flower,
+                Blocks.ladder
         );
 
         BlockPos target = raycastBlocks(mc.theWorld, startVec, endVec, excludedBlocks);
@@ -414,5 +471,25 @@ public class MiscFeatures {
         GlStateManager.enableLighting();
         GlStateManager.disableBlend();
         GlStateManager.popMatrix();
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void onChatReceived(ClientChatReceivedEvent e) {
+        if (e.type == 2) return; // Ignore actionbar messages
+        if (Configuration.qolCopyChatMsg) {
+
+        String unformattedText = StringUtils.stripControlCodes(e.message.getUnformattedText());
+
+        if (!unformattedText.replace(" ", "").isEmpty()) {
+            ChatComponentText copyText = new ChatComponentText(EnumChatFormatting.DARK_GRAY + Character.toString((char) Integer.parseInt("270D", 16)));
+            ChatStyle style = new ChatStyle()
+                    .setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ChatComponentText(EnumChatFormatting.GRAY + "Copy message")))
+                    .setChatClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/copytoclipboard " + unformattedText));
+            copyText.setChatStyle(style);
+
+            e.message.appendSibling(new ChatComponentText(EnumChatFormatting.RESET + " "));
+            e.message.appendSibling(copyText);
+        }
+        }
     }
 }

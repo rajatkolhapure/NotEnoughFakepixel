@@ -11,6 +11,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
+import org.ginafro.notenoughfakepixel.commands.CopyCommand;
 import org.ginafro.notenoughfakepixel.commands.NefCommand;
 import org.ginafro.notenoughfakepixel.features.duels.KDCounter;
 import org.ginafro.notenoughfakepixel.features.skyblock.chocolate.ChocolateFactory;
@@ -23,6 +24,7 @@ import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.mobs.BatMobDisp
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.mobs.FelMobDisplay;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.mobs.LividDisplay;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.mobs.StarredMobDisplay;
+//import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.puzzles.BoulderSolver;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.puzzles.ThreeWeirdos;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.puzzles.WaterSolver;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.score.DungeonClearedNotifier;
@@ -61,6 +63,7 @@ public class NotEnoughFakepixel {
         //ClientCommandHandler.instance.registerCommand(new TestCommand());
         //ClientCommandHandler.instance.registerCommand(new SlayerInfoCommand());
         ClientCommandHandler.instance.registerCommand(new NefCommand());
+        ClientCommandHandler.instance.registerCommand(new CopyCommand());
 
         MinecraftForge.EVENT_BUS.register(this);
         registerModEvents();
@@ -92,6 +95,7 @@ public class NotEnoughFakepixel {
 
         MinecraftForge.EVENT_BUS.register(new ThreeWeirdos());
         MinecraftForge.EVENT_BUS.register(new WaterSolver());
+        //MinecraftForge.EVENT_BUS.register(new BoulderSolver());
 
         MinecraftForge.EVENT_BUS.register(new WitherBloodKeysTracers());
         MinecraftForge.EVENT_BUS.register(new StarredMobDisplay());

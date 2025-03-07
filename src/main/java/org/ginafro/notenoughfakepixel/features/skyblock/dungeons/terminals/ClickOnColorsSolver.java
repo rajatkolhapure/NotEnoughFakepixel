@@ -37,11 +37,11 @@ public class ClickOnColorsSolver {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onDrawScreenPre(GuiScreenEvent.DrawScreenEvent.Pre event) {
         if (!(event.gui instanceof GuiChest)) return;
-        //if (!DungeonManager.checkEssentialsF7()) return;
+        if (!DungeonManager.checkEssentialsF7()) return;
         Container container = ((GuiChest) event.gui).inventorySlots;
         if (!(container instanceof ContainerChest)) return;
         String title = ((ContainerChest) container).getLowerChestInventory().getDisplayName().getUnformattedText();
-        if (Configuration.dungeonsCustomGui && title.startsWith("Select all the")) {
+        if (Configuration.dungeonsCustomGuiColors && title.startsWith("Select all the")) {
             event.setCanceled(true);
         }
     }
@@ -59,7 +59,7 @@ public class ClickOnColorsSolver {
 
         String targetColor = title.split("the ")[1].split(" items")[0].toLowerCase();
 
-        if (Configuration.dungeonsCustomGui) {
+        if (Configuration.dungeonsCustomGuiColors) {
             List<Slot> correctSlots = new ArrayList<>();
             for (Slot slot : ((ContainerChest) container).inventorySlots) {
                 int slotId = ((ContainerChest) container).inventorySlots.indexOf(slot);
@@ -99,7 +99,7 @@ public class ClickOnColorsSolver {
             }
 
             ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
-            float scale = Configuration.terminalsScale;
+            float scale = Configuration.dungeonsTerminalsScale;
             int guiWidth = (int) (INNER_COLUMNS * SLOT_SIZE * scale);
             int guiHeight = (int) (INNER_ROWS * SLOT_SIZE * scale);
             int guiLeft = (sr.getScaledWidth() - guiWidth) / 2;
@@ -259,13 +259,13 @@ public class ClickOnColorsSolver {
         String title = ((ContainerChest) container).getLowerChestInventory().getDisplayName().getUnformattedText();
         if (!title.startsWith("Select all the")) return;
 
-        if (Configuration.dungeonsCustomGui) {
+        if (Configuration.dungeonsCustomGuiColors) {
             final int SLOT_SIZE = 18;
             final int COLUMNS = 9;
             final int ROWS = 6;
 
             ScaledResolution sr = new ScaledResolution(mc);
-            float scale = Configuration.terminalsScale;
+            float scale = Configuration.dungeonsTerminalsScale;
             int guiWidth = (int) (INNER_COLUMNS * SLOT_SIZE * scale);
             int guiHeight = (int) (INNER_ROWS * SLOT_SIZE * scale);
             int screenWidth = sr.getScaledWidth();

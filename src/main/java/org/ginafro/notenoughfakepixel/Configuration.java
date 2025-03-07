@@ -116,6 +116,9 @@ public class Configuration extends Config {
     @Switch(name = "Disable Enderman Teleport", category = QUALITY_OF_LIFE)
     public static boolean qolDisableEnderManTeleport = true;
 
+    @Switch(name = "Copy chat message", category = QUALITY_OF_LIFE)
+    public static boolean qolCopyChatMsg = true;
+
     @Switch(name = "Block placing items", category = QUALITY_OF_LIFE)
     public static boolean qolBlockPlacingItems = true;
 
@@ -212,10 +215,18 @@ public class Configuration extends Config {
     @Switch(name = "Announces Leaped to Player in party chat!", category = DUNGEONS, subcategory = "QOL")
     public static boolean dungeonsLeapAnnounce = true;
 
-    @Switch(name = "Custom Terminal GUI", category = DUNGEONS, subcategory = "QOL")
-    public static boolean dungeonsCustomGui = true;
+    @Switch(name = "Custom Click in order Terminal GUI", category = DUNGEONS, subcategory = "QOL")
+    public static boolean dungeonsCustomGuiClickIn = true;
+    @Switch(name = "Custom Colors Terminal GUI", category = DUNGEONS, subcategory = "QOL")
+    public static boolean dungeonsCustomGuiColors = true;
+    @Switch(name = "Custom Maze Terminal GUI", category = DUNGEONS, subcategory = "QOL")
+    public static boolean dungeonsCustomGuiMaze = true;
+    @Switch(name = "Custom Starts with Terminal GUI", category = DUNGEONS, subcategory = "QOL")
+    public static boolean dungeonsCustomGuiStartsWith = true;
+    @Switch(name = "Custom Panes Terminal GUI", category = DUNGEONS, subcategory = "QOL")
+    public static boolean dungeonsCustomGuiPanes = true;
     @Slider(name = "Custom Terminal Scale", category = DUNGEONS, subcategory = "QOL", min = 1.0f, max = 5.0f)
-    public static float terminalsScale = 1.0f;
+    public static float dungeonsTerminalsScale = 2.0f;
 
     @Switch(name = "Announces when Blood room is done spawning", category = DUNGEONS, subcategory = "QOL")
     public static boolean dungeonsBloodReady = true;

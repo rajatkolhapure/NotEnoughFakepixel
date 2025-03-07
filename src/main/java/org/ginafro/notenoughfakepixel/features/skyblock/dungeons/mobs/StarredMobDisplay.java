@@ -40,6 +40,7 @@ public class StarredMobDisplay {
         final EntityLivingBase entity = event.getEntity();
         if (!currentEntities.contains(entity)) return;
         if (isDying(entity)) return;
+        if (entity.isInvisible()) return;
 
         Color color = new Color(
                 Configuration.dungeonsStarredBoxColor.getRed(),
@@ -56,18 +57,22 @@ public class StarredMobDisplay {
 
         // Render the outline
         OutlineUtils.outlineEntity(event, 5.0f, color, true);
-    }
+        }
     }
 
 
     @SubscribeEvent
     public void onRenderLiving(RenderLivingEvent.Pre<EntityLivingBase> event) {
+        clearCache();
         WorldClient world = Minecraft.getMinecraft().theWorld;
         for (Entity entity : world.loadedEntityList) {
-            if (entity instanceof EntityArmorStand && entity.getName().contains("✮")) {
-                EntityLivingBase mob = findAssociatedMob((EntityArmorStand) entity);
-                if (mob != null && !isDying(mob)) {
-                    currentEntities.add(mob);
+            if (entity instanceof EntityArmorStand) {
+                EntityArmorStand armorStand = (EntityArmorStand) entity;
+                if (armorStand.getName().contains("✮")) {
+                    EntityLivingBase mob = findAssociatedMob(armorStand);
+                    if (mob != null && !isDying(mob)) {
+                        currentEntities.add(mob);
+                    }
                 }
             }
         }

@@ -319,7 +319,11 @@ public class NefCommand extends CommandBase {
         Configuration.dungeonsFelMob = true;
         Configuration.dungeonsThreeWeirdos = true;
         Configuration.dungeonsMap = true;
-        Configuration.dungeonsCustomGui = true;
+        Configuration.dungeonsCustomGuiColors = true;
+        Configuration.dungeonsCustomGuiClickIn = true;
+        Configuration.dungeonsCustomGuiMaze = false;
+        Configuration.dungeonsCustomGuiPanes = true;
+        Configuration.dungeonsCustomGuiStartsWith = true;
         Configuration.dungeonsTerminalStartsWithSolver = true;
         Configuration.dungeonsTerminalClickInOrderSolver = true;
         Configuration.dungeonsTerminalSelectColorsSolver = true;

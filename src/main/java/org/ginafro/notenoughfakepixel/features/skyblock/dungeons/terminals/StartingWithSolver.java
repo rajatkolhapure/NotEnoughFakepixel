@@ -63,7 +63,7 @@ public class StartingWithSolver {
                 .getUnformattedText()
                 .trim();
 
-        if (Configuration.dungeonsCustomGui && displayName.contains("What starts with")) {
+        if (Configuration.dungeonsCustomGuiStartsWith && displayName.contains("What starts with")) {
             event.setCanceled(true);
         }
     }
@@ -91,7 +91,7 @@ public class StartingWithSolver {
         int screenWidth = sr.getScaledWidth();
         int screenHeight = sr.getScaledHeight();
 
-        if (Configuration.dungeonsCustomGui) {
+        if (Configuration.dungeonsCustomGuiStartsWith) {
             final int INNER_COLUMNS = 7;
             final int INNER_ROWS = 4;
 
@@ -119,7 +119,7 @@ public class StartingWithSolver {
             }
 
             GlStateManager.pushMatrix();
-            float scale = Configuration.terminalsScale;
+            float scale = Configuration.dungeonsTerminalsScale;
             int guiWidth = (int) (INNER_COLUMNS * SLOT_SIZE * scale);
             int guiHeight = (int) (INNER_ROWS * SLOT_SIZE * scale);
 
@@ -238,9 +238,9 @@ public class StartingWithSolver {
         String title = containerChest.getLowerChestInventory().getDisplayName().getUnformattedText();
         if (!title.contains("What starts with")) return;
 
-        if (Configuration.dungeonsCustomGui) {
+        if (Configuration.dungeonsCustomGuiStartsWith) {
             ScaledResolution sr = new ScaledResolution(mc);
-            float scale = Configuration.terminalsScale;
+            float scale = Configuration.dungeonsTerminalsScale;
             int button = Mouse.getEventButton();
             if (button != 0) return; // Only handle left clicks
 
