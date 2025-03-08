@@ -357,37 +357,47 @@ public class RenderUtils {
         double x = ((pos[0] - viewerX) + 0.5);
         double y = ((pos[1] - viewerY) + 0.5);
         double z = ((pos[2] - viewerZ) + 0.5);
+
         RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
-        float f = 3F;
-        float f1 = 0.016666668F * f;
+        float scale = 3F;
+        float f1 = 0.016666668F * scale;
+
         GlStateManager.pushMatrix();
-        GlStateManager.translate((float)x, (float)y + 2.5, (float)z);
+        GlStateManager.translate((float) x, (float) y + 2.5, (float) z);
         GL11.glNormal3f(0.0F, 1.0F, 0.0F);
         GlStateManager.rotate(-renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
         GlStateManager.rotate(renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
         GlStateManager.scale(-f1, -f1, f1);
+
+        // Set up rendering state
         GlStateManager.disableLighting();
-        GlStateManager.depthMask(false);
-        GlStateManager.disableDepth();
         GlStateManager.enableBlend();
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+        GlStateManager.depthMask(false);
+        GlStateManager.disableDepth();
+
+        // Draw background box
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-        int i = 0;
         int j = fontrenderer.getStringWidth(str) / 2;
         GlStateManager.disableTexture2D();
+
         worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
-        worldrenderer.pos((double)(-j - 1), (double)(-1 + i), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
-        worldrenderer.pos((double)(-j - 1), (double)(8 + i), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
-        worldrenderer.pos((double)(j + 1), (double)(8 + i), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
-        worldrenderer.pos((double)(j + 1), (double)(-1 + i), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+        worldrenderer.pos(-j - 1, -1, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+        worldrenderer.pos(-j - 1, 8, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+        worldrenderer.pos(j + 1, 8, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+        worldrenderer.pos(j + 1, -1, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
         tessellator.draw();
+
         GlStateManager.enableTexture2D();
-        fontrenderer.drawString(str, -fontrenderer.getStringWidth(str) / 2, i, colorToInt(color));
+        fontrenderer.drawString(str, -fontrenderer.getStringWidth(str) / 2, 0, colorToInt(color));
+
+        // Restore state
         GlStateManager.enableDepth();
+        GlStateManager.depthMask(true);
         GlStateManager.enableLighting();
         GlStateManager.disableBlend();
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.resetColor(); // Reset color state to prevent rendering issues
         GlStateManager.popMatrix();
     }
 
