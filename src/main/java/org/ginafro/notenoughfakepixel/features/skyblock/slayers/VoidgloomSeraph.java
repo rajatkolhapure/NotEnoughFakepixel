@@ -8,6 +8,8 @@ import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S29PacketSoundEffect;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.StringUtils;
+import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -155,5 +157,18 @@ public class VoidgloomSeraph {
         return (Minecraft.getMinecraft().thePlayer == null) ||
                 (!ScoreboardUtils.currentGamemode.isSkyblock()) ||
                 (!ScoreboardUtils.currentLocation.isEnd());
+    }
+
+
+    @SubscribeEvent
+    public void onChat(ClientChatReceivedEvent event) {
+        if (Configuration.slayerShowBeaconPath && ScoreboardUtils.currentGamemode.isSkyblock() && ScoreboardUtils.currentLocation.isEnd()) {
+            String message = StringUtils.stripControlCodes(event.message.getUnformattedText());
+
+            if (message.contains("SLAYER QUEST COMPLETE!")) {
+                fallingBlocks.clear();
+                waypoints.clear();
+            }
+        }
     }
 }
