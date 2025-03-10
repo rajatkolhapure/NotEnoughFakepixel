@@ -23,6 +23,7 @@
     "Accesors.SessionAccessor",
     "RenderItemMixin",
     "MixinRenderEntityItem",
-    "MixinEffectRenderer"
+    "MixinEffectRenderer",
+    "MixinBlockLever"
   ]
 }

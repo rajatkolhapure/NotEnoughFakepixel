@@ -20,21 +20,30 @@ import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.DungeonManager;
 import org.lwjgl.input.Mouse;
 
 import java.awt.*;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.LinkedList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class ClickInOrderSolver {
 
-    public int round = 1;
+    // We remove the static 'round' variable and use the sum of processed rounds and queued clicks
+    private final LinkedList<Integer> clickQueue = new LinkedList<>();
+    private int processedRounds = 0;
     private static final int SLOT_SIZE = 16;
     private static final int REGION_COLS = 7;
     private static final int REGION_ROWS = 2;
 
-    // Timer used to schedule the re-check
-    private final Timer recheckTimer = new Timer("ClickRecheckTimer", true);
+    private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+
+    public ClickInOrderSolver() {
+        // Start the queue processing task when the solver is instantiated
+        executor.scheduleAtFixedRate(this::processQueue, 0, 50, TimeUnit.MILLISECONDS);
+    }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onDrawScreenPre(GuiScreenEvent.DrawScreenEvent.Pre event) {
+        if (!Configuration.dungeonsTerminalClickInOrderSolver) return;
         if (!(event.gui instanceof GuiChest)) return;
         if (!DungeonManager.checkEssentialsF7()) return;
         Container container = ((GuiChest) event.gui).inventorySlots;
@@ -56,7 +65,8 @@ public class ClickInOrderSolver {
                 String title = ((ContainerChest) container).getLowerChestInventory()
                         .getDisplayName().getUnformattedText();
                 if (!title.startsWith("Click in")) return;
-                round = 1;
+                processedRounds = 0;
+                clickQueue.clear();
             }
         }
     }
@@ -73,6 +83,9 @@ public class ClickInOrderSolver {
                 .getDisplayName().getUnformattedText();
         if (!title.startsWith("Click in")) return;
         ContainerChest containerChest = (ContainerChest) container;
+
+        // Compute effective round: processed rounds + queued clicks
+        int effectiveRound = processedRounds + clickQueue.size();
 
         if (Configuration.dungeonsCustomGuiClickIn) {
             ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
@@ -102,11 +115,11 @@ public class ClickInOrderSolver {
                         continue;
 
                     int overlayColor = 0;
-                    if (slot.getStack().stackSize == round) {
+                    if (slot.getStack().stackSize == effectiveRound + 1) {
                         overlayColor = Configuration.dungeonsCorrectColor.getRGB();
-                    } else if (slot.getStack().stackSize == round + 1) {
+                    } else if (slot.getStack().stackSize == effectiveRound + 2) {
                         overlayColor = Configuration.dungeonsAlternativeColor.getRGB();
-                    } else if (slot.getStack().stackSize == round + 2) {
+                    } else if (slot.getStack().stackSize == effectiveRound + 3) {
                         Color alt = new Color(
                                 Configuration.dungeonsAlternativeColor.getRed(),
                                 Configuration.dungeonsAlternativeColor.getGreen(),
@@ -115,7 +128,7 @@ public class ClickInOrderSolver {
                     }
 
                     if (Configuration.dungeonsTerminalHideIncorrect &&
-                            slot.getStack().stackSize > round + 1 &&
+                            slot.getStack().stackSize > effectiveRound + 2 &&
                             slot.getStack().getItemDamage() == 14) {
                         slot.getStack().getItem().setDamage(slot.getStack(), 15);
                         overlayColor = new Color(113, 113, 113).getRGB();
@@ -129,7 +142,7 @@ public class ClickInOrderSolver {
                     int textWidth = Minecraft.getMinecraft().fontRendererObj.getStringWidth(stackSizeText);
                     int textX = x + (SLOT_SIZE / 2) - (textWidth / 2);
                     int textY = y + (SLOT_SIZE / 2) - 4;
-                    if (slot.getStack().stackSize >= round) {
+                    if (slot.getStack().stackSize > effectiveRound) {
                         Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(
                                 stackSizeText, textX, textY, 0xFFFFFF);
                     }
@@ -146,18 +159,13 @@ public class ClickInOrderSolver {
                         continue;
 
                     int overlayColor = 0;
-                    if (slot.getStack().stackSize == round) {
+                    if (slot.getStack().stackSize == effectiveRound + 1) {
                         overlayColor = Configuration.dungeonsCorrectColor.getRGB();
-                    } else if (slot.getStack().stackSize == round + 1) {
+                    } else if (slot.getStack().stackSize == effectiveRound + 2) {
                         overlayColor = Configuration.dungeonsAlternativeColor.getRGB();
                     }
 
                     RenderUtils.drawOnSlot(container.inventorySlots.size(), slot.xDisplayPosition, slot.yDisplayPosition, overlayColor);
-
-                    String stackSizeText = String.valueOf(slot.getStack().stackSize);
-                    int textX = slot.xDisplayPosition + 9 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(stackSizeText) / 2;
-                    int textY = slot.yDisplayPosition + 6;
-                    Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(stackSizeText, textX, textY, 0xFFFFFF);
                 }
             }
         }
@@ -174,30 +182,34 @@ public class ClickInOrderSolver {
                 String title = ((ContainerChest) container).getLowerChestInventory().getDisplayName().getUnformattedText();
                 if (!title.startsWith("Click in")) return;
                 ContainerChest containerChest = (ContainerChest) container;
+                // Compute effective round
+                int effectiveRound = processedRounds + clickQueue.size();
+
                 for (int i = 1; i < 3; i++) {
                     for (int j = 1; j < 8; j++) {
                         Slot slot = containerChest.getSlot(i * 9 + j);
                         if (slot == null || slot.inventory == Minecraft.getMinecraft().thePlayer.inventory) continue;
-                        if (slot.getStack() == null || !(Block.getBlockFromItem(slot.getStack().getItem()) instanceof BlockStainedGlassPane)) continue;
+                        if (slot.getStack() == null || !(Block.getBlockFromItem(slot.getStack().getItem()) instanceof BlockStainedGlassPane))
+                            continue;
 
-                        if (slot.getStack().stackSize == round) {
+                        if (slot.getStack().stackSize == effectiveRound + 1) {
                             if (slot.getStack().getItemDamage() == 14 || slot.getStack().getItemDamage() == 15) {
                                 slot.getStack().getItem().setDamage(slot.getStack(), 0);
                             }
                             RenderUtils.drawOnSlot(container.inventorySlots.size(), slot.xDisplayPosition, slot.yDisplayPosition, Configuration.dungeonsCorrectColor.getRGB());
-                        } else if (slot.getStack().stackSize == round + 1) {
+                        } else if (slot.getStack().stackSize == effectiveRound + 2) {
                             if (slot.getStack().getItemDamage() == 14 || slot.getStack().getItemDamage() == 15) {
                                 slot.getStack().getItem().setDamage(slot.getStack(), 0);
                             }
                             RenderUtils.drawOnSlot(container.inventorySlots.size(), slot.xDisplayPosition, slot.yDisplayPosition, Configuration.dungeonsAlternativeColor.getRGB());
-                        } else if (slot.getStack().stackSize == round + 2) {
+                        } else if (slot.getStack().stackSize == effectiveRound + 3) {
                             if (slot.getStack().getItemDamage() == 14 || slot.getStack().getItemDamage() == 15) {
                                 slot.getStack().getItem().setDamage(slot.getStack(), 0);
                             }
                             RenderUtils.drawOnSlot(container.inventorySlots.size(), slot.xDisplayPosition, slot.yDisplayPosition, new Color(Configuration.dungeonsAlternativeColor.getRed(), Configuration.dungeonsAlternativeColor.getGreen(), Configuration.dungeonsAlternativeColor.getBlue(), 150).getRGB());
                         }
 
-                        if (Configuration.dungeonsTerminalHideIncorrect && slot.getStack().stackSize > round + 1 && slot.getStack().getItemDamage() == 14) {
+                        if (Configuration.dungeonsTerminalHideIncorrect && slot.getStack().stackSize > effectiveRound + 1 && slot.getStack().getItemDamage() == 14) {
                             slot.getStack().getItem().setDamage(slot.getStack(), 15);
                             RenderUtils.drawOnSlot(container.inventorySlots.size(), slot.xDisplayPosition, slot.yDisplayPosition, new Color(113, 113, 113).getRGB());
                         }
@@ -255,89 +267,50 @@ public class ClickInOrderSolver {
                 event.setCanceled(true);
                 return;
             }
-            int clickedRound = round;
-            if (slot.getStack().stackSize == clickedRound) {
-                slot.getStack().getItem().setDamage(slot.getStack(), 14);
-                mc.playerController.windowClick(
-                        ((ContainerChest) container).windowId,
-                        slot.slotNumber,
-                        0,
-                        0,
-                        mc.thePlayer
-                );
-                mc.playerController.windowClick(
-                        ((ContainerChest) container).windowId,
-                        slot.slotNumber,
-                        0,
-                        0,
-                        mc.thePlayer
-                );
-                // Schedule a re-check after 100ms
-                scheduleRecheck(slotIndex, clickedRound);
-                round++;
+            int expectedRound = processedRounds + clickQueue.size() + 1;
+            if (slot.getStack().stackSize == expectedRound) {
+                clickQueue.add(slot.slotNumber);
             } else {
                 event.setCanceled(true);
             }
         } else {
-            // Non-custom GUI branch
             Slot hoveredSlot = guiChest.getSlotUnderMouse();
             if (hoveredSlot != null && hoveredSlot.getStack() != null) {
-                int clickedRound = round;
-                if (hoveredSlot.getStack().stackSize == clickedRound) {
-                    hoveredSlot.getStack().getItem().setDamage(hoveredSlot.getStack(), 14);
-                    mc.playerController.windowClick(
-                            ((ContainerChest) container).windowId,
-                            hoveredSlot.slotNumber,
-                            0,
-                            0,
-                            mc.thePlayer);
-                    mc.playerController.windowClick(
-                            ((ContainerChest) container).windowId,
-                            hoveredSlot.slotNumber,
-                            0,
-                            0,
-                            mc.thePlayer);
-                    // Schedule re-check for this slot number
-                    scheduleRecheck(hoveredSlot.slotNumber, clickedRound);
-                    round++;
+                int expectedRound = processedRounds + clickQueue.size() + 1;
+                if (hoveredSlot.getStack().stackSize == expectedRound) {
+                    clickQueue.add(hoveredSlot.slotNumber);
+                } else {
+                    event.setCanceled(true);
                 }
             }
         }
     }
 
-    /**
-     * Schedules a re-check 100ms later. If the slot’s stack is still unchanged
-     * (its stackSize equals the clickedRound) then the click is re‑sent.
-     *
-     * @param slotNumber   the index of the slot that was clicked
-     * @param clickedRound the expected stack size (i.e. the round value at the time of click)
-     */
-    private void scheduleRecheck(final int slotNumber, final int clickedRound) {
-        final Minecraft mc = Minecraft.getMinecraft();
-        recheckTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                // Schedule on the main thread
-                mc.addScheduledTask(() -> {
-                    if (mc.currentScreen instanceof GuiChest) {
-                        GuiChest currentGui = (GuiChest) mc.currentScreen;
-                        Container container = currentGui.inventorySlots;
-                        if (container instanceof ContainerChest) {
-                            ContainerChest cc = (ContainerChest) container;
-                            Slot recheckSlot = cc.getSlot(slotNumber);
-                            if (recheckSlot != null && recheckSlot.getStack() != null &&
-                                    recheckSlot.getStack().stackSize == clickedRound) {
-                                // Re-send the click since the slot still shows the old state
-                                recheckSlot.getStack().getItem().setDamage(recheckSlot.getStack(), 14);
-                                mc.playerController.windowClick(cc.windowId, recheckSlot.slotNumber, 0, 0, mc.thePlayer);
-                                recheckSlot.getStack().getItem().setDamage(recheckSlot.getStack(), 14);
-                                mc.playerController.windowClick(cc.windowId, recheckSlot.slotNumber, 0, 0, mc.thePlayer);
-                            }
-                        }
-                    }
-                });
-            }
-        }, 100);
+    private void processQueue() {
+        if (clickQueue.isEmpty()) return;
+        if (!DungeonManager.checkEssentialsF7()) return;
+        Minecraft mc = Minecraft.getMinecraft();
+        if (!(mc.currentScreen instanceof GuiChest)) return;
+        GuiChest guiChest = (GuiChest) mc.currentScreen;
+        Container container = guiChest.inventorySlots;
+        if (!(container instanceof ContainerChest)) return;
+        String title = ((ContainerChest) container).getLowerChestInventory()
+                .getDisplayName().getUnformattedText();
+        ContainerChest cc = (ContainerChest) container;
+        int slotNumber = clickQueue.getFirst();
+        Slot slot = cc.getSlot(slotNumber);
+        if (slot == null || slot.getStack() == null) return;
+        if (!title.startsWith("Click in")) return;
+
+        // Check if the pane is green (damage value 5 indicates success)
+        if (slot.getStack().getItemDamage() == 5) {
+            // Successfully clicked, remove from queue and increment processed rounds
+            clickQueue.removeFirst();
+            processedRounds++;
+        } else {
+            // Pane is still red or not updated, send a click
+            mc.playerController.windowClick(cc.windowId, slotNumber, 2, 0, mc.thePlayer);
+        }
     }
 
     private static void drawRect(int left, int top, int right, int bottom, int color) {

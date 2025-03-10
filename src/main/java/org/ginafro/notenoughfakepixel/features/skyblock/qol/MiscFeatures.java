@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.event.ClickEvent;
@@ -33,6 +34,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.ginafro.notenoughfakepixel.Configuration;
 import org.ginafro.notenoughfakepixel.events.PacketReadEvent;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
@@ -241,7 +243,7 @@ public class MiscFeatures {
             }
         }
     }
-
+/*
     @SubscribeEvent
     public void onRenderLivingPost(RenderLivingEvent.Post<EntityLivingBase> event) {
         if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
@@ -260,7 +262,7 @@ public class MiscFeatures {
             }
         }
     }
-
+*/
     @SubscribeEvent
     public void onRenderLivingSpecials(RenderLivingEvent.Specials.Pre<EntityLivingBase> event) {
         if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
@@ -490,6 +492,13 @@ public class MiscFeatures {
             e.message.appendSibling(new ChatComponentText(EnumChatFormatting.RESET + " "));
             e.message.appendSibling(copyText);
         }
+        }
+    }
+
+    @SubscribeEvent
+    public void onTick(TickEvent.ClientTickEvent event) {
+        if (Configuration.qolAlwaysSprint) {
+        KeyBinding.setKeyBindState(mc.gameSettings.keyBindSprint.getKeyCode(), true);
         }
     }
 }

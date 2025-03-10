@@ -103,6 +103,8 @@ public class Configuration extends Config {
     public static boolean qolCropsHeight = false;
     @Switch(name = "Disable block breaking particles" , category = QUALITY_OF_LIFE)
     public static boolean qolHideBlockBreakingParticles = false;
+    @Switch(name = "Always Sprint" , category = QUALITY_OF_LIFE)
+    public static boolean qolAlwaysSprint = true;
     @Switch(name = "Disable rain", category = QUALITY_OF_LIFE, description = "Disables rain rendering")
     public static boolean qolDisableRain = true;
     @Switch(name = "Disable Potion Effects in Inventory" , category = QUALITY_OF_LIFE)
@@ -120,6 +122,8 @@ public class Configuration extends Config {
 
     @Switch(name = "Copy chat message", category = QUALITY_OF_LIFE)
     public static boolean qolCopyChatMsg = true;
+    @Switch(name = "Full block lever", category = QUALITY_OF_LIFE)
+    public static boolean qolFullBlockLever = true;
 
     @Switch(name = "Block placing items", category = QUALITY_OF_LIFE)
     public static boolean qolBlockPlacingItems = true;
@@ -252,6 +256,10 @@ public class Configuration extends Config {
     public static boolean dungeonsWaterSolver = true;
     //@Switch(name = "Boulder Solver" , category = DUNGEONS, subcategory = "Puzzles")
     public static boolean dungeonsBoulderSolver = false;
+    //@Switch(name = "Silverfish Solver" , category = DUNGEONS, subcategory = "Puzzles")
+    public static boolean dungeonsSilverfishSolver = false;
+    //@Switch(name = "Teleport maze Solver" , category = DUNGEONS, subcategory = "Puzzles")
+    public static boolean dungeonsTeleportMaze = false;
 
     @Switch(name = "Fel Mobs Display", category = DUNGEONS, subcategory = "Starred Mobs")
     public static boolean dungeonsFelMob = true;

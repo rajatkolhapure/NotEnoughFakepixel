@@ -50,6 +50,7 @@ public class CorrectPanesSolver {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onDrawScreenPre(GuiScreenEvent.DrawScreenEvent.Pre event) {
+        if (!Configuration.dungeonsTerminalCorrectPanesSolver) return;
         if (!(event.gui instanceof GuiChest)) return;
         if (!DungeonManager.checkEssentialsF7()) return;
 
@@ -62,12 +63,12 @@ public class CorrectPanesSolver {
                 .getDisplayName()
                 .getUnformattedText()
                 .trim();
-        if (Configuration.dungeonsCustomGuiColors && displayName.equals("Correct all the panes!")) {
+        if (Configuration.dungeonsCustomGuiPanes && displayName.equals("Correct all the panes!")) {
             event.setCanceled(true);
         }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOW)
     public void onDrawScreenPost(GuiScreenEvent.DrawScreenEvent.Post event) {
         if (!Configuration.dungeonsTerminalCorrectPanesSolver) return;
         if (!DungeonManager.checkEssentialsF7()) return;
@@ -247,13 +248,6 @@ public class CorrectPanesSolver {
 
             Slot slot = containerChest.inventorySlots.get(slotId);
             if (lastCorrectSlots.contains(slot)) {
-                mc.playerController.windowClick(
-                        containerChest.windowId,
-                        slot.slotNumber,
-                        0,
-                        0,
-                        mc.thePlayer
-                );
                 mc.playerController.windowClick(
                         containerChest.windowId,
                         slot.slotNumber,

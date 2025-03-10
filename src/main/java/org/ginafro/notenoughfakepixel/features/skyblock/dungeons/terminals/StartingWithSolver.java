@@ -49,6 +49,7 @@ public class StartingWithSolver {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onDrawScreenPre(GuiScreenEvent.DrawScreenEvent.Pre event) {
+        if (!Configuration.dungeonsTerminalStartsWithSolver) return;
         if (!(event.gui instanceof GuiChest)) return;
         if (!DungeonManager.checkEssentialsF7()) return;
 
@@ -272,13 +273,6 @@ public class StartingWithSolver {
                 if (relX >= x && relX <= x + SLOT_SIZE &&
                         relY >= y && relY <= y + SLOT_SIZE) {
                     // Send two left clicks
-                    mc.playerController.windowClick(
-                            containerChest.windowId,
-                            slot.slotNumber,
-                            0, // 0 for left-click action
-                            button,
-                            mc.thePlayer
-                    );
                     mc.playerController.windowClick(
                             containerChest.windowId,
                             slot.slotNumber,

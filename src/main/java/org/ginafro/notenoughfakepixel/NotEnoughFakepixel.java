@@ -25,8 +25,7 @@ import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.mobs.FelMobDisp
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.mobs.LividDisplay;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.mobs.StarredMobDisplay;
 //import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.puzzles.BoulderSolver;
-import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.puzzles.ThreeWeirdos;
-import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.puzzles.WaterSolver;
+import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.puzzles.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.score.DungeonClearedNotifier;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.score.ScoreManager;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.score.ScoreOverlay;
@@ -95,7 +94,9 @@ public class NotEnoughFakepixel {
 
         MinecraftForge.EVENT_BUS.register(new ThreeWeirdos());
         MinecraftForge.EVENT_BUS.register(new WaterSolver());
-        //MinecraftForge.EVENT_BUS.register(new BoulderSolver());
+        MinecraftForge.EVENT_BUS.register(new BoulderSolver());
+        MinecraftForge.EVENT_BUS.register(new SilverFishSolver());
+        MinecraftForge.EVENT_BUS.register(new TeleportMazeSolver());
 
         MinecraftForge.EVENT_BUS.register(new WitherBloodKeysTracers());
         MinecraftForge.EVENT_BUS.register(new StarredMobDisplay());

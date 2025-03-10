@@ -269,25 +269,11 @@ public class MazeSolver {
                         0,
                         mc.thePlayer
                 );
-                mc.playerController.windowClick(
-                        container.windowId,
-                        slot.slotNumber,
-                        0,
-                        0,
-                        mc.thePlayer
-                );
                 event.setCanceled(true);
             }
         } else {
             Slot hoveredSlot = guiChest.getSlotUnderMouse();
             if (hoveredSlot != null && targetSlots.contains(hoveredSlot)) {
-                mc.playerController.windowClick(
-                        container.windowId,
-                        hoveredSlot.slotNumber,
-                        0,
-                        0,
-                        mc.thePlayer
-                );
                 mc.playerController.windowClick(
                         container.windowId,
                         hoveredSlot.slotNumber,

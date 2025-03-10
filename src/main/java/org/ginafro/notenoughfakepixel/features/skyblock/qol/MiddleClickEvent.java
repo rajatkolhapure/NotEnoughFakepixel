@@ -22,14 +22,6 @@ public class MiddleClickEvent {
             "Superpairs"
     );
 
-    private static List<String> disabledChestNames = Arrays.asList(
-            "What starts with '",
-            "Correct all the panes!",
-            "Complete the maze!",
-            "Click in order!",
-            "Select all the "
-    );
-
     @SubscribeEvent
     public void onMouseClick(GuiScreenEvent.MouseInputEvent.Pre event) {
         if (!Configuration.qolMiddleClickChests) return;
@@ -42,11 +34,73 @@ public class MiddleClickEvent {
 
         String currentChestName = container.getLowerChestInventory().getDisplayName().getUnformattedText();
 
-        if (Configuration.dungeonsCustomGuiStartsWith || Configuration.dungeonsCustomGuiClickIn || Configuration.dungeonsCustomGuiColors || Configuration.dungeonsCustomGuiPanes) {
-            for (String disabledName : disabledChestNames) {
-                if (currentChestName.startsWith(disabledName)) {
-                    return;
+        if (!Configuration.dungeonsCustomGuiStartsWith) {
+                if (currentChestName.startsWith("What starts with '")) {
+                    event.setCanceled(true);
+
+                    int slot = chestGui.getSlotUnderMouse() != null ? chestGui.getSlotUnderMouse().slotNumber : -1;
+
+                    if (slot >= 0) {
+                        mc.playerController.windowClick(
+                                container.windowId,  // The window ID of the chest
+                                slot,               // Slot clicked
+                                2,                  // Middle-click (button 2)
+                                3,                  // Click type (3 is PICKUP_ALL for middle-click)
+                                mc.thePlayer        // Player entity
+                        );
+                    }
                 }
+
+        }
+        if (!Configuration.dungeonsCustomGuiClickIn) {
+                if (currentChestName.startsWith("Click in order!")) {
+                    event.setCanceled(true);
+
+                    int slot = chestGui.getSlotUnderMouse() != null ? chestGui.getSlotUnderMouse().slotNumber : -1;
+
+                    if (slot >= 0) {
+                        mc.playerController.windowClick(
+                                container.windowId,  // The window ID of the chest
+                                slot,               // Slot clicked
+                                2,                  // Middle-click (button 2)
+                                3,                  // Click type (3 is PICKUP_ALL for middle-click)
+                                mc.thePlayer        // Player entity
+                        );
+                    }
+                }
+        }
+        if (!Configuration.dungeonsCustomGuiColors) {
+                if (currentChestName.startsWith("Select all the ")) {
+                    event.setCanceled(true);
+
+                    int slot = chestGui.getSlotUnderMouse() != null ? chestGui.getSlotUnderMouse().slotNumber : -1;
+
+                    if (slot >= 0) {
+                        mc.playerController.windowClick(
+                                container.windowId,  // The window ID of the chest
+                                slot,               // Slot clicked
+                                2,                  // Middle-click (button 2)
+                                3,                  // Click type (3 is PICKUP_ALL for middle-click)
+                                mc.thePlayer        // Player entity
+                        );
+                    }
+                }
+        }
+        if (!Configuration.dungeonsCustomGuiPanes) {
+                if (currentChestName.startsWith("Correct all the panes!")) {
+                    event.setCanceled(true);
+
+                    int slot = chestGui.getSlotUnderMouse() != null ? chestGui.getSlotUnderMouse().slotNumber : -1;
+
+                    if (slot >= 0) {
+                        mc.playerController.windowClick(
+                                container.windowId,  // The window ID of the chest
+                                slot,               // Slot clicked
+                                2,                  // Middle-click (button 2)
+                                3,                  // Click type (3 is PICKUP_ALL for middle-click)
+                                mc.thePlayer        // Player entity
+                        );
+                    }
             }
         }
 
@@ -66,7 +120,6 @@ public class MiddleClickEvent {
                             mc.thePlayer        // Player entity
                     );
                 }
-
             }
         }
     }

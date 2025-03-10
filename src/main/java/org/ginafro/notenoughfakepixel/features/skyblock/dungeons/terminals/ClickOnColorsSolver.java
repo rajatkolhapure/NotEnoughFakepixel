@@ -36,6 +36,7 @@ public class ClickOnColorsSolver {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onDrawScreenPre(GuiScreenEvent.DrawScreenEvent.Pre event) {
+        if(!Configuration.dungeonsTerminalSelectColorsSolver) return;
         if (!(event.gui instanceof GuiChest)) return;
         if (!DungeonManager.checkEssentialsF7()) return;
         Container container = ((GuiChest) event.gui).inventorySlots;
@@ -325,14 +326,7 @@ public class ClickOnColorsSolver {
                     mc.playerController.windowClick(
                             ((ContainerChest) container).windowId,
                             slot.slotNumber,
-                            2, // Left click
-                            0,
-                            mc.thePlayer
-                    );
-                    mc.playerController.windowClick(
-                            ((ContainerChest) container).windowId,
-                            slot.slotNumber,
-                            2, // Left click again
+                            0, // Left click
                             0,
                             mc.thePlayer
                     );
